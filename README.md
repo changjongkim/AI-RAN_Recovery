@@ -37,19 +37,19 @@
 | ID | 실험 | 코드 | 상태 |
 |---|---|---|---|
 | N1·N2 | IR HARQ(RV 0·2·3·1, 최대 4회), 시간에 따라 변하는 3GPP 채널, 조건당 블록 2만 개 | `src/gen_harq.py`, `src/decode_harq.py`, `src/harq_stats.py`, `exp/harq_ir.sh` | 코드 완료, smoke 뒤 큐에 있음 |
-| P1 | 상관 조건(가시선, 속도, 채널 모델) × 수신 안테나 2/4/8 | `exp/harq_ir.sh` 옵션(4 RX), 안테나 수는 TF 파이프라인 | 4 RX 조건은 큐에 있음 |
+| P1 | 상관 조건(가시선, 속도, 채널 모델) × 수신 안테나 2/4/8 | `exp/harq_ir.sh` 옵션(4 RX), 안테나 수는 TF 파이프라인 | 4 RX 조건은 queue, 안테나 2/4/8은 queue_b(N4 학습 중 남는 GPU 3장) |
 | P2 | 사용자 배치(UMi·UMa, 4–32명)에서 무작위 쌍 대 가장 잘 갈리는 쌍 × 복구 유무 | `src/pair_drops.py`, `src/sim/pairing.py` | 큐에 있음 |
 | N3 | 채널 묶음(UMi, UMa, 가시선/비가시선, 시속 3–120 km) | `exp/harq_ir.sh` 옵션 | 큐에 있음(smoke 뒤) |
-| N5 | 고전 강한 수신기(LMMSE+K-best, 완전한 채널 정보+K-best)와 NRx를 같은 슬롯에 (NVlabs 기준 수신기) | `src/classical_rx.py`, `exp/classical.sh` | 큐에 있음(공분산 계산 뒤) |
+| N5 | 고전 강한 수신기(LMMSE+K-best, 완전한 채널 정보+K-best)와 NRx를 같은 슬롯에 (NVlabs 기준 수신기) | `src/classical_rx.py`, `exp/classical.sh` | queue_b에서 N4 학습 2단계와 함께(공분산 계산 뒤) |
 | N6 | OLLA 닫힌 루프 + IR HARQ + 복구 (MCS 10–16이 같은 채널 실현 공유) | `exp/harq_mcs.sh`, `src/sim/olla.py` | 큐에 있음 |
 | N7 | HARQ 결합 방식(기다림·병렬·선택)의 지연 분포 | `src/sim/harq_latency.py` | 코드 완료(합성 기록으로 시험), N1 뒤 큐에 있음 |
 | N8 | 셀당 사용자 1–4명: (a) 기존 수신기의 실패와 상관(런타임 cuPHY), (b) 3–4명 복구: 기존 수신기 대 미세 조정 NRx(NVlabs 파이프라인) | `exp/users.sh`, `exp/classical.sh --users` | (a) queue, (b) queue_b(N4 뒤) |
 | N9 | GPU 수요 계산 | `src/sim/demand.py` | 큐에 있음(N1 뒤) |
-| N4 | 4명용 큰 NRx 미세 조정(2명용 가중치에서 시작, 4 PRB 학습, 5만 반복 × 6단계), 2명 성능 유지 확인. 8 RX 모델은 처음부터 학습해야 해서 범위 밖 | `exp/n4_train.sh` | 승인됨(2026-10-15), queue_b에서 진행 중 |
+| N4 | 4명용 큰 NRx 미세 조정(2명용 가중치에서 시작, 4 PRB 학습, 5만 반복 1단계 + 4만 반복 6단계 = 29만 반복, 1000반복당 159초 측정, XLA 끔), 2명 성능 유지 확인. 8 RX 모델은 처음부터 학습해야 해서 범위 밖 | `exp/n4_train.sh` | 승인됨(2026-10-15), queue_b에서 진행 중 |
 
 ## 5. 실행
 
-- 큐 둘: `queue/`(노드 1: N1–N3, N5–N9, P1, P2)와 `queue_b/`(노드 2: N4 학습, N8b). 각 실행기가 interactive 노드를 스스로 잡고, 4시간 할당이 끝나면 다시 잡는다. `bash queue/watchdog.sh start`가 10분마다 두 실행기를 확인해 죽었으면 다시 띄운다(`queue/watchdog.log`). 멈추려면 그 큐에 `STOP` 파일. 단계는 `todo`, 끝난 단계는 `done`, 기록은 `runner.log`, 단계별 출력은 `logs/`.
+- 큐 둘: `queue/`(노드 1: N1–N3, N6–N9, P1의 4 RX 조건, P2)와 `queue_b/`(노드 2: N4 학습은 GPU 0, 같은 시간에 GPU 1–3에서 N5·P1 안테나; 그 뒤 N4 평가, N8b). 각 실행기가 interactive 노드를 스스로 잡고, 4시간 할당이 끝나면 다시 잡는다. `bash queue/watchdog.sh start`가 10분마다 두 실행기를 확인해 죽었으면 다시 띄운다(`queue/watchdog.log`). 멈추려면 그 큐에 `STOP` 파일. 단계는 `todo`, 끝난 단계는 `done`, 기록은 `runner.log`, 단계별 출력은 `logs/`.
 - 한 조건: `bash exp/harq_ir.sh NAME CHUNKS --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64` (GPU 네 장에서 묶음을 병렬로, 결과 `results/NAME.json`·`.txt`).
 
 ## 6. 디렉터리
