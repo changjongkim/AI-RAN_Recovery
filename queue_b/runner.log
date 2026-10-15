@@ -1,0 +1,4 @@
+2026-10-14 23:52:32 runner started (pid 346721)
+2026-10-14 23:52:33 job  has 0 min left; step n4_train1 needs 110
+2026-10-14 23:52:37 allocated job 59800174
+2026-10-14 23:52:52 node step n4_train1 on job 59800174 (110 min planned)

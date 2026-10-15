@@ -34,6 +34,7 @@ parser.add_argument("--channel", default="UMi")
 parser.add_argument("--speed", type=float, default=0.83)
 parser.add_argument("--num-rx", type=int, default=0)
 parser.add_argument("--mcs", type=int, default=14)
+parser.add_argument("--users", type=int, default=2, help="active users on the same resources (configs must allow it)")
 parser.add_argument("--ebno", default="6,8,10,12")
 parser.add_argument("--slots", type=int, default=200)
 parser.add_argument("--batch", type=int, default=8)
@@ -82,7 +83,7 @@ models, record = {}, {}
 for s in systems:
     base = args.rt_config if s == "nrx_rt" else args.base_config
     cfg, label = make_config(base)
-    params = Parameters(cfg, training=False, system="nrx" if s.startswith("nrx") else s, num_tx_eval=2)
+    params = Parameters(cfg, training=False, system="nrx" if s.startswith("nrx") else s, num_tx_eval=args.users)
     model = E2E_Model(params, training=False, return_tb_status=True)
     model(1, 10.0)
     if s.startswith("nrx"):
@@ -112,11 +113,19 @@ for s in systems[1:]:
 
 
 def similarity(h):
+    """Largest similarity over the pairs of active users: mean over subcarriers and symbols of
+    |h_i^H h_j| / (|h_i||h_j|) (two users: the similarity of the pair)."""
     v = h.numpy()[:, 0, :, :, 0]
-    u1, u2 = v[:, :, 0], v[:, :, 1]
-    num = np.abs(np.sum(np.conj(u1) * u2, axis=1))
-    den = np.linalg.norm(u1, axis=1) * np.linalg.norm(u2, axis=1) + 1e-12
-    return (num / den).mean(axis=(1, 2))
+    n = min(args.users, v.shape[2])
+    if n < 2:
+        return np.zeros(v.shape[0], np.float32)
+    norm = np.linalg.norm(v, axis=1)
+    best = np.zeros(v.shape[0])
+    for i in range(n):
+        for j in range(i + 1, n):
+            num = np.abs(np.sum(np.conj(v[:, :, i]) * v[:, :, j], axis=1))
+            best = np.maximum(best, (num / (norm[:, i] * norm[:, j] + 1e-12)).mean(axis=(1, 2)))
+    return best
 
 
 good = {s: [] for s in systems}
@@ -143,7 +152,7 @@ args.output.parent.mkdir(parents=True, exist_ok=True)
 np.savez(args.output.with_suffix(".npz"), point=np.asarray(points, np.float32), corr=np.concatenate(corr),
          **{f"ok_{s}": v for s, v in good.items()})
 conv = good[systems[0]]
-report = {"systems": systems, "channel": args.channel, "speed": args.speed, "num_rx": args.num_rx or 4, "mcs": args.mcs,
+report = {"systems": systems, "users": args.users, "base_config": args.base_config, "channel": args.channel, "speed": args.speed, "num_rx": args.num_rx or 4, "mcs": args.mcs,
           "slots": int(conv.shape[0]), "seconds_per_slot": {s: seconds[s] / conv.shape[0] for s in systems},
           "decoded_pct": {s: 100.0 * good[s].mean() for s in systems},
           "recovers_pct_of_conventional_failures": {s: 100.0 * (good[s] & ~conv).sum() / max(1, (~conv).sum())

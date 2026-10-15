@@ -8,3 +8,4 @@ results/**/*.npz
 __pycache__/
 *.pyc
 third_party/
+results/n4/weights_*
