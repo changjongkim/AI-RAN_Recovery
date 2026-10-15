@@ -17,12 +17,7 @@ N|n3_umi_v120|120|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pas
 N|p2_drops|30|bash exp/p2_drops.sh
 L|p2_pairing|0|for v in v3 v30 v60; do /global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/sim/pairing.py --traces results/n1_umi_$v/c*.npz --drops results/p2_drops_umi.npz --output results/p2_pairing_umi_$v.json; done > results/p2_pairing.txt 2>&1
 # N5: classical strong receivers against the neural receivers on the same slots (needs the LMMSE covariance matrices)
-N|n5_cov|60|source env.sh && cd third_party/neural_rx/scripts && tfgen python3 compute_cov_mat.py -config_name nrx_large.cfg -num_samples 100000 -gpu 0
-N|n5_umi_v3|150|bash exp/classical.sh n5_umi_v3 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4
 # P1 (antennas): where conventional failures come from with 2, 4 and 8 receive antennas
-N|p1_ant2|90|bash exp/classical.sh p1_ant2_v3 --num-rx 2 --systems baseline_lslin_lmmse,baseline_perf_csi_kbest --ebno 6,8,10,12 --slots 128 --batch 8
-N|p1_ant4|90|bash exp/classical.sh p1_ant4_v3 --num-rx 4 --systems baseline_lslin_lmmse,baseline_perf_csi_kbest --ebno 6,8,10,12 --slots 128 --batch 8
-N|p1_ant8|90|bash exp/classical.sh p1_ant8_v3 --num-rx 8 --systems baseline_lslin_lmmse,baseline_perf_csi_kbest --ebno 6,8,10,12 --slots 128 --batch 8
 # N6: outer-loop link adaptation over MCS 10-16 on shared channel realizations
 N|n6_umi_v3|150|bash exp/harq_mcs.sh n6_umi_v3 24 --channel UMi --speed 0.83 --snr-db 6,8,10,12,14,16 --slots 16 --batch 8
 # N9: GPU time of recovery (login node)

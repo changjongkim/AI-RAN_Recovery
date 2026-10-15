@@ -1,11 +1,13 @@
 # second node: N4 fine-tuning of the four-user neural receiver, its checks, and N8b (3-4 users)
 N|tf_gpu_check|10|bash exp/tf_gpu_check.sh
+N|tf_conv_check|15|bash exp/tf_conv_check.sh
 N|n4_train1|110|grep -qP "^tf_gpu_check\t0\t" queue_b/done || { echo TensorFlow sees no GPU; exit 1; }; bash exp/n4_train.sh 1 50000
-N|n4_train2|110|grep -qP "^tf_gpu_check\t0\t" queue_b/done || { echo TensorFlow sees no GPU; exit 1; }; bash exp/n4_train.sh 2 50000
-N|n4_train3|110|grep -qP "^tf_gpu_check\t0\t" queue_b/done || { echo TensorFlow sees no GPU; exit 1; }; bash exp/n4_train.sh 3 50000
-N|n4_train4|110|grep -qP "^tf_gpu_check\t0\t" queue_b/done || { echo TensorFlow sees no GPU; exit 1; }; bash exp/n4_train.sh 4 50000
-N|n4_train5|110|grep -qP "^tf_gpu_check\t0\t" queue_b/done || { echo TensorFlow sees no GPU; exit 1; }; bash exp/n4_train.sh 5 50000
-N|n4_train6|110|grep -qP "^tf_gpu_check\t0\t" queue_b/done || { echo TensorFlow sees no GPU; exit 1; }; bash exp/n4_train.sh 6 50000
+N|n4_train2|150|grep -qP "^tf_gpu_check\t0\t" queue_b/done || { echo TensorFlow sees no GPU; exit 1; }; bash exp/train_with.sh 2 40000 'source env.sh && (cd third_party/neural_rx/scripts && tfgen python3 compute_cov_mat.py -config_name nrx_large.cfg -num_samples 100000 -gpu 1) && GPUS="1 2 3" bash exp/classical.sh n5_umi_v3 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 86 --batch 4'
+N|n4_train3|150|grep -qP "^tf_gpu_check\t0\t" queue_b/done || { echo TensorFlow sees no GPU; exit 1; }; bash exp/train_with.sh 3 40000 'GPUS="1 2 3" bash exp/classical.sh p1_ant2_v3 --num-rx 2 --systems baseline_lslin_lmmse,baseline_perf_csi_kbest --ebno 6,8,10,12 --slots 171 --batch 8'
+N|n4_train4|150|grep -qP "^tf_gpu_check\t0\t" queue_b/done || { echo TensorFlow sees no GPU; exit 1; }; bash exp/train_with.sh 4 40000 'GPUS="1 2 3" bash exp/classical.sh p1_ant4_v3 --num-rx 4 --systems baseline_lslin_lmmse,baseline_perf_csi_kbest --ebno 6,8,10,12 --slots 171 --batch 8'
+N|n4_train5|150|grep -qP "^tf_gpu_check\t0\t" queue_b/done || { echo TensorFlow sees no GPU; exit 1; }; bash exp/train_with.sh 5 40000 'GPUS="1 2 3" bash exp/classical.sh p1_ant8_v3 --num-rx 8 --systems baseline_lslin_lmmse,baseline_perf_csi_kbest --ebno 6,8,10,12 --slots 171 --batch 8'
+N|n4_train6|150|grep -qP "^tf_gpu_check\t0\t" queue_b/done || { echo TensorFlow sees no GPU; exit 1; }; bash exp/train_with.sh 6 40000
+N|n4_train7|150|grep -qP "^tf_gpu_check\t0\t" queue_b/done || { echo TensorFlow sees no GPU; exit 1; }; bash exp/train_with.sh 7 40000
 # the fine-tuned weights must not lose what the published ones do with two users
 N|n4_eval2_orig|60|bash exp/classical.sh n4_eval2_orig --base-config nrx_large.cfg --users 2 --systems baseline_lslin_lmmse,nrx --ebno 6,8,10,12 --slots 64 --batch 8
 N|n4_eval2_ft|60|bash exp/classical.sh n4_eval2_ft --base-config nrx_large_mu4.cfg --users 2 --systems baseline_lslin_lmmse,nrx --ebno 6,8,10,12 --slots 64 --batch 8

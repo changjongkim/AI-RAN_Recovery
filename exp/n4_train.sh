@@ -28,6 +28,10 @@ schedule = ('training_schedule = {\n'
             '    "weighting_double_readout": [0.01]}\n')
 t, n = re.subn(r"training_schedule = \{.*?\}[^\n]*\n", schedule, t, count=1, flags=re.S)
 assert n == 1, "no training schedule"
+# XLA-compiled training fails in cuDNN (xla.gpu.conv.backward.filter, CUDNN_STATUS_EXECUTION_FAILED) with the
+# cuDNN 8.9 of deps/; graph mode without XLA is used instead.
+t, n = re.subn(r"(?m)^xla\s*=.*", "xla = False", t)
+assert n == 1, "no xla line"
 open(dst + ".tmp", "w").write(t)
 import os; os.replace(dst + ".tmp", dst)
 PY

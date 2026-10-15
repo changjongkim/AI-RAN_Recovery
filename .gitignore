@@ -10,3 +10,9 @@ __pycache__/
 third_party/
 results/n4/weights_*
 deps/
+queue_b/lock
+queue_b/current_job
+queue_b/jobs
+queue_b/*.log
+queue*/watchdog.lock
+queue*/STOP
