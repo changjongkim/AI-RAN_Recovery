@@ -32,3 +32,6 @@ N|n6_umi_v3|150|bash exp/harq_mcs.sh n6_umi_v3 24 --channel UMi --speed 0.83 --s
 # N9: GPU time of recovery (login node)
 L|n9_demand|0|for v in v3 v30 v60; do /global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/sim/demand.py --traces results/n1_umi_$v/c*.npz --output results/n9_demand_$v.json; done > results/n9_demand.txt 2>&1
 N|n8a_users|120|bash exp/users.sh n8a_users 0,2,4,6,8,10,12 256
+# N5 and P1 (antennas) items left by the training node: all four GPUs of this node too, then merge
+N|side_q1|240|bash exp/side_pool.sh 230 "0 1 2 3"; bash exp/side_merge.sh
+N|side_q1b|240|bash exp/side_pool.sh 230 "0 1 2 3"; bash exp/side_merge.sh

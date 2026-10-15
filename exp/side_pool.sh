@@ -11,7 +11,7 @@ deadline=$(( $(date +%s) + minutes * 60 ))
 S=$RESULTS/side; mkdir -p $S
 items=$REC/queue_b/side_items
 [ -s $items ] || python3 $REC/exp/side_items.py > $items
-rm -rf $S/*.claim                       # one pool at a time: claims left by a killed pool are stale
+find $S -maxdepth 1 -name '*.claim' -mmin +60 -exec rm -rf {} + 2>/dev/null   # claims of a killed pool (an item takes < 25 min); pools on two nodes can share the list
 cov=$NRX_REPO/weights/nrx_large_freq_cov_mat.npy
 smoke_ok() { grep -q "N5_SMOKE pass" $S/n5_smoke.log 2>/dev/null; }
 log() { echo "$(date '+%F %T') $*" >> $S/pool.log; }
