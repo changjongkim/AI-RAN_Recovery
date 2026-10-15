@@ -14,6 +14,8 @@ Writes, per MCS m and transmission index t, <output>_m<m>_t<t>.npz in the format
                            of |h1^H h2| / (|h1||h2|) over the receive antennas (0 orthogonal, 1 same direction),
   change[t]                1 - |<h_0, h_t>| / (|h_0||h_t|): how much the channel changed by transmission t,
   gain[t]                  mean |h|^2 per user (to separate weak users from hard-to-separate pairs).
+With --retx-alone the retransmissions carry user 0 only (user 1's data and DMRS are zero), so HARQ is not limited by
+the same partner; the first transmission still carries both users.
 Several MCS share the same channel realizations and noise level (--snr-db), so a rate-control simulation can pick an
 MCS per slot afterwards.  With --ebno instead, the noise follows the rate-adjusted Eb/No of the first MCS (as NVlabs).
 Run with the NVlabs repository (third_party/neural_rx) as working directory's parent: python3 gen_harq.py ...
@@ -39,6 +41,9 @@ parser.add_argument("--num-rx", type=int, default=0, help="override the number o
 parser.add_argument("--mcs", default="14", help="comma list; all share the channel realizations")
 parser.add_argument("--rvs", default="0,2,3,1", help="redundancy version of each transmission")
 parser.add_argument("--gap-ms", type=float, default=7.5, help="time between transmissions")
+parser.add_argument("--retx-alone", action="store_true",
+                    help="retransmissions of user 0 are sent alone (user 1 silent), as when the scheduler gives a "
+                         "retransmission its own resources; only user 0's blocks are counted then")
 parser.add_argument("--ebno", default="", help="comma list of Eb/No (rate adjusted to the first MCS)")
 parser.add_argument("--snr-db", default="", help="comma list of SNR per resource element (same for every MCS)")
 parser.add_argument("--slots", type=int, default=100, help="slots per Eb/No or SNR point")
@@ -239,7 +244,9 @@ for point in POINTS:
                 b = link.gen._source([n, link.params.max_num_tx, link.tx._tb_size])
             bits[link.mcs].append(np.packbits(np.asarray(b).astype(np.uint8), axis=-1))
             for t, rv in enumerate(RVS):
-                x = link.modulate(link.encode(b, rv))
+                x = link.modulate(link.encode(b, rv))         # [batch, user, tx antenna, symbol, subcarrier]
+                if args.retx_alone and t >= 1:
+                    x = x * tf.constant([1, 0], x.dtype)[None, :, None, None, None]   # data and DMRS of user 1 off
                 out[(link.mcs, t)].append(aerial(apply_channel([x, hs[t], no])))
         info["point"] += [point] * n
         info["corr"].append(np.stack([similarity(h) for h in hs], axis=1))
@@ -257,14 +264,15 @@ point = np.asarray(info["point"], dtype=np.float32)
 corr, change, gain = (np.concatenate(info[k]).astype(np.float32) for k in ("corr", "change", "gain"))
 np.savez(args.output.parent / f"{args.output.name}_info.npz", point=point, corr=corr, change=change, gain=gain,
          meta=json.dumps({"channel": args.channel, "speed": args.speed, "los": args.los, "rvs": RVS, "mcs": MCS,
-                          "gap_ms": args.gap_ms, "gap_symbols": gap, "axis": "ebno" if args.ebno else "snr_db",
+                          "gap_ms": args.gap_ms, "gap_symbols": gap, "retx_alone": args.retx_alone, "axis": "ebno" if args.ebno else "snr_db",
                           "num_rx": int(first.params.num_rx_antennas), "seed": args.seed}))
 for link in links:
     payload = np.concatenate(bits[link.mcs])
     for t, rv in enumerate(RVS):
         meta = {"base_config": args.base_config, "prbs": args.prbs, "num_tx": 2, "channel": args.channel,
                 "speed": args.speed, "los": args.los, "mcs_index": link.mcs, "rv": rv, "transmission": t,
-                "gap_ms": args.gap_ms, "carrier_hz": float(link.params.carrier_frequency),
+                "gap_ms": args.gap_ms, "retx_alone": args.retx_alone and t >= 1,
+                "carrier_hz": float(link.params.carrier_frequency),
                 "num_rx_ant": int(link.params.num_rx_antennas), "tb_size_bits": int(link.tx._tb_size),
                 "num_bits_per_symbol": int(link.tx._num_bits_per_symbol),
                 "target_coderate": float(link.tx._target_coderate), "n_cell_id": int(link.params.n_cell_id),

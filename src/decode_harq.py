@@ -21,6 +21,8 @@ and the summary counts, per structure, how many transmissions each block needs:
   ours         conventional receiver, then recovery by the large neural receiver on the first reception (no
                retransmission if it succeeds), then HARQ where either receiver may decode the combined buffer
   ours_conv_harq   as ours, but HARQ with the conventional receiver only
+With retransmissions sent alone (gen_harq.py --retx-alone, read from the generator's metadata) the retransmissions
+are received as one-user slots and only user 0's blocks are counted.
 usage: decode_harq.py --root DIR --set NAME --mcs 14 --engine LARGE --small-engine SMALL [--count N] --output OUT
 """
 
@@ -98,10 +100,14 @@ class Combiner:
         n.stream.synchronize()
         return out
 
-    def derate_sep(self, llrs: list, rv: int) -> list:
+    def derate_sep(self, llrs: list, rv: int, alone: bool = False) -> list:
         s = self.sep
         with s.stream:
-            per_ue = [cp.ascontiguousarray(llrs[0][:, u:u + 1]) for u in range(self.users)]
+            if alone:      # equalizer output of the one-user configuration; the other user's buffer stays zero
+                u0 = cp.ascontiguousarray(llrs[0][:, 0:1])
+                per_ue = [u0] + [cp.zeros_like(u0) for _ in range(1, self.users)]
+            else:
+                per_ue = [cp.ascontiguousarray(llrs[0][:, u:u + 1]) for u in range(self.users)]
             out = s.derate.derate_match(input_llrs=per_ue, pusch_configs=self._sep_configs(rv))
             out = [cp.array(a, dtype=cp.float32) for a in out]
         s.stream.synchronize()
@@ -172,6 +178,23 @@ def main() -> None:
     comb = {"sep": Combiner(big, sep, args.iterations), "nrx": Combiner(big, sep, args.iterations),
             "small": Combiner(small, sep, args.iterations)}
 
+    # Retransmissions sent alone (gen_harq.py --retx-alone): the conventional front end is configured for user 0 only
+    # (same DMRS port, scrambling and CDM groups as in the two-user slot), the neural receivers get user 1 masked out
+    # (the NVlabs models are trained with one or two active users), and only user 0's blocks are counted.
+    alone = bool(gmeta.get("retx_alone", False))
+    if alone:
+        from dataclasses import replace
+        from mu_radio import mu_pusch_configs
+        sep1 = SeparableConv(prof, tb, stream, args.iterations)
+        sep1.configs, sep1.per_ue = mu_pusch_configs(replace(prof, ue_dmrs_ports=prof.ue_dmrs_ports[:1]), tb)
+
+    def active(ports):
+        with stream:
+            for n in (big, small):
+                a = n.engine.inputs["active_dmrs_ports"]
+                a[...] = cp.asarray([ports], dtype=a.dtype)
+        stream.synchronize()
+
     names = ["conv_t0"] + [f"{r}_c{t}" for r in comb for t in range(total)] + \
             [f"{r}_s{t}" for r in comb for t in range(1, total)]
     good = {k: np.zeros((count, users), dtype=bool) for k in names}
@@ -186,8 +209,13 @@ def main() -> None:
         sums = {}
         for t, rv in enumerate(rvs):
             view = rings[t].views[i]
+            solo = alone and t >= 1
+            if alone and t <= 1:
+                active([1, 0] if solo else [1, 1])
+            front = sep1 if solo else sep
             buffers = {
-                "sep": comb["sep"].derate_sep(on(stream, lambda: [cp.array(x, copy=True) for x in sep.llrs(view, slot)]), rv),
+                "sep": comb["sep"].derate_sep(on(stream, lambda: [cp.array(x, copy=True) for x in front.llrs(view, slot)]),
+                                              rv, solo),
                 "nrx": comb["nrx"].derate_nrx(nrx_llrs(big, view, slot), rv),
                 "small": comb["small"].derate_nrx(nrx_llrs(small, view, slot), rv),
             }
@@ -197,11 +225,14 @@ def main() -> None:
                 if t >= 1:
                     mark(f"{r}_s{t}", comb[r].decode(buf, rv, ref, tb), i)
 
+    if alone:
+        good = {k: v[:, :1] for k, v in good.items()}
     rep = report(good, point, corr, total, {"set": args.set, "mcs": args.mcs, "rvs": rvs, "generator": gmeta,
-                                            "ldpc_iterations": args.iterations})
+                                            "ldpc_iterations": args.iterations, "retx_alone": alone})
     args.output.parent.mkdir(parents=True, exist_ok=True)
     np.savez(args.output.with_suffix(".npz"), point=point, corr=corr, change=change, gain=gain, total=total,
-             meta=json.dumps({"set": args.set, "mcs": args.mcs, "rvs": rvs, "tb_bytes": int(tb), "generator": gmeta}), **good)
+             meta=json.dumps({"set": args.set, "mcs": args.mcs, "rvs": rvs, "tb_bytes": int(tb), "generator": gmeta,
+                              "retx_alone": alone}), **good)
     args.output.write_text(json.dumps(rep, indent=2))
     print(f"set {args.set} MCS {args.mcs}: {count} slots, similarity median {rep['corr_median']:.2f}, "
           f"separable vs cuPHY first {rep['check']['sep_vs_conv_first']}")
