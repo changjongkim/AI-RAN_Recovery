@@ -41,7 +41,7 @@
 | P1 | 상관 조건(가시선, 속도, 채널 모델) × 수신 안테나 2/4/8 | `exp/harq_ir.sh` 옵션(4 RX), 안테나 수는 TF 파이프라인 | 4 RX 조건은 queue. 안테나 2/4/8은 queue_b 부수 작업 묶음(`exp/side_pool.sh`): 기존 수신기와 완전 CSI+K-best, Eb/No 격자를 배열 이득만큼 옮김(2 RX 8–18, 4 RX 4–14, 8 RX 0–10 dB), 시드 16 × 64슬롯 |
 | P2 | 사용자 배치(UMi·UMa, 4–32명)에서 무작위 쌍 대 가장 잘 갈리는 쌍 × 복구 유무 | `src/pair_drops.py`, `src/sim/pairing.py` | 큐에 있음 |
 | N3 | 채널 묶음(UMi, UMa, 가시선/비가시선, 시속 3–120 km) | `exp/harq_ir.sh` 옵션 | 큐에 있음(smoke 뒤) |
-| N5 | 같은 슬롯에서 실패 블록을 다시 풀 수 있는 다른 방법: 기존 수신기 + LDPC 50회, 반복 검출–복호(IDD: MMSE-PIC, 복호기 외부 정보 3회), LMMSE 추정 + K-best, 완전한 채널 정보 + K-best(상한), 큰/작은 NRx | `src/classical_rx.py`, `src/idd.py`, `exp/n5_smoke.sh` | queue_b 부수 작업 묶음: smoke(IDD 0회 = LMMSE, 3회·LDPC 50회가 더 나쁘지 않음) 통과 뒤, 시드 40 × 64슬롯 × Eb/No 4점 = 10,240슬롯(실패 블록 약 2천 개) 목표 |
+| N5 | 같은 슬롯에서 실패 블록을 다시 풀 수 있는 다른 방법: 기존 수신기 + LDPC 50회, 반복 검출–복호(IDD: MMSE-PIC에 CRC를 통과한 code block을 다시 부호화해 넘김 = 복호된 사용자를 빼는 SIC, 3회), LMMSE 추정 + K-best, 완전한 채널 정보 + K-best(상한), 큰/작은 NRx | `src/classical_rx.py`, `src/idd.py`, `exp/n5_smoke.sh` | queue_b 부수 작업 묶음: smoke(IDD 0회 = LMMSE, 3회·LDPC 50회가 더 나쁘지 않음) 통과 뒤, 시드 40 × 64슬롯 × Eb/No 4점 = 10,240슬롯(실패 블록 약 2천 개) 목표 |
 | N6 | OLLA 닫힌 루프 + IR HARQ + 복구 (MCS 10–16이 같은 채널 실현 공유) | `exp/harq_mcs.sh`, `src/sim/olla.py` | 큐에 있음 |
 | N7 | HARQ 결합 방식(기다림·병렬·선택)의 지연 분포 | `src/sim/harq_latency.py` | 코드 완료(합성 기록으로 시험), N1 뒤 큐에 있음 |
 | N8 | 셀당 사용자 1–4명: (a) 기존 수신기의 실패와 상관(런타임 cuPHY), (b) 3–4명 복구: 기존 수신기 대 미세 조정 NRx(NVlabs 파이프라인) | `exp/users.sh`, `exp/classical.sh --users` | (a) queue, (b) queue_b(N4 뒤) |
