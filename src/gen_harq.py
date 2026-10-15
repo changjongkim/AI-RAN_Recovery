@@ -86,8 +86,11 @@ def make_config(mcs: int) -> str:
     for pattern, value in subs:
         text, n = re.subn(pattern, value, text)
         assert n >= 1, pattern
-    name = f"rec_{label}_{args.prbs}_{args.channel}_v{args.speed:g}_m{mcs}_r{args.num_rx or 4}_{args.los}.cfg"
-    (Path("../config") / name).write_text(text)
+    # one file per process: chunks run in parallel and must not read each other's half-written file
+    name = f"rec_{label}_{args.prbs}_{args.channel}_v{args.speed:g}_m{mcs}_r{args.num_rx or 4}_{args.los}_p{os.getpid()}.cfg"
+    tmp = Path("../config") / (name + ".tmp")
+    tmp.write_text(text)
+    tmp.rename(Path("../config") / name)
     return name
 
 

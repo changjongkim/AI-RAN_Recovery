@@ -201,7 +201,7 @@ def main() -> None:
                                             "ldpc_iterations": args.iterations})
     args.output.parent.mkdir(parents=True, exist_ok=True)
     np.savez(args.output.with_suffix(".npz"), point=point, corr=corr, change=change, gain=gain, total=total,
-             meta=json.dumps({"set": args.set, "mcs": args.mcs, "rvs": rvs, "generator": gmeta}), **good)
+             meta=json.dumps({"set": args.set, "mcs": args.mcs, "rvs": rvs, "tb_bytes": int(tb), "generator": gmeta}), **good)
     args.output.write_text(json.dumps(rep, indent=2))
     print(f"set {args.set} MCS {args.mcs}: {count} slots, similarity median {rep['corr_median']:.2f}, "
           f"separable vs cuPHY first {rep['check']['sep_vs_conv_first']}")
