@@ -1,2 +1,14 @@
 # kind|name|minutes|command   (see queue/runner.sh)
 N|smoke|30|bash exp/smoke.sh
+# N1/N2: IR HARQ on UMi at 3, 30, 60 km/h, 40 chunks x 256 slots = 10,240 slots (20,480 blocks) each
+N|n1_umi_v3|200|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pass; exit 1; }; bash exp/harq_ir.sh n1_umi_v3 40 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n1_umi_v30|200|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pass; exit 1; }; bash exp/harq_ir.sh n1_umi_v30 40 --channel UMi --speed 8.33 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n1_umi_v60|200|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pass; exit 1; }; bash exp/harq_ir.sh n1_umi_v60 40 --channel UMi --speed 16.67 --ebno 6,8,10,12 --slots 64 --batch 8
+# N7: delivery time under three ways to combine recovery with HARQ (login node, from the N1 traces)
+L|n7_latency|0|for v in v3 v30 v60; do for lead in 2 4 6; do /global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/sim/harq_latency.py --inputs results/n1_umi_$v/c*.npz --lead $lead --output results/n7_${v}_lead$lead.json; done; done > results/n7_latency.txt 2>&1
+# P1/N3: correlation conditions and channel models, 20 chunks = 5,120 slots each
+N|p1_umi_los_v3|120|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pass; exit 1; }; bash exp/harq_ir.sh p1_umi_los_v3 20 --channel UMi --los los --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|p1_umi_nlos_v3|120|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pass; exit 1; }; bash exp/harq_ir.sh p1_umi_nlos_v3 20 --channel UMi --los nlos --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n3_uma_v3|120|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pass; exit 1; }; bash exp/harq_ir.sh n3_uma_v3 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n3_uma_v30|120|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pass; exit 1; }; bash exp/harq_ir.sh n3_uma_v30 20 --channel UMa --speed 8.33 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n3_umi_v120|120|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pass; exit 1; }; bash exp/harq_ir.sh n3_umi_v120 20 --channel UMi --speed 33.33 --ebno 6,8,10,12 --slots 64 --batch 8
