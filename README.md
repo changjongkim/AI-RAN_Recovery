@@ -38,14 +38,14 @@
 |---|---|---|---|
 | N1·N2 | IR HARQ(RV 0·2·3·1, 최대 4회), 시간에 따라 변하는 3GPP 채널, 조건당 블록 2만 개 | `src/gen_harq.py`, `src/decode_harq.py`, `src/harq_stats.py`, `exp/harq_ir.sh` | 코드 완료, smoke 뒤 큐에 있음 |
 | P1 | 상관 조건(가시선, 속도, 채널 모델) × 수신 안테나 2/4/8 | `exp/harq_ir.sh` 옵션(4 RX), 안테나 수는 TF 파이프라인 | 4 RX 조건은 큐에 있음 |
-| P2 | 페어링 기준 × 복구 유무: 상향 셀 용량과 BLER | 준비 중 | |
+| P2 | 사용자 배치(UMi·UMa, 4–32명)에서 무작위 쌍 대 가장 잘 갈리는 쌍 × 복구 유무 | `src/pair_drops.py`, `src/sim/pairing.py` | 큐에 있음 |
 | N3 | 채널 묶음(UMi, UMa, 가시선/비가시선, 시속 3–120 km) | `exp/harq_ir.sh` 옵션 | 큐에 있음(smoke 뒤) |
-| N5 | 고전 강한 수신기(K-best, LDPC 반복)를 같은 복구 경로에 | 준비 중 | |
-| N6 | OLLA 닫힌 루프 + IR HARQ + 복구 (여러 MCS가 같은 채널 실현을 공유) | `gen_harq.py --mcs 10,..,16 --snr-db` | 준비 중 |
+| N5 | 고전 강한 수신기(LMMSE+K-best, 완전한 채널 정보+K-best)와 NRx를 같은 슬롯에 (NVlabs 기준 수신기) | `src/classical_rx.py`, `exp/classical.sh` | 큐에 있음(공분산 계산 뒤) |
+| N6 | OLLA 닫힌 루프 + IR HARQ + 복구 (MCS 10–16이 같은 채널 실현 공유) | `exp/harq_mcs.sh`, `src/sim/olla.py` | 큐에 있음 |
 | N7 | HARQ 결합 방식(기다림·병렬·선택)의 지연 분포 | `src/sim/harq_latency.py` | 코드 완료(합성 기록으로 시험), N1 뒤 큐에 있음 |
-| N8 | 셀당 사용자 1–4명 | 준비 중 | |
-| N9 | GPU 수요 모델 | 준비 중 | |
-| N4 | 사이트별 미세 조정 (GPU 4–8장 × 수일, 제출 전 승인) | 준비 중 | |
+| N8 | 셀당 사용자 1–4명: (a) 기존 수신기의 실패와 상관, (b) 3–4명 복구는 N4 학습 뒤 | `exp/users.sh` | (a) 큐에 있음 |
+| N9 | GPU 수요 계산 | `src/sim/demand.py` | 큐에 있음(N1 뒤) |
+| N4 | 4명용 큰 NRx 미세 조정(2명용 가중치에서 시작, 4 PRB 학습) — 노드 1개 수 시간, 제출 전 승인. 8 RX 모델은 처음부터 학습해야 해서 범위 밖 | 준비 중 | 승인 대기 |
 
 ## 5. 실행
 
