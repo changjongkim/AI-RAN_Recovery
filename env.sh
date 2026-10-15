@@ -25,6 +25,11 @@ rx() {
 }
 
 # Link-level generation (TensorFlow, Sionna, the NVlabs neural_rx repository).  Usage: tfgen python3 $REC/src/gen_harq.py ...
+# TensorFlow 2.15 needs cuDNN 8, which the Aerial image does not have: deps/cudnn8 (pip nvidia-cudnn-cu12 8.9.7).
+# Before 2026-10-15 this function had no library path and TensorFlow ran on the CPU (same results, slower).
+CUDNN8=$REC/deps/cudnn8/nvidia/cudnn/lib
 tfgen() {
-    shifter --module=gpu --image="$AERIAL_IMAGE" --env=PYTHONPATH="$TF_DEPS" --env=PYTHONNOUSERSITE=1 "$@"
+    shifter --module=gpu --image="$AERIAL_IMAGE" --env=PYTHONPATH="$TF_DEPS" --env=PYTHONNOUSERSITE=1 \
+        --env=LD_LIBRARY_PATH="$GPU_LD_PATH:$CUDNN8" --env=XLA_FLAGS=--xla_gpu_cuda_data_dir=/usr/local/cuda \
+        --env=PATH=/usr/local/cuda/bin:/usr/local/bin:/usr/bin:/bin "$@"
 }

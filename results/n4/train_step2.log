@@ -1,0 +1,5 @@
+Only GPU number 0 used.
+Traceback (most recent call last):
+  File "/pscratch/sd/s/sgkim/kcj/airan_recovery/third_party/neural_rx/scripts/train_neural_rx.py", line 49, in <module>
+    tf.config.experimental.set_memory_growth(gpus[0], True)
+IndexError: list index out of range

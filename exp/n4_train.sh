@@ -26,7 +26,7 @@ schedule = ('training_schedule = {\n'
             '    "double_readout": [True],\n'
             '    "apply_multiloss": [True],\n'
             '    "weighting_double_readout": [0.01]}\n')
-t, n = re.subn(r"training_schedule = \{.*?\}\n", schedule, t, count=1, flags=re.S)
+t, n = re.subn(r"training_schedule = \{.*?\}[^\n]*\n", schedule, t, count=1, flags=re.S)
 assert n == 1, "no training schedule"
 open(dst + ".tmp", "w").write(t)
 import os; os.replace(dst + ".tmp", dst)

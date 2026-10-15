@@ -9,3 +9,4 @@ __pycache__/
 *.pyc
 third_party/
 results/n4/weights_*
+deps/

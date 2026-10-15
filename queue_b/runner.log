@@ -2,3 +2,8 @@
 2026-10-14 23:52:33 job  has 0 min left; step n4_train1 needs 110
 2026-10-14 23:52:37 allocated job 59800174
 2026-10-14 23:52:52 node step n4_train1 on job 59800174 (110 min planned)
+2026-10-14 23:53:37 step n4_train1 ended with exit code 1
+2026-10-14 23:53:37 node step n4_train2 on job 59800174 (110 min planned)
+2026-10-14 23:53:50 step n4_train2 ended with exit code 1
+2026-10-14 23:53:50 STOP
+2026-10-14 23:57:37 runner started (pid 443857)
