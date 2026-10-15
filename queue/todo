@@ -14,6 +14,9 @@ L|n7_latency|0|for v in v3 v30 v60; do for lead in 2 4 6; do /global/common/soft
 N|p1_umi_los_v3|55|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pass; exit 1; }; bash exp/harq_ir.sh p1_umi_los_v3 20 --channel UMi --los los --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
 N|p1_umi_nlos_v3|55|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pass; exit 1; }; bash exp/harq_ir.sh p1_umi_nlos_v3 20 --channel UMi --los nlos --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
 N|n3_uma_v3|55|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pass; exit 1; }; bash exp/harq_ir.sh n3_uma_v3 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+# N1 at 3 km/h again with the same seeds, now recording the conventional receiver's failed code blocks (N7 select)
+N|n1_umi_v3_cb|100|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pass; exit 1; }; bash exp/harq_ir.sh n1_umi_v3_cb 40 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+L|n7_latency_cb|0|for lead in 2 4 6; do /global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/sim/harq_latency.py --inputs results/n1_umi_v3_cb/c*.npz --lead $lead --output results/n7_cb_v3_lead$lead.json; done > results/n7_latency_cb.txt 2>&1
 N|n3_uma_v30|55|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pass; exit 1; }; bash exp/harq_ir.sh n3_uma_v30 20 --channel UMa --speed 8.33 --ebno 6,8,10,12 --slots 64 --batch 8
 N|n3_umi_v120|55|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pass; exit 1; }; bash exp/harq_ir.sh n3_umi_v120 20 --channel UMi --speed 33.33 --ebno 6,8,10,12 --slots 64 --batch 8
 N|n3_uma_v120|55|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pass; exit 1; }; bash exp/harq_ir.sh n3_uma_v120 20 --channel UMa --speed 33.33 --ebno 6,8,10,12 --slots 64 --batch 8

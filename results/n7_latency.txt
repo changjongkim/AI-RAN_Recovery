@@ -1,0 +1,90 @@
+| pattern/policy | failed p50 | failed p90 | failed p99 | all p99.9 | UL slots /100 | never % |
+|---|---|---|---|---|---|---|
+| DDDSU/harq_only | 6.9 | 11.9 | 16.9 | 16.9 | 17.5 | 2.21 |
+| DDDSU/wait | 11.9 | 16.9 | 21.9 | 21.9 | 13.2 | 1.48 |
+| DDDSU/parallel | 6.9 | 11.9 | 16.9 | 16.9 | 15.5 | 1.48 |
+| DDDSU/select | 11.9 | 16.9 | 21.9 | 21.9 | 13.2 | 1.48 |
+| DDDSUUDDDD/harq_only | 6.9 | 11.9 | 16.9 | 16.9 | 17.5 | 2.21 |
+| DDDSUUDDDD/wait | 11.9 | 16.9 | 21.9 | 21.9 | 13.2 | 1.48 |
+| DDDSUUDDDD/parallel | 6.9 | 11.9 | 16.9 | 16.9 | 15.5 | 1.48 |
+| DDDSUUDDDD/select | 11.9 | 16.9 | 21.9 | 21.9 | 13.2 | 1.48 |
+| pattern/policy | failed p50 | failed p90 | failed p99 | all p99.9 | UL slots /100 | never % |
+|---|---|---|---|---|---|---|
+| DDDSU/harq_only | 9.4 | 16.9 | 24.4 | 24.4 | 17.5 | 2.21 |
+| DDDSU/wait | 14.4 | 21.9 | 29.4 | 29.4 | 13.2 | 1.48 |
+| DDDSU/parallel | 9.4 | 16.9 | 24.4 | 24.4 | 15.5 | 1.48 |
+| DDDSU/select | 14.4 | 21.9 | 29.4 | 29.4 | 13.2 | 1.48 |
+| DDDSUUDDDD/harq_only | 7.4 | 16.9 | 26.9 | 26.9 | 17.5 | 2.21 |
+| DDDSUUDDDD/wait | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.48 |
+| DDDSUUDDDD/parallel | 7.4 | 16.9 | 26.9 | 26.9 | 15.5 | 1.48 |
+| DDDSUUDDDD/select | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.48 |
+| pattern/policy | failed p50 | failed p90 | failed p99 | all p99.9 | UL slots /100 | never % |
+|---|---|---|---|---|---|---|
+| DDDSU/harq_only | 9.4 | 19.4 | 29.4 | 29.4 | 17.5 | 2.21 |
+| DDDSU/wait | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.48 |
+| DDDSU/parallel | 9.4 | 19.4 | 29.4 | 29.4 | 15.5 | 1.48 |
+| DDDSU/select | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.48 |
+| DDDSUUDDDD/harq_only | 11.9 | 21.9 | 31.9 | 31.9 | 17.5 | 2.21 |
+| DDDSUUDDDD/wait | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.48 |
+| DDDSUUDDDD/parallel | 11.9 | 21.9 | 31.9 | 31.9 | 15.5 | 1.48 |
+| DDDSUUDDDD/select | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.48 |
+| pattern/policy | failed p50 | failed p90 | failed p99 | all p99.9 | UL slots /100 | never % |
+|---|---|---|---|---|---|---|
+| DDDSU/harq_only | 6.9 | 11.9 | 16.9 | 16.9 | 17.5 | 2.17 |
+| DDDSU/wait | 11.9 | 16.9 | 21.9 | 21.9 | 13.2 | 1.49 |
+| DDDSU/parallel | 6.9 | 11.9 | 16.9 | 16.9 | 15.5 | 1.49 |
+| DDDSU/select | 11.9 | 16.9 | 21.9 | 21.9 | 13.2 | 1.49 |
+| DDDSUUDDDD/harq_only | 6.9 | 11.9 | 16.9 | 16.9 | 17.5 | 2.17 |
+| DDDSUUDDDD/wait | 11.9 | 16.9 | 21.9 | 21.9 | 13.2 | 1.49 |
+| DDDSUUDDDD/parallel | 6.9 | 11.9 | 16.9 | 16.9 | 15.5 | 1.49 |
+| DDDSUUDDDD/select | 11.9 | 16.9 | 21.9 | 21.9 | 13.2 | 1.49 |
+| pattern/policy | failed p50 | failed p90 | failed p99 | all p99.9 | UL slots /100 | never % |
+|---|---|---|---|---|---|---|
+| DDDSU/harq_only | 9.4 | 16.9 | 24.4 | 24.4 | 17.5 | 2.17 |
+| DDDSU/wait | 14.4 | 21.9 | 29.4 | 29.4 | 13.2 | 1.49 |
+| DDDSU/parallel | 9.4 | 16.9 | 24.4 | 24.4 | 15.5 | 1.49 |
+| DDDSU/select | 14.4 | 21.9 | 29.4 | 29.4 | 13.2 | 1.49 |
+| DDDSUUDDDD/harq_only | 7.4 | 16.9 | 26.9 | 26.9 | 17.5 | 2.17 |
+| DDDSUUDDDD/wait | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.49 |
+| DDDSUUDDDD/parallel | 7.4 | 16.9 | 26.9 | 26.9 | 15.5 | 1.49 |
+| DDDSUUDDDD/select | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.49 |
+| pattern/policy | failed p50 | failed p90 | failed p99 | all p99.9 | UL slots /100 | never % |
+|---|---|---|---|---|---|---|
+| DDDSU/harq_only | 9.4 | 19.4 | 29.4 | 29.4 | 17.5 | 2.17 |
+| DDDSU/wait | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.49 |
+| DDDSU/parallel | 9.4 | 19.4 | 29.4 | 29.4 | 15.5 | 1.49 |
+| DDDSU/select | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.49 |
+| DDDSUUDDDD/harq_only | 11.9 | 21.9 | 31.9 | 31.9 | 17.5 | 2.17 |
+| DDDSUUDDDD/wait | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.49 |
+| DDDSUUDDDD/parallel | 11.9 | 21.9 | 31.9 | 31.9 | 15.5 | 1.49 |
+| DDDSUUDDDD/select | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.49 |
+| pattern/policy | failed p50 | failed p90 | failed p99 | all p99.9 | UL slots /100 | never % |
+|---|---|---|---|---|---|---|
+| DDDSU/harq_only | 6.9 | 11.9 | 16.9 | 16.9 | 17.4 | 2.16 |
+| DDDSU/wait | 11.9 | 16.9 | 21.9 | 21.9 | 13.2 | 1.50 |
+| DDDSU/parallel | 6.9 | 11.9 | 16.9 | 16.9 | 15.5 | 1.50 |
+| DDDSU/select | 11.9 | 16.9 | 21.9 | 21.9 | 13.2 | 1.50 |
+| DDDSUUDDDD/harq_only | 6.9 | 11.9 | 16.9 | 16.9 | 17.4 | 2.16 |
+| DDDSUUDDDD/wait | 11.9 | 16.9 | 21.9 | 21.9 | 13.2 | 1.50 |
+| DDDSUUDDDD/parallel | 6.9 | 11.9 | 16.9 | 16.9 | 15.5 | 1.50 |
+| DDDSUUDDDD/select | 11.9 | 16.9 | 21.9 | 21.9 | 13.2 | 1.50 |
+| pattern/policy | failed p50 | failed p90 | failed p99 | all p99.9 | UL slots /100 | never % |
+|---|---|---|---|---|---|---|
+| DDDSU/harq_only | 9.4 | 16.9 | 24.4 | 24.4 | 17.4 | 2.16 |
+| DDDSU/wait | 14.4 | 21.9 | 29.4 | 29.4 | 13.2 | 1.50 |
+| DDDSU/parallel | 9.4 | 16.9 | 24.4 | 24.4 | 15.5 | 1.50 |
+| DDDSU/select | 14.4 | 21.9 | 29.4 | 29.4 | 13.2 | 1.50 |
+| DDDSUUDDDD/harq_only | 7.4 | 16.9 | 26.9 | 26.9 | 17.4 | 2.16 |
+| DDDSUUDDDD/wait | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.50 |
+| DDDSUUDDDD/parallel | 7.4 | 16.9 | 26.9 | 26.9 | 15.5 | 1.50 |
+| DDDSUUDDDD/select | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.50 |
+| pattern/policy | failed p50 | failed p90 | failed p99 | all p99.9 | UL slots /100 | never % |
+|---|---|---|---|---|---|---|
+| DDDSU/harq_only | 9.4 | 19.4 | 29.4 | 29.4 | 17.4 | 2.16 |
+| DDDSU/wait | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.50 |
+| DDDSU/parallel | 9.4 | 19.4 | 29.4 | 29.4 | 15.5 | 1.50 |
+| DDDSU/select | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.50 |
+| DDDSUUDDDD/harq_only | 11.9 | 21.9 | 31.9 | 31.9 | 17.4 | 2.16 |
+| DDDSUUDDDD/wait | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.50 |
+| DDDSUUDDDD/parallel | 11.9 | 21.9 | 31.9 | 31.9 | 15.5 | 1.50 |
+| DDDSUUDDDD/select | 16.9 | 26.9 | 36.9 | 36.9 | 13.2 | 1.50 |

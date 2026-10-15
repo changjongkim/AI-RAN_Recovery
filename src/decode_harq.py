@@ -15,7 +15,7 @@ Per slot and user it stores (results <output>.npz, summary <output>.json):
   conv_t0                     conventional receiver, first transmission
   <rx>_c<t>  (rx = sep, nrx, small)   after combining transmissions 0..t
   <rx>_s<t>  (t >= 1)         that retransmission alone (is the RV self-decodable at this SNR)
-and the summary counts, per structure, how many transmissions each block needs:
+the conventional receiver's failed code blocks per user (cbfail_t0), and the summary counts, per structure, how many transmissions each block needs:
   ai_and_ran   conventional receiver, HARQ with the conventional receiver
   ai_for_ran   small neural receiver inside L1 on every block, HARQ with it
   ours         conventional receiver, then recovery by the large neural receiver on the first reception (no
@@ -202,10 +202,17 @@ def main() -> None:
     def mark(name, mask, i):
         good[name][i] = [(mask >> u) & 1 for u in range(users)]
 
+    # failed code blocks per user in the conventional receiver's first decode (a predictor of whether recovery will
+    # succeed, known when L1 finishes; -1 where the path does not report it)
+    cbfail = np.full((count, users), -1, dtype=np.int16)
+
     for i in range(count):
         slot, ref = first.slots[i], first.blocks[i]
         ok, payload = conv.run(rings[0].views[i], slot)
         mark("conv_t0", result_masks(conv, ok, payload, ref, tb)[1], i)
+        by_ue = getattr(conv, "last_cb_fail_by_ue", None)
+        if by_ue is not None and len(by_ue) == users:
+            cbfail[i] = by_ue
         sums = {}
         for t, rv in enumerate(rvs):
             view = rings[t].views[i]
@@ -227,12 +234,13 @@ def main() -> None:
 
     if alone:
         good = {k: v[:, :1] for k, v in good.items()}
+        cbfail = cbfail[:, :1]
     rep = report(good, point, corr, total, {"set": args.set, "mcs": args.mcs, "rvs": rvs, "generator": gmeta,
                                             "ldpc_iterations": args.iterations, "retx_alone": alone})
     args.output.parent.mkdir(parents=True, exist_ok=True)
     np.savez(args.output.with_suffix(".npz"), point=point, corr=corr, change=change, gain=gain, total=total,
              meta=json.dumps({"set": args.set, "mcs": args.mcs, "rvs": rvs, "tb_bytes": int(tb), "generator": gmeta,
-                              "retx_alone": alone}), **good)
+                              "retx_alone": alone}), cbfail_t0=cbfail, **good)
     args.output.write_text(json.dumps(rep, indent=2))
     print(f"set {args.set} MCS {args.mcs}: {count} slots, similarity median {rep['corr_median']:.2f}, "
           f"separable vs cuPHY first {rep['check']['sep_vs_conv_first']}")
