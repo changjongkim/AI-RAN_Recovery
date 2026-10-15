@@ -9,6 +9,8 @@
 #   done line:   NAME <tab> exit code <tab> job <tab> start <tab> end
 #   queue/STOP:      the runner exits before the next step
 #   queue/WAIT_FOR:  path of a log; the runner starts after the line CHAIN_EXIT appears in it
+#   queue/nodes:     nodes per allocation (default 1).  Steps run on the first node; every further node runs the side
+#                    pool (exp/side_pool.sh, GPUs 0-3) for as long as the allocation lasts and items are left.
 # Nothing else may start a step on the node while the runner is alive (queue/lock is held).
 ROOT=/pscratch/sd/s/sgkim/kcj/airan_recovery
 S=$ROOT
@@ -28,14 +30,31 @@ left_min() {      # minutes left of job $1; 0 when it is not running
   if [ -n "$c" ]; then h=$a; m=$b; elif [ -n "$b" ]; then m=$a; fi
   echo $(( 10#$d * 1440 + 10#$h * 60 + 10#$m ))
 }
+want_nodes() { cat $Q/nodes 2>/dev/null || echo 1; }
+job_nodes() { squeue -h -j "$1" -o %N 2>/dev/null | xargs -r scontrol show hostnames 2>/dev/null; }
+side_nodes() {    # every node of job $1 but the first runs side-pool rounds until the job ends or nothing is left
+  local job=$1 node left t0
+  for node in $(job_nodes $job | tail -n +2); do
+    ( exec 9>&-                         # not the runner: the watchdog must see the lock free if the runner dies
+      while true; do
+        left=$(left_min $job); [ "$left" -gt 20 ] || break
+        t0=$(date +%s)
+        srun --jobid=$job --overlap -N1 -n1 -w $node --gpus-per-node=4 --export=ALL \
+          bash -c "cd $ROOT && bash exp/side_pool.sh $((left - 10)) '0 1 2 3'" >> $S/logs/side_${node}_j$job.log 2>&1 < /dev/null
+        [ $(( $(date +%s) - t0 )) -gt 300 ] || break          # a round that ended at once: nothing left to run
+      done ) &
+    log "side pool on $node of job $job"
+  done
+}
 allocate() {
   local out job
   while true; do
     [ -f $Q/STOP ] && { log "STOP while waiting for an allocation"; exit 0; }
-    out=$(salloc -N 1 -C "gpu&hbm80g" -q interactive -A m5320_g -t 04:00:00 --no-shell 2>&1 < /dev/null)
+    out=$(salloc -N $(want_nodes) -C "gpu&hbm80g" -q interactive -A m5320_g -t 04:00:00 --no-shell 2>&1 < /dev/null)
     job=$(echo "$out" | sed -n 's/.*Granted job allocation \([0-9]*\).*/\1/p' | head -1)
     if [ -n "$job" ]; then
-      echo $job > $CUR; echo $job >> $Q/jobs; log "allocated job $job"; sleep 15; return
+      echo $job > $CUR; echo $job >> $Q/jobs; log "allocated job $job ($(want_nodes) nodes)"; sleep 15
+      side_nodes $job; return
     fi
     log "salloc failed: $(echo "$out" | tail -1)"; sleep 180
   done
@@ -62,13 +81,18 @@ while true; do
     bash -c "cd $ROOT && $command" > $Q/local_$name.log 2>&1 < /dev/null; rc=$?; job=-
   else
     job=$(cat $CUR 2>/dev/null); left=$(left_min "$job")
+    if [ "$left" -gt 0 ] && [ "$(job_nodes $job | wc -l)" -lt "$(want_nodes)" ]; then
+      log "job $job has fewer nodes than $(want_nodes)"; left=0
+      grep -qx "$job" $Q/jobs 2>/dev/null && { scancel $job; log "released job $job"; sleep 30; }
+    fi
     if [ "$left" -lt $((minutes + 5)) ]; then
       log "job $job has $left min left; step $name needs $minutes"
       if [ "$left" -gt 0 ] && grep -qx "$job" $Q/jobs 2>/dev/null; then scancel $job; log "released job $job"; sleep 30; fi
       allocate; job=$(cat $CUR)
     fi
     log "node step $name on job $job ($minutes min planned)"
-    srun --jobid=$job --overlap -N1 -n1 --gpus-per-node=4 --export=ALL bash -c "cd $ROOT && $command" \
+    head=$(job_nodes $job | head -1)
+    srun --jobid=$job --overlap -N1 -n1 ${head:+-w $head} --gpus-per-node=4 --export=ALL bash -c "cd $ROOT && $command" \
       > $S/logs/q_${name}_j$job.log 2>&1 < /dev/null; rc=$?
   fi
   if [ "$kind" != L ] && [ $rc -ne 0 ] && [ "$(left_min "$job")" -eq 0 ] && ! grep -qx "$name" $Q/retried 2>/dev/null; then
