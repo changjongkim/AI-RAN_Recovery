@@ -43,13 +43,13 @@
 | N5 | 고전 강한 수신기(LMMSE+K-best, 완전한 채널 정보+K-best)와 NRx를 같은 슬롯에 (NVlabs 기준 수신기) | `src/classical_rx.py`, `exp/classical.sh` | 큐에 있음(공분산 계산 뒤) |
 | N6 | OLLA 닫힌 루프 + IR HARQ + 복구 (MCS 10–16이 같은 채널 실현 공유) | `exp/harq_mcs.sh`, `src/sim/olla.py` | 큐에 있음 |
 | N7 | HARQ 결합 방식(기다림·병렬·선택)의 지연 분포 | `src/sim/harq_latency.py` | 코드 완료(합성 기록으로 시험), N1 뒤 큐에 있음 |
-| N8 | 셀당 사용자 1–4명: (a) 기존 수신기의 실패와 상관, (b) 3–4명 복구는 N4 학습 뒤 | `exp/users.sh` | (a) 큐에 있음 |
+| N8 | 셀당 사용자 1–4명: (a) 기존 수신기의 실패와 상관(런타임 cuPHY), (b) 3–4명 복구: 기존 수신기 대 미세 조정 NRx(NVlabs 파이프라인) | `exp/users.sh`, `exp/classical.sh --users` | (a) queue, (b) queue_b(N4 뒤) |
 | N9 | GPU 수요 계산 | `src/sim/demand.py` | 큐에 있음(N1 뒤) |
-| N4 | 4명용 큰 NRx 미세 조정(2명용 가중치에서 시작, 4 PRB 학습) — 노드 1개 수 시간, 제출 전 승인. 8 RX 모델은 처음부터 학습해야 해서 범위 밖 | 준비 중 | 승인 대기 |
+| N4 | 4명용 큰 NRx 미세 조정(2명용 가중치에서 시작, 4 PRB 학습, 5만 반복 × 6단계), 2명 성능 유지 확인. 8 RX 모델은 처음부터 학습해야 해서 범위 밖 | `exp/n4_train.sh` | 승인됨(2026-10-15), queue_b에서 진행 중 |
 
 ## 5. 실행
 
-- 큐: `bash queue/start.sh`로 실행기를 띄운다(로그인 노드, interactive GPU 노드를 스스로 잡는다). 단계는 `queue/todo`, 끝난 단계는 `queue/done`, 기록은 `queue/runner.log`, 단계별 출력은 `logs/`.
+- 큐 둘: `queue/`(노드 1: N1–N3, N5–N9, P1, P2)와 `queue_b/`(노드 2: N4 학습, N8b). 각 실행기가 interactive 노드를 스스로 잡고, 4시간 할당이 끝나면 다시 잡는다. `bash queue/watchdog.sh start`가 10분마다 두 실행기를 확인해 죽었으면 다시 띄운다(`queue/watchdog.log`). 멈추려면 그 큐에 `STOP` 파일. 단계는 `todo`, 끝난 단계는 `done`, 기록은 `runner.log`, 단계별 출력은 `logs/`.
 - 한 조건: `bash exp/harq_ir.sh NAME CHUNKS --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64` (GPU 네 장에서 묶음을 병렬로, 결과 `results/NAME.json`·`.txt`).
 
 ## 6. 디렉터리
