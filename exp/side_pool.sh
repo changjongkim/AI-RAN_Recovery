@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Side pool: while the N4 training uses GPU 0, GPUs 1-3 work through queue_b/side_items (exp/side_items.py) until
 # MINUTES have passed; every item is one classical_rx.py run with its own output, so a run cut by the deadline is
-# simply done again by the next pool.  The first GPU first runs the N5 smoke test and the LMMSE covariance matrices;
+# simply done again by the next pool.  An item that fails twice (not by the deadline) is left out (<item>.fails, .err).  The first GPU first runs the N5 smoke test and the LMMSE covariance matrices;
 # N5 items wait for both.  Merge with exp/side_merge.sh.
 # usage: bash exp/side_pool.sh MINUTES ["GPUS"]        results: results/side/<item>.json/.npz/.log, results/side/pool.log
 set -uo pipefail
@@ -37,6 +37,7 @@ worker() {
     pick=""
     while IFS='|' read -r name needs opts; do
       [ -s $S/$name.json ] && continue
+      [ "$(cat $S/$name.fails 2>/dev/null || echo 0)" -ge 2 ] && continue     # failed twice: leave it, see <item>.err
       if [ "$needs" = n5 ]; then smoke_ok && [ -f $cov ] || continue; fi
       mkdir $S/$name.claim 2>/dev/null || continue
       pick=$name; break
@@ -45,7 +46,14 @@ worker() {
     tf $left python3 $REC/src/classical_rx.py --nrx-repo $NRX_REPO --gpu $g $opts \
         --output $S/$pick.json > $S/$pick.log 2>&1
     rc=$?
-    [ $rc -eq 0 ] || rm -f $S/$pick.json $S/$pick.npz
+    if [ $rc -ne 0 ]; then
+      rm -f $S/$pick.json $S/$pick.npz
+      # a run cut by the deadline (timeout: 124, or killed: 137) is not a failure of the item
+      if [ $rc -ne 124 ] && [ $rc -ne 137 ]; then
+        echo $(( $(cat $S/$pick.fails 2>/dev/null || echo 0) + 1 )) > $S/$pick.fails
+        cp $S/$pick.log $S/$pick.err
+      fi
+    fi
     rmdir $S/$pick.claim
     log "GPU $g $pick rc=$rc"
   done
