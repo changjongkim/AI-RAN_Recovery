@@ -36,7 +36,7 @@
 
 | ID | 실험 | 코드 | 상태 |
 |---|---|---|---|
-| N1·N2 | IR HARQ(RV 0·2·3·1, 최대 4회), 시간에 따라 변하는 3GPP 채널, 조건당 블록 2만 개 | `src/gen_harq.py`, `src/decode_harq.py`, `src/harq_stats.py`, `exp/harq_ir.sh` | 코드 완료, smoke 뒤 큐에 있음 |
+| N1·N2 | IR HARQ(RV 0·2·3·1, 최대 4회), 시간에 따라 변하는 3GPP 채널, 조건당 블록 2만 개 | `src/gen_harq.py`, `src/decode_harq.py`, `src/harq_stats.py`, `exp/harq_ir.sh` | UMi 3 km/h 끝남(2026-10-15, `results/n1_umi_v3.json`, 블록 20,480개): 첫 실패 10.3%, 복구가 실패의 22.8%를 재전송 없이 끝냄, 100블록당 재전송 17.5 → 13.2(0.75배; 복구만 0.86배), 4회 뒤 실패 2.21 → 1.48%(0.67배); 작은 NRx를 모든 블록에 쓰면 재전송 16.8. 상관 0.4 미만/0.4–0.6/0.6 이상(블록 35/50/16%)에서 복구 비율 14/27/29%. 30·60 km/h 진행 중 |
 | P1 | 상관 조건(가시선, 속도, 채널 모델) × 수신 안테나 2/4/8 | `exp/harq_ir.sh` 옵션(4 RX), 안테나 수는 TF 파이프라인 | 4 RX 조건은 queue, 안테나 2/4/8은 queue_b(N4 학습 중 남는 GPU 3장) |
 | P2 | 사용자 배치(UMi·UMa, 4–32명)에서 무작위 쌍 대 가장 잘 갈리는 쌍 × 복구 유무 | `src/pair_drops.py`, `src/sim/pairing.py` | 큐에 있음 |
 | N3 | 채널 묶음(UMi, UMa, 가시선/비가시선, 시속 3–120 km) | `exp/harq_ir.sh` 옵션 | 큐에 있음(smoke 뒤) |
