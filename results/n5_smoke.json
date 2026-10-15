@@ -1,0 +1,62 @@
+{
+  "files": [
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/n5_smoke/g1.npz"
+  ],
+  "systems": [
+    "baseline_lslin_lmmse",
+    "lslin_idd0",
+    "lslin_idd3",
+    "baseline_lslin_lmmse@50"
+  ],
+  "slots": 64,
+  "num_rx": 4,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 0.39637152017178323,
+    "lslin_idd0": 0.38042774921882483,
+    "lslin_idd3": 2.201450235187451,
+    "baseline_lslin_lmmse@50": 0.4799826376875558
+  },
+  "fail_pct": {
+    "baseline_lslin_lmmse": 11.71875,
+    "lslin_idd0": 11.71875,
+    "lslin_idd3": 7.8125,
+    "baseline_lslin_lmmse@50": 10.15625
+  },
+  "recovers_pct_of_conventional_failures": {
+    "lslin_idd0": 0.0,
+    "lslin_idd3": 33.333333333333336,
+    "baseline_lslin_lmmse@50": 13.333333333333334
+  },
+  "by_similarity": {
+    "0.0-0.4": {
+      "share_of_blocks": 0.3125,
+      "conventional_fail_pct": 10.0,
+      "share_of_failures": 0.26666666666666666,
+      "recovers_pct": {
+        "lslin_idd0": 0.0,
+        "lslin_idd3": 0.0,
+        "baseline_lslin_lmmse@50": 0.0
+      }
+    },
+    "0.4-0.6": {
+      "share_of_blocks": 0.546875,
+      "conventional_fail_pct": 12.857142857142858,
+      "share_of_failures": 0.6,
+      "recovers_pct": {
+        "lslin_idd0": 0.0,
+        "lslin_idd3": 33.333333333333336,
+        "baseline_lslin_lmmse@50": 11.11111111111111
+      }
+    },
+    "0.6-1.0": {
+      "share_of_blocks": 0.140625,
+      "conventional_fail_pct": 11.11111111111111,
+      "share_of_failures": 0.13333333333333333,
+      "recovers_pct": {
+        "lslin_idd0": 0.0,
+        "lslin_idd3": 100.0,
+        "baseline_lslin_lmmse@50": 50.0
+      }
+    }
+  }
+}

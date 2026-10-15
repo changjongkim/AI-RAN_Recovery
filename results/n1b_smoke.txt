@@ -1,0 +1,7 @@
+n1b_smoke.json: 256 slots, 256 TBs, similarity median 0.47, separable vs cuPHY first [231, 232]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 9.4 | 0.0 | 14.8 | 38 | 1.56 | 1.148 |
+| ai_for_ran | 9.4 | 0.0 | 15.2 | 38 | 1.56 | 1.152 |
+| ours | 9.4 | 1.6 | 12.5 | 33 | 1.17 | 1.125 |
+| ours_conv_harq | 9.4 | 1.6 | 13.3 | 38 | 1.56 | 1.133 |
