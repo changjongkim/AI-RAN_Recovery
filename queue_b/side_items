@@ -1,0 +1,416 @@
+n5_umi_v3_s0_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 500
+n5_umi_v3_s0_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 500
+n5_umi_v3_s0_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 500
+n5_umi_v3_s0_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 500
+p1_ant2_v3_s0_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 8 --seed 600
+p1_ant2_v3_s0_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 10 --seed 600
+p1_ant2_v3_s0_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 12 --seed 600
+p1_ant2_v3_s0_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 14 --seed 600
+p1_ant2_v3_s0_e16|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 16 --seed 600
+p1_ant2_v3_s0_e18|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 18 --seed 600
+p1_ant4_v3_s0_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 4 --seed 600
+p1_ant4_v3_s0_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 6 --seed 600
+p1_ant4_v3_s0_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 8 --seed 600
+p1_ant4_v3_s0_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 10 --seed 600
+p1_ant4_v3_s0_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 12 --seed 600
+p1_ant4_v3_s0_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 14 --seed 600
+p1_ant8_v3_s0_e0|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 0 --seed 600
+p1_ant8_v3_s0_e2|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 2 --seed 600
+p1_ant8_v3_s0_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 4 --seed 600
+p1_ant8_v3_s0_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 6 --seed 600
+p1_ant8_v3_s0_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 8 --seed 600
+p1_ant8_v3_s0_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 10 --seed 600
+n5_umi_v3_s1_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 501
+n5_umi_v3_s1_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 501
+n5_umi_v3_s1_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 501
+n5_umi_v3_s1_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 501
+p1_ant2_v3_s1_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 8 --seed 601
+p1_ant2_v3_s1_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 10 --seed 601
+p1_ant2_v3_s1_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 12 --seed 601
+p1_ant2_v3_s1_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 14 --seed 601
+p1_ant2_v3_s1_e16|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 16 --seed 601
+p1_ant2_v3_s1_e18|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 18 --seed 601
+p1_ant4_v3_s1_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 4 --seed 601
+p1_ant4_v3_s1_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 6 --seed 601
+p1_ant4_v3_s1_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 8 --seed 601
+p1_ant4_v3_s1_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 10 --seed 601
+p1_ant4_v3_s1_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 12 --seed 601
+p1_ant4_v3_s1_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 14 --seed 601
+p1_ant8_v3_s1_e0|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 0 --seed 601
+p1_ant8_v3_s1_e2|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 2 --seed 601
+p1_ant8_v3_s1_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 4 --seed 601
+p1_ant8_v3_s1_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 6 --seed 601
+p1_ant8_v3_s1_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 8 --seed 601
+p1_ant8_v3_s1_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 10 --seed 601
+n5_umi_v3_s2_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 502
+n5_umi_v3_s2_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 502
+n5_umi_v3_s2_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 502
+n5_umi_v3_s2_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 502
+p1_ant2_v3_s2_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 8 --seed 602
+p1_ant2_v3_s2_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 10 --seed 602
+p1_ant2_v3_s2_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 12 --seed 602
+p1_ant2_v3_s2_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 14 --seed 602
+p1_ant2_v3_s2_e16|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 16 --seed 602
+p1_ant2_v3_s2_e18|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 18 --seed 602
+p1_ant4_v3_s2_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 4 --seed 602
+p1_ant4_v3_s2_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 6 --seed 602
+p1_ant4_v3_s2_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 8 --seed 602
+p1_ant4_v3_s2_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 10 --seed 602
+p1_ant4_v3_s2_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 12 --seed 602
+p1_ant4_v3_s2_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 14 --seed 602
+p1_ant8_v3_s2_e0|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 0 --seed 602
+p1_ant8_v3_s2_e2|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 2 --seed 602
+p1_ant8_v3_s2_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 4 --seed 602
+p1_ant8_v3_s2_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 6 --seed 602
+p1_ant8_v3_s2_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 8 --seed 602
+p1_ant8_v3_s2_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 10 --seed 602
+n5_umi_v3_s3_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 503
+n5_umi_v3_s3_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 503
+n5_umi_v3_s3_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 503
+n5_umi_v3_s3_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 503
+p1_ant2_v3_s3_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 8 --seed 603
+p1_ant2_v3_s3_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 10 --seed 603
+p1_ant2_v3_s3_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 12 --seed 603
+p1_ant2_v3_s3_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 14 --seed 603
+p1_ant2_v3_s3_e16|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 16 --seed 603
+p1_ant2_v3_s3_e18|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 18 --seed 603
+p1_ant4_v3_s3_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 4 --seed 603
+p1_ant4_v3_s3_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 6 --seed 603
+p1_ant4_v3_s3_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 8 --seed 603
+p1_ant4_v3_s3_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 10 --seed 603
+p1_ant4_v3_s3_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 12 --seed 603
+p1_ant4_v3_s3_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 14 --seed 603
+p1_ant8_v3_s3_e0|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 0 --seed 603
+p1_ant8_v3_s3_e2|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 2 --seed 603
+p1_ant8_v3_s3_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 4 --seed 603
+p1_ant8_v3_s3_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 6 --seed 603
+p1_ant8_v3_s3_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 8 --seed 603
+p1_ant8_v3_s3_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 10 --seed 603
+n5_umi_v3_s4_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 504
+n5_umi_v3_s4_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 504
+n5_umi_v3_s4_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 504
+n5_umi_v3_s4_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 504
+p1_ant2_v3_s4_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 8 --seed 604
+p1_ant2_v3_s4_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 10 --seed 604
+p1_ant2_v3_s4_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 12 --seed 604
+p1_ant2_v3_s4_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 14 --seed 604
+p1_ant2_v3_s4_e16|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 16 --seed 604
+p1_ant2_v3_s4_e18|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 18 --seed 604
+p1_ant4_v3_s4_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 4 --seed 604
+p1_ant4_v3_s4_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 6 --seed 604
+p1_ant4_v3_s4_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 8 --seed 604
+p1_ant4_v3_s4_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 10 --seed 604
+p1_ant4_v3_s4_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 12 --seed 604
+p1_ant4_v3_s4_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 14 --seed 604
+p1_ant8_v3_s4_e0|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 0 --seed 604
+p1_ant8_v3_s4_e2|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 2 --seed 604
+p1_ant8_v3_s4_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 4 --seed 604
+p1_ant8_v3_s4_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 6 --seed 604
+p1_ant8_v3_s4_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 8 --seed 604
+p1_ant8_v3_s4_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 10 --seed 604
+n5_umi_v3_s5_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 505
+n5_umi_v3_s5_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 505
+n5_umi_v3_s5_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 505
+n5_umi_v3_s5_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 505
+p1_ant2_v3_s5_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 8 --seed 605
+p1_ant2_v3_s5_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 10 --seed 605
+p1_ant2_v3_s5_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 12 --seed 605
+p1_ant2_v3_s5_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 14 --seed 605
+p1_ant2_v3_s5_e16|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 16 --seed 605
+p1_ant2_v3_s5_e18|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 18 --seed 605
+p1_ant4_v3_s5_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 4 --seed 605
+p1_ant4_v3_s5_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 6 --seed 605
+p1_ant4_v3_s5_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 8 --seed 605
+p1_ant4_v3_s5_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 10 --seed 605
+p1_ant4_v3_s5_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 12 --seed 605
+p1_ant4_v3_s5_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 14 --seed 605
+p1_ant8_v3_s5_e0|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 0 --seed 605
+p1_ant8_v3_s5_e2|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 2 --seed 605
+p1_ant8_v3_s5_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 4 --seed 605
+p1_ant8_v3_s5_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 6 --seed 605
+p1_ant8_v3_s5_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 8 --seed 605
+p1_ant8_v3_s5_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 10 --seed 605
+n5_umi_v3_s6_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 506
+n5_umi_v3_s6_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 506
+n5_umi_v3_s6_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 506
+n5_umi_v3_s6_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 506
+p1_ant2_v3_s6_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 8 --seed 606
+p1_ant2_v3_s6_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 10 --seed 606
+p1_ant2_v3_s6_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 12 --seed 606
+p1_ant2_v3_s6_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 14 --seed 606
+p1_ant2_v3_s6_e16|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 16 --seed 606
+p1_ant2_v3_s6_e18|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 18 --seed 606
+p1_ant4_v3_s6_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 4 --seed 606
+p1_ant4_v3_s6_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 6 --seed 606
+p1_ant4_v3_s6_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 8 --seed 606
+p1_ant4_v3_s6_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 10 --seed 606
+p1_ant4_v3_s6_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 12 --seed 606
+p1_ant4_v3_s6_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 14 --seed 606
+p1_ant8_v3_s6_e0|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 0 --seed 606
+p1_ant8_v3_s6_e2|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 2 --seed 606
+p1_ant8_v3_s6_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 4 --seed 606
+p1_ant8_v3_s6_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 6 --seed 606
+p1_ant8_v3_s6_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 8 --seed 606
+p1_ant8_v3_s6_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 10 --seed 606
+n5_umi_v3_s7_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 507
+n5_umi_v3_s7_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 507
+n5_umi_v3_s7_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 507
+n5_umi_v3_s7_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 507
+p1_ant2_v3_s7_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 8 --seed 607
+p1_ant2_v3_s7_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 10 --seed 607
+p1_ant2_v3_s7_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 12 --seed 607
+p1_ant2_v3_s7_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 14 --seed 607
+p1_ant2_v3_s7_e16|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 16 --seed 607
+p1_ant2_v3_s7_e18|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 18 --seed 607
+p1_ant4_v3_s7_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 4 --seed 607
+p1_ant4_v3_s7_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 6 --seed 607
+p1_ant4_v3_s7_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 8 --seed 607
+p1_ant4_v3_s7_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 10 --seed 607
+p1_ant4_v3_s7_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 12 --seed 607
+p1_ant4_v3_s7_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 14 --seed 607
+p1_ant8_v3_s7_e0|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 0 --seed 607
+p1_ant8_v3_s7_e2|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 2 --seed 607
+p1_ant8_v3_s7_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 4 --seed 607
+p1_ant8_v3_s7_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 6 --seed 607
+p1_ant8_v3_s7_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 8 --seed 607
+p1_ant8_v3_s7_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 10 --seed 607
+n5_umi_v3_s8_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 508
+n5_umi_v3_s8_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 508
+n5_umi_v3_s8_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 508
+n5_umi_v3_s8_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 508
+p1_ant2_v3_s8_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 8 --seed 608
+p1_ant2_v3_s8_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 10 --seed 608
+p1_ant2_v3_s8_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 12 --seed 608
+p1_ant2_v3_s8_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 14 --seed 608
+p1_ant2_v3_s8_e16|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 16 --seed 608
+p1_ant2_v3_s8_e18|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 18 --seed 608
+p1_ant4_v3_s8_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 4 --seed 608
+p1_ant4_v3_s8_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 6 --seed 608
+p1_ant4_v3_s8_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 8 --seed 608
+p1_ant4_v3_s8_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 10 --seed 608
+p1_ant4_v3_s8_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 12 --seed 608
+p1_ant4_v3_s8_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 14 --seed 608
+p1_ant8_v3_s8_e0|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 0 --seed 608
+p1_ant8_v3_s8_e2|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 2 --seed 608
+p1_ant8_v3_s8_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 4 --seed 608
+p1_ant8_v3_s8_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 6 --seed 608
+p1_ant8_v3_s8_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 8 --seed 608
+p1_ant8_v3_s8_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 10 --seed 608
+n5_umi_v3_s9_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 509
+n5_umi_v3_s9_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 509
+n5_umi_v3_s9_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 509
+n5_umi_v3_s9_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 509
+p1_ant2_v3_s9_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 8 --seed 609
+p1_ant2_v3_s9_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 10 --seed 609
+p1_ant2_v3_s9_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 12 --seed 609
+p1_ant2_v3_s9_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 14 --seed 609
+p1_ant2_v3_s9_e16|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 16 --seed 609
+p1_ant2_v3_s9_e18|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 18 --seed 609
+p1_ant4_v3_s9_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 4 --seed 609
+p1_ant4_v3_s9_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 6 --seed 609
+p1_ant4_v3_s9_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 8 --seed 609
+p1_ant4_v3_s9_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 10 --seed 609
+p1_ant4_v3_s9_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 12 --seed 609
+p1_ant4_v3_s9_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 14 --seed 609
+p1_ant8_v3_s9_e0|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 0 --seed 609
+p1_ant8_v3_s9_e2|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 2 --seed 609
+p1_ant8_v3_s9_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 4 --seed 609
+p1_ant8_v3_s9_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 6 --seed 609
+p1_ant8_v3_s9_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 8 --seed 609
+p1_ant8_v3_s9_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 10 --seed 609
+n5_umi_v3_s10_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 510
+n5_umi_v3_s10_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 510
+n5_umi_v3_s10_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 510
+n5_umi_v3_s10_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 510
+p1_ant2_v3_s10_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 8 --seed 610
+p1_ant2_v3_s10_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 10 --seed 610
+p1_ant2_v3_s10_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 12 --seed 610
+p1_ant2_v3_s10_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 14 --seed 610
+p1_ant2_v3_s10_e16|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 16 --seed 610
+p1_ant2_v3_s10_e18|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 18 --seed 610
+p1_ant4_v3_s10_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 4 --seed 610
+p1_ant4_v3_s10_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 6 --seed 610
+p1_ant4_v3_s10_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 8 --seed 610
+p1_ant4_v3_s10_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 10 --seed 610
+p1_ant4_v3_s10_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 12 --seed 610
+p1_ant4_v3_s10_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 14 --seed 610
+p1_ant8_v3_s10_e0|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 0 --seed 610
+p1_ant8_v3_s10_e2|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 2 --seed 610
+p1_ant8_v3_s10_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 4 --seed 610
+p1_ant8_v3_s10_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 6 --seed 610
+p1_ant8_v3_s10_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 8 --seed 610
+p1_ant8_v3_s10_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 10 --seed 610
+n5_umi_v3_s11_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 511
+n5_umi_v3_s11_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 511
+n5_umi_v3_s11_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 511
+n5_umi_v3_s11_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 511
+p1_ant2_v3_s11_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 8 --seed 611
+p1_ant2_v3_s11_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 10 --seed 611
+p1_ant2_v3_s11_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 12 --seed 611
+p1_ant2_v3_s11_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 14 --seed 611
+p1_ant2_v3_s11_e16|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 16 --seed 611
+p1_ant2_v3_s11_e18|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 18 --seed 611
+p1_ant4_v3_s11_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 4 --seed 611
+p1_ant4_v3_s11_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 6 --seed 611
+p1_ant4_v3_s11_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 8 --seed 611
+p1_ant4_v3_s11_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 10 --seed 611
+p1_ant4_v3_s11_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 12 --seed 611
+p1_ant4_v3_s11_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 14 --seed 611
+p1_ant8_v3_s11_e0|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 0 --seed 611
+p1_ant8_v3_s11_e2|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 2 --seed 611
+p1_ant8_v3_s11_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 4 --seed 611
+p1_ant8_v3_s11_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 6 --seed 611
+p1_ant8_v3_s11_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 8 --seed 611
+p1_ant8_v3_s11_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 10 --seed 611
+n5_umi_v3_s12_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 512
+n5_umi_v3_s12_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 512
+n5_umi_v3_s12_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 512
+n5_umi_v3_s12_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 512
+p1_ant2_v3_s12_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 8 --seed 612
+p1_ant2_v3_s12_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 10 --seed 612
+p1_ant2_v3_s12_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 12 --seed 612
+p1_ant2_v3_s12_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 14 --seed 612
+p1_ant2_v3_s12_e16|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 16 --seed 612
+p1_ant2_v3_s12_e18|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 18 --seed 612
+p1_ant4_v3_s12_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 4 --seed 612
+p1_ant4_v3_s12_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 6 --seed 612
+p1_ant4_v3_s12_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 8 --seed 612
+p1_ant4_v3_s12_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 10 --seed 612
+p1_ant4_v3_s12_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 12 --seed 612
+p1_ant4_v3_s12_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 14 --seed 612
+p1_ant8_v3_s12_e0|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 0 --seed 612
+p1_ant8_v3_s12_e2|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 2 --seed 612
+p1_ant8_v3_s12_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 4 --seed 612
+p1_ant8_v3_s12_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 6 --seed 612
+p1_ant8_v3_s12_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 8 --seed 612
+p1_ant8_v3_s12_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 10 --seed 612
+n5_umi_v3_s13_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 513
+n5_umi_v3_s13_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 513
+n5_umi_v3_s13_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 513
+n5_umi_v3_s13_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 513
+p1_ant2_v3_s13_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 8 --seed 613
+p1_ant2_v3_s13_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 10 --seed 613
+p1_ant2_v3_s13_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 12 --seed 613
+p1_ant2_v3_s13_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 14 --seed 613
+p1_ant2_v3_s13_e16|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 16 --seed 613
+p1_ant2_v3_s13_e18|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 18 --seed 613
+p1_ant4_v3_s13_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 4 --seed 613
+p1_ant4_v3_s13_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 6 --seed 613
+p1_ant4_v3_s13_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 8 --seed 613
+p1_ant4_v3_s13_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 10 --seed 613
+p1_ant4_v3_s13_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 12 --seed 613
+p1_ant4_v3_s13_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 14 --seed 613
+p1_ant8_v3_s13_e0|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 0 --seed 613
+p1_ant8_v3_s13_e2|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 2 --seed 613
+p1_ant8_v3_s13_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 4 --seed 613
+p1_ant8_v3_s13_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 6 --seed 613
+p1_ant8_v3_s13_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 8 --seed 613
+p1_ant8_v3_s13_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 10 --seed 613
+n5_umi_v3_s14_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 514
+n5_umi_v3_s14_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 514
+n5_umi_v3_s14_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 514
+n5_umi_v3_s14_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 514
+p1_ant2_v3_s14_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 8 --seed 614
+p1_ant2_v3_s14_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 10 --seed 614
+p1_ant2_v3_s14_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 12 --seed 614
+p1_ant2_v3_s14_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 14 --seed 614
+p1_ant2_v3_s14_e16|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 16 --seed 614
+p1_ant2_v3_s14_e18|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 18 --seed 614
+p1_ant4_v3_s14_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 4 --seed 614
+p1_ant4_v3_s14_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 6 --seed 614
+p1_ant4_v3_s14_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 8 --seed 614
+p1_ant4_v3_s14_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 10 --seed 614
+p1_ant4_v3_s14_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 12 --seed 614
+p1_ant4_v3_s14_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 14 --seed 614
+p1_ant8_v3_s14_e0|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 0 --seed 614
+p1_ant8_v3_s14_e2|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 2 --seed 614
+p1_ant8_v3_s14_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 4 --seed 614
+p1_ant8_v3_s14_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 6 --seed 614
+p1_ant8_v3_s14_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 8 --seed 614
+p1_ant8_v3_s14_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 10 --seed 614
+n5_umi_v3_s15_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 515
+n5_umi_v3_s15_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 515
+n5_umi_v3_s15_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 515
+n5_umi_v3_s15_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 515
+p1_ant2_v3_s15_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 8 --seed 615
+p1_ant2_v3_s15_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 10 --seed 615
+p1_ant2_v3_s15_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 12 --seed 615
+p1_ant2_v3_s15_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 14 --seed 615
+p1_ant2_v3_s15_e16|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 16 --seed 615
+p1_ant2_v3_s15_e18|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 2 --ebno 18 --seed 615
+p1_ant4_v3_s15_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 4 --seed 615
+p1_ant4_v3_s15_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 6 --seed 615
+p1_ant4_v3_s15_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 8 --seed 615
+p1_ant4_v3_s15_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 10 --seed 615
+p1_ant4_v3_s15_e12|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 12 --seed 615
+p1_ant4_v3_s15_e14|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 4 --ebno 14 --seed 615
+p1_ant8_v3_s15_e0|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 0 --seed 615
+p1_ant8_v3_s15_e2|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 2 --seed 615
+p1_ant8_v3_s15_e4|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 4 --seed 615
+p1_ant8_v3_s15_e6|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 6 --seed 615
+p1_ant8_v3_s15_e8|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 8 --seed 615
+p1_ant8_v3_s15_e10|none|--systems baseline_lslin_lmmse,baseline_perf_csi_kbest --slots 64 --batch 8 --num-rx 8 --ebno 10 --seed 615
+n5_umi_v3_s16_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 516
+n5_umi_v3_s16_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 516
+n5_umi_v3_s16_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 516
+n5_umi_v3_s16_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 516
+n5_umi_v3_s17_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 517
+n5_umi_v3_s17_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 517
+n5_umi_v3_s17_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 517
+n5_umi_v3_s17_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 517
+n5_umi_v3_s18_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 518
+n5_umi_v3_s18_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 518
+n5_umi_v3_s18_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 518
+n5_umi_v3_s18_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 518
+n5_umi_v3_s19_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 519
+n5_umi_v3_s19_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 519
+n5_umi_v3_s19_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 519
+n5_umi_v3_s19_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 519
+n5_umi_v3_s20_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 520
+n5_umi_v3_s20_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 520
+n5_umi_v3_s20_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 520
+n5_umi_v3_s20_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 520
+n5_umi_v3_s21_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 521
+n5_umi_v3_s21_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 521
+n5_umi_v3_s21_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 521
+n5_umi_v3_s21_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 521
+n5_umi_v3_s22_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 522
+n5_umi_v3_s22_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 522
+n5_umi_v3_s22_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 522
+n5_umi_v3_s22_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 522
+n5_umi_v3_s23_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 523
+n5_umi_v3_s23_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 523
+n5_umi_v3_s23_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 523
+n5_umi_v3_s23_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 523
+n5_umi_v3_s24_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 524
+n5_umi_v3_s24_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 524
+n5_umi_v3_s24_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 524
+n5_umi_v3_s24_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 524
+n5_umi_v3_s25_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 525
+n5_umi_v3_s25_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 525
+n5_umi_v3_s25_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 525
+n5_umi_v3_s25_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 525
+n5_umi_v3_s26_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 526
+n5_umi_v3_s26_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 526
+n5_umi_v3_s26_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 526
+n5_umi_v3_s26_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 526
+n5_umi_v3_s27_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 527
+n5_umi_v3_s27_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 527
+n5_umi_v3_s27_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 527
+n5_umi_v3_s27_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 527
+n5_umi_v3_s28_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 528
+n5_umi_v3_s28_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 528
+n5_umi_v3_s28_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 528
+n5_umi_v3_s28_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 528
+n5_umi_v3_s29_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 529
+n5_umi_v3_s29_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 529
+n5_umi_v3_s29_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 529
+n5_umi_v3_s29_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 529
+n5_umi_v3_s30_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 530
+n5_umi_v3_s30_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 530
+n5_umi_v3_s30_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 530
+n5_umi_v3_s30_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 530
+n5_umi_v3_s31_e6|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 6 --seed 531
+n5_umi_v3_s31_e8|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 8 --seed 531
+n5_umi_v3_s31_e10|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 10 --seed 531
+n5_umi_v3_s31_e12|n5|--systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --slots 64 --batch 4 --ebno 12 --seed 531

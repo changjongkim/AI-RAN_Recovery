@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# Side pool: while the N4 training uses GPU 0, GPUs 1-3 work through queue_b/side_items (exp/side_items.py) until
+# MINUTES have passed; every item is one classical_rx.py run with its own output, so a run cut by the deadline is
+# simply done again by the next pool.  The first GPU first runs the N5 smoke test and the LMMSE covariance matrices;
+# N5 items wait for both.  Merge with exp/side_merge.sh.
+# usage: bash exp/side_pool.sh MINUTES ["GPUS"]        results: results/side/<item>.json/.npz/.log, results/side/pool.log
+set -uo pipefail
+source /pscratch/sd/s/sgkim/kcj/airan_recovery/env.sh
+minutes=$1; gpus=(${2:-1 2 3})
+deadline=$(( $(date +%s) + minutes * 60 ))
+S=$RESULTS/side; mkdir -p $S
+items=$REC/queue_b/side_items
+[ -s $items ] || python3 $REC/exp/side_items.py > $items
+rm -rf $S/*.claim                       # one pool at a time: claims left by a killed pool are stale
+cov=$NRX_REPO/weights/nrx_large_freq_cov_mat.npy
+smoke_ok() { grep -q "N5_SMOKE pass" $S/n5_smoke.log 2>/dev/null; }
+log() { echo "$(date '+%F %T') $*" >> $S/pool.log; }
+tf() { local s=$1; shift; timeout -k 30 $s bash -c 'source /pscratch/sd/s/sgkim/kcj/airan_recovery/env.sh; tfgen "$@"' _ "$@"; }   # timeout cannot run a shell function
+
+prep() {
+  local g=$1
+  if ! smoke_ok; then
+    GPUS=$g timeout -k 30 $(( deadline - $(date +%s) )) bash $REC/exp/n5_smoke.sh > $S/n5_smoke.log 2>&1
+    log "GPU $g n5 smoke: $(grep N5_SMOKE $S/n5_smoke.log || echo 'no verdict')"
+  fi
+  if smoke_ok && [ ! -f $cov ]; then
+    (cd $NRX_REPO/scripts && tf $(( deadline - $(date +%s) )) python3 compute_cov_mat.py -config_name nrx_large.cfg -num_samples 100000 -gpu $g) > $S/cov.log 2>&1
+    log "GPU $g covariance matrices: $([ -f $cov ] && echo done || echo 'not done')"
+  fi
+}
+
+worker() {
+  local g=$1 name needs opts pick left rc
+  [ "$g" = "${gpus[0]}" ] && prep $g
+  while true; do
+    left=$(( deadline - $(date +%s) )); [ $left -gt 180 ] || return 0
+    pick=""
+    while IFS='|' read -r name needs opts; do
+      [ -s $S/$name.json ] && continue
+      if [ "$needs" = n5 ]; then smoke_ok && [ -f $cov ] || continue; fi
+      mkdir $S/$name.claim 2>/dev/null || continue
+      pick=$name; break
+    done < $items
+    [ -z "$pick" ] && { log "GPU $g: nothing left that can run"; return 0; }
+    tf $left python3 $REC/src/classical_rx.py --nrx-repo $NRX_REPO --gpu $g $opts \
+        --output $S/$pick.json > $S/$pick.log 2>&1
+    rc=$?
+    [ $rc -eq 0 ] || rm -f $S/$pick.json $S/$pick.npz
+    rmdir $S/$pick.claim
+    log "GPU $g $pick rc=$rc"
+  done
+}
+
+log "pool start: $minutes min on GPUs ${gpus[*]}"
+pids=()
+for g in "${gpus[@]}"; do worker $g & pids+=($!); done
+for p in "${pids[@]}"; do wait $p; done
+log "pool end: $(ls $S/*.json 2>/dev/null | grep -c . ) items done of $(grep -c . $items)"

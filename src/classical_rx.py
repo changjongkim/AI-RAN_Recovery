@@ -9,6 +9,9 @@ receivers see identical slots.  Receivers (NVlabs names):
   baseline_lmmse_kbest     LMMSE channel estimate, K-best detection (K = 64)              (needs covariance matrices)
   baseline_perf_csi_kbest  perfect channel knowledge, K-best detection                     (a bound)
   nrx / nrx_rt             the large / real-time neural receiver (TensorFlow weights of the NVlabs repository)
+  lslin_idd<k>             the conventional channel estimate with iterative detection and decoding, k rounds of
+                           decoder feedback to an MMSE-PIC detector (src/idd.py); lslin_idd0 is the LMMSE receiver
+  <system>@<n>             that system with n BP iterations instead of --bp-iter (e.g. baseline_lslin_lmmse@50)
 Decoding is Sionna's TBDecoder for all (the same number of BP iterations).  Outputs per slot and user whether the block
 decoded with the right bits, the GPU time per batch of each receiver, and the similarity of the two users' channels.
 usage: classical_rx.py --nrx-repo DIR --systems baseline_lslin_lmmse,baseline_lmmse_kbest,nrx --ebno 6,8,10,12
@@ -58,20 +61,20 @@ tf.random.set_seed(args.seed)
 from utils import E2E_Model, Parameters, load_weights   # noqa: E402
 
 
-def make_config(base: str) -> tuple[str, str]:
+def make_config(base: str, bp_iter: int) -> tuple[str, str]:
     text = (Path("../config") / base).read_text()
     label = re.search(r"label\s*=\s*'([^']+)'", text).group(1)
     subs = [(r"(?m)^channel_type_eval\s*=.*", f'channel_type_eval = "{args.channel}"'),
             (r"max_ut_velocity_eval\s*=.*", f"max_ut_velocity_eval = {args.speed}"),
             (r"min_ut_velocity_eval\s*=.*", f"min_ut_velocity_eval = {args.speed}"),
             (r"(?m)^mcs_index\s*=.*", f"mcs_index = [{args.mcs}]"),
-            (r"(?m)^num_bp_iter\s*=.*", f"num_bp_iter = {args.bp_iter}")]
+            (r"(?m)^num_bp_iter\s*=.*", f"num_bp_iter = {bp_iter}")]
     if args.num_rx:
         subs.append((r"(?m)^num_rx_antennas\s*=.*", f"num_rx_antennas = {args.num_rx}"))
     for pattern, value in subs:
         text, n = re.subn(pattern, value, text)
         assert n >= 1 or "num_bp_iter" in pattern, pattern
-    name = f"cls_{label}_{args.channel}_v{args.speed:g}_m{args.mcs}_r{args.num_rx or 4}_p{os.getpid()}.cfg"
+    name = f"cls_{label}_{args.channel}_v{args.speed:g}_m{args.mcs}_r{args.num_rx or 4}_bp{bp_iter}_p{os.getpid()}.cfg"
     tmp = Path("../config") / (name + ".tmp")
     tmp.write_text(text)
     tmp.rename(Path("../config") / name)
@@ -81,14 +84,23 @@ def make_config(base: str) -> tuple[str, str]:
 systems = args.systems.split(",")
 models, record = {}, {}
 for s in systems:
-    base = args.rt_config if s == "nrx_rt" else args.base_config
-    cfg, label = make_config(base)
-    params = Parameters(cfg, training=False, system="nrx" if s.startswith("nrx") else s, num_tx_eval=args.users)
+    kind, _, iters = s.partition("@")
+    bp = int(iters) if iters else args.bp_iter
+    idd = kind.startswith("lslin_idd")
+    system = "baseline_lslin_lmmse" if idd else ("nrx" if kind.startswith("nrx") else kind)
+    base = args.rt_config if kind == "nrx_rt" else args.base_config
+    cfg, label = make_config(base, bp)
+    params = Parameters(cfg, training=False, system=system, num_tx_eval=args.users)
     model = E2E_Model(params, training=False, return_tb_status=True)
     model(1, 10.0)
-    if s.startswith("nrx"):
+    if kind.startswith("nrx"):
         load_weights(model, f"../weights/{label}_weights")
         model._receiver._neural_rx.num_it = params.num_nrx_iter_eval
+    if idd:
+        from idd import IddPusch
+        model._receiver._receiver = IddPusch(model._receiver._receiver, int(kind[len("lslin_idd"):]), bp,
+                                             params.transmitters[0]._num_bits_per_symbol, params.cn_type)
+        model(1, 10.0)
     models[s] = model
 
 first = systems[0]

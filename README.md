@@ -38,10 +38,10 @@
 |---|---|---|---|
 | N1·N2 | IR HARQ(RV 0·2·3·1, 최대 4회), 시간에 따라 변하는 3GPP 채널, 조건당 블록 2만 개 | `src/gen_harq.py`, `src/decode_harq.py`, `src/harq_stats.py`, `exp/harq_ir.sh` | UMi 3 km/h 끝남(2026-10-15, `results/n1_umi_v3.json`, 블록 20,480개): 첫 실패 10.3%, 복구가 실패의 22.8%를 재전송 없이 끝냄, 100블록당 재전송 17.5 → 13.2(0.75배; 복구만 0.86배), 4회 뒤 실패 2.21 → 1.48%(0.67배); 작은 NRx를 모든 블록에 쓰면 재전송 16.8. 상관 0.4 미만/0.4–0.6/0.6 이상(블록 35/50/16%)에서 복구 비율 14/27/29%; 같은 상관 구간 안에서는 약한 사용자(채널 이득 하위 25%)와 나머지의 복구 비율이 같음(13.7/14.0, 27.1/27.1, 27.7/29.9%) → 복구 비율은 사용자 이득이 아니라 두 사용자의 상관을 따름. 상관 0.4 미만의 첫 실패가 높은 것은 그 구간에 약한 사용자가 많기 때문(실패의 55%). 30·60 km/h 진행 중 |
 | N1b | 재전송은 혼자 보냄(짝 사용자 끔): 같은 짝과 다시 보내는 N1이 HARQ를 불리하게 두는지 확인. 첫 전송은 N1과 같고(같은 시드면 비트까지 같음), 재전송은 1명 설정의 기존 수신기와 사용자 1을 가린 NRx로 받음, 사용자 0의 블록만 셈 | `gen_harq.py --retx-alone`, `exp/retx_alone_smoke.sh` | 큐에 있음(30 km/h 뒤 smoke, 60 km/h 뒤 본 실행) |
-| P1 | 상관 조건(가시선, 속도, 채널 모델) × 수신 안테나 2/4/8 | `exp/harq_ir.sh` 옵션(4 RX), 안테나 수는 TF 파이프라인 | 4 RX 조건은 queue, 안테나 2/4/8은 queue_b(N4 학습 중 남는 GPU 3장) |
+| P1 | 상관 조건(가시선, 속도, 채널 모델) × 수신 안테나 2/4/8 | `exp/harq_ir.sh` 옵션(4 RX), 안테나 수는 TF 파이프라인 | 4 RX 조건은 queue. 안테나 2/4/8은 queue_b 부수 작업 묶음(`exp/side_pool.sh`): 기존 수신기와 완전 CSI+K-best, Eb/No 격자를 배열 이득만큼 옮김(2 RX 8–18, 4 RX 4–14, 8 RX 0–10 dB), 시드 16 × 64슬롯 |
 | P2 | 사용자 배치(UMi·UMa, 4–32명)에서 무작위 쌍 대 가장 잘 갈리는 쌍 × 복구 유무 | `src/pair_drops.py`, `src/sim/pairing.py` | 큐에 있음 |
 | N3 | 채널 묶음(UMi, UMa, 가시선/비가시선, 시속 3–120 km) | `exp/harq_ir.sh` 옵션 | 큐에 있음(smoke 뒤) |
-| N5 | 고전 강한 수신기(LMMSE+K-best, 완전한 채널 정보+K-best)와 NRx를 같은 슬롯에 (NVlabs 기준 수신기) | `src/classical_rx.py`, `exp/classical.sh` | queue_b에서 N4 학습 2단계와 함께(공분산 계산 뒤) |
+| N5 | 같은 슬롯에서 실패 블록을 다시 풀 수 있는 다른 방법: 기존 수신기 + LDPC 50회, 반복 검출–복호(IDD: MMSE-PIC, 복호기 외부 정보 3회), LMMSE 추정 + K-best, 완전한 채널 정보 + K-best(상한), 큰/작은 NRx | `src/classical_rx.py`, `src/idd.py`, `exp/n5_smoke.sh` | queue_b 부수 작업 묶음: smoke(IDD 0회 = LMMSE, 3회·LDPC 50회가 더 나쁘지 않음) 통과 뒤, 시드 32 × 64슬롯 × Eb/No 4점 = 8,192슬롯 목표 |
 | N6 | OLLA 닫힌 루프 + IR HARQ + 복구 (MCS 10–16이 같은 채널 실현 공유) | `exp/harq_mcs.sh`, `src/sim/olla.py` | 큐에 있음 |
 | N7 | HARQ 결합 방식(기다림·병렬·선택)의 지연 분포 | `src/sim/harq_latency.py` | 코드 완료(합성 기록으로 시험), N1 뒤 큐에 있음 |
 | N8 | 셀당 사용자 1–4명: (a) 기존 수신기의 실패와 상관(런타임 cuPHY), (b) 3–4명 복구: 기존 수신기 대 미세 조정 NRx(NVlabs 파이프라인) | `exp/users.sh`, `exp/classical.sh --users` | (a) queue, (b) queue_b(N4 뒤) |
@@ -50,7 +50,7 @@
 
 ## 5. 실행
 
-- 큐 둘: `queue/`(노드 1: N1–N3, N6–N9, P1의 4 RX 조건, P2)와 `queue_b/`(노드 2: N4 학습은 GPU 0, 같은 시간에 GPU 1–3에서 N5·P1 안테나; 그 뒤 N4 평가, N8b). 각 실행기가 interactive 노드를 스스로 잡고, 4시간 할당이 끝나면 다시 잡는다. `bash queue/watchdog.sh start`가 10분마다 두 실행기를 확인해 죽었으면 다시 띄운다(`queue/watchdog.log`). 멈추려면 그 큐에 `STOP` 파일. 단계는 `todo`, 끝난 단계는 `done`, 기록은 `runner.log`, 단계별 출력은 `logs/`.
+- 큐 둘: `queue/`(노드 1: N1–N3, N6–N9, P1의 4 RX 조건, P2)와 `queue_b/`(노드 2: N4 학습은 GPU 0, 같은 시간에 GPU 1–3이 부수 작업 묶음 `queue_b/side_items`를 학습 단계마다 100분씩 처리 — 작업 하나는 Eb/No 한 점·시드 하나·64슬롯이라 끊겨도 다음 단계가 다시 함; 그 뒤 합치기, N4 평가, N8b, 남은 부수 작업). 각 실행기가 interactive 노드를 스스로 잡고, 4시간 할당이 끝나면 다시 잡는다. `bash queue/watchdog.sh start`가 10분마다 두 실행기를 확인해 죽었으면 다시 띄운다(`queue/watchdog.log`). 멈추려면 그 큐에 `STOP` 파일. 단계는 `todo`, 끝난 단계는 `done`, 기록은 `runner.log`, 단계별 출력은 `logs/`.
 - 한 조건: `bash exp/harq_ir.sh NAME CHUNKS --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64` (GPU 네 장에서 묶음을 병렬로, 결과 `results/NAME.json`·`.txt`).
 
 ## 6. 디렉터리
