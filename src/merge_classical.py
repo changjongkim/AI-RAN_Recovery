@@ -13,7 +13,12 @@ import numpy as np
 BINS = ((0.0, 0.4), (0.4, 0.6), (0.6, 1.01))
 
 
-def merge(files):
+def merge(files, prbs=273):
+    """Runs of another bandwidth (before 2026-10-15 04:00 classical_rx ran at the config's 132 PRBs) are left out."""
+    keep = [f for f in files if json.load(open(f[:-4] + ".json")).get("prbs") == prbs]
+    if len(keep) < len(files):
+        print("left out %d runs that are not at %d PRBs" % (len(files) - len(keep), prbs))
+    files = keep
     d = [np.load(f) for f in files]
     rep = [json.load(open(f[:-4] + ".json")) for f in files]
     systems = rep[0]["systems"]

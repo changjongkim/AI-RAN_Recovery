@@ -36,7 +36,7 @@ worker() {
     left=$(( deadline - $(date +%s) )); [ $left -gt 180 ] || return 0
     pick=""
     while IFS='|' read -r name needs opts; do
-      [ -s $S/$name.json ] && continue
+      grep -q '"prbs": 273' $S/$name.json 2>/dev/null && continue       # done (runs at 132 PRBs are redone)
       [ "$(cat $S/$name.fails 2>/dev/null || echo 0)" -ge 2 ] && continue     # failed twice: leave it, see <item>.err
       if [ "$needs" = n5 ]; then smoke_ok && [ -f $cov ] || continue; fi
       mkdir $S/$name.claim 2>/dev/null || continue

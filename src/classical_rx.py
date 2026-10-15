@@ -32,6 +32,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--nrx-repo", type=Path, required=True)
 parser.add_argument("--base-config", default="nrx_large.cfg")
 parser.add_argument("--rt-config", default="nrx_rt.cfg")
+parser.add_argument("--prbs", type=int, default=273, help="bandwidth in PRBs (273 as in N1 and the runtime receivers)")
 parser.add_argument("--systems", default="baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt")
 parser.add_argument("--channel", default="UMi")
 parser.add_argument("--speed", type=float, default=0.83)
@@ -68,6 +69,7 @@ def make_config(base: str, bp_iter: int) -> tuple[str, str]:
             (r"max_ut_velocity_eval\s*=.*", f"max_ut_velocity_eval = {args.speed}"),
             (r"min_ut_velocity_eval\s*=.*", f"min_ut_velocity_eval = {args.speed}"),
             (r"(?m)^mcs_index\s*=.*", f"mcs_index = [{args.mcs}]"),
+            (r"n_size_bwp_eval\s*=.*", f"n_size_bwp_eval = {args.prbs}"),
             (r"(?m)^num_bp_iter\s*=.*", f"num_bp_iter = {bp_iter}")]
     if args.num_rx:
         subs.append((r"(?m)^num_rx_antennas\s*=.*", f"num_rx_antennas = {args.num_rx}"))
@@ -82,6 +84,7 @@ def make_config(base: str, bp_iter: int) -> tuple[str, str]:
 
 
 systems = args.systems.split(",")
+assert args.slots % args.batch == 0, "slots must be a multiple of the batch (fixed-batch LMMSE estimator)"
 models, record = {}, {}
 for s in systems:
     kind, _, iters = s.partition("@")
@@ -91,8 +94,9 @@ for s in systems:
     base = args.rt_config if kind == "nrx_rt" else args.base_config
     cfg, label = make_config(base, bp)
     params = Parameters(cfg, training=False, system=system, num_tx_eval=args.users)
+    params.batch_size_eval_small = args.batch      # the NVlabs low-complexity LMMSE estimator fixes the batch to this
     model = E2E_Model(params, training=False, return_tb_status=True)
-    model(1, 10.0)
+    model(args.batch, 10.0)
     if kind.startswith("nrx"):
         load_weights(model, f"../weights/{label}_weights")
         model._receiver._neural_rx.num_it = params.num_nrx_iter_eval
@@ -100,7 +104,7 @@ for s in systems:
         from idd import IddPusch
         model._receiver._receiver = IddPusch(model._receiver._receiver, int(kind[len("lslin_idd"):]), bp,
                                              params.transmitters[0]._num_bits_per_symbol, params.cn_type)
-        model(1, 10.0)
+        model(args.batch, 10.0)
     models[s] = model
 
 first = systems[0]
@@ -164,7 +168,7 @@ args.output.parent.mkdir(parents=True, exist_ok=True)
 np.savez(args.output.with_suffix(".npz"), point=np.asarray(points, np.float32), corr=np.concatenate(corr),
          **{f"ok_{s}": v for s, v in good.items()})
 conv = good[systems[0]]
-report = {"systems": systems, "users": args.users, "base_config": args.base_config, "channel": args.channel, "speed": args.speed, "num_rx": args.num_rx or 4, "mcs": args.mcs,
+report = {"systems": systems, "prbs": args.prbs, "users": args.users, "base_config": args.base_config, "channel": args.channel, "speed": args.speed, "num_rx": args.num_rx or 4, "mcs": args.mcs,
           "slots": int(conv.shape[0]), "seconds_per_slot": {s: seconds[s] / conv.shape[0] for s in systems},
           "decoded_pct": {s: 100.0 * good[s].mean() for s in systems},
           "recovers_pct_of_conventional_failures": {s: 100.0 * (good[s] & ~conv).sum() / max(1, (~conv).sum())
