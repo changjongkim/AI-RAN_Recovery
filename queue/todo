@@ -1,0 +1,2 @@
+# kind|name|minutes|command   (see queue/runner.sh)
+N|smoke|30|bash exp/smoke.sh

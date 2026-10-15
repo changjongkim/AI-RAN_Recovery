@@ -1,0 +1,10 @@
+data/
+logs/
+queue/lock
+queue/current_job
+queue/jobs
+queue/*.log
+results/**/*.npz
+__pycache__/
+*.pyc
+third_party/
