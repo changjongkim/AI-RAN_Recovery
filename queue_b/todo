@@ -30,3 +30,7 @@ N|n4b_train8|150|grep -qP "^n4b_train1\t0\t" queue_b/done || exit 1; bash exp/n4
 N|n4b_cov|20|source env.sh && cd third_party/neural_rx/scripts && tfgen python3 compute_cov_mat.py -config_name nrx_large_8rx.cfg -num_samples 100000 -gpu 0
 N|n4b_eval_widened|60|bash exp/classical.sh n4b_eval_widened --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --systems baseline_lslin_lmmse,nrx --nrx-weights /pscratch/sd/s/sgkim/kcj/airan_recovery/results/n4b/weights_widened --slots 32
 N|n4b_eval|150|bash exp/classical.sh n4b_eval --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --slots 128
+# Round 4: the 8-RX receiver on UMa (not trained there), and the 4-RX receiver on UMa against classical receivers is
+# N5 UMa on node 1
+N|n4b_eval_uma|150|bash exp/classical.sh n4b_eval_uma --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --channel UMa --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --slots 96
+N|n4b_eval_v30|150|bash exp/classical.sh n4b_eval_v30 --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --speed 8.33 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --slots 96

@@ -45,7 +45,7 @@ parser.add_argument("--rvs", default="0,2,3,1", help="redundancy version of each
 parser.add_argument("--gap-ms", type=float, default=7.5, help="time between transmissions")
 parser.add_argument("--drop-users", type=int, default=0,
                     help="drop this many users per slot and co-schedule user 0 with a partner chosen by --pairing")
-parser.add_argument("--pairing", choices=["random", "partner"], default="random",
+parser.add_argument("--pairing", choices=["random", "partner", "minrho"], default="random",
                     help="random: any other user; partner: the user j that maximizes (1 - rho_0j^2) * min(g_0, g_j), the weaker user's channel gain left after zero-forcing (the scheduler knows both from SRS/previous slots)")
 parser.add_argument("--retx-alone", action="store_true",
                     help="retransmissions of user 0 are sent alone (user 1 silent), as when the scheduler gives a "
@@ -217,7 +217,13 @@ def choose_pairs(a, tau):
     rho = (num / den).mean(axis=(2, 3))                                                          # [b, U]
     score = (1 - rho ** 2) * np.minimum(g[:, :1], g)
     score[:, 0] = -np.inf
-    j = np.argmax(score, axis=1) if args.pairing == "partner" else np.ones(len(g), dtype=int)
+    if args.pairing == "partner":
+        j = np.argmax(score, axis=1)
+    elif args.pairing == "minrho":          # the most separable partner whatever its gain
+        r = rho.copy(); r[:, 0] = np.inf
+        j = np.argmin(r, axis=1)
+    else:
+        j = np.ones(len(g), dtype=int)
     rank = (score > score[np.arange(len(g)), j][:, None]).sum(axis=1)                            # 0 = the best partner
     picked["rho"] += rho[np.arange(len(g)), j].tolist()
     picked["gain_db"] += (10 * np.log10(g[np.arange(len(g)), j] / g[:, 0] + 1e-30)).tolist()
