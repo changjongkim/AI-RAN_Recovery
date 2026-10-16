@@ -1,0 +1,167 @@
+{
+  "meta": {
+    "base_config": "nrx_large.cfg",
+    "label": "nrx_large",
+    "prbs": 273,
+    "num_tx": 4,
+    "channel": "UMi",
+    "num_rx_ant": 4,
+    "mcs_index": 14,
+    "mcs_table": 1,
+    "tb_size_bits": 83976,
+    "num_bits_per_symbol": 4,
+    "target_coderate": 0.5400390625,
+    "dmrs_ofdm_pos": [
+      [
+        2,
+        11
+      ],
+      [
+        2,
+        11
+      ],
+      [
+        2,
+        11
+      ],
+      [
+        2,
+        11
+      ]
+    ],
+    "dmrs_subcarrier_pos": [
+      [
+        0,
+        2,
+        4,
+        6,
+        8,
+        10
+      ],
+      [
+        1,
+        3,
+        5,
+        7,
+        9,
+        11
+      ],
+      [
+        0,
+        2,
+        4,
+        6,
+        8,
+        10
+      ],
+      [
+        1,
+        3,
+        5,
+        7,
+        9,
+        11
+      ]
+    ],
+    "dmrs_ports": [
+      0,
+      2,
+      1,
+      3
+    ],
+    "n_cell_id": 1,
+    "slot_number": 0,
+    "ebno_db": [
+      0.0,
+      2.0,
+      4.0,
+      6.0,
+      8.0,
+      10.0,
+      12.0
+    ],
+    "slots": 256,
+    "neural_receiver": null
+  },
+  "rows": [
+    {
+      "ebno_db": 0.0,
+      "tbs": 1024,
+      "conv": 143,
+      "nrx": 0,
+      "both": 0,
+      "conv_only": 143,
+      "nrx_only": 0,
+      "neither": 881,
+      "conv_crc_pass_wrong_payload": 0
+    },
+    {
+      "ebno_db": 2.0,
+      "tbs": 1024,
+      "conv": 257,
+      "nrx": 0,
+      "both": 0,
+      "conv_only": 257,
+      "nrx_only": 0,
+      "neither": 767,
+      "conv_crc_pass_wrong_payload": 0
+    },
+    {
+      "ebno_db": 4.0,
+      "tbs": 1024,
+      "conv": 350,
+      "nrx": 0,
+      "both": 0,
+      "conv_only": 350,
+      "nrx_only": 0,
+      "neither": 674,
+      "conv_crc_pass_wrong_payload": 0
+    },
+    {
+      "ebno_db": 6.0,
+      "tbs": 1024,
+      "conv": 492,
+      "nrx": 0,
+      "both": 0,
+      "conv_only": 492,
+      "nrx_only": 0,
+      "neither": 532,
+      "conv_crc_pass_wrong_payload": 0
+    },
+    {
+      "ebno_db": 8.0,
+      "tbs": 1024,
+      "conv": 613,
+      "nrx": 0,
+      "both": 0,
+      "conv_only": 613,
+      "nrx_only": 0,
+      "neither": 411,
+      "conv_crc_pass_wrong_payload": 0
+    },
+    {
+      "ebno_db": 10.0,
+      "tbs": 1024,
+      "conv": 724,
+      "nrx": 0,
+      "both": 0,
+      "conv_only": 724,
+      "nrx_only": 0,
+      "neither": 300,
+      "conv_crc_pass_wrong_payload": 0
+    },
+    {
+      "ebno_db": 12.0,
+      "tbs": 1024,
+      "conv": 764,
+      "nrx": 0,
+      "both": 0,
+      "conv_only": 764,
+      "nrx_only": 0,
+      "neither": 260,
+      "conv_crc_pass_wrong_payload": 0
+    }
+  ],
+  "conv_wall_ms_p50": 0.8174150025297422,
+  "nrx_tf_seconds_per_slot": 0.0
+}

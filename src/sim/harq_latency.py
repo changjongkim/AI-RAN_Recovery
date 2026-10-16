@@ -17,6 +17,7 @@ Policies:
   wait          recovery first; the grant follows the recovery result (or D if it does not succeed)
   parallel      the grant follows the conventional result as in harq_only, recovery runs at the same time; if
                 recovery succeeds first the block ends then, and the retransmission slot is spent anyway
+  select_*      wait for the candidates below; recovery still runs in parallel for the other failed blocks
   select_rho    wait only for blocks whose two users' channels are similar (similarity >= --rho, known before decoding
                 from the channel estimate: recovery succeeds 2x more often there, N1); others as harq_only
   select_oracle wait only for the blocks recovery will decode (a perfect predictor; a bound)
@@ -68,14 +69,15 @@ def simulate(conv_ok, rec_ok, steps_ok, candidate, policy, pattern, a):
         if conv_ok[i]:
             done[i] = a.l1
             continue
-        tries = policy in ("wait", "parallel") or (policy.startswith("select") and candidate[i])
+        tries = policy != "harq_only"
+        waits = policy == "wait" or (policy.startswith("select") and candidate[i])   # select: others run in parallel
         recovered = tries and rec_ok[i] and rec_time <= a.deadline
         if recovered:
             done[i] = rec_time
-            if policy == "wait" or policy.startswith("select"):
+            if waits:
                 continue
         # time at which the first retransmission grant is decided
-        decide = rec_time if (tries and policy != "parallel") else a.l1
+        decide = rec_time if waits else a.l1
         for k in range(1, total):
             if recovered and rec_time <= decide:
                 break                               # parallel: recovery ended the block before this grant

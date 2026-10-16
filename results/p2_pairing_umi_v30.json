@@ -1,0 +1,792 @@
+{
+  "traces": [
+    "results/n1_umi_v30/c0.npz",
+    "results/n1_umi_v30/c10.npz",
+    "results/n1_umi_v30/c11.npz",
+    "results/n1_umi_v30/c12.npz",
+    "results/n1_umi_v30/c13.npz",
+    "results/n1_umi_v30/c14.npz",
+    "results/n1_umi_v30/c15.npz",
+    "results/n1_umi_v30/c16.npz",
+    "results/n1_umi_v30/c17.npz",
+    "results/n1_umi_v30/c18.npz",
+    "results/n1_umi_v30/c19.npz",
+    "results/n1_umi_v30/c1.npz",
+    "results/n1_umi_v30/c20.npz",
+    "results/n1_umi_v30/c21.npz",
+    "results/n1_umi_v30/c22.npz",
+    "results/n1_umi_v30/c23.npz",
+    "results/n1_umi_v30/c24.npz",
+    "results/n1_umi_v30/c25.npz",
+    "results/n1_umi_v30/c26.npz",
+    "results/n1_umi_v30/c27.npz",
+    "results/n1_umi_v30/c28.npz",
+    "results/n1_umi_v30/c29.npz",
+    "results/n1_umi_v30/c2.npz",
+    "results/n1_umi_v30/c30.npz",
+    "results/n1_umi_v30/c31.npz",
+    "results/n1_umi_v30/c32.npz",
+    "results/n1_umi_v30/c33.npz",
+    "results/n1_umi_v30/c34.npz",
+    "results/n1_umi_v30/c35.npz",
+    "results/n1_umi_v30/c36.npz",
+    "results/n1_umi_v30/c37.npz",
+    "results/n1_umi_v30/c38.npz",
+    "results/n1_umi_v30/c39.npz",
+    "results/n1_umi_v30/c3.npz",
+    "results/n1_umi_v30/c4.npz",
+    "results/n1_umi_v30/c5.npz",
+    "results/n1_umi_v30/c6.npz",
+    "results/n1_umi_v30/c7.npz",
+    "results/n1_umi_v30/c8.npz",
+    "results/n1_umi_v30/c9.npz"
+  ],
+  "drops": "results/p2_drops_umi.npz",
+  "bin_edges": [
+    0.0,
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    1.0
+  ],
+  "tables": {
+    "ai_and_ran": [
+      {
+        "count": 52,
+        "first_fail": 0.25,
+        "resends": 0.5576923076923077,
+        "residual": 0.09615384615384616
+      },
+      {
+        "count": 256,
+        "first_fail": 0.15234375,
+        "resends": 0.3046875,
+        "residual": 0.0625
+      },
+      {
+        "count": 412,
+        "first_fail": 0.15048543689320387,
+        "resends": 0.28883495145631066,
+        "residual": 0.043689320388349516
+      },
+      {
+        "count": 626,
+        "first_fail": 0.11980830670926518,
+        "resends": 0.21884984025559107,
+        "residual": 0.038338658146964855
+      },
+      {
+        "count": 830,
+        "first_fail": 0.13373493975903614,
+        "resends": 0.21927710843373494,
+        "residual": 0.02650602409638554
+      },
+      {
+        "count": 1274,
+        "first_fail": 0.09811616954474098,
+        "resends": 0.16483516483516483,
+        "residual": 0.019623233908948195
+      },
+      {
+        "count": 1610,
+        "first_fail": 0.10434782608695652,
+        "resends": 0.18385093167701863,
+        "residual": 0.02360248447204969
+      },
+      {
+        "count": 2032,
+        "first_fail": 0.08562992125984252,
+        "resends": 0.14468503937007873,
+        "residual": 0.018208661417322834
+      },
+      {
+        "count": 2628,
+        "first_fail": 0.07686453576864535,
+        "resends": 0.12214611872146118,
+        "residual": 0.013318112633181126
+      },
+      {
+        "count": 2918,
+        "first_fail": 0.06511309115832763,
+        "resends": 0.10486634681288554,
+        "residual": 0.010623714873200822
+      },
+      {
+        "count": 2702,
+        "first_fail": 0.08216136195410807,
+        "resends": 0.13212435233160622,
+        "residual": 0.014433752775721688
+      },
+      {
+        "count": 1904,
+        "first_fail": 0.09506302521008403,
+        "resends": 0.15966386554621848,
+        "residual": 0.017331932773109245
+      },
+      {
+        "count": 1174,
+        "first_fail": 0.11499148211243612,
+        "resends": 0.18313458262350937,
+        "residual": 0.019591141396933562
+      },
+      {
+        "count": 760,
+        "first_fail": 0.14473684210526316,
+        "resends": 0.2381578947368421,
+        "residual": 0.025
+      },
+      {
+        "count": 484,
+        "first_fail": 0.1652892561983471,
+        "resends": 0.2830578512396694,
+        "residual": 0.03305785123966942
+      },
+      {
+        "count": 248,
+        "first_fail": 0.1814516129032258,
+        "resends": 0.35080645161290325,
+        "residual": 0.04032258064516129
+      },
+      {
+        "count": 192,
+        "first_fail": 0.20833333333333334,
+        "resends": 0.3333333333333333,
+        "residual": 0.03125
+      },
+      {
+        "count": 168,
+        "first_fail": 0.30357142857142855,
+        "resends": 0.5476190476190477,
+        "residual": 0.08928571428571429
+      },
+      {
+        "count": 140,
+        "first_fail": 0.3357142857142857,
+        "resends": 0.65,
+        "residual": 0.10714285714285714
+      },
+      {
+        "count": 70,
+        "first_fail": 0.5285714285714286,
+        "resends": 1.1714285714285715,
+        "residual": 0.24285714285714285
+      }
+    ],
+    "ai_for_ran": [
+      {
+        "count": 52,
+        "first_fail": 0.2692307692307692,
+        "resends": 0.6153846153846154,
+        "residual": 0.11538461538461539
+      },
+      {
+        "count": 256,
+        "first_fail": 0.15625,
+        "resends": 0.33203125,
+        "residual": 0.06640625
+      },
+      {
+        "count": 412,
+        "first_fail": 0.1553398058252427,
+        "resends": 0.3179611650485437,
+        "residual": 0.055825242718446605
+      },
+      {
+        "count": 626,
+        "first_fail": 0.12460063897763578,
+        "resends": 0.23003194888178913,
+        "residual": 0.04153354632587859
+      },
+      {
+        "count": 830,
+        "first_fail": 0.13734939759036144,
+        "resends": 0.2325301204819277,
+        "residual": 0.02891566265060241
+      },
+      {
+        "count": 1274,
+        "first_fail": 0.10675039246467818,
+        "resends": 0.18210361067503925,
+        "residual": 0.02511773940345369
+      },
+      {
+        "count": 1610,
+        "first_fail": 0.10807453416149068,
+        "resends": 0.1937888198757764,
+        "residual": 0.02360248447204969
+      },
+      {
+        "count": 2032,
+        "first_fail": 0.08415354330708662,
+        "resends": 0.14173228346456693,
+        "residual": 0.015748031496062992
+      },
+      {
+        "count": 2628,
+        "first_fail": 0.07343987823439878,
+        "resends": 0.11796042617960426,
+        "residual": 0.014079147640791476
+      },
+      {
+        "count": 2918,
+        "first_fail": 0.059972583961617545,
+        "resends": 0.09732693625771076,
+        "residual": 0.010966415352981495
+      },
+      {
+        "count": 2702,
+        "first_fail": 0.07327905255366396,
+        "resends": 0.11843079200592153,
+        "residual": 0.014803849000740192
+      },
+      {
+        "count": 1904,
+        "first_fail": 0.09033613445378151,
+        "resends": 0.14495798319327732,
+        "residual": 0.017857142857142856
+      },
+      {
+        "count": 1174,
+        "first_fail": 0.10477001703577513,
+        "resends": 0.16524701873935263,
+        "residual": 0.01788756388415673
+      },
+      {
+        "count": 760,
+        "first_fail": 0.13421052631578947,
+        "resends": 0.21710526315789475,
+        "residual": 0.019736842105263157
+      },
+      {
+        "count": 484,
+        "first_fail": 0.14669421487603307,
+        "resends": 0.23553719008264462,
+        "residual": 0.026859504132231406
+      },
+      {
+        "count": 248,
+        "first_fail": 0.14919354838709678,
+        "resends": 0.2782258064516129,
+        "residual": 0.028225806451612902
+      },
+      {
+        "count": 192,
+        "first_fail": 0.16145833333333334,
+        "resends": 0.25,
+        "residual": 0.026041666666666668
+      },
+      {
+        "count": 168,
+        "first_fail": 0.24404761904761904,
+        "resends": 0.4523809523809524,
+        "residual": 0.06547619047619048
+      },
+      {
+        "count": 140,
+        "first_fail": 0.29285714285714287,
+        "resends": 0.5,
+        "residual": 0.06428571428571428
+      },
+      {
+        "count": 70,
+        "first_fail": 0.5857142857142857,
+        "resends": 1.1285714285714286,
+        "residual": 0.2
+      }
+    ],
+    "ours": [
+      {
+        "count": 52,
+        "first_fail": 0.25,
+        "resends": 0.5192307692307693,
+        "residual": 0.09615384615384616
+      },
+      {
+        "count": 256,
+        "first_fail": 0.15234375,
+        "resends": 0.29296875,
+        "residual": 0.05859375
+      },
+      {
+        "count": 412,
+        "first_fail": 0.15048543689320387,
+        "resends": 0.26941747572815533,
+        "residual": 0.03398058252427184
+      },
+      {
+        "count": 626,
+        "first_fail": 0.11980830670926518,
+        "resends": 0.1964856230031949,
+        "residual": 0.03514376996805112
+      },
+      {
+        "count": 830,
+        "first_fail": 0.13373493975903614,
+        "resends": 0.19156626506024096,
+        "residual": 0.021686746987951807
+      },
+      {
+        "count": 1274,
+        "first_fail": 0.09811616954474098,
+        "resends": 0.14521193092621665,
+        "residual": 0.014913657770800628
+      },
+      {
+        "count": 1610,
+        "first_fail": 0.10434782608695652,
+        "resends": 0.1484472049689441,
+        "residual": 0.016770186335403725
+      },
+      {
+        "count": 2032,
+        "first_fail": 0.08562992125984252,
+        "resends": 0.10974409448818898,
+        "residual": 0.011318897637795276
+      },
+      {
+        "count": 2628,
+        "first_fail": 0.07686453576864535,
+        "resends": 0.091324200913242,
+        "residual": 0.0091324200913242
+      },
+      {
+        "count": 2918,
+        "first_fail": 0.06511309115832763,
+        "resends": 0.07299520219328307,
+        "residual": 0.00822481151473612
+      },
+      {
+        "count": 2702,
+        "first_fail": 0.08216136195410807,
+        "resends": 0.09437453737971872,
+        "residual": 0.01073279052553664
+      },
+      {
+        "count": 1904,
+        "first_fail": 0.09506302521008403,
+        "resends": 0.11659663865546219,
+        "residual": 0.012605042016806723
+      },
+      {
+        "count": 1174,
+        "first_fail": 0.11499148211243612,
+        "resends": 0.131175468483816,
+        "residual": 0.009369676320272573
+      },
+      {
+        "count": 760,
+        "first_fail": 0.14473684210526316,
+        "resends": 0.15921052631578947,
+        "residual": 0.015789473684210527
+      },
+      {
+        "count": 484,
+        "first_fail": 0.1652892561983471,
+        "resends": 0.1797520661157025,
+        "residual": 0.02066115702479339
+      },
+      {
+        "count": 248,
+        "first_fail": 0.1814516129032258,
+        "resends": 0.21370967741935484,
+        "residual": 0.012096774193548387
+      },
+      {
+        "count": 192,
+        "first_fail": 0.20833333333333334,
+        "resends": 0.20833333333333334,
+        "residual": 0.020833333333333332
+      },
+      {
+        "count": 168,
+        "first_fail": 0.30357142857142855,
+        "resends": 0.3630952380952381,
+        "residual": 0.05357142857142857
+      },
+      {
+        "count": 140,
+        "first_fail": 0.3357142857142857,
+        "resends": 0.38571428571428573,
+        "residual": 0.05
+      },
+      {
+        "count": 70,
+        "first_fail": 0.5285714285714286,
+        "resends": 0.8714285714285714,
+        "residual": 0.08571428571428572
+      }
+    ],
+    "ours_conv_harq": [
+      {
+        "count": 52,
+        "first_fail": 0.25,
+        "resends": 0.5576923076923077,
+        "residual": 0.09615384615384616
+      },
+      {
+        "count": 256,
+        "first_fail": 0.15234375,
+        "resends": 0.30078125,
+        "residual": 0.0625
+      },
+      {
+        "count": 412,
+        "first_fail": 0.15048543689320387,
+        "resends": 0.28640776699029125,
+        "residual": 0.043689320388349516
+      },
+      {
+        "count": 626,
+        "first_fail": 0.11980830670926518,
+        "resends": 0.20447284345047922,
+        "residual": 0.038338658146964855
+      },
+      {
+        "count": 830,
+        "first_fail": 0.13373493975903614,
+        "resends": 0.20722891566265061,
+        "residual": 0.02650602409638554
+      },
+      {
+        "count": 1274,
+        "first_fail": 0.09811616954474098,
+        "resends": 0.1546310832025118,
+        "residual": 0.019623233908948195
+      },
+      {
+        "count": 1610,
+        "first_fail": 0.10434782608695652,
+        "resends": 0.16521739130434782,
+        "residual": 0.02360248447204969
+      },
+      {
+        "count": 2032,
+        "first_fail": 0.08562992125984252,
+        "resends": 0.12549212598425197,
+        "residual": 0.018208661417322834
+      },
+      {
+        "count": 2628,
+        "first_fail": 0.07686453576864535,
+        "resends": 0.10121765601217655,
+        "residual": 0.01293759512937595
+      },
+      {
+        "count": 2918,
+        "first_fail": 0.06511309115832763,
+        "resends": 0.08533241946538725,
+        "residual": 0.010623714873200822
+      },
+      {
+        "count": 2702,
+        "first_fail": 0.08216136195410807,
+        "resends": 0.10880829015544041,
+        "residual": 0.014433752775721688
+      },
+      {
+        "count": 1904,
+        "first_fail": 0.09506302521008403,
+        "resends": 0.13813025210084034,
+        "residual": 0.017331932773109245
+      },
+      {
+        "count": 1174,
+        "first_fail": 0.11499148211243612,
+        "resends": 0.15332197614991483,
+        "residual": 0.019591141396933562
+      },
+      {
+        "count": 760,
+        "first_fail": 0.14473684210526316,
+        "resends": 0.19736842105263158,
+        "residual": 0.025
+      },
+      {
+        "count": 484,
+        "first_fail": 0.1652892561983471,
+        "resends": 0.22933884297520662,
+        "residual": 0.03305785123966942
+      },
+      {
+        "count": 248,
+        "first_fail": 0.1814516129032258,
+        "resends": 0.29838709677419356,
+        "residual": 0.04032258064516129
+      },
+      {
+        "count": 192,
+        "first_fail": 0.20833333333333334,
+        "resends": 0.265625,
+        "residual": 0.03125
+      },
+      {
+        "count": 168,
+        "first_fail": 0.30357142857142855,
+        "resends": 0.43452380952380953,
+        "residual": 0.08928571428571429
+      },
+      {
+        "count": 140,
+        "first_fail": 0.3357142857142857,
+        "resends": 0.5428571428571428,
+        "residual": 0.10714285714285714
+      },
+      {
+        "count": 70,
+        "first_fail": 0.5285714285714286,
+        "resends": 1.0285714285714285,
+        "residual": 0.24285714285714285
+      }
+    ]
+  },
+  "policies": {
+    "u16_random": {
+      "users": 16,
+      "policy": "random",
+      "similarity_median": 0.4617145359516144,
+      "ai_and_ran": {
+        "first_fail_pct": 10.502986584381757,
+        "resends_per_100": 17.854602476070085,
+        "residual_pct": 2.1982739705758902,
+        "blocks_per_transmission": 0.8298507141397584
+      },
+      "ai_for_ran": {
+        "first_fail_pct": 9.974791735914037,
+        "resends_per_100": 16.906995904238908,
+        "residual_pct": 2.1288167377311065,
+        "blocks_per_transmission": 0.8371713130190886
+      },
+      "ours": {
+        "first_fail_pct": 10.502986584381757,
+        "resends_per_100": 13.347066529926789,
+        "residual_pct": 1.4914390750326976,
+        "blocks_per_transmission": 0.8690878726796012
+      },
+      "ours_conv_harq": {
+        "first_fail_pct": 10.502986584381757,
+        "resends_per_100": 15.41195359113332,
+        "residual_pct": 2.1936126311542767,
+        "blocks_per_transmission": 0.847454568833846
+      }
+    },
+    "u16_best": {
+      "users": 16,
+      "policy": "best",
+      "similarity_median": 0.08012909442186356,
+      "ai_and_ran": {
+        "first_fail_pct": 17.057896306900638,
+        "resends_per_100": 34.85213880575667,
+        "residual_pct": 6.285703343671903,
+        "blocks_per_transmission": 0.6949411220782771
+      },
+      "ai_for_ran": {
+        "first_fail_pct": 17.821056351481577,
+        "resends_per_100": 38.14460790764475,
+        "residual_pct": 7.202714532581095,
+        "blocks_per_transmission": 0.6717401922010422
+      },
+      "ours": {
+        "first_fail_pct": 17.057896306900638,
+        "resends_per_100": 32.78314330803233,
+        "residual_pct": 5.850792523438036,
+        "blocks_per_transmission": 0.7090448767141565
+      },
+      "ours_conv_harq": {
+        "first_fail_pct": 17.057896306900638,
+        "resends_per_100": 34.48045040049997,
+        "residual_pct": 6.285703343671903,
+        "blocks_per_transmission": 0.6968618589336588
+      }
+    },
+    "u32_random": {
+      "users": 32,
+      "policy": "random",
+      "similarity_median": 0.45710164308547974,
+      "ai_and_ran": {
+        "first_fail_pct": 10.430371752591306,
+        "resends_per_100": 17.797675312214658,
+        "residual_pct": 2.215688644808646,
+        "blocks_per_transmission": 0.8301039141563766
+      },
+      "ai_for_ran": {
+        "first_fail_pct": 9.985735383969299,
+        "resends_per_100": 16.995948607965943,
+        "residual_pct": 2.1711016207270726,
+        "blocks_per_transmission": 0.8361733850039661
+      },
+      "ours": {
+        "first_fail_pct": 10.430371752591306,
+        "resends_per_100": 13.421291938869425,
+        "residual_pct": 1.5045054760617873,
+        "blocks_per_transmission": 0.8684039199361636
+      },
+      "ours_conv_harq": {
+        "first_fail_pct": 10.430371752591306,
+        "resends_per_100": 15.416024312607757,
+        "residual_pct": 2.2106087361328473,
+        "blocks_per_transmission": 0.8472774196328376
+      }
+    },
+    "u32_best": {
+      "users": 32,
+      "policy": "best",
+      "similarity_median": 0.04742267727851868,
+      "ai_and_ran": {
+        "first_fail_pct": 20.539266112721226,
+        "resends_per_100": 44.150812015840735,
+        "residual_pct": 7.972982494355972,
+        "blocks_per_transmission": 0.6384079022429036
+      },
+      "ai_for_ran": {
+        "first_fail_pct": 21.772110750533383,
+        "resends_per_100": 48.5429690884747,
+        "residual_pct": 9.243924479839158,
+        "blocks_per_transmission": 0.61097523549637
+      },
+      "ours": {
+        "first_fail_pct": 20.539266112721226,
+        "resends_per_100": 41.47147024490024,
+        "residual_pct": 7.764905463838277,
+        "blocks_per_transmission": 0.6519695764559047
+      },
+      "ours_conv_harq": {
+        "first_fail_pct": 20.539266112721226,
+        "resends_per_100": 43.97573879590643,
+        "residual_pct": 7.972982494355972,
+        "blocks_per_transmission": 0.6391842005832484
+      }
+    },
+    "u4_random": {
+      "users": 4,
+      "policy": "random",
+      "similarity_median": 0.4469004273414612,
+      "ai_and_ran": {
+        "first_fail_pct": 10.493885816628982,
+        "resends_per_100": 17.834843288983706,
+        "residual_pct": 2.2053300450886484,
+        "blocks_per_transmission": 0.8299299869655286
+      },
+      "ai_for_ran": {
+        "first_fail_pct": 10.019382323101482,
+        "resends_per_100": 17.006879274022417,
+        "residual_pct": 2.1464996732393726,
+        "blocks_per_transmission": 0.83630553121235
+      },
+      "ours": {
+        "first_fail_pct": 10.493885816628982,
+        "resends_per_100": 13.449471521743703,
+        "residual_pct": 1.5176542596615687,
+        "blocks_per_transmission": 0.8680723181814323
+      },
+      "ours_conv_harq": {
+        "first_fail_pct": 10.493885816628982,
+        "resends_per_100": 15.467506407076645,
+        "residual_pct": 2.2005355245407032,
+        "blocks_per_transmission": 0.846986892837806
+      }
+    },
+    "u4_best": {
+      "users": 4,
+      "policy": "best",
+      "similarity_median": 0.26618996262550354,
+      "ai_and_ran": {
+        "first_fail_pct": 11.351640333804728,
+        "resends_per_100": 20.175078653778964,
+        "residual_pct": 2.890641410784895,
+        "blocks_per_transmission": 0.8080656961247717
+      },
+      "ai_for_ran": {
+        "first_fail_pct": 11.69647128692371,
+        "resends_per_100": 21.38766723424751,
+        "residual_pct": 3.218376383631974,
+        "blocks_per_transmission": 0.7972937104854645
+      },
+      "ours": {
+        "first_fail_pct": 11.351640333804728,
+        "resends_per_100": 17.529761705869635,
+        "residual_pct": 2.3568834216320567,
+        "blocks_per_transmission": 0.830794814531573
+      },
+      "ours_conv_harq": {
+        "first_fail_pct": 11.351640333804728,
+        "resends_per_100": 18.854871988508965,
+        "residual_pct": 2.8876543483800243,
+        "blocks_per_transmission": 0.8170665958145066
+      }
+    },
+    "u8_random": {
+      "users": 8,
+      "policy": "random",
+      "similarity_median": 0.45399022102355957,
+      "ai_and_ran": {
+        "first_fail_pct": 10.496329753890908,
+        "resends_per_100": 17.916281003651278,
+        "residual_pct": 2.2389797376294034,
+        "blocks_per_transmission": 0.8290714346676472
+      },
+      "ai_for_ran": {
+        "first_fail_pct": 10.033731367682073,
+        "resends_per_100": 17.086110854689746,
+        "residual_pct": 2.1830569220958878,
+        "blocks_per_transmission": 0.8354273821538089
+      },
+      "ours": {
+        "first_fail_pct": 10.496329753890908,
+        "resends_per_100": 13.501879618068216,
+        "residual_pct": 1.5223405164729582,
+        "blocks_per_transmission": 0.8676302085472294
+      },
+      "ours_conv_harq": {
+        "first_fail_pct": 10.496329753890908,
+        "resends_per_100": 15.521242895561176,
+        "residual_pct": 2.234185217081458,
+        "blocks_per_transmission": 0.8463016180608902
+      }
+    },
+    "u8_best": {
+      "users": 8,
+      "policy": "best",
+      "similarity_median": 0.15089619159698486,
+      "ai_and_ran": {
+        "first_fail_pct": 14.029068256017126,
+        "resends_per_100": 26.514037004050124,
+        "residual_pct": 4.339951095596331,
+        "blocks_per_transmission": 0.756122017522382
+      },
+      "ai_for_ran": {
+        "first_fail_pct": 14.57851444313842,
+        "resends_per_100": 28.713377785393067,
+        "residual_pct": 4.97691308728729,
+        "blocks_per_transmission": 0.7382533855272371
+      },
+      "ours": {
+        "first_fail_pct": 14.029068256017126,
+        "resends_per_100": 24.345553364415895,
+        "residual_pct": 3.8094115532299058,
+        "blocks_per_transmission": 0.7735748150548426
+      },
+      "ours_conv_harq": {
+        "first_fail_pct": 14.029068256017126,
+        "resends_per_100": 25.706196314853972,
+        "residual_pct": 4.339855966220379,
+        "blocks_per_transmission": 0.7609819311864424
+      }
+    }
+  }
+}

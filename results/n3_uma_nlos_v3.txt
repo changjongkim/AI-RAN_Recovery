@@ -1,0 +1,7 @@
+n3_uma_nlos_v3.json: 5120 slots, 10240 TBs, similarity median 0.48, separable vs cuPHY first [9054, 9052]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 11.6 | 0.0 | 15.9 | 25 | 0.98 | 1.159 |
+| ai_for_ran | 5.0 | 0.0 | 6.3 | 19 | 0.28 | 1.063 |
+| ours | 11.6 | 8.4 | 4.2 | 6 | 0.22 | 1.042 |
+| ours_conv_harq | 11.6 | 8.4 | 5.9 | 15 | 0.74 | 1.059 |

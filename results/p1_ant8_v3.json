@@ -1,0 +1,212 @@
+{
+  "files": [
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s0_e0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s0_e10.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s0_e2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s0_e4.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s0_e6.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s0_e8.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s10_e0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s10_e10.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s10_e2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s10_e4.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s10_e6.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s10_e8.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s11_e0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s11_e10.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s11_e2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s11_e4.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s11_e6.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s11_e8.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s12_e0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s12_e10.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s12_e2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s12_e4.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s12_e6.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s12_e8.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s13_e0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s13_e10.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s13_e2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s13_e4.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s13_e6.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s13_e8.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s14_e0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s14_e10.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s14_e2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s14_e4.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s14_e6.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s14_e8.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s15_e0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s15_e10.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s15_e2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s15_e4.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s15_e6.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s15_e8.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s1_e0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s1_e10.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s1_e2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s1_e4.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s1_e6.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s1_e8.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s2_e0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s2_e10.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s2_e2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s2_e4.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s2_e6.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s2_e8.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s3_e0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s3_e10.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s3_e2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s3_e4.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s3_e6.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s3_e8.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s4_e0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s4_e10.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s4_e2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s4_e4.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s4_e6.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s4_e8.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s5_e0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s5_e10.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s5_e2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s5_e4.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s5_e6.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s5_e8.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s6_e0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s6_e10.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s6_e2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s6_e4.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s6_e6.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s6_e8.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s7_e0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s7_e10.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s7_e2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s7_e4.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s7_e6.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s7_e8.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s8_e0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s8_e10.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s8_e2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s8_e4.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s8_e6.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s8_e8.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s9_e0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s9_e10.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s9_e2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s9_e4.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s9_e6.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/side/p1_ant8_v3_s9_e8.npz"
+  ],
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_perf_csi_kbest"
+  ],
+  "slots": 6144,
+  "blocks": 12288,
+  "num_rx": 8,
+  "users": 2,
+  "channel": "UMi",
+  "speed": 0.83,
+  "points": {
+    "0": 1024,
+    "2": 1024,
+    "4": 1024,
+    "6": 1024,
+    "8": 1024,
+    "10": 1024
+  },
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 0.6246236029710399,
+    "baseline_perf_csi_kbest": 0.8763155523997129
+  },
+  "fail_pct": {
+    "baseline_lslin_lmmse": 19.612630208333336,
+    "baseline_perf_csi_kbest": 9.611002604166668
+  },
+  "first_failures": 2410,
+  "recovers_pct_of_conventional_failures": {
+    "baseline_perf_csi_kbest": 50.995850622406635
+  },
+  "by_point": {
+    "0": {
+      "fail_pct": {
+        "baseline_lslin_lmmse": 42.3828125,
+        "baseline_perf_csi_kbest": 21.533203125
+      },
+      "recovers_pct": {
+        "baseline_perf_csi_kbest": 49.193548387096776
+      }
+    },
+    "2": {
+      "fail_pct": {
+        "baseline_lslin_lmmse": 27.783203125,
+        "baseline_perf_csi_kbest": 14.111328125
+      },
+      "recovers_pct": {
+        "baseline_perf_csi_kbest": 49.209138840070295
+      }
+    },
+    "4": {
+      "fail_pct": {
+        "baseline_lslin_lmmse": 19.287109375,
+        "baseline_perf_csi_kbest": 9.5703125
+      },
+      "recovers_pct": {
+        "baseline_perf_csi_kbest": 50.379746835443036
+      }
+    },
+    "6": {
+      "fail_pct": {
+        "baseline_lslin_lmmse": 13.4765625,
+        "baseline_perf_csi_kbest": 6.0546875
+      },
+      "recovers_pct": {
+        "baseline_perf_csi_kbest": 55.072463768115945
+      }
+    },
+    "8": {
+      "fail_pct": {
+        "baseline_lslin_lmmse": 8.935546875,
+        "baseline_perf_csi_kbest": 4.00390625
+      },
+      "recovers_pct": {
+        "baseline_perf_csi_kbest": 55.19125683060109
+      }
+    },
+    "10": {
+      "fail_pct": {
+        "baseline_lslin_lmmse": 5.810546875,
+        "baseline_perf_csi_kbest": 2.392578125
+      },
+      "recovers_pct": {
+        "baseline_perf_csi_kbest": 58.8235294117647
+      }
+    }
+  },
+  "by_similarity": {
+    "0.0-0.4": {
+      "share_of_blocks": 0.7412109375,
+      "conventional_fail_pct": 19.126043039086518,
+      "share_of_failures": 0.7228215767634855,
+      "recovers_pct": {
+        "baseline_perf_csi_kbest": 49.024110218140066
+      }
+    },
+    "0.4-0.6": {
+      "share_of_blocks": 0.21875,
+      "conventional_fail_pct": 17.261904761904763,
+      "share_of_failures": 0.19253112033195022,
+      "recovers_pct": {
+        "baseline_perf_csi_kbest": 58.4051724137931
+      }
+    },
+    "0.6-1.0": {
+      "share_of_blocks": 0.0400390625,
+      "conventional_fail_pct": 41.46341463414634,
+      "share_of_failures": 0.08464730290456432,
+      "recovers_pct": {
+        "baseline_perf_csi_kbest": 50.98039215686274
+      }
+    }
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "base_config": "nrx_large.cfg",
+    "label": "nrx_large",
+    "prbs": 273,
+    "num_tx": 1,
+    "channel": "UMi",
+    "num_rx_ant": 4,
+    "mcs_index": 14,
+    "mcs_table": 1,
+    "tb_size_bits": 83976,
+    "num_bits_per_symbol": 4,
+    "target_coderate": 0.5400390625,
+    "dmrs_ofdm_pos": [
+      [
+        2,
+        11
+      ]
+    ],
+    "dmrs_subcarrier_pos": [
+      [
+        0,
+        2,
+        4,
+        6,
+        8,
+        10
+      ]
+    ],
+    "dmrs_ports": [
+      0
+    ],
+    "n_cell_id": 1,
+    "slot_number": 0,
+    "ebno_db": [
+      0.0,
+      2.0,
+      4.0,
+      6.0,
+      8.0,
+      10.0,
+      12.0
+    ],
+    "slots": 256,
+    "neural_receiver": null
+  },
+  "rows": [
+    {
+      "ebno_db": 0.0,
+      "tbs": 256,
+      "conv": 144,
+      "nrx": 0,
+      "both": 0,
+      "conv_only": 144,
+      "nrx_only": 0,
+      "neither": 112,
+      "conv_crc_pass_wrong_payload": 0
+    },
+    {
+      "ebno_db": 2.0,
+      "tbs": 256,
+      "conv": 196,
+      "nrx": 0,
+      "both": 0,
+      "conv_only": 196,
+      "nrx_only": 0,
+      "neither": 60,
+      "conv_crc_pass_wrong_payload": 0
+    },
+    {
+      "ebno_db": 4.0,
+      "tbs": 256,
+      "conv": 211,
+      "nrx": 0,
+      "both": 0,
+      "conv_only": 211,
+      "nrx_only": 0,
+      "neither": 45,
+      "conv_crc_pass_wrong_payload": 0
+    },
+    {
+      "ebno_db": 6.0,
+      "tbs": 256,
+      "conv": 227,
+      "nrx": 0,
+      "both": 0,
+      "conv_only": 227,
+      "nrx_only": 0,
+      "neither": 29,
+      "conv_crc_pass_wrong_payload": 0
+    },
+    {
+      "ebno_db": 8.0,
+      "tbs": 256,
+      "conv": 236,
+      "nrx": 0,
+      "both": 0,
+      "conv_only": 236,
+      "nrx_only": 0,
+      "neither": 20,
+      "conv_crc_pass_wrong_payload": 0
+    },
+    {
+      "ebno_db": 10.0,
+      "tbs": 256,
+      "conv": 247,
+      "nrx": 0,
+      "both": 0,
+      "conv_only": 247,
+      "nrx_only": 0,
+      "neither": 9,
+      "conv_crc_pass_wrong_payload": 0
+    },
+    {
+      "ebno_db": 12.0,
+      "tbs": 256,
+      "conv": 249,
+      "nrx": 0,
+      "both": 0,
+      "conv_only": 249,
+      "nrx_only": 0,
+      "neither": 7,
+      "conv_crc_pass_wrong_payload": 0
+    }
+  ],
+  "conv_wall_ms_p50": 0.705727499735076,
+  "nrx_tf_seconds_per_slot": 0.0
+}

@@ -1,0 +1,162 @@
+{
+  "traces": [
+    "results/n1_umi_v3/c0.npz",
+    "results/n1_umi_v3/c10.npz",
+    "results/n1_umi_v3/c11.npz",
+    "results/n1_umi_v3/c12.npz",
+    "results/n1_umi_v3/c13.npz",
+    "results/n1_umi_v3/c14.npz",
+    "results/n1_umi_v3/c15.npz",
+    "results/n1_umi_v3/c16.npz",
+    "results/n1_umi_v3/c17.npz",
+    "results/n1_umi_v3/c18.npz",
+    "results/n1_umi_v3/c19.npz",
+    "results/n1_umi_v3/c1.npz",
+    "results/n1_umi_v3/c20.npz",
+    "results/n1_umi_v3/c21.npz",
+    "results/n1_umi_v3/c22.npz",
+    "results/n1_umi_v3/c23.npz",
+    "results/n1_umi_v3/c24.npz",
+    "results/n1_umi_v3/c25.npz",
+    "results/n1_umi_v3/c26.npz",
+    "results/n1_umi_v3/c27.npz",
+    "results/n1_umi_v3/c28.npz",
+    "results/n1_umi_v3/c29.npz",
+    "results/n1_umi_v3/c2.npz",
+    "results/n1_umi_v3/c30.npz",
+    "results/n1_umi_v3/c31.npz",
+    "results/n1_umi_v3/c32.npz",
+    "results/n1_umi_v3/c33.npz",
+    "results/n1_umi_v3/c34.npz",
+    "results/n1_umi_v3/c35.npz",
+    "results/n1_umi_v3/c36.npz",
+    "results/n1_umi_v3/c37.npz",
+    "results/n1_umi_v3/c38.npz",
+    "results/n1_umi_v3/c39.npz",
+    "results/n1_umi_v3/c3.npz",
+    "results/n1_umi_v3/c4.npz",
+    "results/n1_umi_v3/c5.npz",
+    "results/n1_umi_v3/c6.npz",
+    "results/n1_umi_v3/c7.npz",
+    "results/n1_umi_v3/c8.npz",
+    "results/n1_umi_v3/c9.npz"
+  ],
+  "run_ms": {
+    "1": 3.23,
+    "2": 6.3,
+    "3": 6.68,
+    "4": 8.64
+  },
+  "by_point": {
+    "6.0": {
+      "p_slot_needs_recovery": 0.3015625,
+      "p_block_fails": 0.1646484375,
+      "cells": {
+        "4": {
+          "recovery_gpu_seconds_per_second": 3.03975,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 75.99375
+        },
+        "8": {
+          "recovery_gpu_seconds_per_second": 6.0795,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 151.9875
+        },
+        "16": {
+          "recovery_gpu_seconds_per_second": 12.159,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 303.975
+        },
+        "32": {
+          "recovery_gpu_seconds_per_second": 24.318,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 607.95
+        }
+      }
+    },
+    "8.0": {
+      "p_slot_needs_recovery": 0.228515625,
+      "p_block_fails": 0.1203125,
+      "cells": {
+        "4": {
+          "recovery_gpu_seconds_per_second": 2.3034375,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 57.58593749999999
+        },
+        "8": {
+          "recovery_gpu_seconds_per_second": 4.606875,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 115.17187499999999
+        },
+        "16": {
+          "recovery_gpu_seconds_per_second": 9.21375,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 230.34374999999997
+        },
+        "32": {
+          "recovery_gpu_seconds_per_second": 18.4275,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 460.68749999999994
+        }
+      }
+    },
+    "10.0": {
+      "p_slot_needs_recovery": 0.1421875,
+      "p_block_fails": 0.0732421875,
+      "cells": {
+        "4": {
+          "recovery_gpu_seconds_per_second": 1.43325,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 35.83125
+        },
+        "8": {
+          "recovery_gpu_seconds_per_second": 2.8665,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 71.6625
+        },
+        "16": {
+          "recovery_gpu_seconds_per_second": 5.733,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 143.325
+        },
+        "32": {
+          "recovery_gpu_seconds_per_second": 11.466,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 286.65
+        }
+      }
+    },
+    "12.0": {
+      "p_slot_needs_recovery": 0.105859375,
+      "p_block_fails": 0.05390625,
+      "cells": {
+        "4": {
+          "recovery_gpu_seconds_per_second": 1.0670625,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 26.6765625
+        },
+        "8": {
+          "recovery_gpu_seconds_per_second": 2.134125,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 53.353125
+        },
+        "16": {
+          "recovery_gpu_seconds_per_second": 4.26825,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 106.70625
+        },
+        "32": {
+          "recovery_gpu_seconds_per_second": 8.5365,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 213.4125
+        }
+      }
+    },
+    "all": {
+      "p_slot_needs_recovery": 0.19453125,
+      "p_block_fails": 0.10302734375,
+      "cells": {
+        "4": {
+          "recovery_gpu_seconds_per_second": 1.960875,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 49.021875
+        },
+        "8": {
+          "recovery_gpu_seconds_per_second": 3.92175,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 98.04375
+        },
+        "16": {
+          "recovery_gpu_seconds_per_second": 7.8435,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 196.0875
+        },
+        "32": {
+          "recovery_gpu_seconds_per_second": 15.687,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 392.175
+        }
+      }
+    }
+  }
+}

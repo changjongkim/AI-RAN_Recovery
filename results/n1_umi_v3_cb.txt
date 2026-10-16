@@ -1,0 +1,7 @@
+n1_umi_v3_cb.json: 10240 slots, 20480 TBs, similarity median 0.46, separable vs cuPHY first [18351, 18370]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 10.3 | 0.0 | 17.5 | 43 | 2.21 | 1.175 |
+| ai_for_ran | 9.8 | 0.0 | 16.8 | 43 | 2.13 | 1.168 |
+| ours | 10.3 | 2.3 | 13.2 | 31 | 1.47 | 1.132 |
+| ours_conv_harq | 10.3 | 2.3 | 15.1 | 42 | 2.19 | 1.151 |
