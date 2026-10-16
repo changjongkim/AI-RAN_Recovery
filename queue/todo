@@ -43,3 +43,11 @@ N|p2b_u8_random|60|grep -qP "^p2b_smoke\t0\t" queue/done || exit 1; bash exp/har
 N|p2b_u4_partner|60|grep -qP "^p2b_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh p2b_u4_partner 20 --drop-users 4 --pairing partner --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
 N|p2b_u8_partner|60|grep -qP "^p2b_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh p2b_u8_partner 20 --drop-users 8 --pairing partner --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
 N|p2b_u16_partner|80|grep -qP "^p2b_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh p2b_u16_partner 20 --drop-users 16 --pairing partner --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+# Round 3 (2026-10-16 01:10): UMa is where recovery matters most (56% of failures, 0.44x); check the main claims there.
+L|n7_uma|0|for n in n3_uma_v30 n3_uma_v120 n3_uma_nlos_v3; do for lead in 2 4; do /global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/sim/harq_latency.py --inputs results/$n/c*.npz --lead $lead --output results/n7_${n}_lead$lead.json; done; done > results/n7_uma.txt 2>&1
+N|n1b_uma_v3_alone|60|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh n1b_uma_v3_alone 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --retx-alone
+N|p2b_uma_u8_random|60|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh p2b_uma_u8_random 20 --drop-users 8 --pairing random --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|p2b_uma_u8_partner|60|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh p2b_uma_u8_partner 20 --drop-users 8 --pairing partner --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n6_uma_v3|150|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_mcs.sh n6_uma_v3 24 --channel UMa --speed 0.83 --snr-db 6,8,10,12,14,16 --slots 16 --batch 8
+N|n5_uma_v3|150|bash exp/classical.sh n5_uma_v3 --channel UMa --systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4
+L|n9_uma|0|for n in n3_uma_v3 n3_uma_nlos_v3; do /global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/sim/demand.py --traces results/$n/c*.npz --output results/n9_demand_$n.json; done > results/n9_uma.txt 2>&1
