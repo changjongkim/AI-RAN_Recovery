@@ -1,0 +1,7 @@
+p2b_smoke.json: 32 slots, 64 TBs, similarity median 0.39, separable vs cuPHY first [58, 59]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 7.8 | 0.0 | 15.6 | 60 | 3.12 | 1.156 |
+| ai_for_ran | 9.4 | 0.0 | 18.8 | 50 | 4.69 | 1.188 |
+| ours | 7.8 | 0.0 | 15.6 | 60 | 3.12 | 1.156 |
+| ours_conv_harq | 7.8 | 0.0 | 15.6 | 60 | 3.12 | 1.156 |
