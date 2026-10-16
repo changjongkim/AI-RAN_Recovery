@@ -18,3 +18,15 @@ N|n8b_u3|90|bash exp/classical.sh n8b_u3 --base-config nrx_large_mu4.cfg --users
 N|n8b_u4|90|bash exp/classical.sh n8b_u4 --base-config nrx_large_mu4.cfg --users 4 --systems baseline_lslin_lmmse,nrx --ebno 10,12,14,16,18 --slots 64 --batch 8
 # side items still left after N4 and N8b: all four GPUs
 N|side_rest|240|bash exp/side_pool.sh 230 "0 1 2 3"; bash exp/side_merge.sh
+# N4b (approved 2026-10-15 evening): 8-RX large neural receiver fine-tuned from the 4-RX weights (src/nrx_widen.py)
+N|n4b_train1|150|bash exp/n4b_train.sh 1 35000
+N|n4b_train2|150|grep -qP "^n4b_train1\t0\t" queue_b/done || exit 1; bash exp/n4b_train.sh 2 35000
+N|n4b_train3|150|grep -qP "^n4b_train1\t0\t" queue_b/done || exit 1; bash exp/n4b_train.sh 3 35000
+N|n4b_train4|150|grep -qP "^n4b_train1\t0\t" queue_b/done || exit 1; bash exp/n4b_train.sh 4 35000
+N|n4b_train5|150|grep -qP "^n4b_train1\t0\t" queue_b/done || exit 1; bash exp/n4b_train.sh 5 35000
+N|n4b_train6|150|grep -qP "^n4b_train1\t0\t" queue_b/done || exit 1; bash exp/n4b_train.sh 6 35000
+N|n4b_train7|150|grep -qP "^n4b_train1\t0\t" queue_b/done || exit 1; bash exp/n4b_train.sh 7 35000
+N|n4b_train8|150|grep -qP "^n4b_train1\t0\t" queue_b/done || exit 1; bash exp/n4b_train.sh 8 35000
+N|n4b_cov|20|source env.sh && cd third_party/neural_rx/scripts && tfgen python3 compute_cov_mat.py -config_name nrx_large_8rx.cfg -num_samples 100000 -gpu 0
+N|n4b_eval_widened|60|bash exp/classical.sh n4b_eval_widened --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --systems baseline_lslin_lmmse,nrx --nrx-weights /pscratch/sd/s/sgkim/kcj/airan_recovery/results/n4b/weights_widened --slots 32
+N|n4b_eval|150|bash exp/classical.sh n4b_eval --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --slots 128

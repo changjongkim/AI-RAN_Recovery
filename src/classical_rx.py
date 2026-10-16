@@ -32,6 +32,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--nrx-repo", type=Path, required=True)
 parser.add_argument("--base-config", default="nrx_large.cfg")
 parser.add_argument("--rt-config", default="nrx_rt.cfg")
+parser.add_argument("--nrx-weights", default="", help="weights file for the nrx system instead of ../weights/<label>_weights")
 parser.add_argument("--prbs", type=int, default=273, help="bandwidth in PRBs (273 as in N1 and the runtime receivers)")
 parser.add_argument("--systems", default="baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt")
 parser.add_argument("--channel", default="UMi")
@@ -98,7 +99,7 @@ for s in systems:
     model = E2E_Model(params, training=False, return_tb_status=True)
     model(args.batch, 10.0)
     if kind.startswith("nrx"):
-        load_weights(model, f"../weights/{label}_weights")
+        load_weights(model, args.nrx_weights if (args.nrx_weights and kind == "nrx") else f"../weights/{label}_weights")
         model._receiver._neural_rx.num_it = params.num_nrx_iter_eval
     if idd:
         from idd import IddPusch
@@ -168,7 +169,7 @@ args.output.parent.mkdir(parents=True, exist_ok=True)
 np.savez(args.output.with_suffix(".npz"), point=np.asarray(points, np.float32), corr=np.concatenate(corr),
          **{f"ok_{s}": v for s, v in good.items()})
 conv = good[systems[0]]
-report = {"systems": systems, "prbs": args.prbs, "users": args.users, "base_config": args.base_config, "channel": args.channel, "speed": args.speed, "num_rx": args.num_rx or 4, "mcs": args.mcs,
+report = {"systems": systems, "prbs": args.prbs, "nrx_weights": args.nrx_weights, "users": args.users, "base_config": args.base_config, "channel": args.channel, "speed": args.speed, "num_rx": args.num_rx or 4, "mcs": args.mcs,
           "slots": int(conv.shape[0]), "seconds_per_slot": {s: seconds[s] / conv.shape[0] for s in systems},
           "decoded_pct": {s: 100.0 * good[s].mean() for s in systems},
           "recovers_pct_of_conventional_failures": {s: 100.0 * (good[s] & ~conv).sum() / max(1, (~conv).sum())

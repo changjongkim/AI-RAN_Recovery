@@ -35,3 +35,11 @@ N|n8a_users|120|bash exp/users.sh n8a_users 0,2,4,6,8,10,12 256
 # N5 and P1 (antennas) items left by the training node: all four GPUs of this node too, then merge
 N|side_q1|240|bash exp/side_pool.sh 230 "0 1 2 3"; bash exp/side_merge.sh
 N|side_q1b|240|bash exp/side_pool.sh 230 "0 1 2 3"; bash exp/side_merge.sh
+# P2 again (2026-10-15 evening): the first P2 took failure rates from a table binned by pair similarity only, where
+# low similarity goes with weak users.  Now U users are dropped per slot and user 0 is co-scheduled with a partner
+# (random, or the best (1 - rho^2) * min gain), and the chosen pairs are generated and decoded like N1.
+N|p2b_smoke|20|grep -qP "^smoke\t0\t" queue/done ||  { echo smoke did not pass; exit 1; }; bash exp/harq_ir.sh p2b_smoke 1 --drop-users 8 --pairing partner --channel UMi --speed 0.83 --ebno 8 --slots 32 --batch 8
+N|p2b_u8_random|60|grep -qP "^p2b_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh p2b_u8_random 20 --drop-users 8 --pairing random --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|p2b_u4_partner|60|grep -qP "^p2b_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh p2b_u4_partner 20 --drop-users 4 --pairing partner --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|p2b_u8_partner|60|grep -qP "^p2b_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh p2b_u8_partner 20 --drop-users 8 --pairing partner --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|p2b_u16_partner|80|grep -qP "^p2b_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh p2b_u16_partner 20 --drop-users 16 --pairing partner --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8

@@ -14,6 +14,8 @@ Writes, per MCS m and transmission index t, <output>_m<m>_t<t>.npz in the format
                            of |h1^H h2| / (|h1||h2|) over the receive antennas (0 orthogonal, 1 same direction),
   change[t]                1 - |<h_0, h_t>| / (|h_0||h_t|): how much the channel changed by transmission t,
   gain[t]                  mean |h|^2 per user (to separate weak users from hard-to-separate pairs).
+With --drop-users U, U users are dropped per slot and user 0 is co-scheduled with one partner (--pairing random
+or partner: best (1 - rho^2) * min gain), as a MU-MIMO scheduler picks a partner; the pair's channels go on as usual.
 With --retx-alone the retransmissions carry user 0 only (user 1's data and DMRS are zero), so HARQ is not limited by
 the same partner; the first transmission still carries both users.
 Several MCS share the same channel realizations and noise level (--snr-db), so a rate-control simulation can pick an
@@ -41,6 +43,10 @@ parser.add_argument("--num-rx", type=int, default=0, help="override the number o
 parser.add_argument("--mcs", default="14", help="comma list; all share the channel realizations")
 parser.add_argument("--rvs", default="0,2,3,1", help="redundancy version of each transmission")
 parser.add_argument("--gap-ms", type=float, default=7.5, help="time between transmissions")
+parser.add_argument("--drop-users", type=int, default=0,
+                    help="drop this many users per slot and co-schedule user 0 with a partner chosen by --pairing")
+parser.add_argument("--pairing", choices=["random", "partner"], default="random",
+                    help="random: any other user; partner: the user j that maximizes (1 - rho_0j^2) * min(g_0, g_j), the weaker user's channel gain left after zero-forcing (the scheduler knows both from SRS/previous slots)")
 parser.add_argument("--retx-alone", action="store_true",
                     help="retransmissions of user 0 are sent alone (user 1 silent), as when the scheduler gives a "
                          "retransmission its own resources; only user 0's blocks are counted then")
@@ -69,6 +75,7 @@ tf.random.set_seed(args.seed)
 np.random.seed(args.seed)
 
 from sionna.channel import ApplyOFDMChannel, cir_to_ofdm_channel, subcarrier_frequencies   # noqa: E402
+from sionna.channel import gen_single_sector_topology                                      # noqa: E402
 from utils import Parameters, DataGeneratorAerial                                          # noqa: E402
 
 MCS = [int(m) for m in args.mcs.split(",")]
@@ -186,19 +193,46 @@ frequencies = subcarrier_frequencies(rg.fft_size, rg.subcarrier_spacing)
 apply_channel = ApplyOFDMChannel(add_awgn=True)
 kept = {}
 
-if args.los != "auto":
+if args.los != "auto" or args.drop_users:
     set_topology = model.set_topology
 
     def forced(*topology, **kw):
-        kw["los"] = args.los == "los"
+        if args.los != "auto":
+            kw["los"] = args.los == "los"
+        if args.drop_users:     # the generator drops two users; drop drop_users instead and pick a pair later
+            topology = gen_single_sector_topology(int(topology[0].shape[0]), args.drop_users, args.channel.lower(),
+                                                  min_ut_velocity=args.speed, max_ut_velocity=args.speed,
+                                                  indoor_probability=0.)
         return set_topology(*topology[:6], **kw)
     model.set_topology = forced
+picked = {"rho": [], "gain_db": [], "rank": []}
+
+
+def choose_pairs(a, tau):
+    """[batch, 1, rx_ant, U, 1, path, time] -> indices [batch, 2] of user 0 and its partner (from the first slot)."""
+    v = cir_to_ofdm_channel(frequencies, a[..., :symbols], tau, False).numpy()[:, 0, :, :, 0]   # [b, ant, U, sym, sc]
+    g = np.mean(np.abs(v) ** 2, axis=(1, 3, 4))                                                  # [b, U]
+    num = np.abs(np.sum(np.conj(v[:, :, :1]) * v, axis=1))                                       # [b, U, sym, sc]
+    den = np.linalg.norm(v[:, :, :1], axis=1) * np.linalg.norm(v, axis=1) + 1e-12
+    rho = (num / den).mean(axis=(2, 3))                                                          # [b, U]
+    score = (1 - rho ** 2) * np.minimum(g[:, :1], g)
+    score[:, 0] = -np.inf
+    j = np.argmax(score, axis=1) if args.pairing == "partner" else np.ones(len(g), dtype=int)
+    rank = (score > score[np.arange(len(g)), j][:, None]).sum(axis=1)                            # 0 = the best partner
+    picked["rho"] += rho[np.arange(len(g)), j].tolist()
+    picked["gain_db"] += (10 * np.log10(g[np.arange(len(g)), j] / g[:, 0] + 1e-30)).tolist()
+    picked["rank"] += rank.tolist()
+    return tf.constant(np.stack([np.zeros_like(j), j], axis=1), tf.int32)
 
 
 def time_correlated(channel_inputs):
     """Replaces the generator's channel: samples the model over all transmissions, keeps every response."""
     x, no = channel_inputs
     a, tau = model(tf.shape(x)[0], span, 1.0 / symbol_s)
+    if args.drop_users:
+        pair = choose_pairs(a, tau)
+        a = tf.gather(a, pair, axis=3, batch_dims=1)
+        tau = tf.gather(tau, pair, axis=2, batch_dims=1)
     hs = [cir_to_ofdm_channel(frequencies, a[..., t * gap:t * gap + symbols], tau, False) for t in range(len(RVS))]
     kept["h"], kept["no"] = hs, no
     return apply_channel([x, hs[0], no]), hs[0]
@@ -206,6 +240,8 @@ def time_correlated(channel_inputs):
 
 first.gen._channel = time_correlated
 first.gen(1, 10.0)          # build
+for _k in picked:
+    picked[_k].clear()     # the build call is not a slot
 
 
 def aerial(y):
@@ -264,7 +300,11 @@ point = np.asarray(info["point"], dtype=np.float32)
 corr, change, gain = (np.concatenate(info[k]).astype(np.float32) for k in ("corr", "change", "gain"))
 np.savez(args.output.parent / f"{args.output.name}_info.npz", point=point, corr=corr, change=change, gain=gain,
          meta=json.dumps({"channel": args.channel, "speed": args.speed, "los": args.los, "rvs": RVS, "mcs": MCS,
-                          "gap_ms": args.gap_ms, "gap_symbols": gap, "retx_alone": args.retx_alone, "axis": "ebno" if args.ebno else "snr_db",
+                          "gap_ms": args.gap_ms, "gap_symbols": gap, "retx_alone": args.retx_alone,
+                          "drop_users": args.drop_users, "pairing": args.pairing,
+                          "pair_rho_median": float(np.median(picked["rho"])) if args.drop_users else None,
+                          "partner_gain_db_median": float(np.median(picked["gain_db"])) if args.drop_users else None,
+                          "partner_rank_mean": float(np.mean(picked["rank"])) if args.drop_users else None, "axis": "ebno" if args.ebno else "snr_db",
                           "num_rx": int(first.params.num_rx_antennas), "seed": args.seed}))
 for link in links:
     payload = np.concatenate(bits[link.mcs])
