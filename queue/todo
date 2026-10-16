@@ -58,3 +58,25 @@ N|p2b_u8_minrho|60|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_ir
 N|p2b_u16_minrho|80|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh p2b_u16_minrho 20 --drop-users 16 --pairing minrho --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
 N|p2b_uma_u16_partner|80|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh p2b_uma_u16_partner 20 --drop-users 16 --pairing partner --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
 L|ci_all|0|/global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/ci.py n1_umi_v3 n1_umi_v30 n1_umi_v60 n3_umi_v120 n1b_umi_v3_alone p1_umi_los_v3 p1_umi_nlos_v3 n3_uma_v3 n3_uma_v3_more n3_uma_v30 n3_uma_v120 n3_uma_los_v3 n3_uma_nlos_v3 n1b_uma_v3_alone p2b_u8_random p2b_u4_partner p2b_u8_partner p2b_u16_partner p2b_u8_minrho p2b_u16_minrho p2b_uma_u8_random p2b_uma_u8_partner p2b_uma_u16_partner > results/ci.txt 2>&1
+# Round 5 (2026-10-16 01:40, user away for days): fill the gaps for the paper.
+# (a) every UMa condition to 20,480 blocks with new seeds
+N|n3_uma_v30_more|60|grep -qP "^smoke\t0\t" queue/done || exit 1; SEED0=2000 bash exp/harq_ir.sh n3_uma_v30_more 20 --channel UMa --speed 8.33 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n3_uma_los_more|60|grep -qP "^smoke\t0\t" queue/done || exit 1; SEED0=2000 bash exp/harq_ir.sh n3_uma_los_more 20 --channel UMa --los los --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n3_uma_nlos_more|60|grep -qP "^smoke\t0\t" queue/done || exit 1; SEED0=2000 bash exp/harq_ir.sh n3_uma_nlos_more 20 --channel UMa --los nlos --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+# (b) other code rates (MCS 12 and 16; the neural receivers are 16QAM)
+N|mcs12_umi|60|grep -qP "^smoke\t0\t" queue/done || exit 1; MCS=12 bash exp/harq_ir.sh mcs12_umi 20 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|mcs16_umi|60|grep -qP "^smoke\t0\t" queue/done || exit 1; MCS=16 bash exp/harq_ir.sh mcs16_umi 20 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|mcs12_uma|60|grep -qP "^smoke\t0\t" queue/done || exit 1; MCS=12 bash exp/harq_ir.sh mcs12_uma 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|mcs16_uma|60|grep -qP "^smoke\t0\t" queue/done || exit 1; MCS=16 bash exp/harq_ir.sh mcs16_uma 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+# (c) wider Eb/No range (where recovery stops helping at both ends)
+N|wide_umi|60|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh wide_umi 20 --channel UMi --speed 0.83 --ebno 2,4,14,16 --slots 64 --batch 8
+N|wide_uma|60|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh wide_uma 20 --channel UMa --speed 0.83 --ebno 2,4,14,16 --slots 64 --batch 8
+# (d) retransmissions alone and pairing on UMa NLoS; link adaptation on UMa NLoS and LoS
+N|n1b_uma_nlos_alone|60|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh n1b_uma_nlos_alone 20 --channel UMa --los nlos --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --retx-alone
+N|p2b_uma_u8_minrho|60|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh p2b_uma_u8_minrho 20 --drop-users 8 --pairing minrho --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|p2b_uma_u4_partner|60|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh p2b_uma_u4_partner 20 --drop-users 4 --pairing partner --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n6_uma_nlos|150|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_mcs.sh n6_uma_nlos 24 --channel UMa --los nlos --speed 0.83 --snr-db 6,8,10,12,14,16 --slots 16 --batch 8
+N|n6_uma_los|150|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_mcs.sh n6_uma_los 24 --channel UMa --los los --speed 0.83 --snr-db 6,8,10,12,14,16 --slots 16 --batch 8
+# (e) latency with the code-block predictor and intervals for everything
+L|n7_all|0|for n in n3_uma_v3_more n3_uma_nlos_more n3_uma_los_more mcs12_uma mcs16_uma; do /global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/sim/harq_latency.py --inputs results/$n/c*.npz --lead 4 --output results/n7_${n}_lead4.json; done > results/n7_all.txt 2>&1
+L|ci_round5|0|/global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/ci.py n1_umi_v3 n3_uma_v3 n3_uma_v3_more n3_uma_v30 n3_uma_v30_more n3_uma_los_v3 n3_uma_los_more n3_uma_nlos_v3 n3_uma_nlos_more mcs12_umi mcs16_umi mcs12_uma mcs16_uma wide_umi wide_uma n1b_uma_v3_alone n1b_uma_nlos_alone p2b_uma_u8_random p2b_uma_u8_partner p2b_uma_u8_minrho p2b_uma_u4_partner p2b_uma_u16_partner > results/ci_round5.txt 2>&1
