@@ -94,3 +94,7 @@ N|n4b_train19|150|LR=0.00005 bash exp/n4b_train.sh 19 35000
 N|n4b_train20|150|LR=0.00005 bash exp/n4b_train.sh 20 35000
 N|n4b_eval_r3|150|bash exp/classical.sh n4b_eval_r3 --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --slots 128
 N|n4b_eval_r3_uma|150|bash exp/classical.sh n4b_eval_r3_uma --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --channel UMa --slots 96
+# N5 on UMa had 233 failures: three more runs with new seeds (about 900 failures in all)
+N|n5_uma_more1|150|SEED0=410 bash exp/classical.sh n5_uma_more1 --channel UMa --systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4
+N|n5_uma_more2|150|SEED0=420 bash exp/classical.sh n5_uma_more2 --channel UMa --systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4
+N|n5_uma_more3|150|SEED0=430 bash exp/classical.sh n5_uma_more3 --channel UMa --systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4

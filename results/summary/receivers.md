@@ -1,0 +1,24 @@
+| base_config | channel | conventional_failures | num_rx | prbs | set | slots | users | fail%_baseline_lmmse_kbest | fail%_baseline_lslin_lmmse | fail%_baseline_lslin_lmmse@50 | fail%_baseline_perf_csi_kbest | fail%_lslin_idd0 | fail%_lslin_idd3 | fail%_nrx | fail%_nrx_rt | recovers%_baseline_lmmse_kbest | recovers%_baseline_lslin_lmmse@50 | recovers%_baseline_perf_csi_kbest | recovers%_lslin_idd0 | recovers%_lslin_idd3 | recovers%_nrx | recovers%_nrx_rt |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| nrx_large_mu4.cfg | UMi | None | 4 | 273 | n4_eval2_ft | 1024 | 2 |  | 13.57 |  |  |  |  | 8.5 |  |  |  |  |  |  | 37.4 |  |
+| nrx_large.cfg | UMi | None | 4 | 273 | n4_eval2_orig | 1024 | 2 |  | 13.57 |  |  |  |  | 7.23 |  |  |  |  |  |  | 46.8 |  |
+| nrx_large_8rx.cfg | UMi | None | 8 | 273 | n4b_eval | 3072 | 2 | 10.68 | 18.31 |  | 8.38 |  |  | 11.34 |  | 41.7 |  | 54.2 |  |  | 38.0 |  |
+| nrx_large_8rx.cfg | UMi | None | 8 | 273 | n4b_eval_r2 | 3072 | 2 | 10.68 | 18.31 |  | 8.38 |  |  | 11.21 |  | 41.7 |  | 54.2 |  |  | 38.8 |  |
+| nrx_large_8rx.cfg | UMa | None | 8 | 273 | n4b_eval_r2_uma | 2304 | 2 | 8.49 | 15.21 |  | 4.49 |  |  | 7.57 |  | 45.5 |  | 70.5 |  |  | 50.2 |  |
+| nrx_large_8rx.cfg | UMa | None | 8 | 273 | n4b_eval_uma | 2304 | 2 | 8.46 | 15.21 |  | 4.49 |  |  | 7.62 |  | 45.5 |  | 70.5 |  |  | 49.9 |  |
+| nrx_large_8rx.cfg | UMi | None | 8 | 273 | n4b_eval_v30 | 2304 | 2 | 10.66 | 18.27 |  | 8.51 |  |  | 11.39 |  | 41.7 |  | 53.4 |  |  | 37.8 |  |
+| nrx_large_8rx.cfg | UMi | None | 8 | 273 | n4b_eval_widened | 768 | 2 |  | 16.86 |  |  |  |  | 28.58 |  |  |  |  |  |  | 8.1 |  |
+| nrx_large.cfg | UMi | None | 4 | None | n5_smoke | 64 | 2 |  | 11.72 | 10.16 |  | 11.72 | 7.81 |  |  |  | 13.3 |  | 0.0 | 33.3 |  |  |
+| nrx_large.cfg | UMa | None | 4 | 273 | n5_uma_v3 | 1024 | 2 | 6.69 | 11.38 | 10.25 | 3.27 |  | 9.03 | 5.22 | 6.93 | 42.9 | 9.9 | 71.2 |  | 20.6 | 54.1 | 39.1 |
+| nrx_large.cfg | UMi | 2797 | 4 | 273 | n5_umi_v3 | 10240 | 2 | 8.6 | 13.66 | 12.71 | 6.79 |  | 11.0 | 7.85 | 9.51 | 37.0 | 7.0 | 50.3 |  | 19.4 | 42.5 | 30.4 |
+| nrx_large_mu4.cfg | UMi | None | 4 | 273 | n8b_u2_both | 1536 | 2 |  | 14.16 |  |  |  |  | 9.08 |  |  |  |  |  |  | 35.9 |  |
+| nrx_large_mu4.cfg | UMi | None | 4 | 273 | n8b_u3 | 1280 | 3 |  | 13.49 |  |  |  |  | 7.34 |  |  |  |  |  |  | 45.6 |  |
+| nrx_large_mu4.cfg | UMi | None | 4 | 273 | n8b_u3_kbest | 960 | 3 | 6.22 | 13.75 |  | 4.17 |  |  | 7.15 |  | 54.8 |  | 69.7 |  |  | 48.2 |  |
+| nrx_large_mu4.cfg | UMi | None | 4 | 273 | n8b_u4 | 1280 | 4 |  | 20.45 |  |  |  |  | 11.46 |  |  |  |  |  |  | 44.4 |  |
+| nrx_large_mu4.cfg | UMi | None | 4 | 273 | n8b_u4_kbest | 960 | 4 | 6.72 | 20.52 |  | 2.99 |  |  | 11.43 |  | 67.6 |  | 85.4 |  |  | 44.8 |  |
+| nrx_large.cfg | UMi | 2641 | 2 | 273 | p1_ant2_v3 | 6144 | 2 |  | 21.49 |  | 10.07 |  |  |  |  |  |  | 53.1 |  |  |  |  |
+| nrx_large.cfg | UMi | 2047 | 4 | 273 | p1_ant4_v3 | 6144 | 2 |  | 16.66 |  | 8.82 |  |  |  |  |  |  | 47.0 |  |  |  |  |
+| nrx_large.cfg | UMi | 2410 | 8 | 273 | p1_ant8_v3 | 6144 | 2 |  | 19.61 |  | 9.61 |  |  |  |  |  |  | 51.0 |  |  |  |  |
+| nrx_large.cfg | UMa | None | 2 | 273 | p1_uma_ant2 | 2304 | 2 |  | 23.37 |  | 5.03 |  |  |  |  |  |  | 78.5 |  |  |  |  |
+| nrx_large.cfg | UMa | None | 4 | 273 | p1_uma_ant4 | 2304 | 2 |  | 14.65 |  | 4.25 |  |  |  |  |  |  | 71.0 |  |  |  |  |
+| nrx_large.cfg | UMa | None | 8 | 273 | p1_uma_ant8 | 2304 | 2 |  | 15.95 |  | 5.01 |  |  |  |  |  |  | 68.6 |  |  |  |  |

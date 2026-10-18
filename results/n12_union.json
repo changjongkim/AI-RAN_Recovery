@@ -1,0 +1,118 @@
+{
+ "n5_umi": {
+  "failures": 2797,
+  "single": {
+   "baseline_lslin_lmmse@50": 7.0,
+   "lslin_idd3": 19.4,
+   "baseline_lmmse_kbest": 37.0,
+   "baseline_perf_csi_kbest": 50.3,
+   "nrx": 42.5,
+   "nrx_rt": 30.4
+  },
+  "pairs": {
+   "baseline_lslin_lmmse@50|lslin_idd3": 21.2,
+   "baseline_lslin_lmmse@50|baseline_lmmse_kbest": 37.0,
+   "baseline_lslin_lmmse@50|nrx": 42.5,
+   "baseline_lslin_lmmse@50|nrx_rt": 30.5,
+   "lslin_idd3|baseline_lmmse_kbest": 37.6,
+   "lslin_idd3|nrx": 42.8,
+   "lslin_idd3|nrx_rt": 32.0,
+   "baseline_lmmse_kbest|nrx": 42.9,
+   "baseline_lmmse_kbest|nrx_rt": 37.4,
+   "nrx|nrx_rt": 42.5
+  },
+  "all_practical": 43.2,
+  "only_nrx": 5.1,
+  "missed_by_nrx_got_by_others": 0.6,
+  "cascade_small_then_large": {
+   "recovered": 42.5,
+   "large_runs_per_failure": 0.696
+  }
+ },
+ "n5_uma": {
+  "failures": 233,
+  "single": {
+   "baseline_lslin_lmmse@50": 9.9,
+   "lslin_idd3": 20.6,
+   "baseline_lmmse_kbest": 42.9,
+   "baseline_perf_csi_kbest": 71.2,
+   "nrx": 54.1,
+   "nrx_rt": 39.1
+  },
+  "pairs": {
+   "baseline_lslin_lmmse@50|lslin_idd3": 22.7,
+   "baseline_lslin_lmmse@50|baseline_lmmse_kbest": 42.9,
+   "baseline_lslin_lmmse@50|nrx": 54.1,
+   "baseline_lslin_lmmse@50|nrx_rt": 39.1,
+   "lslin_idd3|baseline_lmmse_kbest": 43.8,
+   "lslin_idd3|nrx": 54.5,
+   "lslin_idd3|nrx_rt": 40.3,
+   "baseline_lmmse_kbest|nrx": 54.9,
+   "baseline_lmmse_kbest|nrx_rt": 46.8,
+   "nrx|nrx_rt": 54.1
+  },
+  "all_practical": 54.9,
+  "only_nrx": 7.7,
+  "missed_by_nrx_got_by_others": 0.9,
+  "cascade_small_then_large": {
+   "recovered": 54.1,
+   "large_runs_per_failure": 0.609
+  }
+ },
+ "u3": {
+  "failures": 396,
+  "single": {
+   "baseline_lmmse_kbest": 54.8,
+   "baseline_perf_csi_kbest": 69.7,
+   "nrx": 48.2
+  },
+  "pairs": {
+   "baseline_lmmse_kbest|nrx": 55.8
+  },
+  "all_practical": 55.8,
+  "only_nrx": 1.0,
+  "missed_by_nrx_got_by_others": 7.6
+ },
+ "u4": {
+  "failures": 788,
+  "single": {
+   "baseline_lmmse_kbest": 67.6,
+   "baseline_perf_csi_kbest": 85.4,
+   "nrx": 44.8
+  },
+  "pairs": {
+   "baseline_lmmse_kbest|nrx": 68.5
+  },
+  "all_practical": 68.5,
+  "only_nrx": 0.9,
+  "missed_by_nrx_got_by_others": 23.7
+ },
+ "ant8_umi": {
+  "failures": 1125,
+  "single": {
+   "baseline_lmmse_kbest": 41.7,
+   "baseline_perf_csi_kbest": 54.2,
+   "nrx": 38.8
+  },
+  "pairs": {
+   "baseline_lmmse_kbest|nrx": 42.1
+  },
+  "all_practical": 42.1,
+  "only_nrx": 0.4,
+  "missed_by_nrx_got_by_others": 3.4
+ },
+ "ant8_uma": {
+  "failures": 701,
+  "single": {
+   "baseline_lmmse_kbest": 45.5,
+   "baseline_perf_csi_kbest": 70.5,
+   "nrx": 50.2
+  },
+  "pairs": {
+   "baseline_lmmse_kbest|nrx": 53.1
+  },
+  "all_practical": 53.1,
+  "only_nrx": 7.6,
+  "missed_by_nrx_got_by_others": 2.9
+ }
+}
