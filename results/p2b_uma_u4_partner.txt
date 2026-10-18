@@ -1,0 +1,7 @@
+p2b_uma_u4_partner.json: 5120 slots, 10240 TBs, similarity median 0.44, separable vs cuPHY first [9094, 9088]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 11.2 | 0.0 | 17.7 | 36 | 1.91 | 1.177 |
+| ai_for_ran | 5.9 | 0.0 | 9.8 | 39 | 1.10 | 1.098 |
+| ours | 11.2 | 6.5 | 7.7 | 17 | 0.87 | 1.077 |
+| ours_conv_harq | 11.2 | 6.5 | 9.8 | 27 | 1.68 | 1.098 |

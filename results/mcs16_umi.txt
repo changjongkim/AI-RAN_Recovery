@@ -1,0 +1,7 @@
+mcs16_umi.json: 5120 slots, 10240 TBs, similarity median 0.46, separable vs cuPHY first [8951, 8978]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 12.3 | 0.0 | 19.4 | 35 | 2.14 | 1.194 |
+| ai_for_ran | 12.0 | 0.0 | 18.6 | 34 | 2.04 | 1.186 |
+| ours | 12.3 | 2.7 | 14.7 | 25 | 1.44 | 1.147 |
+| ours_conv_harq | 12.3 | 2.7 | 16.6 | 35 | 2.12 | 1.166 |

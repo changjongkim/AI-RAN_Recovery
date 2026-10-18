@@ -1,0 +1,634 @@
+{
+  "root": "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/n6_uma_v3",
+  "ladder": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "points": [
+    6.0,
+    8.0,
+    10.0,
+    12.0,
+    14.0,
+    16.0
+  ],
+  "results": {
+    "snr6_target0.1": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 43465.71067091472,
+        "mean_mcs": 10.22711111111111,
+        "first_fail_pct": 11.161111111111111,
+        "resends_per_100": 20.316666666666666,
+        "residual_pct": 2.533333333333333,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 46596.353455160424,
+        "mean_mcs": 10.636333333333333,
+        "first_fail_pct": 10.355555555555556,
+        "resends_per_100": 18.261111111111113,
+        "residual_pct": 2.316666666666667,
+        "goodput_vs_ai_and_ran": 1.0720255745488267
+      },
+      "ours": {
+        "goodput_bits_per_tx": 53218.46680369007,
+        "mean_mcs": 11.476777777777778,
+        "first_fail_pct": 9.983333333333333,
+        "resends_per_100": 16.227777777777778,
+        "residual_pct": 1.7944444444444445,
+        "goodput_vs_ai_and_ran": 1.2243781588345557
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 50239.12055819971,
+        "mean_mcs": 11.382555555555555,
+        "first_fail_pct": 10.016666666666667,
+        "resends_per_100": 20.227777777777778,
+        "residual_pct": 2.966666666666667,
+        "goodput_vs_ai_and_ran": 1.1558334094331846
+      }
+    },
+    "snr6_target0.03": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 42491.917671055075,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 10.688888888888888,
+        "resends_per_100": 19.844444444444445,
+        "residual_pct": 2.488888888888889,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 43660.82004080277,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 9.522222222222222,
+        "resends_per_100": 17.094444444444445,
+        "residual_pct": 2.1055555555555556,
+        "goodput_vs_ai_and_ran": 1.0275088165894648
+      },
+      "ours": {
+        "goodput_bits_per_tx": 45805.658613861386,
+        "mean_mcs": 10.000666666666667,
+        "first_fail_pct": 7.338888888888889,
+        "resends_per_100": 12.222222222222221,
+        "residual_pct": 1.5777777777777777,
+        "goodput_vs_ai_and_ran": 1.0779852057621675
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 43692.602917341974,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 7.711111111111111,
+        "resends_per_100": 16.544444444444444,
+        "residual_pct": 2.4944444444444445,
+        "goodput_vs_ai_and_ran": 1.028256791222788
+      }
+    },
+    "snr6_target0.01": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 42708.62046819007,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 10.433333333333334,
+        "resends_per_100": 19.372222222222224,
+        "residual_pct": 2.3777777777777778,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 44185.30311017396,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 9.027777777777779,
+        "resends_per_100": 15.927777777777777,
+        "residual_pct": 1.9166666666666667,
+        "goodput_vs_ai_and_ran": 1.0345757513540794
+      },
+      "ours": {
+        "goodput_bits_per_tx": 45535.351383340734,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 7.405555555555556,
+        "resends_per_100": 12.65,
+        "residual_pct": 1.7777777777777777,
+        "goodput_vs_ai_and_ran": 1.0661864252266366
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 43990.12474771744,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 7.166666666666667,
+        "resends_per_100": 15.61111111111111,
+        "residual_pct": 2.6166666666666667,
+        "goodput_vs_ai_and_ran": 1.0300057521287032
+      }
+    },
+    "snr8_target0.1": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 52471.71627393579,
+        "mean_mcs": 11.373833333333334,
+        "first_fail_pct": 10.005555555555556,
+        "resends_per_100": 15.761111111111111,
+        "residual_pct": 2.033333333333333,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 61458.62257875171,
+        "mean_mcs": 12.374888888888888,
+        "first_fail_pct": 10.0,
+        "resends_per_100": 13.577777777777778,
+        "residual_pct": 1.0777777777777777,
+        "goodput_vs_ai_and_ran": 1.1712714380810139
+      },
+      "ours": {
+        "goodput_bits_per_tx": 70932.46852839047,
+        "mean_mcs": 13.658833333333334,
+        "first_fail_pct": 10.0,
+        "resends_per_100": 13.594444444444445,
+        "residual_pct": 1.05,
+        "goodput_vs_ai_and_ran": 1.3518229165228328
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 67754.95981717767,
+        "mean_mcs": 13.571722222222222,
+        "first_fail_pct": 9.983333333333333,
+        "resends_per_100": 16.68888888888889,
+        "residual_pct": 1.8888888888888888,
+        "goodput_vs_ai_and_ran": 1.2912663169516625
+      }
+    },
+    "snr8_target0.03": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 45989.81245326287,
+        "mean_mcs": 10.001222222222221,
+        "first_fail_pct": 6.405555555555556,
+        "resends_per_100": 11.438888888888888,
+        "residual_pct": 1.8777777777777778,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 48927.91832907964,
+        "mean_mcs": 10.081444444444445,
+        "first_fail_pct": 3.7777777777777777,
+        "resends_per_100": 6.661111111111111,
+        "residual_pct": 1.0222222222222221,
+        "goodput_vs_ai_and_ran": 1.0638860155997074
+      },
+      "ours": {
+        "goodput_bits_per_tx": 50747.7573976915,
+        "mean_mcs": 10.285388888888889,
+        "first_fail_pct": 3.283333333333333,
+        "resends_per_100": 5.888888888888889,
+        "residual_pct": 0.4777777777777778,
+        "goodput_vs_ai_and_ran": 1.1034564980943091
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 48653.95748202555,
+        "mean_mcs": 10.139111111111111,
+        "first_fail_pct": 3.488888888888889,
+        "resends_per_100": 7.405555555555556,
+        "residual_pct": 1.5555555555555556,
+        "goodput_vs_ai_and_ran": 1.0579290257265153
+      }
+    },
+    "snr8_target0.01": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 45715.10950136442,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 6.605555555555555,
+        "resends_per_100": 11.972222222222221,
+        "residual_pct": 1.9833333333333334,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 48171.99792681663,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 4.061111111111111,
+        "resends_per_100": 7.188888888888889,
+        "residual_pct": 1.1277777777777778,
+        "goodput_vs_ai_and_ran": 1.0537434658311138
+      },
+      "ours": {
+        "goodput_bits_per_tx": 49406.892008867304,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 2.9,
+        "resends_per_100": 5.2555555555555555,
+        "residual_pct": 0.4222222222222222,
+        "goodput_vs_ai_and_ran": 1.0807562870956855
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 48336.08013355593,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 2.9055555555555554,
+        "resends_per_100": 6.488888888888889,
+        "residual_pct": 1.4388888888888889,
+        "goodput_vs_ai_and_ran": 1.057332699424318
+      }
+    },
+    "snr10_target0.1": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 65006.68283099334,
+        "mean_mcs": 13.107944444444444,
+        "first_fail_pct": 10.0,
+        "resends_per_100": 15.938888888888888,
+        "residual_pct": 1.6888888888888889,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 81907.3551800147,
+        "mean_mcs": 15.086833333333333,
+        "first_fail_pct": 9.822222222222223,
+        "resends_per_100": 13.416666666666666,
+        "residual_pct": 1.05,
+        "goodput_vs_ai_and_ran": 1.259983614191795
+      },
+      "ours": {
+        "goodput_bits_per_tx": 88109.72437528057,
+        "mean_mcs": 15.783333333333333,
+        "first_fail_pct": 8.072222222222223,
+        "resends_per_100": 11.383333333333333,
+        "residual_pct": 0.8277777777777777,
+        "goodput_vs_ai_and_ran": 1.3553948692375417
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 83980.19691063953,
+        "mean_mcs": 15.847388888888888,
+        "first_fail_pct": 8.116666666666667,
+        "resends_per_100": 15.45,
+        "residual_pct": 2.4944444444444445,
+        "goodput_vs_ai_and_ran": 1.2918702086210767
+      }
+    },
+    "snr10_target0.03": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 48037.64749459821,
+        "mean_mcs": 10.0105,
+        "first_fail_pct": 4.605555555555555,
+        "resends_per_100": 7.988888888888889,
+        "residual_pct": 0.7888888888888889,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 54290.72363828662,
+        "mean_mcs": 10.775333333333334,
+        "first_fail_pct": 3.061111111111111,
+        "resends_per_100": 5.055555555555555,
+        "residual_pct": 0.5277777777777778,
+        "goodput_vs_ai_and_ran": 1.1301703241065575
+      },
+      "ours": {
+        "goodput_bits_per_tx": 63828.56863474518,
+        "mean_mcs": 11.93838888888889,
+        "first_fail_pct": 2.966666666666667,
+        "resends_per_100": 4.538888888888889,
+        "residual_pct": 0.23333333333333334,
+        "goodput_vs_ai_and_ran": 1.328719701395091
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 58038.96336386345,
+        "mean_mcs": 11.43688888888889,
+        "first_fail_pct": 3.0055555555555555,
+        "resends_per_100": 6.7555555555555555,
+        "residual_pct": 0.8611111111111112,
+        "goodput_vs_ai_and_ran": 1.208197453266001
+      }
+    },
+    "snr10_target0.01": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 47996.010287007506,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 4.55,
+        "resends_per_100": 8.011111111111111,
+        "residual_pct": 0.7333333333333333,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 49830.31881895219,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 2.3833333333333333,
+        "resends_per_100": 4.238888888888889,
+        "residual_pct": 0.5388888888888889,
+        "goodput_vs_ai_and_ran": 1.0382179377197365
+      },
+      "ours": {
+        "goodput_bits_per_tx": 50611.026863739346,
+        "mean_mcs": 10.00538888888889,
+        "first_fail_pct": 2.022222222222222,
+        "resends_per_100": 2.988888888888889,
+        "residual_pct": 0.25555555555555554,
+        "goodput_vs_ai_and_ran": 1.0544840406753502
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 49927.49128511274,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 2.061111111111111,
+        "resends_per_100": 4.227777777777778,
+        "residual_pct": 0.35555555555555557,
+        "goodput_vs_ai_and_ran": 1.0402425323804068
+      }
+    },
+    "snr12_target0.1": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 61644.21398234311,
+        "mean_mcs": 12.68388888888889,
+        "first_fail_pct": 10.05,
+        "resends_per_100": 16.416666666666668,
+        "residual_pct": 1.8944444444444444,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 81722.10923881465,
+        "mean_mcs": 15.268055555555556,
+        "first_fail_pct": 9.666666666666666,
+        "resends_per_100": 14.733333333333333,
+        "residual_pct": 1.5888888888888888,
+        "goodput_vs_ai_and_ran": 1.3257060794419813
+      },
+      "ours": {
+        "goodput_bits_per_tx": 87619.10597570047,
+        "mean_mcs": 15.865333333333334,
+        "first_fail_pct": 8.15,
+        "resends_per_100": 12.027777777777779,
+        "residual_pct": 1.3944444444444444,
+        "goodput_vs_ai_and_ran": 1.4213678837854498
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 84011.35194244604,
+        "mean_mcs": 15.880444444444445,
+        "first_fail_pct": 8.116666666666667,
+        "resends_per_100": 15.833333333333334,
+        "residual_pct": 2.3222222222222224,
+        "goodput_vs_ai_and_ran": 1.3628424553601997
+      }
+    },
+    "snr12_target0.03": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 47057.35080768059,
+        "mean_mcs": 10.000666666666667,
+        "first_fail_pct": 5.666666666666667,
+        "resends_per_100": 9.366666666666667,
+        "residual_pct": 1.461111111111111,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 50002.61117196057,
+        "mean_mcs": 10.257888888888889,
+        "first_fail_pct": 3.477777777777778,
+        "resends_per_100": 6.516666666666667,
+        "residual_pct": 1.0777777777777777,
+        "goodput_vs_ai_and_ran": 1.0625887414766932
+      },
+      "ours": {
+        "goodput_bits_per_tx": 55084.63737649779,
+        "mean_mcs": 10.931611111111112,
+        "first_fail_pct": 3.0722222222222224,
+        "resends_per_100": 5.711111111111111,
+        "residual_pct": 0.85,
+        "goodput_vs_ai_and_ran": 1.1705851781079655
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 53738.24066736184,
+        "mean_mcs": 10.87561111111111,
+        "first_fail_pct": 3.061111111111111,
+        "resends_per_100": 6.555555555555555,
+        "residual_pct": 1.3666666666666667,
+        "goodput_vs_ai_and_ran": 1.1419733526221116
+      }
+    },
+    "snr12_target0.01": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 47128.004067934504,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 5.511111111111111,
+        "resends_per_100": 9.255555555555556,
+        "residual_pct": 1.4055555555555554,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 48670.71571906355,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 3.411111111111111,
+        "resends_per_100": 6.311111111111111,
+        "residual_pct": 0.9222222222222223,
+        "goodput_vs_ai_and_ran": 1.0327345000417425
+      },
+      "ours": {
+        "goodput_bits_per_tx": 49482.371675778966,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 2.3055555555555554,
+        "resends_per_100": 4.661111111111111,
+        "residual_pct": 0.8333333333333334,
+        "goodput_vs_ai_and_ran": 1.0499568707482427
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 48814.20445099174,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 2.338888888888889,
+        "resends_per_100": 5.594444444444444,
+        "residual_pct": 1.3,
+        "goodput_vs_ai_and_ran": 1.0357791596823536
+      }
+    },
+    "snr14_target0.1": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 73862.4083164886,
+        "mean_mcs": 14.281666666666666,
+        "first_fail_pct": 9.972222222222221,
+        "resends_per_100": 15.433333333333334,
+        "residual_pct": 1.9222222222222223,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 89700.33974811083,
+        "mean_mcs": 15.97038888888889,
+        "first_fail_pct": 6.783333333333333,
+        "resends_per_100": 10.277777777777779,
+        "residual_pct": 1.288888888888889,
+        "goodput_vs_ai_and_ran": 1.214424790534303
+      },
+      "ours": {
+        "goodput_bits_per_tx": 92373.69585158465,
+        "mean_mcs": 15.997388888888889,
+        "first_fail_pct": 5.2,
+        "resends_per_100": 7.805555555555555,
+        "residual_pct": 0.7888888888888889,
+        "goodput_vs_ai_and_ran": 1.2506185210720202
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 89396.23113445802,
+        "mean_mcs": 15.9835,
+        "first_fail_pct": 4.966666666666667,
+        "resends_per_100": 9.988888888888889,
+        "residual_pct": 1.961111111111111,
+        "goodput_vs_ai_and_ran": 1.2103075593123025
+      }
+    },
+    "snr14_target0.03": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 48991.62316890108,
+        "mean_mcs": 10.129833333333334,
+        "first_fail_pct": 3.716666666666667,
+        "resends_per_100": 7.3277777777777775,
+        "residual_pct": 0.85,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 65020.83563230494,
+        "mean_mcs": 12.191944444444445,
+        "first_fail_pct": 3.0277777777777777,
+        "resends_per_100": 5.522222222222222,
+        "residual_pct": 0.5888888888888889,
+        "goodput_vs_ai_and_ran": 1.3271827187301457
+      },
+      "ours": {
+        "goodput_bits_per_tx": 75033.66159695818,
+        "mean_mcs": 13.420833333333333,
+        "first_fail_pct": 3.0055555555555555,
+        "resends_per_100": 5.2,
+        "residual_pct": 0.4888888888888889,
+        "goodput_vs_ai_and_ran": 1.5315610454112911
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 73771.35482531278,
+        "mean_mcs": 13.53,
+        "first_fail_pct": 3.0,
+        "resends_per_100": 7.016666666666667,
+        "residual_pct": 1.6388888888888888,
+        "goodput_vs_ai_and_ran": 1.5057952779188868
+      }
+    },
+    "snr14_target0.01": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 48276.94738479084,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 3.65,
+        "resends_per_100": 7.1722222222222225,
+        "residual_pct": 0.9277777777777778,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 50224.061643835616,
+        "mean_mcs": 10.028944444444445,
+        "first_fail_pct": 1.8722222222222222,
+        "resends_per_100": 3.8222222222222224,
+        "residual_pct": 0.49444444444444446,
+        "goodput_vs_ai_and_ran": 1.0403321743507379
+      },
+      "ours": {
+        "goodput_bits_per_tx": 50530.921484037965,
+        "mean_mcs": 10.019277777777777,
+        "first_fail_pct": 1.5555555555555556,
+        "resends_per_100": 3.022222222222222,
+        "residual_pct": 0.5444444444444444,
+        "goodput_vs_ai_and_ran": 1.0466884138568633
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 49961.82709456934,
+        "mean_mcs": 10.029444444444444,
+        "first_fail_pct": 1.5833333333333333,
+        "resends_per_100": 4.038888888888889,
+        "residual_pct": 0.8111111111111111,
+        "goodput_vs_ai_and_ran": 1.0349002950901014
+      }
+    },
+    "snr16_target0.1": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 74776.26189219028,
+        "mean_mcs": 14.414944444444444,
+        "first_fail_pct": 9.95,
+        "resends_per_100": 15.738888888888889,
+        "residual_pct": 1.7166666666666666,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 91962.97056108319,
+        "mean_mcs": 15.9845,
+        "first_fail_pct": 6.15,
+        "resends_per_100": 8.322222222222223,
+        "residual_pct": 0.6777777777777778,
+        "goodput_vs_ai_and_ran": 1.2298417737660128
+      },
+      "ours": {
+        "goodput_bits_per_tx": 93403.3876465989,
+        "mean_mcs": 15.998555555555555,
+        "first_fail_pct": 4.416666666666667,
+        "resends_per_100": 6.583333333333333,
+        "residual_pct": 0.8277777777777777,
+        "goodput_vs_ai_and_ran": 1.2491047998797338
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 90220.89329873302,
+        "mean_mcs": 15.999888888888888,
+        "first_fail_pct": 4.1722222222222225,
+        "resends_per_100": 9.183333333333334,
+        "residual_pct": 1.8777777777777778,
+        "goodput_vs_ai_and_ran": 1.206544577326027
+      }
+    },
+    "snr16_target0.03": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 47780.67518079704,
+        "mean_mcs": 10.017611111111112,
+        "first_fail_pct": 4.794444444444444,
+        "resends_per_100": 8.316666666666666,
+        "residual_pct": 1.1055555555555556,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 75136.4361397176,
+        "mean_mcs": 13.408388888888888,
+        "first_fail_pct": 3.022222222222222,
+        "resends_per_100": 4.655555555555556,
+        "residual_pct": 0.7333333333333333,
+        "goodput_vs_ai_and_ran": 1.5725277186939957
+      },
+      "ours": {
+        "goodput_bits_per_tx": 83450.59744662818,
+        "mean_mcs": 14.39311111111111,
+        "first_fail_pct": 3.0388888888888888,
+        "resends_per_100": 4.872222222222222,
+        "residual_pct": 0.5555555555555556,
+        "goodput_vs_ai_and_ran": 1.7465344960250122
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 79895.31929897335,
+        "mean_mcs": 14.305944444444444,
+        "first_fail_pct": 2.977777777777778,
+        "resends_per_100": 7.144444444444445,
+        "residual_pct": 1.6555555555555554,
+        "goodput_vs_ai_and_ran": 1.6721262099511545
+      }
+    },
+    "snr16_target0.01": {
+      "ai_and_ran": {
+        "goodput_bits_per_tx": 47845.79527559055,
+        "mean_mcs": 10.0,
+        "first_fail_pct": 4.522222222222222,
+        "resends_per_100": 7.95,
+        "residual_pct": 1.1,
+        "goodput_vs_ai_and_ran": 1.0
+      },
+      "ai_for_ran": {
+        "goodput_bits_per_tx": 50985.5776599199,
+        "mean_mcs": 10.042222222222222,
+        "first_fail_pct": 1.2,
+        "resends_per_100": 2.6555555555555554,
+        "residual_pct": 0.2722222222222222,
+        "goodput_vs_ai_and_ran": 1.0656229532029782
+      },
+      "ours": {
+        "goodput_bits_per_tx": 53031.32655833922,
+        "mean_mcs": 10.327555555555556,
+        "first_fail_pct": 1.2,
+        "resends_per_100": 2.227777777777778,
+        "residual_pct": 0.1388888888888889,
+        "goodput_vs_ai_and_ran": 1.1083800834092137
+      },
+      "ours_conv_harq": {
+        "goodput_bits_per_tx": 50779.853964139125,
+        "mean_mcs": 10.049722222222222,
+        "first_fail_pct": 1.261111111111111,
+        "resends_per_100": 2.8666666666666667,
+        "residual_pct": 0.5611111111111111,
+        "goodput_vs_ai_and_ran": 1.0613232295889006
+      }
+    }
+  }
+}

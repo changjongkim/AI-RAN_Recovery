@@ -1,0 +1,7 @@
+p2b_u16_minrho.json: 5120 slots, 10240 TBs, similarity median 0.22, separable vs cuPHY first [9107, 9111]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 11.0 | 0.0 | 19.8 | 48 | 2.58 | 1.198 |
+| ai_for_ran | 11.9 | 0.0 | 21.6 | 49 | 3.10 | 1.216 |
+| ours | 11.0 | 1.1 | 17.3 | 41 | 2.17 | 1.173 |
+| ours_conv_harq | 11.0 | 1.1 | 18.7 | 48 | 2.58 | 1.187 |

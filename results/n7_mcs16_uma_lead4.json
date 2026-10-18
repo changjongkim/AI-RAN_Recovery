@@ -1,0 +1,319 @@
+{
+  "blocks": 10240,
+  "params": {
+    "inputs": [
+      "results/mcs16_uma/c0.npz",
+      "results/mcs16_uma/c10.npz",
+      "results/mcs16_uma/c11.npz",
+      "results/mcs16_uma/c12.npz",
+      "results/mcs16_uma/c13.npz",
+      "results/mcs16_uma/c14.npz",
+      "results/mcs16_uma/c15.npz",
+      "results/mcs16_uma/c16.npz",
+      "results/mcs16_uma/c17.npz",
+      "results/mcs16_uma/c18.npz",
+      "results/mcs16_uma/c19.npz",
+      "results/mcs16_uma/c1.npz",
+      "results/mcs16_uma/c2.npz",
+      "results/mcs16_uma/c3.npz",
+      "results/mcs16_uma/c4.npz",
+      "results/mcs16_uma/c5.npz",
+      "results/mcs16_uma/c6.npz",
+      "results/mcs16_uma/c7.npz",
+      "results/mcs16_uma/c8.npz",
+      "results/mcs16_uma/c9.npz"
+    ],
+    "output": "results/n7_mcs16_uma_lead4.json",
+    "lead": 4.0,
+    "l1": 1.4,
+    "run": 6.3,
+    "deadline": 11.5,
+    "rho": 0.4
+  },
+  "policies": {
+    "DDDSU/harq_only": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 9.4,
+      "failed_p90_ms": 16.9,
+      "failed_p99_ms": 24.4,
+      "unrecovered_p50_ms": 9.4,
+      "unrecovered_p99_ms": 24.4,
+      "recovered_p50_ms": 9.4,
+      "all_p99_ms": 16.9,
+      "all_p999_ms": 24.4,
+      "never_pct": 2.36328125,
+      "uplink_slots_per_100": 26.728515625
+    },
+    "DDDSU/wait": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.699999999999999,
+      "failed_p90_ms": 14.4,
+      "failed_p99_ms": 29.4,
+      "unrecovered_p50_ms": 14.4,
+      "unrecovered_p99_ms": 29.4,
+      "recovered_p50_ms": 7.699999999999999,
+      "all_p99_ms": 21.9,
+      "all_p999_ms": 29.4,
+      "never_pct": 1.005859375,
+      "uplink_slots_per_100": 11.46484375
+    },
+    "DDDSU/parallel": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.699999999999999,
+      "failed_p90_ms": 9.4,
+      "failed_p99_ms": 24.4,
+      "unrecovered_p50_ms": 9.4,
+      "unrecovered_p99_ms": 24.4,
+      "recovered_p50_ms": 7.699999999999999,
+      "all_p99_ms": 16.9,
+      "all_p999_ms": 24.4,
+      "never_pct": 1.005859375,
+      "uplink_slots_per_100": 21.73828125
+    },
+    "DDDSU/select_rho": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.699999999999999,
+      "failed_p90_ms": 14.4,
+      "failed_p99_ms": 29.4,
+      "unrecovered_p50_ms": 14.4,
+      "unrecovered_p99_ms": 29.4,
+      "recovered_p50_ms": 7.699999999999999,
+      "all_p99_ms": 16.9,
+      "all_p999_ms": 29.4,
+      "never_pct": 1.005859375,
+      "uplink_slots_per_100": 13.349609375
+    },
+    "DDDSU/select_oracle": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.699999999999999,
+      "failed_p90_ms": 9.4,
+      "failed_p99_ms": 24.4,
+      "unrecovered_p50_ms": 9.4,
+      "unrecovered_p99_ms": 24.4,
+      "recovered_p50_ms": 7.699999999999999,
+      "all_p99_ms": 16.9,
+      "all_p999_ms": 24.4,
+      "never_pct": 1.005859375,
+      "uplink_slots_per_100": 11.46484375
+    },
+    "DDDSU/select_cb1": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.699999999999999,
+      "failed_p90_ms": 9.4,
+      "failed_p99_ms": 24.4,
+      "unrecovered_p50_ms": 9.4,
+      "unrecovered_p99_ms": 24.4,
+      "recovered_p50_ms": 7.699999999999999,
+      "all_p99_ms": 16.9,
+      "all_p999_ms": 24.4,
+      "never_pct": 1.005859375,
+      "uplink_slots_per_100": 21.3671875
+    },
+    "DDDSU/select_cb2": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.699999999999999,
+      "failed_p90_ms": 9.4,
+      "failed_p99_ms": 24.4,
+      "unrecovered_p50_ms": 9.4,
+      "unrecovered_p99_ms": 24.4,
+      "recovered_p50_ms": 7.699999999999999,
+      "all_p99_ms": 16.9,
+      "all_p999_ms": 24.4,
+      "never_pct": 1.005859375,
+      "uplink_slots_per_100": 21.15234375
+    },
+    "DDDSU/select_cb3": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.699999999999999,
+      "failed_p90_ms": 9.4,
+      "failed_p99_ms": 24.4,
+      "unrecovered_p50_ms": 9.4,
+      "unrecovered_p99_ms": 24.4,
+      "recovered_p50_ms": 7.699999999999999,
+      "all_p99_ms": 16.9,
+      "all_p999_ms": 24.4,
+      "never_pct": 1.005859375,
+      "uplink_slots_per_100": 20.947265625
+    },
+    "DDDSU/select_cb5": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.699999999999999,
+      "failed_p90_ms": 9.4,
+      "failed_p99_ms": 24.4,
+      "unrecovered_p50_ms": 9.4,
+      "unrecovered_p99_ms": 24.4,
+      "recovered_p50_ms": 7.699999999999999,
+      "all_p99_ms": 16.9,
+      "all_p999_ms": 24.4,
+      "never_pct": 1.005859375,
+      "uplink_slots_per_100": 20.64453125
+    },
+    "DDDSUUDDDD/harq_only": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.4,
+      "failed_p90_ms": 16.9,
+      "failed_p99_ms": 26.9,
+      "unrecovered_p50_ms": 7.4,
+      "unrecovered_p99_ms": 26.9,
+      "recovered_p50_ms": 7.4,
+      "all_p99_ms": 16.9,
+      "all_p999_ms": 26.9,
+      "never_pct": 2.36328125,
+      "uplink_slots_per_100": 26.728515625
+    },
+    "DDDSUUDDDD/wait": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.699999999999999,
+      "failed_p90_ms": 16.9,
+      "failed_p99_ms": 36.9,
+      "unrecovered_p50_ms": 16.9,
+      "unrecovered_p99_ms": 36.9,
+      "recovered_p50_ms": 7.699999999999999,
+      "all_p99_ms": 26.9,
+      "all_p999_ms": 36.9,
+      "never_pct": 1.005859375,
+      "uplink_slots_per_100": 11.46484375
+    },
+    "DDDSUUDDDD/parallel": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.4,
+      "failed_p90_ms": 7.4,
+      "failed_p99_ms": 26.9,
+      "unrecovered_p50_ms": 7.4,
+      "unrecovered_p99_ms": 26.9,
+      "recovered_p50_ms": 7.4,
+      "all_p99_ms": 16.9,
+      "all_p999_ms": 26.9,
+      "never_pct": 1.005859375,
+      "uplink_slots_per_100": 21.73828125
+    },
+    "DDDSUUDDDD/select_rho": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.699999999999999,
+      "failed_p90_ms": 16.9,
+      "failed_p99_ms": 36.9,
+      "unrecovered_p50_ms": 16.9,
+      "unrecovered_p99_ms": 36.9,
+      "recovered_p50_ms": 7.699999999999999,
+      "all_p99_ms": 16.9,
+      "all_p999_ms": 36.9,
+      "never_pct": 1.005859375,
+      "uplink_slots_per_100": 13.349609375
+    },
+    "DDDSUUDDDD/select_oracle": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.699999999999999,
+      "failed_p90_ms": 7.699999999999999,
+      "failed_p99_ms": 26.9,
+      "unrecovered_p50_ms": 7.4,
+      "unrecovered_p99_ms": 26.9,
+      "recovered_p50_ms": 7.699999999999999,
+      "all_p99_ms": 16.9,
+      "all_p999_ms": 26.9,
+      "never_pct": 1.005859375,
+      "uplink_slots_per_100": 11.46484375
+    },
+    "DDDSUUDDDD/select_cb1": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.4,
+      "failed_p90_ms": 7.4,
+      "failed_p99_ms": 26.9,
+      "unrecovered_p50_ms": 7.4,
+      "unrecovered_p99_ms": 26.9,
+      "recovered_p50_ms": 7.4,
+      "all_p99_ms": 16.9,
+      "all_p999_ms": 26.9,
+      "never_pct": 1.005859375,
+      "uplink_slots_per_100": 21.3671875
+    },
+    "DDDSUUDDDD/select_cb2": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.4,
+      "failed_p90_ms": 7.699999999999999,
+      "failed_p99_ms": 26.9,
+      "unrecovered_p50_ms": 7.4,
+      "unrecovered_p99_ms": 26.9,
+      "recovered_p50_ms": 7.4,
+      "all_p99_ms": 16.9,
+      "all_p999_ms": 26.9,
+      "never_pct": 1.005859375,
+      "uplink_slots_per_100": 21.15234375
+    },
+    "DDDSUUDDDD/select_cb3": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.4,
+      "failed_p90_ms": 7.699999999999999,
+      "failed_p99_ms": 26.9,
+      "unrecovered_p50_ms": 7.4,
+      "unrecovered_p99_ms": 26.9,
+      "recovered_p50_ms": 7.4,
+      "all_p99_ms": 16.9,
+      "all_p999_ms": 26.9,
+      "never_pct": 1.005859375,
+      "uplink_slots_per_100": 20.947265625
+    },
+    "DDDSUUDDDD/select_cb5": {
+      "failed_blocks": 1848,
+      "failed_p50_ms": 7.4,
+      "failed_p90_ms": 7.699999999999999,
+      "failed_p99_ms": 26.9,
+      "unrecovered_p50_ms": 7.4,
+      "unrecovered_p99_ms": 26.9,
+      "recovered_p50_ms": 7.4,
+      "all_p99_ms": 16.9,
+      "all_p999_ms": 26.9,
+      "never_pct": 1.005859375,
+      "uplink_slots_per_100": 20.64453125
+    }
+  },
+  "recovery_by_failed_cbs": {
+    "1": {
+      "failures": 38,
+      "recovered_pct": 100.0
+    },
+    "2": {
+      "failures": 23,
+      "recovered_pct": 95.65217391304348
+    },
+    "3": {
+      "failures": 22,
+      "recovered_pct": 95.45454545454545
+    },
+    "4": {
+      "failures": 15,
+      "recovered_pct": 93.33333333333333
+    },
+    "5": {
+      "failures": 18,
+      "recovered_pct": 94.44444444444444
+    },
+    "6": {
+      "failures": 16,
+      "recovered_pct": 87.5
+    },
+    "7": {
+      "failures": 11,
+      "recovered_pct": 100.0
+    },
+    "8": {
+      "failures": 11,
+      "recovered_pct": 100.0
+    },
+    "9": {
+      "failures": 10,
+      "recovered_pct": 80.0
+    },
+    "10": {
+      "failures": 19,
+      "recovered_pct": 89.47368421052632
+    },
+    "11": {
+      "failures": 20,
+      "recovered_pct": 80.0
+    },
+    "12": {
+      "failures": 1645,
+      "recovered_pct": 52.462006079027354
+    }
+  }
+}

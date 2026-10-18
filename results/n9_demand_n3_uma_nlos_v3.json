@@ -1,0 +1,142 @@
+{
+  "traces": [
+    "results/n3_uma_nlos_v3/c0.npz",
+    "results/n3_uma_nlos_v3/c10.npz",
+    "results/n3_uma_nlos_v3/c11.npz",
+    "results/n3_uma_nlos_v3/c12.npz",
+    "results/n3_uma_nlos_v3/c13.npz",
+    "results/n3_uma_nlos_v3/c14.npz",
+    "results/n3_uma_nlos_v3/c15.npz",
+    "results/n3_uma_nlos_v3/c16.npz",
+    "results/n3_uma_nlos_v3/c17.npz",
+    "results/n3_uma_nlos_v3/c18.npz",
+    "results/n3_uma_nlos_v3/c19.npz",
+    "results/n3_uma_nlos_v3/c1.npz",
+    "results/n3_uma_nlos_v3/c2.npz",
+    "results/n3_uma_nlos_v3/c3.npz",
+    "results/n3_uma_nlos_v3/c4.npz",
+    "results/n3_uma_nlos_v3/c5.npz",
+    "results/n3_uma_nlos_v3/c6.npz",
+    "results/n3_uma_nlos_v3/c7.npz",
+    "results/n3_uma_nlos_v3/c8.npz",
+    "results/n3_uma_nlos_v3/c9.npz"
+  ],
+  "run_ms": {
+    "1": 3.23,
+    "2": 6.3,
+    "3": 6.68,
+    "4": 8.64
+  },
+  "by_point": {
+    "6.0": {
+      "p_slot_needs_recovery": 0.27109375,
+      "p_block_fails": 0.155859375,
+      "cells": {
+        "4": {
+          "recovery_gpu_seconds_per_second": 2.7326250000000005,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 68.31562500000001
+        },
+        "8": {
+          "recovery_gpu_seconds_per_second": 5.465250000000001,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 136.63125000000002
+        },
+        "16": {
+          "recovery_gpu_seconds_per_second": 10.930500000000002,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 273.26250000000005
+        },
+        "32": {
+          "recovery_gpu_seconds_per_second": 21.861000000000004,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 546.5250000000001
+        }
+      }
+    },
+    "8.0": {
+      "p_slot_needs_recovery": 0.203125,
+      "p_block_fails": 0.125,
+      "cells": {
+        "4": {
+          "recovery_gpu_seconds_per_second": 2.0475,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 51.1875
+        },
+        "8": {
+          "recovery_gpu_seconds_per_second": 4.095,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 102.375
+        },
+        "16": {
+          "recovery_gpu_seconds_per_second": 8.19,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 204.75
+        },
+        "32": {
+          "recovery_gpu_seconds_per_second": 16.38,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 409.5
+        }
+      }
+    },
+    "10.0": {
+      "p_slot_needs_recovery": 0.16328125,
+      "p_block_fails": 0.10078125,
+      "cells": {
+        "4": {
+          "recovery_gpu_seconds_per_second": 1.645875,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 41.146875
+        },
+        "8": {
+          "recovery_gpu_seconds_per_second": 3.29175,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 82.29375
+        },
+        "16": {
+          "recovery_gpu_seconds_per_second": 6.5835,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 164.5875
+        },
+        "32": {
+          "recovery_gpu_seconds_per_second": 13.167,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 329.175
+        }
+      }
+    },
+    "12.0": {
+      "p_slot_needs_recovery": 0.134375,
+      "p_block_fails": 0.082421875,
+      "cells": {
+        "4": {
+          "recovery_gpu_seconds_per_second": 1.3545,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 33.862500000000004
+        },
+        "8": {
+          "recovery_gpu_seconds_per_second": 2.709,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 67.72500000000001
+        },
+        "16": {
+          "recovery_gpu_seconds_per_second": 5.418,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 135.45000000000002
+        },
+        "32": {
+          "recovery_gpu_seconds_per_second": 10.836,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 270.90000000000003
+        }
+      }
+    },
+    "all": {
+      "p_slot_needs_recovery": 0.19296875,
+      "p_block_fails": 0.116015625,
+      "cells": {
+        "4": {
+          "recovery_gpu_seconds_per_second": 1.945125,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 48.628125
+        },
+        "8": {
+          "recovery_gpu_seconds_per_second": 3.89025,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 97.25625
+        },
+        "16": {
+          "recovery_gpu_seconds_per_second": 7.7805,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 194.5125
+        },
+        "32": {
+          "recovery_gpu_seconds_per_second": 15.561,
+          "neuralrx_lanes_busy_pct_per_gpu_of_4": 389.025
+        }
+      }
+    }
+  }
+}

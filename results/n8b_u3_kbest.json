@@ -1,0 +1,65 @@
+{
+  "files": [
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/n8b_u3_kbest/g0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/n8b_u3_kbest/g1.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/n8b_u3_kbest/g2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/n8b_u3_kbest/g3.npz"
+  ],
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx"
+  ],
+  "slots": 960,
+  "num_rx": 4,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.6014187955146402,
+    "baseline_lmmse_kbest": 2.499195943471856,
+    "baseline_perf_csi_kbest": 2.1892616554376825,
+    "nrx": 1.6082764783417285
+  },
+  "fail_pct": {
+    "baseline_lslin_lmmse": 13.750000000000002,
+    "baseline_lmmse_kbest": 6.215277777777778,
+    "baseline_perf_csi_kbest": 4.166666666666666,
+    "nrx": 7.152777777777778
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lmmse_kbest": 54.7979797979798,
+    "baseline_perf_csi_kbest": 69.6969696969697,
+    "nrx": 48.23232323232323
+  },
+  "by_similarity": {
+    "0.0-0.4": {
+      "share_of_blocks": 0.035416666666666666,
+      "conventional_fail_pct": 15.686274509803921,
+      "share_of_failures": 0.04040404040404041,
+      "recovers_pct": {
+        "baseline_lmmse_kbest": 37.5,
+        "baseline_perf_csi_kbest": 43.75,
+        "nrx": 31.25
+      }
+    },
+    "0.4-0.6": {
+      "share_of_blocks": 0.5697916666666667,
+      "conventional_fail_pct": 10.847044485070079,
+      "share_of_failures": 0.4494949494949495,
+      "recovers_pct": {
+        "baseline_lmmse_kbest": 55.056179775280896,
+        "baseline_perf_csi_kbest": 69.66292134831461,
+        "nrx": 49.438202247191015
+      }
+    },
+    "0.6-1.0": {
+      "share_of_blocks": 0.39479166666666665,
+      "conventional_fail_pct": 17.766051011433596,
+      "share_of_failures": 0.51010101010101,
+      "recovers_pct": {
+        "baseline_lmmse_kbest": 55.94059405940594,
+        "baseline_perf_csi_kbest": 71.78217821782178,
+        "nrx": 48.51485148514851
+      }
+    }
+  }
+}
