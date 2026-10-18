@@ -50,3 +50,13 @@ N|n4b_train13|150|grep -qP "^n4b_train1\t0\t" queue_b/done || exit 1; bash exp/n
 N|n4b_train14|150|grep -qP "^n4b_train1\t0\t" queue_b/done || exit 1; bash exp/n4b_train.sh 14 35000
 N|n4b_eval_r2|150|bash exp/classical.sh n4b_eval_r2 --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --slots 128
 N|n4b_eval_r2_uma|150|bash exp/classical.sh n4b_eval_r2_uma --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --channel UMa --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --slots 96
+# Round 6 (2026-10-18): N14 the 1-4 user receiver trained further (290k -> 530k iterations), then 3-4 users against K-best again
+N|n4_train8|150|bash exp/n4_train.sh 8 40000
+N|n4_train9|150|bash exp/n4_train.sh 9 40000
+N|n4_train10|150|bash exp/n4_train.sh 10 40000
+N|n4_train11|150|bash exp/n4_train.sh 11 40000
+N|n4_train12|150|bash exp/n4_train.sh 12 40000
+N|n4_train13|150|bash exp/n4_train.sh 13 40000
+N|n8b_u3_kbest_r2|200|bash exp/classical.sh n8b_u3_kbest_r2 --base-config nrx_large_mu4.cfg --users 3 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --ebno 8,10,12,14,16 --slots 48 --batch 4
+N|n8b_u4_kbest_r2|200|bash exp/classical.sh n8b_u4_kbest_r2 --base-config nrx_large_mu4.cfg --users 4 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --ebno 10,12,14,16,18 --slots 48 --batch 4
+N|n8b_u2_r2|120|bash exp/classical.sh n8b_u2_r2 --base-config nrx_large_mu4.cfg --users 2 --systems baseline_lslin_lmmse,nrx --ebno 6,8,10,12 --slots 96 --batch 8

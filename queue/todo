@@ -80,3 +80,17 @@ N|n6_uma_los|150|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_mcs.
 # (e) latency with the code-block predictor and intervals for everything
 L|n7_all|0|for n in n3_uma_v3_more n3_uma_nlos_more n3_uma_los_more mcs12_uma mcs16_uma; do /global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/sim/harq_latency.py --inputs results/$n/c*.npz --lead 4 --output results/n7_${n}_lead4.json; done > results/n7_all.txt 2>&1
 L|ci_round5|0|/global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/ci.py n1_umi_v3 n3_uma_v3 n3_uma_v3_more n3_uma_v30 n3_uma_v30_more n3_uma_los_v3 n3_uma_los_more n3_uma_nlos_v3 n3_uma_nlos_more mcs12_umi mcs16_umi mcs12_uma mcs16_uma wide_umi wide_uma n1b_uma_v3_alone n1b_uma_nlos_alone p2b_uma_u8_random p2b_uma_u8_partner p2b_uma_u8_minrho p2b_uma_u4_partner p2b_uma_u16_partner > results/ci_round5.txt 2>&1
+# Round 6 (2026-10-18): N13 neural-receiver lanes on one A100; more seeds where conditions have 10,240 blocks;
+# N14 8-RX receiver trained further (higher learning rate to leave the plateau, then a lower one) and evaluated again
+N|n13_lanes|30|bash exp/nrx_lanes.sh
+N|p1_umi_los_more|60|grep -qP "^smoke\t0\t" queue/done || exit 1; SEED0=2000 bash exp/harq_ir.sh p1_umi_los_more 20 --channel UMi --los los --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|p1_umi_nlos_more|60|grep -qP "^smoke\t0\t" queue/done || exit 1; SEED0=2000 bash exp/harq_ir.sh p1_umi_nlos_more 20 --channel UMi --los nlos --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n3_uma_v120_more|60|grep -qP "^smoke\t0\t" queue/done || exit 1; SEED0=2000 bash exp/harq_ir.sh n3_uma_v120_more 20 --channel UMa --speed 33.33 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n4b_train15|150|LR=0.0003 bash exp/n4b_train.sh 15 35000
+N|n4b_train16|150|LR=0.0003 bash exp/n4b_train.sh 16 35000
+N|n4b_train17|150|LR=0.0003 bash exp/n4b_train.sh 17 35000
+N|n4b_train18|150|LR=0.0003 bash exp/n4b_train.sh 18 35000
+N|n4b_train19|150|LR=0.00005 bash exp/n4b_train.sh 19 35000
+N|n4b_train20|150|LR=0.00005 bash exp/n4b_train.sh 20 35000
+N|n4b_eval_r3|150|bash exp/classical.sh n4b_eval_r3 --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --slots 128
+N|n4b_eval_r3_uma|150|bash exp/classical.sh n4b_eval_r3_uma --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --channel UMa --slots 96

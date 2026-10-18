@@ -11,14 +11,14 @@ source /pscratch/sd/s/sgkim/kcj/airan_recovery/env.sh
 step=$1; iters=${2:-50000}
 mkdir -p $RESULTS/n4
 cfg=$NRX_REPO/config/nrx_large_mu4.cfg
-python3 - "$NRX_REPO/config/mu_nrx_large_273_UMi_4.cfg" "$cfg" "$iters" <<'PY'
+python3 - "$NRX_REPO/config/mu_nrx_large_273_UMi_4.cfg" "$cfg" "$iters" "${LR:-0.0001}" <<'PY'
 import re, sys
-src, dst, iters = sys.argv[1], sys.argv[2], int(sys.argv[3])
+src, dst, iters, lr = sys.argv[1], sys.argv[2], int(sys.argv[3]), float(sys.argv[4])
 t = open(src).read()
 t = re.sub(r"label\s*=\s*'[^']+'", "label = 'nrx_large_mu4'", t, count=1)
 schedule = ('training_schedule = {\n'
             f'    "num_iter": [{iters}],\n'
-            '    "learning_rate": [0.0001],\n'
+            f'    "learning_rate": [{lr}],\n'
             '    "batch_size": [64],\n'
             '    "train_tx": [False],\n'
             '    "min_training_snr_db": [[0., 2., 4., 6.]],\n'
@@ -37,7 +37,7 @@ import os; os.replace(dst + ".tmp", dst)
 PY
 w=$NRX_REPO/weights/nrx_large_mu4_weights
 [ -f $w ] || cp $NRX_REPO/weights/nrx_large_weights $w
-echo "step $step: $iters iterations from $(stat -c %y $w) $(date +%T)"
+echo "step $step: $iters iterations, learning rate ${LR:-0.0001}, from $(stat -c %y $w) $(date +%T)"
 ( cd $NRX_REPO/scripts && tfgen python3 train_neural_rx.py -config_name nrx_large_mu4.cfg -gpu 0 ) \
     > $RESULTS/n4/train_step$step.log 2>&1
 rc=$?

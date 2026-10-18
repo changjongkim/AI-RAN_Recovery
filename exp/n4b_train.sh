@@ -10,15 +10,15 @@ source /pscratch/sd/s/sgkim/kcj/airan_recovery/env.sh
 step=$1; iters=${2:-35000}
 mkdir -p $RESULTS/n4b
 cfg=$NRX_REPO/config/nrx_large_8rx.cfg
-python3 - "$NRX_REPO/config/nrx_large.cfg" "$cfg" "$iters" <<'PY'
+python3 - "$NRX_REPO/config/nrx_large.cfg" "$cfg" "$iters" "${LR:-0.0001}" <<'PY'
 import os, re, sys
-src, dst, iters = sys.argv[1], sys.argv[2], int(sys.argv[3])
+src, dst, iters, lr = sys.argv[1], sys.argv[2], int(sys.argv[3]), float(sys.argv[4])
 t = open(src).read()
 t = re.sub(r"label\s*=\s*'[^']+'", "label = 'nrx_large_8rx'", t, count=1)
 t, n = re.subn(r"(?m)^num_rx_antennas\s*=.*", "num_rx_antennas = 8", t); assert n == 1
 schedule = ('training_schedule = {\n'
             f'    "num_iter": [{iters}],\n'
-            '    "learning_rate": [0.0001],\n'
+            f'    "learning_rate": [{lr}],\n'
             '    "batch_size": [64],\n'
             '    "train_tx": [False],\n'
             '    "min_training_snr_db": [[-3., -1.]],\n'
@@ -37,7 +37,7 @@ if [ ! -f $w ]; then
       --src-weights $NRX_REPO/weights/nrx_large_weights --out $w --gpu 0 || { echo "widening failed"; exit 1; }
   cp $w $RESULTS/n4b/weights_widened
 fi
-echo "step $step: $iters iterations from $(stat -c %y $w) $(date +%T)"
+echo "step $step: $iters iterations, learning rate ${LR:-0.0001}, from $(stat -c %y $w) $(date +%T)"
 ( cd $NRX_REPO/scripts && tfgen python3 train_neural_rx.py -config_name nrx_large_8rx.cfg -gpu 0 ) \
     > $RESULTS/n4b/train_step$step.log 2>&1
 rc=$?
