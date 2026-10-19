@@ -148,6 +148,8 @@ def main() -> None:
     parser.add_argument("--engine", required=True)
     parser.add_argument("--small-engine", required=True)
     parser.add_argument("--iterations", type=int, default=20)
+    parser.add_argument("--irc", action="store_true",
+                        help="also receive with the conventional front end using MMSE-IRC (interference rejection combining)")
     parser.add_argument("--count", type=int, default=0)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
@@ -177,6 +179,17 @@ def main() -> None:
     small = nrx_path({"engine": args.small_engine, "nrx_ldpc_iterations": args.iterations}, prof, tb, stream)
     comb = {"sep": Combiner(big, sep, args.iterations), "nrx": Combiner(big, sep, args.iterations),
             "small": Combiner(small, sep, args.iterations)}
+    # MMSE-IRC conventional receiver (equalizer algorithm 2: noise-plus-interference covariance from the DMRS), the usual
+    # base-station answer to inter-cell interference; cuPHY's default (algorithm 1) uses the noise variance only.
+    irc = None
+    if args.irc and not gmeta.get("retx_alone", False):
+        from aerial.phy5g.algorithms import ChannelEqualizer, NoiseIntfEstimator
+        from ul_profiles import NUM_RX_ANT
+        irc = SeparableConv(prof, tb, stream, args.iterations)
+        irc.noise = NoiseIntfEstimator(num_rx_ant=NUM_RX_ANT, eq_coeff_algo=2, cuda_stream=int(stream.ptr))
+        irc.equalizer = ChannelEqualizer(num_rx_ant=NUM_RX_ANT, enable_pusch_tdi=prof.enable_pusch_tdi, eq_coeff_algo=2,
+                                         cuda_stream=int(stream.ptr))
+        comb["irc"] = Combiner(big, sep, args.iterations)
 
     # Retransmissions sent alone (gen_harq.py --retx-alone): the conventional front end is configured for user 0 only
     # (same DMRS port, scrambling and CDM groups as in the two-user slot), the neural receivers get user 1 masked out
@@ -226,6 +239,8 @@ def main() -> None:
                 "nrx": comb["nrx"].derate_nrx(nrx_llrs(big, view, slot), rv),
                 "small": comb["small"].derate_nrx(nrx_llrs(small, view, slot), rv),
             }
+            if irc is not None:
+                buffers["irc"] = comb["irc"].derate_sep(on(stream, lambda: [cp.array(x, copy=True) for x in irc.llrs(view, slot)]), rv)
             for r, buf in buffers.items():
                 sums[r] = buf if t == 0 else [a + b for a, b in zip(sums[r], buf)]
                 mark(f"{r}_c{t}", comb[r].decode(sums[r], rv if t == 0 else 3, ref, tb), i)

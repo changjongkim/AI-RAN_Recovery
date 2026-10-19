@@ -39,7 +39,11 @@ def plans(flat, total):
         "ours": (flat["conv_t0"], flat["nrx_c0"] & ~flat["conv_t0"],
                  [None] + [flat[f"sep_c{t}"] | flat[f"nrx_c{t}"] for t in range(1, total)]),
         "ours_conv_harq": (flat["conv_t0"], flat["nrx_c0"] & ~flat["conv_t0"], step("sep")),
-    }
+    } | ({    # with the MMSE-IRC conventional receiver as L1 (decode_harq.py --irc)
+        "ai_and_ran_irc": (flat["irc_c0"], nothing, step("irc")),
+        "ours_irc": (flat["irc_c0"], flat["nrx_c0"] & ~flat["irc_c0"],
+                     [None] + [flat[f"irc_c{t}"] | flat[f"nrx_c{t}"] for t in range(1, total)]),
+    } if "irc_c0" in flat else {})
 
 
 def stats(n_tx, first_ok, recovered, sel, total):
@@ -70,7 +74,7 @@ def report(good: dict, point, corr, total: int, extra: dict | None = None) -> di
     slot_point = np.repeat(point, users)
 
     def summary(sel):
-        return {s: stats(n_tx[s], p[s][0], p[s][1], sel, total) for s in STRUCTURES}
+        return {s: stats(n_tx[s], p[s][0], p[s][1], sel, total) for s in p}
 
     out = dict(extra or {})
     out.update({
@@ -89,7 +93,7 @@ def report(good: dict, point, corr, total: int, extra: dict | None = None) -> di
 def table(rep: dict) -> str:
     lines = ["| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |",
              "|---|---|---|---|---|---|---|"]
-    for s in STRUCTURES:
+    for s in rep["all"]:
         r = rep["all"][s]
         lines.append(f"| {s} | {r['first_fail_pct']:.1f} | {r['done_at_bs_pct']:.1f} | {r['resends_per_100']:.1f} | "
                      f"{r['still_failed_after_one_resend_pct_of_failures']:.0f} | {r['residual_after_all_pct']:.2f} | "
@@ -104,7 +108,7 @@ def load(paths):
         total = int(d["total"]) if total is None else total
         meta = json.loads(str(d["meta"])) if meta is None else meta
         for k in d.files:
-            if k.startswith(("conv_", "sep_", "nrx_", "small_")):
+            if k.startswith(("conv_", "sep_", "nrx_", "small_", "irc_")):
                 good.setdefault(k, []).append(d[k])
         point.append(d["point"]); corr.append(d["corr"]); change.append(d["change"]); gain.append(d["gain"])
     good = {k: np.concatenate(v) for k, v in good.items()}
