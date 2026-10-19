@@ -63,6 +63,23 @@ N|n8b_u2_r2|120|bash exp/classical.sh n8b_u2_r2 --base-config nrx_large_mu4.cfg 
 # Long training of the 1-4 user receiver (2026-10-18): 20 more steps of 40k (800k), learning rate 5e-4 then 1e-4, 3-4 users evaluated every 5 steps
 N|n4_train14|150|LR=0.0005 bash exp/n4_train.sh 14 40000
 N|n4_train15|150|LR=0.0005 bash exp/n4_train.sh 15 40000
+# N15 (2026-10-18 23:50, new contribution): interference-aware large receiver; before the rest of the long training
+N|n15_train1|150|bash exp/n15_train.sh 1 40000
+N|n15_train2|150|grep -qP "^n15_train1\t0\t" queue_b/done || exit 1; bash exp/n15_train.sh 2 40000
+N|n15_train3|150|grep -qP "^n15_train1\t0\t" queue_b/done || exit 1; bash exp/n15_train.sh 3 40000
+N|n15_train4|150|grep -qP "^n15_train1\t0\t" queue_b/done || exit 1; bash exp/n15_train.sh 4 40000
+N|n15_train5|150|grep -qP "^n15_train1\t0\t" queue_b/done || exit 1; bash exp/n15_train.sh 5 40000
+N|n15_train6|150|grep -qP "^n15_train1\t0\t" queue_b/done || exit 1; bash exp/n15_train.sh 6 40000
+N|n15_export|40|bash exp/n15_export.sh
+N|n15_control|30|bash exp/n15_control.sh
+N|ici_umi_v3_iciaware|60|grep -qP "^n15_control\t0\t" queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt bash exp/harq_ir.sh ici_umi_v3_iciaware 20 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|ici_umi_inr3_iciaware|60|grep -qP "^n15_control\t0\t" queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt bash exp/harq_ir.sh ici_umi_inr3_iciaware 20 --channel UMi --speed 0.83 --ebno 11,13,15,17 --slots 64 --batch 8 --interferers 2 --inr-db 3
+N|ici_umi_inr6_iciaware|60|grep -qP "^n15_control\t0\t" queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt bash exp/harq_ir.sh ici_umi_inr6_iciaware 20 --channel UMi --speed 0.83 --ebno 13,15,17,19 --slots 64 --batch 8 --interferers 2 --inr-db 6
+N|ici_umi_inr10_iciaware|60|grep -qP "^n15_control\t0\t" queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt bash exp/harq_ir.sh ici_umi_inr10_iciaware 20 --channel UMi --speed 0.83 --ebno 16,18,20,22 --slots 64 --batch 8 --interferers 2 --inr-db 10
+N|ici_uma_v3_iciaware|60|grep -qP "^n15_control\t0\t" queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt bash exp/harq_ir.sh ici_uma_v3_iciaware 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|ici_uma_inr3_iciaware|60|grep -qP "^n15_control\t0\t" queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt bash exp/harq_ir.sh ici_uma_inr3_iciaware 20 --channel UMa --speed 0.83 --ebno 11,13,15,17 --slots 64 --batch 8 --interferers 2 --inr-db 3
+N|ici_uma_inr6_iciaware|60|grep -qP "^n15_control\t0\t" queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt bash exp/harq_ir.sh ici_uma_inr6_iciaware 20 --channel UMa --speed 0.83 --ebno 13,15,17,19 --slots 64 --batch 8 --interferers 2 --inr-db 6
+N|ici_uma_inr10_iciaware|60|grep -qP "^n15_control\t0\t" queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt bash exp/harq_ir.sh ici_uma_inr10_iciaware 20 --channel UMa --speed 0.83 --ebno 16,18,20,22 --slots 64 --batch 8 --interferers 2 --inr-db 10
 N|n4_train16|150|LR=0.0005 bash exp/n4_train.sh 16 40000
 N|n4_train17|150|LR=0.0005 bash exp/n4_train.sh 17 40000
 N|n4_train18|150|LR=0.0005 bash exp/n4_train.sh 18 40000
