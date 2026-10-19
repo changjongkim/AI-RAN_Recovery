@@ -98,3 +98,11 @@ N|n4b_eval_r3_uma|150|bash exp/classical.sh n4b_eval_r3_uma --base-config nrx_la
 N|n5_uma_more1|150|SEED0=410 bash exp/classical.sh n5_uma_more1 --channel UMa --systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4
 N|n5_uma_more2|150|SEED0=420 bash exp/classical.sh n5_uma_more2 --channel UMa --systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4
 N|n5_uma_more3|150|SEED0=430 bash exp/classical.sh n5_uma_more3 --channel UMa --systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4
+# Round 7 (2026-10-18 17:30): remaining gaps of the evaluation: link adaptation on UMi with and without a direct path,
+# resends alone with a direct path (UMa), pairing on UMa with a second seed set, 30 km/h with resends alone
+N|n6_umi_los|150|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_mcs.sh n6_umi_los 24 --channel UMi --los los --speed 0.83 --snr-db 6,8,10,12,14,16 --slots 16 --batch 8
+N|n6_umi_nlos|150|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_mcs.sh n6_umi_nlos 24 --channel UMi --los nlos --speed 0.83 --snr-db 6,8,10,12,14,16 --slots 16 --batch 8
+N|n1b_uma_los_alone|60|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh n1b_uma_los_alone 20 --channel UMa --los los --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --retx-alone
+N|n1b_uma_v30_alone|60|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh n1b_uma_v30_alone 20 --channel UMa --speed 8.33 --ebno 6,8,10,12 --slots 64 --batch 8 --retx-alone
+N|p2b_uma_u8_partner_more|60|grep -qP "^smoke\t0\t" queue/done || exit 1; SEED0=2000 bash exp/harq_ir.sh p2b_uma_u8_partner_more 20 --drop-users 8 --pairing partner --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|p2b_uma_u8_random_more|60|grep -qP "^smoke\t0\t" queue/done || exit 1; SEED0=2000 bash exp/harq_ir.sh p2b_uma_u8_random_more 20 --drop-users 8 --pairing random --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
