@@ -99,12 +99,15 @@ N|n5_uma_more1|150|SEED0=410 bash exp/classical.sh n5_uma_more1 --channel UMa --
 # Inter-cell interference (2026-10-18 18:30): two neighbor-cell users on the same PRBs at a signal-to-interference ratio
 N|ici_smoke|20|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_smoke 1 --channel UMa --speed 0.83 --ebno 10 --slots 32 --batch 8 --interferers 2 --sir-db 6
 N|ici_umi_sir10|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_umi_sir10 20 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --sir-db 10
-N|ici_umi_sir6|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_umi_sir6 20 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --sir-db 6
-N|ici_umi_sir3|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_umi_sir3 20 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --sir-db 3
-N|ici_uma_sir10|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_uma_sir10 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --sir-db 10
-N|ici_uma_sir6|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_uma_sir6 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --sir-db 6
-N|ici_uma_sir3|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_uma_sir3 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --sir-db 3
-L|n7_ici|0|for n in ici_umi_sir6 ici_uma_sir6 ici_uma_sir3; do /global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/sim/harq_latency.py --inputs results/$n/c*.npz --lead 4 --output results/n7_${n}_lead4.json; done > results/n7_ici.txt 2>&1
+# interference over thermal 3/6/10 dB; the Eb/No grid moves up by the rise of noise plus interference (+5/+7/+10 dB),
+# so the signal to interference-plus-noise lands where the runs without interference are (6-12 dB)
+N|ici_umi_inr3|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_umi_inr3 20 --channel UMi --speed 0.83 --ebno 11,13,15,17 --slots 64 --batch 8 --interferers 2 --inr-db 3
+N|ici_umi_inr6|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_umi_inr6 20 --channel UMi --speed 0.83 --ebno 13,15,17,19 --slots 64 --batch 8 --interferers 2 --inr-db 6
+N|ici_umi_inr10|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_umi_inr10 20 --channel UMi --speed 0.83 --ebno 16,18,20,22 --slots 64 --batch 8 --interferers 2 --inr-db 10
+N|ici_uma_inr3|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_uma_inr3 20 --channel UMa --speed 0.83 --ebno 11,13,15,17 --slots 64 --batch 8 --interferers 2 --inr-db 3
+N|ici_uma_inr6|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_uma_inr6 20 --channel UMa --speed 0.83 --ebno 13,15,17,19 --slots 64 --batch 8 --interferers 2 --inr-db 6
+N|ici_uma_inr10|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_uma_inr10 20 --channel UMa --speed 0.83 --ebno 16,18,20,22 --slots 64 --batch 8 --interferers 2 --inr-db 10
+L|n7_ici|0|for n in ici_umi_inr6 ici_uma_inr6 ici_uma_inr10; do /global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/sim/harq_latency.py --inputs results/$n/c*.npz --lead 4 --output results/n7_${n}_lead4.json; done > results/n7_ici.txt 2>&1
 N|n5_uma_more2|150|SEED0=420 bash exp/classical.sh n5_uma_more2 --channel UMa --systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4
 N|n5_uma_more3|150|SEED0=430 bash exp/classical.sh n5_uma_more3 --channel UMa --systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4
 # Round 7 (2026-10-18 17:30): remaining gaps of the evaluation: link adaptation on UMi with and without a direct path,

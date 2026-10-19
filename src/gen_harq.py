@@ -53,6 +53,8 @@ parser.add_argument("--interferers", type=int, default=0, choices=[0, 1, 2],
                     help="users of neighbor cells on the same PRBs, each with its own time-correlated channel to this cell")
 parser.add_argument("--sir-db", type=float, default=10.0,
                     help="mean power of one served user over the total power of the interferers (with unit-mean channels)")
+parser.add_argument("--inr-db", type=float, default=None,
+                    help="instead of --sir-db: total interference power over the thermal noise power (interference over\n                         thermal, the operator measure; 3-10 dB in loaded networks)")
 parser.add_argument("--retx-alone", action="store_true",
                     help="retransmissions of user 0 are sent alone (user 1 silent), as when the scheduler gives a "
                          "retransmission its own resources; only user 0's blocks are counted then")
@@ -307,7 +309,8 @@ for point in POINTS:
                     bi = link.gen._source([n, link.params.max_num_tx, link.tx._tb_size])   # neighbor's DMRS scrambling
                     xi = link.modulate(link.encode(bi, 0))[:, :args.interferers]
                     ph = tf.exp(tf.complex(0.0, tf.random.uniform(tf.shape(xi), 0, 2 * np.pi)))
-                    y = y + apply_noiseless([xi * ph * tf.cast(ISCALE, xi.dtype), kept["hi"][t]])
+                    sc = ISCALE if args.inr_db is None else tf.sqrt(tf.cast(no, tf.float32) * 10 ** (args.inr_db / 10) / args.interferers)
+                    y = y + apply_noiseless([xi * ph * tf.cast(tf.complex(sc, 0.0), xi.dtype), kept["hi"][t]])
                 out[(link.mcs, t)].append(aerial(y))
         info["point"] += [point] * n
         info["corr"].append(np.stack([similarity(h) for h in hs], axis=1))
@@ -317,7 +320,8 @@ for point in POINTS:
                                         for h in hs], axis=1))
         info["gain"].append(np.stack([gains(h) for h in hs], axis=1))
         if args.interferers:            # per slot and transmission: served-user mean power over interference power (dB)
-            pi = [ISCALE ** 2 * np.mean(np.abs(h.numpy()) ** 2, axis=(1, 2, 4, 5, 6)).sum(axis=1) for h in kept["hi"]]
+            s2 = ISCALE ** 2 if args.inr_db is None else float(np.mean(no)) * 10 ** (args.inr_db / 10) / args.interferers
+            pi = [s2 * np.mean(np.abs(h.numpy()) ** 2, axis=(1, 2, 4, 5, 6)).sum(axis=1) for h in kept["hi"]]
             pd = [np.mean(np.abs(h.numpy()) ** 2, axis=(1, 2, 3, 4, 5, 6)) for h in hs]
             info.setdefault("sir", []).append(np.stack([10 * np.log10(d / (i + 1e-30)) for d, i in zip(pd, pi)], axis=1))
         done += n
@@ -332,7 +336,7 @@ np.savez(args.output.parent / f"{args.output.name}_info.npz", point=point, corr=
          meta=json.dumps({"channel": args.channel, "speed": args.speed, "los": args.los, "rvs": RVS, "mcs": MCS,
                           "gap_ms": args.gap_ms, "gap_symbols": gap, "retx_alone": args.retx_alone,
                           "drop_users": args.drop_users, "pairing": args.pairing, "interferers": args.interferers,
-                          "sir_db": args.sir_db if args.interferers else None,
+                          "sir_db": args.sir_db if args.interferers and args.inr_db is None else None, "inr_db": args.inr_db,
                           "sir_median_db": float(np.median(np.concatenate(info["sir"])[:, 0])) if args.interferers else None,
                           "pair_rho_median": float(np.median(picked["rho"])) if args.drop_users else None,
                           "partner_gain_db_median": float(np.median(picked["gain_db"])) if args.drop_users else None,
