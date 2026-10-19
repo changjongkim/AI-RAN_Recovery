@@ -15,10 +15,13 @@ Outputs per condition and pooled: AUC, and the budget curve: share of recoverabl
 attempted on the top x% of failures ranked by the model.
 usage: predictor.py --sets n1_umi_v3_cb n3_uma_v3_more ... --output results/n10_predictor.json
 """
-import argparse, glob, json
+import argparse, glob, json, os
+os.environ.setdefault("OMP_NUM_THREADS", "4")   # the login node is shared: many threads spin against each other
 import numpy as np
 from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import GroupKFold
 
@@ -57,7 +60,7 @@ def evaluate(X, y, grp):
     cb_score = -X[:, 0] + 0.01 * X[:, 3]                       # the code-block rule (ties broken by similarity)
     res["auc_cbfail"] = float(roc_auc_score(y, cb_score))
     res["budget_cbfail"] = budget(cb_score, y)
-    for name, mk in (("logistic", lambda: LogisticRegression(max_iter=2000)),
+    for name, mk in (("logistic", lambda: make_pipeline(StandardScaler(), LogisticRegression(max_iter=500))),
                      ("trees", lambda: HistGradientBoostingClassifier(max_iter=200, learning_rate=0.05))):
         p = np.zeros(len(y))
         for tr, te in GroupKFold(n_splits=5).split(X, y, grp):
@@ -91,7 +94,7 @@ print(f"{'pooled':22s} fail {o['failures']:5d} recov {o['recoverable_pct']:5.1f}
 print("trees thresholds:", {k: v for k, v in o.items() if k.startswith("trees_p")})
 m = HistGradientBoostingClassifier(max_iter=200, learning_rate=0.05).fit(X, y)
 from sklearn.inspection import permutation_importance
-imp = permutation_importance(m, X[:20000], y[:20000], n_repeats=3, random_state=0, scoring="roc_auc")
+imp = permutation_importance(m, X[:8000], y[:8000], n_repeats=3, random_state=0, scoring="roc_auc", n_jobs=1)
 out["pooled"]["importance_auc_drop"] = {f: float(v) for f, v in zip(FEATS, imp.importances_mean)}
 print("importance (AUC drop):", {f: round(v, 3) for f, v in out["pooled"]["importance_auc_drop"].items()})
 json.dump(out, open(a.output, "w"), indent=1)

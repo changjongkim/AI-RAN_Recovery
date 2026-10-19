@@ -359,7 +359,39 @@ def gpu():
     save(fig, "gpu")
 
 
-for f in (harq_conditions, robustness, similarity, receivers, latency, code_blocks, link_adaptation, pairing, users_antennas, gpu):
+# ---------------------------------------------------------------- 12. predicting recoverable blocks; GPU budget
+def predictor():
+    d = R("n10_predictor")
+    sets = [k for k in d if k != "pooled"]
+    lab = {"n1_umi_v3_cb": "UMi 3", "n3_umi_v120": "UMi 120", "mcs12_umi": "UMi\nMCS 12", "mcs16_umi": "UMi\nMCS 16", "wide_umi": "UMi Wide\nEb/No",
+           "p1_umi_los_more": "UMi\nDirect", "p1_umi_nlos_more": "UMi\nBlocked", "n3_uma_v3_more": "UMa 3", "n3_uma_v30_more": "UMa 30",
+           "n3_uma_v120_more": "UMa 120", "n3_uma_los_more": "UMa\nDirect", "n3_uma_nlos_more": "UMa\nBlocked", "mcs12_uma": "UMa\nMCS 12",
+           "mcs16_uma": "UMa\nMCS 16", "wide_uma": "UMa Wide\nEb/No"}
+    fig, axes = plt.subplots(1, 2, figsize=(15.0, 4.4), gridspec_kw={"width_ratios": [2.2, 1]})
+    x = np.arange(len(sets))
+    axes[0].bar(x - 0.2, [d[s]["auc_trees"] for s in sets], 0.38, zorder=3, **kind(OURS, False))
+    axes[0].bar(x + 0.2, [d[s]["auc_cbfail"] for s in sets], 0.38, zorder=3, **kind(L1, False))
+    axes[0].set_xticks(x); axes[0].set_xticklabels([lab.get(s, s) for s in sets], fontsize=FS - 3)
+    axes[0].set_ylim(0.5, 1.0); axes[0].axhline(0.5, color="#777777", linestyle="--")
+    axes[0].set_title("(a) How Well Recovery Is Predicted When L1 Finishes (AUC)", fontsize=FS + 0.5, color=INK)
+    style(axes[0], "AUC (0.5 = Guessing)")
+    h = [plt.Rectangle((0, 0), 1, 1, **kind(OURS, False)), plt.Rectangle((0, 0), 1, 1, **kind(L1, False))]
+    axes[0].legend(h, ["Predictor (Failed Code Blocks, Similarity, Gains, Eb/No)", "Failed Code Blocks Only"], frameon=False, fontsize=FS - 1, loc="upper right")
+    fr = [0.0] + [float(k) for k in d["pooled"]["budget_trees"]]
+    for key, c, ls, name in (("pooled", OURS, "-", "Predictor, All 15 Conditions"), ("n1_umi_v3_cb", "#6baed6", "-", "Predictor, UMi 3 km/h"),
+                             ("n3_uma_v3_more", "#08306b", "-", "Predictor, UMa 3 km/h")):
+        axes[1].plot(fr, [0.0] + [100 * v for v in d[key]["budget_trees"].values()], color=c, linestyle=ls, marker="o", linewidth=2, label=name)
+    axes[1].plot(fr, [0.0] + [100 * v for v in d["pooled"]["budget_cbfail"].values()], color=L1, marker="s", linewidth=1.8, label="Failed Code Blocks Only, All")
+    axes[1].plot([0, 1], [0, 100], color="#777777", linestyle="--", linewidth=1.2, label="Random Choice")
+    axes[1].set_xticks([0, .2, .4, .6, .8, 1.0]); axes[1].set_xticklabels(["0", "20", "40", "60", "80", "100"])
+    axes[1].set_title("(b) Recoverable Blocks Captured vs. GPU Spent", fontsize=FS + 0.5, color=INK)
+    style(axes[1], "Recoverable Blocks Captured (%)", "Failed Blocks Given to the Large Model (%)")
+    axes[1].legend(frameon=False, fontsize=FS - 2, loc="lower right")
+    fig.tight_layout(w_pad=1.5)
+    save(fig, "predictor")
+
+
+for f in (predictor, harq_conditions, robustness, similarity, receivers, latency, code_blocks, link_adaptation, pairing, users_antennas, gpu):
     try:
         f()
     except Exception as e:                       # one broken figure must not stop the others
