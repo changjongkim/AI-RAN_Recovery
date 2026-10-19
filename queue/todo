@@ -96,6 +96,15 @@ N|n4b_eval_r3|150|bash exp/classical.sh n4b_eval_r3 --base-config nrx_large_8rx.
 N|n4b_eval_r3_uma|150|bash exp/classical.sh n4b_eval_r3_uma --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --channel UMa --slots 96
 # N5 on UMa had 233 failures: three more runs with new seeds (about 900 failures in all)
 N|n5_uma_more1|150|SEED0=410 bash exp/classical.sh n5_uma_more1 --channel UMa --systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4
+# Inter-cell interference (2026-10-18 18:30): two neighbor-cell users on the same PRBs at a signal-to-interference ratio
+N|ici_smoke|20|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_smoke 1 --channel UMa --speed 0.83 --ebno 10 --slots 32 --batch 8 --interferers 2 --sir-db 6
+N|ici_umi_sir10|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_umi_sir10 20 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --sir-db 10
+N|ici_umi_sir6|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_umi_sir6 20 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --sir-db 6
+N|ici_umi_sir3|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_umi_sir3 20 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --sir-db 3
+N|ici_uma_sir10|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_uma_sir10 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --sir-db 10
+N|ici_uma_sir6|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_uma_sir6 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --sir-db 6
+N|ici_uma_sir3|60|grep -qP "^ici_smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh ici_uma_sir3 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --sir-db 3
+L|n7_ici|0|for n in ici_umi_sir6 ici_uma_sir6 ici_uma_sir3; do /global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/sim/harq_latency.py --inputs results/$n/c*.npz --lead 4 --output results/n7_${n}_lead4.json; done > results/n7_ici.txt 2>&1
 N|n5_uma_more2|150|SEED0=420 bash exp/classical.sh n5_uma_more2 --channel UMa --systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4
 N|n5_uma_more3|150|SEED0=430 bash exp/classical.sh n5_uma_more3 --channel UMa --systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4
 # Round 7 (2026-10-18 17:30): remaining gaps of the evaluation: link adaptation on UMi with and without a direct path,
@@ -106,3 +115,29 @@ N|n1b_uma_los_alone|60|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/har
 N|n1b_uma_v30_alone|60|grep -qP "^smoke\t0\t" queue/done || exit 1; bash exp/harq_ir.sh n1b_uma_v30_alone 20 --channel UMa --speed 8.33 --ebno 6,8,10,12 --slots 64 --batch 8 --retx-alone
 N|p2b_uma_u8_partner_more|60|grep -qP "^smoke\t0\t" queue/done || exit 1; SEED0=2000 bash exp/harq_ir.sh p2b_uma_u8_partner_more 20 --drop-users 8 --pairing partner --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
 N|p2b_uma_u8_random_more|60|grep -qP "^smoke\t0\t" queue/done || exit 1; SEED0=2000 bash exp/harq_ir.sh p2b_uma_u8_random_more 20 --drop-users 8 --pairing random --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+# Long training of the 8-RX receiver (2026-10-18): 20 more steps of 35k (700k), learning rate 5e-4 then 1e-4, evaluated every 5 steps
+N|n4b_train21|150|LR=0.0005 bash exp/n4b_train.sh 21 35000
+N|n4b_train22|150|LR=0.0005 bash exp/n4b_train.sh 22 35000
+N|n4b_train23|150|LR=0.0005 bash exp/n4b_train.sh 23 35000
+N|n4b_train24|150|LR=0.0005 bash exp/n4b_train.sh 24 35000
+N|n4b_train25|150|LR=0.0005 bash exp/n4b_train.sh 25 35000
+N|n4b_eval_s25|150|bash exp/classical.sh n4b_eval_s25 --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --slots 128
+N|n4b_train26|150|LR=0.0005 bash exp/n4b_train.sh 26 35000
+N|n4b_train27|150|LR=0.0005 bash exp/n4b_train.sh 27 35000
+N|n4b_train28|150|LR=0.0005 bash exp/n4b_train.sh 28 35000
+N|n4b_train29|150|LR=0.0005 bash exp/n4b_train.sh 29 35000
+N|n4b_train30|150|LR=0.0005 bash exp/n4b_train.sh 30 35000
+N|n4b_eval_s30|150|bash exp/classical.sh n4b_eval_s30 --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --slots 128
+N|n4b_train31|150|LR=0.0001 bash exp/n4b_train.sh 31 35000
+N|n4b_train32|150|LR=0.0001 bash exp/n4b_train.sh 32 35000
+N|n4b_train33|150|LR=0.0001 bash exp/n4b_train.sh 33 35000
+N|n4b_train34|150|LR=0.0001 bash exp/n4b_train.sh 34 35000
+N|n4b_train35|150|LR=0.0001 bash exp/n4b_train.sh 35 35000
+N|n4b_eval_s35|150|bash exp/classical.sh n4b_eval_s35 --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --slots 128
+N|n4b_train36|150|LR=0.0001 bash exp/n4b_train.sh 36 35000
+N|n4b_train37|150|LR=0.0001 bash exp/n4b_train.sh 37 35000
+N|n4b_train38|150|LR=0.0001 bash exp/n4b_train.sh 38 35000
+N|n4b_train39|150|LR=0.0001 bash exp/n4b_train.sh 39 35000
+N|n4b_train40|150|LR=0.0001 bash exp/n4b_train.sh 40 35000
+N|n4b_eval_s40|150|bash exp/classical.sh n4b_eval_s40 --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --slots 128
+N|n4b_eval_s40_uma|150|bash exp/classical.sh n4b_eval_s40_uma --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --channel UMa --slots 96

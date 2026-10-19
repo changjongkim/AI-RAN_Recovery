@@ -16,6 +16,8 @@ Writes, per MCS m and transmission index t, <output>_m<m>_t<t>.npz in the format
   gain[t]                  mean |h|^2 per user (to separate weak users from hard-to-separate pairs).
 With --drop-users U, U users are dropped per slot and user 0 is co-scheduled with one partner (--pairing random
 or partner: best (1 - rho^2) * min gain), as a MU-MIMO scheduler picks a partner; the pair's channels go on as usual.
+With --interferers K, K users of neighbor cells transmit on the same PRBs (own time-correlated channels, new data every
+transmission, DMRS decorrelated by a random phase per RE) at a mean power set by --sir-db.
 With --retx-alone the retransmissions carry user 0 only (user 1's data and DMRS are zero), so HARQ is not limited by
 the same partner; the first transmission still carries both users.
 Several MCS share the same channel realizations and noise level (--snr-db), so a rate-control simulation can pick an
@@ -47,6 +49,10 @@ parser.add_argument("--drop-users", type=int, default=0,
                     help="drop this many users per slot and co-schedule user 0 with a partner chosen by --pairing")
 parser.add_argument("--pairing", choices=["random", "partner", "minrho"], default="random",
                     help="random: any other user; partner: the user j that maximizes (1 - rho_0j^2) * min(g_0, g_j), the weaker user's channel gain left after zero-forcing (the scheduler knows both from SRS/previous slots)")
+parser.add_argument("--interferers", type=int, default=0, choices=[0, 1, 2],
+                    help="users of neighbor cells on the same PRBs, each with its own time-correlated channel to this cell")
+parser.add_argument("--sir-db", type=float, default=10.0,
+                    help="mean power of one served user over the total power of the interferers (with unit-mean channels)")
 parser.add_argument("--retx-alone", action="store_true",
                     help="retransmissions of user 0 are sent alone (user 1 silent), as when the scheduler gives a "
                          "retransmission its own resources; only user 0's blocks are counted then")
@@ -191,16 +197,19 @@ gap = int(round(args.gap_ms * 1e-3 / symbol_s))
 span = gap * (len(RVS) - 1) + symbols
 frequencies = subcarrier_frequencies(rg.fft_size, rg.subcarrier_spacing)
 apply_channel = ApplyOFDMChannel(add_awgn=True)
+apply_noiseless = ApplyOFDMChannel(add_awgn=False)
+ISCALE = float(np.sqrt(10 ** (-args.sir_db / 10) / max(1, args.interferers)))
 kept = {}
 
-if args.los != "auto" or args.drop_users:
+assert not (args.drop_users and args.interferers), "--drop-users and --interferers are not combined"
+if args.los != "auto" or args.drop_users or args.interferers:
     set_topology = model.set_topology
 
     def forced(*topology, **kw):
         if args.los != "auto":
             kw["los"] = args.los == "los"
-        if args.drop_users:     # the generator drops two users; drop drop_users instead and pick a pair later
-            topology = gen_single_sector_topology(int(topology[0].shape[0]), args.drop_users, args.channel.lower(),
+        if args.drop_users or args.interferers:   # drop more users: candidates for pairing, or the interferers after the pair
+            topology = gen_single_sector_topology(int(topology[0].shape[0]), args.drop_users or 2 + args.interferers, args.channel.lower(),
                                                   min_ut_velocity=args.speed, max_ut_velocity=args.speed,
                                                   indoor_probability=0.)
         return set_topology(*topology[:6], **kw)
@@ -239,6 +248,10 @@ def time_correlated(channel_inputs):
         pair = choose_pairs(a, tau)
         a = tf.gather(a, pair, axis=3, batch_dims=1)
         tau = tf.gather(tau, pair, axis=2, batch_dims=1)
+    if args.interferers:            # users 2.. are the neighbor-cell users
+        ai, taui = a[:, :, :, 2:], tau[:, :, 2:]
+        a, tau = a[:, :, :, :2], tau[:, :, :2]
+        kept["hi"] = [cir_to_ofdm_channel(frequencies, ai[..., t * gap:t * gap + symbols], taui, False) for t in range(len(RVS))]
     hs = [cir_to_ofdm_channel(frequencies, a[..., t * gap:t * gap + symbols], tau, False) for t in range(len(RVS))]
     kept["h"], kept["no"] = hs, no
     return apply_channel([x, hs[0], no]), hs[0]
@@ -289,7 +302,13 @@ for point in POINTS:
                 x = link.modulate(link.encode(b, rv))         # [batch, user, tx antenna, symbol, subcarrier]
                 if args.retx_alone and t >= 1:
                     x = x * tf.constant([1, 0], x.dtype)[None, :, None, None, None]   # data and DMRS of user 1 off
-                out[(link.mcs, t)].append(aerial(apply_channel([x, hs[t], no])))
+                y = apply_channel([x, hs[t], no])
+                if args.interferers:    # new data every transmission; a random phase per resource element stands for the
+                    bi = link.gen._source([n, link.params.max_num_tx, link.tx._tb_size])   # neighbor's DMRS scrambling
+                    xi = link.modulate(link.encode(bi, 0))[:, :args.interferers]
+                    ph = tf.exp(tf.complex(0.0, tf.random.uniform(tf.shape(xi), 0, 2 * np.pi)))
+                    y = y + apply_noiseless([xi * ph * tf.cast(ISCALE, xi.dtype), kept["hi"][t]])
+                out[(link.mcs, t)].append(aerial(y))
         info["point"] += [point] * n
         info["corr"].append(np.stack([similarity(h) for h in hs], axis=1))
         flat0 = hs[0].numpy().reshape(n, -1)
@@ -297,6 +316,10 @@ for point in POINTS:
                                         (np.linalg.norm(flat0, axis=1) * np.linalg.norm(h.numpy().reshape(n, -1), axis=1) + 1e-12)
                                         for h in hs], axis=1))
         info["gain"].append(np.stack([gains(h) for h in hs], axis=1))
+        if args.interferers:            # per slot and transmission: served-user mean power over interference power (dB)
+            pi = [ISCALE ** 2 * np.mean(np.abs(h.numpy()) ** 2, axis=(1, 2, 4, 5, 6)).sum(axis=1) for h in kept["hi"]]
+            pd = [np.mean(np.abs(h.numpy()) ** 2, axis=(1, 2, 3, 4, 5, 6)) for h in hs]
+            info.setdefault("sir", []).append(np.stack([10 * np.log10(d / (i + 1e-30)) for d, i in zip(pd, pi)], axis=1))
         done += n
     c = np.concatenate(info["corr"])[-args.slots:, 0]
     print(f"point {point}: user similarity median {np.median(c):.2f}, slots {args.slots}", flush=True)
@@ -304,10 +327,13 @@ for point in POINTS:
 args.output.parent.mkdir(parents=True, exist_ok=True)
 point = np.asarray(info["point"], dtype=np.float32)
 corr, change, gain = (np.concatenate(info[k]).astype(np.float32) for k in ("corr", "change", "gain"))
-np.savez(args.output.parent / f"{args.output.name}_info.npz", point=point, corr=corr, change=change, gain=gain,
+extra = {"sir": np.concatenate(info["sir"]).astype(np.float32)} if args.interferers else {}
+np.savez(args.output.parent / f"{args.output.name}_info.npz", point=point, corr=corr, change=change, gain=gain, **extra,
          meta=json.dumps({"channel": args.channel, "speed": args.speed, "los": args.los, "rvs": RVS, "mcs": MCS,
                           "gap_ms": args.gap_ms, "gap_symbols": gap, "retx_alone": args.retx_alone,
-                          "drop_users": args.drop_users, "pairing": args.pairing,
+                          "drop_users": args.drop_users, "pairing": args.pairing, "interferers": args.interferers,
+                          "sir_db": args.sir_db if args.interferers else None,
+                          "sir_median_db": float(np.median(np.concatenate(info["sir"])[:, 0])) if args.interferers else None,
                           "pair_rho_median": float(np.median(picked["rho"])) if args.drop_users else None,
                           "partner_gain_db_median": float(np.median(picked["gain_db"])) if args.drop_users else None,
                           "partner_rank_mean": float(np.mean(picked["rank"])) if args.drop_users else None, "axis": "ebno" if args.ebno else "snr_db",

@@ -60,3 +60,29 @@ N|n4_train13|150|bash exp/n4_train.sh 13 40000
 N|n8b_u3_kbest_r2|200|bash exp/classical.sh n8b_u3_kbest_r2 --base-config nrx_large_mu4.cfg --users 3 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --ebno 8,10,12,14,16 --slots 48 --batch 4
 N|n8b_u4_kbest_r2|200|bash exp/classical.sh n8b_u4_kbest_r2 --base-config nrx_large_mu4.cfg --users 4 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --ebno 10,12,14,16,18 --slots 48 --batch 4
 N|n8b_u2_r2|120|bash exp/classical.sh n8b_u2_r2 --base-config nrx_large_mu4.cfg --users 2 --systems baseline_lslin_lmmse,nrx --ebno 6,8,10,12 --slots 96 --batch 8
+# Long training of the 1-4 user receiver (2026-10-18): 20 more steps of 40k (800k), learning rate 5e-4 then 1e-4, 3-4 users evaluated every 5 steps
+N|n4_train14|150|LR=0.0005 bash exp/n4_train.sh 14 40000
+N|n4_train15|150|LR=0.0005 bash exp/n4_train.sh 15 40000
+N|n4_train16|150|LR=0.0005 bash exp/n4_train.sh 16 40000
+N|n4_train17|150|LR=0.0005 bash exp/n4_train.sh 17 40000
+N|n4_train18|150|LR=0.0005 bash exp/n4_train.sh 18 40000
+N|n8b_u4_s18|200|bash exp/classical.sh n8b_u4_s18 --base-config nrx_large_mu4.cfg --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --batch 4 --slots 48 --users 4 --ebno 10,12,14,16,18
+N|n4_train19|150|LR=0.0005 bash exp/n4_train.sh 19 40000
+N|n4_train20|150|LR=0.0005 bash exp/n4_train.sh 20 40000
+N|n4_train21|150|LR=0.0005 bash exp/n4_train.sh 21 40000
+N|n4_train22|150|LR=0.0005 bash exp/n4_train.sh 22 40000
+N|n4_train23|150|LR=0.0005 bash exp/n4_train.sh 23 40000
+N|n8b_u4_s23|200|bash exp/classical.sh n8b_u4_s23 --base-config nrx_large_mu4.cfg --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --batch 4 --slots 48 --users 4 --ebno 10,12,14,16,18
+N|n4_train24|150|LR=0.0001 bash exp/n4_train.sh 24 40000
+N|n4_train25|150|LR=0.0001 bash exp/n4_train.sh 25 40000
+N|n4_train26|150|LR=0.0001 bash exp/n4_train.sh 26 40000
+N|n4_train27|150|LR=0.0001 bash exp/n4_train.sh 27 40000
+N|n4_train28|150|LR=0.0001 bash exp/n4_train.sh 28 40000
+N|n8b_u4_s28|200|bash exp/classical.sh n8b_u4_s28 --base-config nrx_large_mu4.cfg --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --batch 4 --slots 48 --users 4 --ebno 10,12,14,16,18
+N|n4_train29|150|LR=0.0001 bash exp/n4_train.sh 29 40000
+N|n4_train30|150|LR=0.0001 bash exp/n4_train.sh 30 40000
+N|n4_train31|150|LR=0.0001 bash exp/n4_train.sh 31 40000
+N|n4_train32|150|LR=0.0001 bash exp/n4_train.sh 32 40000
+N|n4_train33|150|LR=0.0001 bash exp/n4_train.sh 33 40000
+N|n8b_u4_s33|200|bash exp/classical.sh n8b_u4_s33 --base-config nrx_large_mu4.cfg --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --batch 4 --slots 48 --users 4 --ebno 10,12,14,16,18
+N|n8b_u3_s33|200|bash exp/classical.sh n8b_u3_s33 --base-config nrx_large_mu4.cfg --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --batch 4 --slots 48 --users 3 --ebno 8,10,12,14,16
