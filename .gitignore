@@ -17,3 +17,5 @@ queue_b/*.log
 queue*/watchdog.lock
 queue*/STOP
 src/engines/
+models/*_weights
+models/*.trt
