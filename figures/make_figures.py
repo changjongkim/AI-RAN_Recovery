@@ -105,22 +105,58 @@ def harq_conditions():
     save(fig, "harq_conditions")
 
 
-# ---------------------------------------------------------------- 2. robustness: retransmissions alone, code rates, signal strength
+# ---------------------------------------------------------------- 2. robustness: every condition in one forest plot; signal strength
+def _summary_rows():
+    import csv
+    return {r["set"]: r for r in csv.DictReader(open("results/summary/harq.csv"))}
+
+
 def robustness():
-    alone = [("n1_umi_v3", "Small Cell\nSame Pair"), ("n1b_umi_v3_alone", "Small Cell\nResend Alone"),
-             ("n3_uma_v3", "Macro Cell\nSame Pair"), ("n1b_uma_v3_alone", "Macro Cell\nResend Alone"),
-             ("n3_uma_nlos_v3", "Macro, Blocked\nSame Pair"), ("n1b_uma_nlos_alone", "Macro, Blocked\nResend Alone")]
-    mcs = [("mcs12_umi", "Small Cell\nMCS 12"), ("n1_umi_v3", "Small Cell\nMCS 14"), ("mcs16_umi", "Small Cell\nMCS 16"),
-           ("mcs12_uma", "Macro Cell\nMCS 12"), ("n3_uma_v3", "Macro Cell\nMCS 14"), ("mcs16_uma", "Macro Cell\nMCS 16")]
-    fig, axes = plt.subplots(1, 2, figsize=(14.0, 4.6))
-    for ax, sets, t in ((axes[0], alone, "(a) Resend with the Same Partner or Alone"), (axes[1], mcs, "(b) Other Code Rates")):
-        res = {k: [R(s)["all"][k]["resends_per_100"] for s, _ in sets] for k in ORDER}
-        grouped(ax, [l for _, l in sets], res)
-        ax.set_title(t, fontsize=FS + 0.5, color=INK)
-        style(ax, "Resends per 100 Blocks")
-        ax.tick_params(axis="x", labelsize=FS - 2)
-    legend(fig, ORDER, y=1.0)
-    fig.tight_layout(rect=(0, 0, 1, 0.9), w_pad=1.5)
+    rows = _summary_rows()
+    groups = [("Small Cell (3GPP UMi)", [
+        ("n1_umi_v3", "3 km/h (20,480 blocks)"), ("n1_umi_v30", "30 km/h"), ("n1_umi_v60", "60 km/h"), ("n3_umi_v120", "120 km/h"),
+        ("p1_umi_los_v3", "Direct path"), ("p1_umi_los_more", "Direct path, new seeds"), ("p1_umi_nlos_v3", "No direct path"),
+        ("p1_umi_nlos_more", "No direct path, new seeds"), ("mcs12_umi", "MCS 12"), ("mcs16_umi", "MCS 16"),
+        ("wide_umi", "Eb/No 2, 4, 14, 16 dB"), ("n1b_umi_v3_alone", "Resend alone")]),
+        ("Macro Cell (3GPP UMa)", [
+        ("n3_uma_v3", "3 km/h"), ("n3_uma_v3_more", "3 km/h, new seeds"), ("n3_uma_v30", "30 km/h"), ("n3_uma_v30_more", "30 km/h, new seeds"),
+        ("n3_uma_v120", "120 km/h"), ("n3_uma_v120_more", "120 km/h, new seeds"), ("n3_uma_los_v3", "Direct path"),
+        ("n3_uma_los_more", "Direct path, new seeds"), ("n3_uma_nlos_v3", "No direct path"), ("n3_uma_nlos_more", "No direct path, new seeds"),
+        ("mcs12_uma", "MCS 12"), ("mcs16_uma", "MCS 16"), ("wide_uma", "Eb/No 2, 4, 14, 16 dB"), ("n1b_uma_v3_alone", "Resend alone"),
+        ("n1b_uma_v30_alone", "Resend alone, 30 km/h"), ("n1b_uma_los_alone", "Resend alone, direct path"),
+        ("n1b_uma_nlos_alone", "Resend alone, no direct path")])]
+    items, y, ticks, heads = [], 0, [], []
+    for title, sets in groups:
+        heads.append((y, title)); y += 1
+        for s, lab in sets:
+            if s in rows:
+                items.append((y, s, lab)); ticks.append((y, lab)); y += 1
+        y += 0.6
+    fig, ax = plt.subplots(figsize=(10.6, 0.29 * y + 1.4))
+    for yy, s, lab in items:
+        r = rows[s]
+        lo, hi = (float(v) for v in r["resend_ratio_ci"].split("-"))
+        ratio = float(r["resend_ratio"])
+        small = float(r["resends_small_nrx"]) / float(r["resends_l1"])
+        ax.plot([lo, hi], [yy, yy], color=OURS, linewidth=2.2, zorder=3)
+        ax.plot(ratio, yy, "o", color=OURS, markersize=7, zorder=4)
+        ax.plot(small, yy, "^", markerfacecolor="white", markeredgecolor="#4d9a3a", markersize=7, markeredgewidth=1.5, zorder=4)
+        ax.text(1.215, yy, f"{ratio:.2f} [{lo:.2f}-{hi:.2f}]", va="center", ha="left", fontsize=FS - 1.5, color=INK)
+    for yy, title in heads:
+        ax.text(0.16, yy, title, va="center", ha="left", fontsize=FS + 0.5, color=INK, fontweight="bold")
+    ax.axvline(1.0, color="#555555", linewidth=1.2, linestyle="--", zorder=2)
+    ax.text(1.012, -0.6, "L1 only = 1", ha="left", va="center", fontsize=FS - 1.5, color="#555555")
+    ax.set_yticks([t[0] for t in ticks]); ax.set_yticklabels([t[1] for t in ticks], fontsize=FS - 1)
+    ax.set_ylim(y - 0.4, -1.4); ax.set_xlim(0.15, 1.2)
+    ax.text(1.215, -0.6, "Ours / L1 [95%]", ha="left", fontsize=FS - 1.5, color=INK, fontweight="bold")
+    ax.grid(axis="x", color="#cccccc", linewidth=0.6, linestyle=(0, (4, 3))); ax.set_axisbelow(True)
+    ax.tick_params(labelsize=FS - 0.5, colors=INK, length=3)
+    ax.set_xlabel("Resends per Block, Relative to the Conventional Receiver (L1) Only  (left = fewer resends)", fontsize=FS, color=INK)
+    h = [plt.Line2D([], [], color=OURS, marker="o", linewidth=2.2, markersize=7),
+         plt.Line2D([], [], color="white", marker="^", markerfacecolor="white", markeredgecolor="#4d9a3a", markersize=7, markeredgewidth=1.5)]
+    fig.legend(h, ["Our Strategy: L1 + NRx (Large Model), Recovery (95% interval over chunks)", "L1 + NRx (Small Model), Every Block"],
+               loc="upper center", ncol=2, frameon=False, fontsize=FS - 0.5)
+    fig.tight_layout(rect=(0, 0, 0.88, 0.97))
     save(fig, "robustness")
 
     # signal strength: share of failures recovered and resend ratio by Eb/No (four sets cover 2..16 dB)
@@ -145,31 +181,37 @@ def robustness():
     fig.tight_layout(w_pad=1.5)
     save(fig, "signal_strength")
 
-
 # ---------------------------------------------------------------- 3. where failures and recoveries are: pair similarity
 def similarity():
-    fig, axes = plt.subplots(1, 2, figsize=(11.6, 4.2))
-    bins = ["0.0-0.4", "0.4-0.6", "0.6-1.0"]
-    labels = ["Separable\n(< 0.4)", "Similar\n(0.4-0.6)", "Very Similar\n(≥ 0.6)"]
-    for ax, s, t in ((axes[0], "n1_umi_v3", "(a) Small Cell (UMi)"), (axes[1], "n3_uma_v3_more", "(b) Macro Cell (UMa)")):
-        d = R(s)
-        share = [100 * d["similarity_share"][b] for b in bins]
-        rec = [d["by_similarity"][b]["ours"]["recovered_pct_of_failures"] for b in bins]
-        x = np.arange(3)
-        ax.bar(x - 0.2, share, 0.38, zorder=3, **kind(L1, False))
-        ax.bar(x + 0.2, rec, 0.38, zorder=3, **kind(OURS, False))
-        for i in range(3):
-            ax.text(x[i] - 0.2, share[i] + 1, f"{share[i]:.0f}", ha="center", fontsize=FS - 1)
-            ax.text(x[i] + 0.2, rec[i] + 1, f"{rec[i]:.0f}", ha="center", fontsize=FS - 1, color=OURS)
-        ax.set_xticks(x); ax.set_xticklabels(labels, fontsize=FS - 0.5)
-        ax.set_ylim(0, 80); ax.set_title(t, fontsize=FS + 0.5, color=INK)
-        style(ax, "Percent", "Similarity of the Two Users' Channels")
-    h = [plt.Rectangle((0, 0), 1, 1, **kind(L1, False)), plt.Rectangle((0, 0), 1, 1, **kind(OURS, False))]
-    fig.legend(h, ["Share of Blocks (%)", "Failed Blocks Recovered by Our Strategy (%)"], loc="upper center", ncol=2,
-               frameon=False, fontsize=FS)
-    fig.tight_layout(rect=(0, 0, 1, 0.9), w_pad=1.5)
+    edges = np.round(np.arange(0.0, 1.0001, 0.05), 2)
+    fig, axes = plt.subplots(2, 1, figsize=(9.6, 6.0), sharex=True, gridspec_kw={"height_ratios": [2.2, 1]})
+    for sets, name, c, mk in ((["n1_umi_v3"], "Small Cell (UMi)", "#6baed6", "o"), (["n3_uma_v3", "n3_uma_v3_more"], "Macro Cell (UMa)", OURS, "s")):
+        conv, rec, rho = [], [], []
+        for s in sets:
+            for f in sorted(glob.glob(f"results/{s}/c*.npz")):
+                d = np.load(f)
+                conv.append(d["conv_t0"].reshape(-1)); rec.append(d["nrx_c0"].reshape(-1))
+                rho.append(np.repeat(d["corr"][:, 0], d["conv_t0"].shape[1]))
+        conv, rec, rho = np.concatenate(conv), np.concatenate(rec), np.concatenate(rho)
+        b = np.clip(np.digitize(rho, edges) - 1, 0, len(edges) - 2)
+        mid = (edges[:-1] + edges[1:]) / 2
+        share = np.array([100.0 * (b == k).mean() for k in range(len(mid))])
+        fails = np.array([(~conv & (b == k)).sum() for k in range(len(mid))])
+        recp = np.array([100.0 * (rec & ~conv & (b == k)).sum() / max(1, fails[k]) for k in range(len(mid))])
+        ok = fails >= 30                                  # bins with at least 30 failed blocks
+        axes[0].plot(mid[ok], recp[ok], marker=mk, color=c, linewidth=2.2, markersize=6, label=name)
+        axes[1].fill_between(mid, share, step="mid", color=c, alpha=0.35, linewidth=0)
+        axes[1].step(mid, share, where="mid", color=c, linewidth=1.5, label=name)
+    axes[0].set_title("(a) Failed Blocks Recovered by Our Strategy (%), by Similarity of the Two Users' Channels", fontsize=FS + 0.3, color=INK)
+    axes[1].set_title("(b) Share of Blocks (%)", fontsize=FS + 0.3, color=INK)
+    style(axes[0], "Recovered (%)"); style(axes[1], "Blocks (%)", "Similarity of the Two Users' Channels (0 = Separable, 1 = Same Direction)")
+    axes[0].set_ylim(0, 90); axes[0].legend(frameon=False, fontsize=FS, loc="upper left")
+    for ax in axes:
+        ax.axvline(0.4, color="#999999", linestyle=":", linewidth=1.2)
+    axes[0].text(0.41, 84, "similar pairs (≥ 0.4)", fontsize=FS - 1.5, color="#666666")
+    axes[1].set_xlim(0, 1)
+    fig.tight_layout(h_pad=1.0)
     save(fig, "similarity")
-
 
 # ---------------------------------------------------------------- 4. which receiver recovers failed blocks (same slots)
 def receivers():
@@ -228,7 +270,7 @@ def latency():
 
 # ---------------------------------------------------------------- 6. failed code blocks predict recovery; choosing whom to wait for
 def code_blocks():
-    fig, axes = plt.subplots(1, 2, figsize=(12.6, 4.2))
+    fig, axes = plt.subplots(1, 2, figsize=(13.6, 4.4), gridspec_kw={"width_ratios": [1, 1.1]})
     for s, c, lab in (("n7_cb_v3_lead4", "#6baed6", "Small Cell (UMi)"), ("n7_n3_uma_v3_more_lead4", OURS, "Macro Cell (UMa)")):
         d = R(s)["recovery_by_failed_cbs"]
         ks = sorted(d, key=int)
@@ -237,21 +279,31 @@ def code_blocks():
     axes[0].set_title("(a) Recovered by Failed Code Blocks (of 10)", fontsize=FS + 0.5, color=INK)
     style(axes[0], "Failed Blocks Recovered (%)", "Code Blocks the Conventional Receiver Failed")
     axes[0].legend(frameon=False, fontsize=FS)
-    pols = [("harq_only", "L1 Only", L1), ("parallel", "Recovery\nbeside HARQ", "#6baed6"), ("select_cb5", "Wait if ≤ 5\nFailed CBs", OURS),
-            ("wait", "Always Wait\n(+5 ms)", "#ff7f0e"), ("select_oracle", "Perfect\nChoice", "#d0d0d0")]
-    x = np.arange(len(pols))
-    for j, (s, lab) in enumerate((("n7_cb_v3_lead4", "Small Cell"), ("n7_n3_uma_v3_more_lead4", "Macro Cell"))):
+    pols = [("harq_only", "L1 only"), ("parallel", "Recovery beside HARQ"), ("select_cb5", "Wait if ≤ 5 code blocks\nfailed (ours)"),
+            ("wait", "Always wait"), ("select_oracle", "Perfect choice (bound)")]
+    ax = axes[1]
+    for s, c, m, lab in (("n7_cb_v3_lead4", "#6baed6", "o", "Small Cell (UMi)"), ("n7_n3_uma_v3_more_lead4", OURS, "s", "Macro Cell (UMa)")):
         d = R(s)["policies"]
-        vals = [d[f"DDDSU/{p}"]["uplink_slots_per_100"] for p, _, _ in pols]
-        for i, (p, _, c) in enumerate(pols):
-            axes[1].bar(i + (j - 0.5) * 0.38, vals[i], 0.36, zorder=3, **kind(c, j == 1))
-            axes[1].text(i + (j - 0.5) * 0.38, vals[i] + 0.3, f"{vals[i]:.1f}", ha="center", fontsize=FS - 2.5)
-    axes[1].set_xticks(x); axes[1].set_xticklabels([p[1] for p in pols], fontsize=FS - 1.5)
-    axes[1].set_title("(b) Resends per 100 Blocks (Solid: Small Cell, Hatched: Macro Cell)", fontsize=FS, color=INK)
-    style(axes[1], "Resends per 100 Blocks")
+        base = d["DDDSU/harq_only"]["unrecovered_p99_ms"]
+        ys = [d[f"DDDSU/{p}"]["uplink_slots_per_100"] for p, _ in pols]
+        ax.plot(ys, range(len(pols)), marker=m, color=c, markersize=10, linestyle="none", zorder=4, label=lab)
+        if c == OURS:
+            delay = [d[f"DDDSU/{p}"]["unrecovered_p99_ms"] - base for p, _ in pols]
+    for i in range(len(pols)):
+        ax.axhline(i, color="#eeeeee", linewidth=1, zorder=1)
+        ax.text(1.03, i, f"+{delay[i]:.1f} ms" if delay[i] > 0.05 else "0 ms", transform=ax.get_yaxis_transform(), va="center",
+                fontsize=FS - 1, color="#d62728" if delay[i] > 0.05 else INK)
+    ax.text(1.03, -0.75, "Added\ndelay", transform=ax.get_yaxis_transform(), va="center", fontsize=FS - 2, color="#555555")
+    ax.set_yticks(range(len(pols))); ax.set_yticklabels([l for _, l in pols], fontsize=FS - 1)
+    ax.get_yticklabels()[2].set_color(OURS)
+    ax.set_ylim(len(pols) - 0.5, -0.5); ax.set_xlim(0, 22)
+    ax.grid(axis="x", color="#cccccc", linewidth=0.6, linestyle=(0, (4, 3))); ax.set_axisbelow(True)
+    ax.tick_params(labelsize=FS - 0.5, colors=INK)
+    ax.set_xlabel("Resends per 100 Blocks (Lower Is Better)", fontsize=FS, color=INK)
+    ax.set_title("(b) When to Wait for Recovery: Resends and Delay", fontsize=FS + 0.5, color=INK)
+    ax.legend(frameon=False, fontsize=FS - 1, loc="lower left")
     fig.tight_layout(w_pad=1.5)
     save(fig, "code_blocks")
-
 
 # ---------------------------------------------------------------- 7. link adaptation
 def link_adaptation():
@@ -276,21 +328,33 @@ def link_adaptation():
 
 # ---------------------------------------------------------------- 8. pairing
 def pairing():
-    fig, axes = plt.subplots(1, 2, figsize=(12.6, 4.4))
-    for ax, sets, t in ((axes[0], [("p2b_u8_random", "Random\nPartner"), ("p2b_u4_partner", "Best of 4"), ("p2b_u8_partner", "Best of 8"),
-                                   ("p2b_u16_partner", "Best of 16"), ("p2b_u8_minrho", "Least Similar\nof 8")], "(a) Small Cell (UMi)"),
-                        (axes[1], [("p2b_uma_u8_random", "Random\nPartner"), ("p2b_uma_u4_partner", "Best of 4"), ("p2b_uma_u8_partner", "Best of 8"),
-                                   ("p2b_uma_u16_partner", "Best of 16"), ("p2b_uma_u8_minrho", "Least Similar\nof 8")], "(b) Macro Cell (UMa)")):
-        keys = ["ours", "ai_and_ran"]
-        res = {k: [R(s)["all"][k]["resends_per_100"] for s, _ in sets] for k in keys}
-        grouped(ax, [l for _, l in sets], res, keys=keys)
-        ax.axhline(res["ours"][0], color=OURS, linestyle=":", linewidth=1.3)
-        ax.set_title(t + ": Resends per 100 Blocks", fontsize=FS + 0.5, color=INK)
-        style(ax, "Resends per 100 Blocks", "How the Scheduler Picks User 0's Partner")
-    legend(fig, ["ours", "ai_and_ran"], y=1.0)
+    fig, axes = plt.subplots(1, 2, figsize=(12.0, 4.3), sharey=False)
+    for ax, (pref, title, minrho) in zip(axes, (("p2b_u", "(a) Small Cell (UMi)", [8, 16]), ("p2b_uma_u", "(b) Macro Cell (UMa)", [8]))):
+        xs = [1, 4, 8, 16]
+        sets = [f"{pref}8_random", f"{pref}4_partner", f"{pref}8_partner", f"{pref}16_partner"]
+        l1 = [R(s)["all"]["ai_and_ran"]["resends_per_100"] for s in sets]
+        ours = [R(s)["all"]["ours"]["resends_per_100"] for s in sets]
+        ax.plot(xs, l1, marker="o", color=L1, linewidth=2.4, markersize=8, label="Conventional Receiver (L1) Only")
+        ax.plot(xs, ours, marker="o", color=OURS, linewidth=2.4, markersize=8, label="Our Strategy (Recovery)")
+        ax.axhline(ours[0], color=OURS, linestyle=":", linewidth=1.4)
+        ax.text(1.5, ours[0] + 0.25, "ours with a random partner", va="bottom", fontsize=FS - 2, color=OURS)
+        for k in minrho:
+            s = f"{pref}{k}_minrho"
+            ax.plot(k, R(s)["all"]["ai_and_ran"]["resends_per_100"], marker="D", markerfacecolor="white", markeredgecolor=L1,
+                    markeredgewidth=1.6, markersize=8, linestyle="none")
+            ax.plot(k, R(s)["all"]["ours"]["resends_per_100"], marker="D", markerfacecolor="white", markeredgecolor=OURS,
+                    markeredgewidth=1.6, markersize=8, linestyle="none")
+        ax.set_xscale("log", base=2); ax.set_xticks(xs); ax.set_xticklabels(["1\n(random)", "4", "8", "16"])
+        ax.set_xlim(0.8, 22)
+        ax.set_title(title + ": Resends per 100 Blocks", fontsize=FS + 0.5, color=INK)
+        style(ax, "Resends per 100 Blocks", "Users the Scheduler Chooses User 0's Partner From")
+        ax.set_ylim(0, max(l1 + [R(f"{pref}{k}_minrho")["all"]["ai_and_ran"]["resends_per_100"] for k in minrho]) * 1.12)
+    h, l = axes[0].get_legend_handles_labels()
+    h.append(plt.Line2D([], [], marker="D", markerfacecolor="white", markeredgecolor="#555555", markeredgewidth=1.6, linestyle="none", markersize=8))
+    l.append("Partner Chosen by Similarity Only (Hollow)")
+    fig.legend(h, l, loc="upper center", ncol=3, frameon=False, fontsize=FS - 0.5)
     fig.tight_layout(rect=(0, 0, 1, 0.9), w_pad=1.5)
     save(fig, "pairing")
-
 
 # ---------------------------------------------------------------- 9. more users, more antennas
 def users_antennas():
@@ -327,7 +391,7 @@ def users_antennas():
 # ---------------------------------------------------------------- 10. GPU: throughput of one A100 and cells it can recover for
 def gpu():
     d = R("n13_lanes")
-    fig, axes = plt.subplots(1, 3, figsize=(15.0, 4.2))
+    fig, axes = plt.subplots(1, 3, figsize=(15.0, 4.3))
     for name, c, mk in (("large", OURS, "o"), ("small", SMALL, "^")):
         k = [r["lanes"] for r in d[name]]
         axes[0].plot(k, [r["runs_per_s"] for r in d[name]], marker=mk, color=c, linewidth=2, label=f"NRx ({name.title()} Model)")
@@ -336,51 +400,56 @@ def gpu():
     axes[1].set_title("(b) Time per Run (ms, Median)", fontsize=FS, color=INK)
     style(axes[0], "Runs per Second", "Copies Running at Once"); style(axes[1], "ms", "Copies Running at Once")
     axes[0].legend(frameon=False, fontsize=FS); axes[0].set_ylim(0, 800)
-    large = d["large"][0]["runs_per_s"]; small_t = 1.0 / d["small"][0]["runs_per_s"]; large_t = 1.0 / large
-    cas = R("n12_union")
-    rows = []
-    for env, need, frac in (("Small Cell", R("n9_demand_v3")["by_point"]["8.0"]["p_slot_needs_recovery"], cas["n5_umi"]["cascade_small_then_large"]["large_runs_per_failure"]),
-                            ("Macro Cell", R("n9_demand_n3_uma_v3")["by_point"]["all"]["p_slot_needs_recovery"], cas["n5_uma"]["cascade_small_then_large"]["large_runs_per_failure"])):
-        per_cell = 400.0 * need                                  # recoveries per second per cell (one uplink slot per 2.5 ms)
-        rows.append((env, 1.0 / (per_cell * large_t), 1.0 / (per_cell * (small_t + frac * large_t))))
-    x = np.arange(len(rows))
-    axes[2].bar(x - 0.2, [r[1] for r in rows], 0.38, zorder=3, **kind(L1, False))
-    axes[2].bar(x + 0.2, [r[2] for r in rows], 0.38, zorder=3, **kind(OURS, False))
-    for i, r in enumerate(rows):
-        axes[2].text(i - 0.2, r[1] + 0.05, f"{r[1]:.1f}", ha="center", fontsize=FS)
-        axes[2].text(i + 0.2, r[2] + 0.05, f"{r[2]:.1f} ({r[2] / r[1]:.1f}×)", ha="center", fontsize=FS, color=OURS)
-    axes[2].set_xticks(x); axes[2].set_xticklabels([r[0] for r in rows])
-    axes[2].set_ylim(0, max(r[2] for r in rows) * 1.3)
-    axes[2].set_title("(c) Cells One A100 Recovers For (All Failures)", fontsize=FS, color=INK)
-    style(axes[2], "Cells per GPU")
-    h = [plt.Rectangle((0, 0), 1, 1, **kind(L1, False)), plt.Rectangle((0, 0), 1, 1, **kind(OURS, False))]
-    axes[2].legend(h, ["Large Model on Every Failure", "Small Model First, Large if It Fails"], frameon=False, fontsize=FS - 1.5, loc="upper left")
+    t_large = 1.0 / d["large"][0]["runs_per_s"]
+    pred = R("n10_predictor")
+    for key, need, c, lab in (("n1_umi_v3_cb", R("n9_demand_v3")["by_point"]["8.0"]["p_slot_needs_recovery"], "#6baed6", "Small Cell (UMi)"),
+                              ("n3_uma_v3_more", R("n9_demand_n3_uma_v3")["by_point"]["all"]["p_slot_needs_recovery"], OURS, "Macro Cell (UMa)")):
+        fr = [float(f) for f in pred[key]["budget_trees"]]
+        kept = [100 * v for v in pred[key]["budget_trees"].values()]
+        cells = [1.0 / (400.0 * need * f * t_large) for f in fr]
+        axes[2].plot(kept, cells, marker="o", color=c, linewidth=2.2, label=lab)
+        for f, x, y in zip(fr, kept, cells):
+            if f in (0.1, 0.3, 1.0):
+                up = c != OURS
+                axes[2].annotate(f"{f:.0%}", (x, y), xytext=(7, 4) if up else (-7, -11), textcoords="offset points",
+                                 ha="left" if up else "right", fontsize=FS - 2, color="#555555")
+    axes[2].set_yscale("log"); axes[2].set_xlim(0, 112); axes[2].set_ylim(1.9, 40); axes[2].set_xticks([0, 20, 40, 60, 80, 100])
+    axes[2].yaxis.set_major_locator(matplotlib.ticker.FixedLocator([2, 3, 4, 6, 10, 20, 30]))
+    axes[2].yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%g"))
+    axes[2].yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+    axes[2].text(0.03, 0.04, "label = share of failures\nsent to the Large Model", transform=axes[2].transAxes, fontsize=FS - 2, color="#555555")
+    axes[2].set_title("(c) Cells per A100 against Recovery Value Kept", fontsize=FS, color=INK)
+    style(axes[2], "Cells One A100 Recovers For", "Recoverable Blocks Recovered (%)")
+    axes[2].legend(frameon=False, fontsize=FS - 1)
     fig.tight_layout(w_pad=1.3)
     save(fig, "gpu")
-
 
 # ---------------------------------------------------------------- 12. predicting recoverable blocks; GPU budget
 def predictor():
     d = R("n10_predictor")
     sets = [k for k in d if k != "pooled"]
-    lab = {"n1_umi_v3_cb": "UMi 3", "n3_umi_v120": "UMi 120", "mcs12_umi": "UMi\nMCS 12", "mcs16_umi": "UMi\nMCS 16", "wide_umi": "UMi Wide\nEb/No",
-           "p1_umi_los_more": "UMi\nDirect", "p1_umi_nlos_more": "UMi\nBlocked", "n3_uma_v3_more": "UMa 3", "n3_uma_v30_more": "UMa 30",
-           "n3_uma_v120_more": "UMa 120", "n3_uma_los_more": "UMa\nDirect", "n3_uma_nlos_more": "UMa\nBlocked", "mcs12_uma": "UMa\nMCS 12",
-           "mcs16_uma": "UMa\nMCS 16", "wide_uma": "UMa Wide\nEb/No"}
-    fig, axes = plt.subplots(1, 2, figsize=(15.0, 4.4), gridspec_kw={"width_ratios": [2.2, 1]})
-    x = np.arange(len(sets))
-    axes[0].bar(x - 0.2, [d[s]["auc_trees"] for s in sets], 0.38, zorder=3, **kind(OURS, False))
-    axes[0].bar(x + 0.2, [d[s]["auc_cbfail"] for s in sets], 0.38, zorder=3, **kind(L1, False))
-    axes[0].set_xticks(x); axes[0].set_xticklabels([lab.get(s, s) for s in sets], fontsize=FS - 3)
-    axes[0].set_ylim(0.5, 1.0); axes[0].axhline(0.5, color="#777777", linestyle="--")
-    axes[0].set_title("(a) How Well Recovery Is Predicted When L1 Finishes (AUC)", fontsize=FS + 0.5, color=INK)
-    style(axes[0], "AUC (0.5 = Guessing)")
-    h = [plt.Rectangle((0, 0), 1, 1, **kind(OURS, False)), plt.Rectangle((0, 0), 1, 1, **kind(L1, False))]
-    axes[0].legend(h, ["Predictor (Failed Code Blocks, Similarity, Gains, Eb/No)", "Failed Code Blocks Only"], frameon=False, fontsize=FS - 1, loc="upper right")
+    lab = {"n1_umi_v3_cb": "UMi 3 km/h", "n3_umi_v120": "UMi 120 km/h", "mcs12_umi": "UMi MCS 12", "mcs16_umi": "UMi MCS 16",
+           "wide_umi": "UMi wide Eb/No", "p1_umi_los_more": "UMi direct path", "p1_umi_nlos_more": "UMi no direct path",
+           "n3_uma_v3_more": "UMa 3 km/h", "n3_uma_v30_more": "UMa 30 km/h", "n3_uma_v120_more": "UMa 120 km/h",
+           "n3_uma_los_more": "UMa direct path", "n3_uma_nlos_more": "UMa no direct path", "mcs12_uma": "UMa MCS 12",
+           "mcs16_uma": "UMa MCS 16", "wide_uma": "UMa wide Eb/No"}
+    order = sorted(sets, key=lambda s: (s.split("_")[0] != "n1" and "uma" in s, d[s]["auc_trees"] - d[s]["auc_cbfail"]))
+    fig, axes = plt.subplots(1, 2, figsize=(14.0, 5.2), gridspec_kw={"width_ratios": [1.25, 1]})
+    for yy, s in enumerate(order):
+        a, b = d[s]["auc_cbfail"], d[s]["auc_trees"]
+        axes[0].plot([a, b], [yy, yy], color="#bbbbbb", linewidth=2.5, zorder=2)
+        axes[0].plot(a, yy, "o", color=L1, markersize=8, zorder=3)
+        axes[0].plot(b, yy, "o", color=OURS, markersize=8, zorder=4)
+    axes[0].set_yticks(range(len(order))); axes[0].set_yticklabels([lab.get(s, s) for s in order], fontsize=FS - 1)
+    axes[0].set_xlim(0.55, 1.0); axes[0].invert_yaxis()
+    axes[0].grid(axis="x", color="#cccccc", linewidth=0.6, linestyle=(0, (4, 3))); axes[0].set_axisbelow(True)
+    axes[0].tick_params(labelsize=FS - 0.5, colors=INK)
+    axes[0].set_xlabel("AUC of Predicting Recovery When L1 Finishes (0.5 = Guessing)", fontsize=FS, color=INK)
+    axes[0].set_title("(a) Failed Code Blocks Only (Gray) vs. Predictor (Blue)", fontsize=FS + 0.5, color=INK)
     fr = [0.0] + [float(k) for k in d["pooled"]["budget_trees"]]
-    for key, c, ls, name in (("pooled", OURS, "-", "Predictor, All 15 Conditions"), ("n1_umi_v3_cb", "#6baed6", "-", "Predictor, UMi 3 km/h"),
-                             ("n3_uma_v3_more", "#08306b", "-", "Predictor, UMa 3 km/h")):
-        axes[1].plot(fr, [0.0] + [100 * v for v in d[key]["budget_trees"].values()], color=c, linestyle=ls, marker="o", linewidth=2, label=name)
+    for key, c, name in (("pooled", OURS, "Predictor, All 15 Conditions"), ("n1_umi_v3_cb", "#6baed6", "Predictor, UMi 3 km/h"),
+                         ("n3_uma_v3_more", "#08306b", "Predictor, UMa 3 km/h")):
+        axes[1].plot(fr, [0.0] + [100 * v for v in d[key]["budget_trees"].values()], color=c, marker="o", linewidth=2, label=name)
     axes[1].plot(fr, [0.0] + [100 * v for v in d["pooled"]["budget_cbfail"].values()], color=L1, marker="s", linewidth=1.8, label="Failed Code Blocks Only, All")
     axes[1].plot([0, 1], [0, 100], color="#777777", linestyle="--", linewidth=1.2, label="Random Choice")
     axes[1].set_xticks([0, .2, .4, .6, .8, 1.0]); axes[1].set_xticklabels(["0", "20", "40", "60", "80", "100"])
@@ -390,48 +459,39 @@ def predictor():
     fig.tight_layout(w_pad=1.5)
     save(fig, "predictor")
 
-
 # ---------------------------------------------------------------- 13. inter-cell interference: IRC baseline, published vs interference-aware receiver
 def interference():
-    conds = [("none", "No\nInterference"), ("3", "3 dB"), ("6", "6 dB"), ("10", "10 dB")]
-    keys = [("aware", "IRC + NRx (Large Model), Trained with Interference", OURS, False),
-            ("pub", "IRC + NRx (Large Model), Published", "#9ecae1", False),
-            ("irc", "Conventional Receiver with IRC Only", L1, False)]
-    fig, axes = plt.subplots(2, 2, figsize=(13.4, 7.2))
+    xs, xl = [0, 3, 6, 10], ["None", "3 dB", "6 dB", "10 dB"]
+    fig, axes = plt.subplots(2, 2, figsize=(12.6, 7.0), sharex=True)
     for col, ch in enumerate(("umi", "uma")):
-        res = {k: [] for k, *_ in keys}; rec = {"aware": [], "pub": []}
-        for inr, _ in conds:
+        ratio = {"pub": [], "aware": []}; rec = {"pub": [], "aware": []}
+        for inr in ("none", "3", "6", "10"):
             pub = R(f"irc_{ch}_v3" if inr == "none" else f"ici_{ch}_inr{inr}")["all"]
             aw = R(f"ici_{ch}_v3_iciaware" if inr == "none" else f"ici_{ch}_inr{inr}_iciaware")["all"]
-            res["irc"].append(pub["ai_and_ran_irc"]["resends_per_100"])
-            res["pub"].append(pub["ours_irc"]["resends_per_100"]); res["aware"].append(aw["ours_irc"]["resends_per_100"])
+            irc = pub["ai_and_ran_irc"]["resends_per_100"]
+            ratio["pub"].append(pub["ours_irc"]["resends_per_100"] / irc); ratio["aware"].append(aw["ours_irc"]["resends_per_100"] / irc)
             rec["pub"].append(pub["ours_irc"]["recovered_pct_of_failures"]); rec["aware"].append(aw["ours_irc"]["recovered_pct_of_failures"])
-        x = np.arange(len(conds)); w = 0.26
-        for j, (k, lab, c, h) in enumerate(keys):
-            for g in range(len(conds)):
-                v = res[k][g]
-                axes[0][col].bar(g + (j - 1) * (w + 0.02), v, w, zorder=3, **kind(c, h))
-                txt = f"{v:.1f}" if k == "irc" else f"{v / res['irc'][g]:.2f}×"
-                axes[0][col].text(g + (j - 1) * (w + 0.02), v + 0.3, txt, ha="center", fontsize=FS - 2, color=OURS if k == "aware" else INK)
-        for j, k in enumerate(("aware", "pub")):
-            c = OURS if k == "aware" else "#9ecae1"
-            for g in range(len(conds)):
-                v = rec[k][g]
-                axes[1][col].bar(g + (j - 0.5) * 0.38, v, 0.36, zorder=3, **kind(c, False))
-                axes[1][col].text(g + (j - 0.5) * 0.38, v + 0.8, f"{v:.1f}", ha="center", fontsize=FS - 1.5, color=OURS if k == "aware" else INK)
+        for k, c, lab in (("aware", OURS, "IRC + NRx (Large Model), Trained with Interference"), ("pub", "#9ecae1", "IRC + NRx (Large Model), Published")):
+            axes[0][col].plot(xs, ratio[k], marker="o", color=c, linewidth=2.4, markersize=8, label=lab)
+            axes[1][col].plot(xs, rec[k], marker="o", color=c, linewidth=2.4, markersize=8, label=lab)
+            other = ratio["pub" if k == "aware" else "aware"]
+            for x, v, o in zip(xs, ratio[k], other):
+                axes[0][col].annotate(f"{v:.2f}", (x, v), xytext=(0, 7 if v >= o else -15), textcoords="offset points", ha="center",
+                                      fontsize=FS - 2, color=INK)
+        axes[0][col].axhline(1.0, color=L1, linewidth=2.2)
+        axes[0][col].text(-0.4, 1.01, "IRC only", ha="left", va="bottom", fontsize=FS - 1.5, color="#666666")
+        axes[0][col].set_ylim(0.45, 1.08)
         name = "Small Cell (UMi)" if ch == "umi" else "Macro Cell (UMa)"
-        for row, (ttl, yl) in enumerate((("Resends per 100 Blocks (× = of IRC Only)", "Resends per 100 Blocks"),
-                                         ("Failed Blocks of IRC Recovered (%)", "Recovered (%)"))):
-            ax = axes[row][col]
-            ax.set_xticks(x); ax.set_xticklabels([c[1] for c in conds])
-            ax.set_title(f"({'abcd'[row * 2 + col]}) {name}: {ttl}", fontsize=FS, color=INK)
-            style(ax, yl if col == 0 else "", "Interference over Thermal Noise (Nominal)" if row == 1 else "")
-        axes[0][col].set_ylim(0, max(res["irc"]) * 1.2); axes[1][col].set_ylim(0, max(rec["pub"] + rec["aware"]) * 1.2)
-    h = [plt.Rectangle((0, 0), 1, 1, **kind(c, hh)) for _, _, c, hh in keys]
-    fig.legend(h, [k[1] for k in keys], loc="upper center", ncol=3, frameon=False, fontsize=FS - 0.5)
-    fig.tight_layout(rect=(0, 0, 1, 0.93), h_pad=1.2, w_pad=1.2)
+        axes[0][col].set_title(f"({'ab'[col]}) {name}: Resends Relative to IRC Only", fontsize=FS, color=INK)
+        axes[1][col].set_title(f"({'cd'[col]}) {name}: Failed Blocks of IRC Recovered (%)", fontsize=FS, color=INK)
+        style(axes[0][col], "Resends / IRC Only" if col == 0 else "")
+        style(axes[1][col], "Recovered (%)" if col == 0 else "", "Interference over Thermal Noise (Nominal)")
+        axes[1][col].set_ylim(0, max(rec["pub"] + rec["aware"]) * 1.2)
+        axes[1][col].set_xticks(xs); axes[1][col].set_xticklabels(xl)
+    h, l = axes[0][0].get_legend_handles_labels()
+    fig.legend(h, l, loc="upper center", ncol=2, frameon=False, fontsize=FS - 0.5)
+    fig.tight_layout(rect=(0, 0, 1, 0.94), h_pad=1.2, w_pad=1.2)
     save(fig, "interference")
-
 
 for f in (interference, predictor, harq_conditions, robustness, similarity, receivers, latency, code_blocks, link_adaptation, pairing, users_antennas, gpu):
     try:
