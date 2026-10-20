@@ -1,0 +1,9 @@
+ici_uma_inr10_iciaware.json: 5120 slots, 10240 TBs, similarity median 0.48, separable vs cuPHY first [8250, 8201]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 19.9 | 0.0 | 31.1 | 35 | 3.26 | 1.311 |
+| ai_for_ran | 14.7 | 0.0 | 23.2 | 36 | 2.33 | 1.232 |
+| ours | 19.9 | 12.3 | 11.6 | 13 | 1.07 | 1.116 |
+| ours_conv_harq | 19.9 | 12.3 | 17.6 | 30 | 3.11 | 1.176 |
+| ai_and_ran_irc | 8.6 | 0.0 | 13.7 | 37 | 1.52 | 1.137 |
+| ours_irc | 8.6 | 1.6 | 10.7 | 28 | 0.97 | 1.107 |

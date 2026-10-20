@@ -1,0 +1,7 @@
+ici_smoke.json: 32 slots, 64 TBs, similarity median 0.48, separable vs cuPHY first [28, 28]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 56.2 | 0.0 | 106.2 | 53 | 15.62 | 2.062 |
+| ai_for_ran | 57.8 | 0.0 | 98.4 | 43 | 12.50 | 1.984 |
+| ours | 56.2 | 4.7 | 84.4 | 33 | 9.38 | 1.844 |
+| ours_conv_harq | 56.2 | 4.7 | 101.6 | 53 | 15.62 | 2.016 |

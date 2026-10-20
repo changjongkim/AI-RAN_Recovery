@@ -391,7 +391,49 @@ def predictor():
     save(fig, "predictor")
 
 
-for f in (predictor, harq_conditions, robustness, similarity, receivers, latency, code_blocks, link_adaptation, pairing, users_antennas, gpu):
+# ---------------------------------------------------------------- 13. inter-cell interference: IRC baseline, published vs interference-aware receiver
+def interference():
+    conds = [("none", "No\nInterference"), ("3", "3 dB"), ("6", "6 dB"), ("10", "10 dB")]
+    keys = [("aware", "IRC + NRx (Large Model), Trained with Interference", OURS, False),
+            ("pub", "IRC + NRx (Large Model), Published", "#9ecae1", False),
+            ("irc", "Conventional Receiver with IRC Only", L1, False)]
+    fig, axes = plt.subplots(2, 2, figsize=(13.4, 7.2))
+    for col, ch in enumerate(("umi", "uma")):
+        res = {k: [] for k, *_ in keys}; rec = {"aware": [], "pub": []}
+        for inr, _ in conds:
+            pub = R(f"irc_{ch}_v3" if inr == "none" else f"ici_{ch}_inr{inr}")["all"]
+            aw = R(f"ici_{ch}_v3_iciaware" if inr == "none" else f"ici_{ch}_inr{inr}_iciaware")["all"]
+            res["irc"].append(pub["ai_and_ran_irc"]["resends_per_100"])
+            res["pub"].append(pub["ours_irc"]["resends_per_100"]); res["aware"].append(aw["ours_irc"]["resends_per_100"])
+            rec["pub"].append(pub["ours_irc"]["recovered_pct_of_failures"]); rec["aware"].append(aw["ours_irc"]["recovered_pct_of_failures"])
+        x = np.arange(len(conds)); w = 0.26
+        for j, (k, lab, c, h) in enumerate(keys):
+            for g in range(len(conds)):
+                v = res[k][g]
+                axes[0][col].bar(g + (j - 1) * (w + 0.02), v, w, zorder=3, **kind(c, h))
+                txt = f"{v:.1f}" if k == "irc" else f"{v / res['irc'][g]:.2f}×"
+                axes[0][col].text(g + (j - 1) * (w + 0.02), v + 0.3, txt, ha="center", fontsize=FS - 2, color=OURS if k == "aware" else INK)
+        for j, k in enumerate(("aware", "pub")):
+            c = OURS if k == "aware" else "#9ecae1"
+            for g in range(len(conds)):
+                v = rec[k][g]
+                axes[1][col].bar(g + (j - 0.5) * 0.38, v, 0.36, zorder=3, **kind(c, False))
+                axes[1][col].text(g + (j - 0.5) * 0.38, v + 0.8, f"{v:.1f}", ha="center", fontsize=FS - 1.5, color=OURS if k == "aware" else INK)
+        name = "Small Cell (UMi)" if ch == "umi" else "Macro Cell (UMa)"
+        for row, (ttl, yl) in enumerate((("Resends per 100 Blocks (× = of IRC Only)", "Resends per 100 Blocks"),
+                                         ("Failed Blocks of IRC Recovered (%)", "Recovered (%)"))):
+            ax = axes[row][col]
+            ax.set_xticks(x); ax.set_xticklabels([c[1] for c in conds])
+            ax.set_title(f"({'abcd'[row * 2 + col]}) {name}: {ttl}", fontsize=FS, color=INK)
+            style(ax, yl if col == 0 else "", "Interference over Thermal Noise (Nominal)" if row == 1 else "")
+        axes[0][col].set_ylim(0, max(res["irc"]) * 1.2); axes[1][col].set_ylim(0, max(rec["pub"] + rec["aware"]) * 1.2)
+    h = [plt.Rectangle((0, 0), 1, 1, **kind(c, hh)) for _, _, c, hh in keys]
+    fig.legend(h, [k[1] for k in keys], loc="upper center", ncol=3, frameon=False, fontsize=FS - 0.5)
+    fig.tight_layout(rect=(0, 0, 1, 0.93), h_pad=1.2, w_pad=1.2)
+    save(fig, "interference")
+
+
+for f in (interference, predictor, harq_conditions, robustness, similarity, receivers, latency, code_blocks, link_adaptation, pairing, users_antennas, gpu):
     try:
         f()
     except Exception as e:                       # one broken figure must not stop the others

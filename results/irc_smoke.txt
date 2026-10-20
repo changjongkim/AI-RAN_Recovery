@@ -1,0 +1,9 @@
+irc_smoke.json: 32 slots, 64 TBs, similarity median 0.48, separable vs cuPHY first [48, 47]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 26.6 | 0.0 | 53.1 | 59 | 7.81 | 1.531 |
+| ai_for_ran | 20.3 | 0.0 | 37.5 | 54 | 4.69 | 1.375 |
+| ours | 26.6 | 7.8 | 32.8 | 35 | 3.12 | 1.328 |
+| ours_conv_harq | 26.6 | 7.8 | 40.6 | 47 | 7.81 | 1.406 |
+| ai_and_ran_irc | 17.2 | 0.0 | 28.1 | 45 | 3.12 | 1.281 |
+| ours_irc | 17.2 | 1.6 | 23.4 | 36 | 1.56 | 1.234 |

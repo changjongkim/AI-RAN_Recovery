@@ -1,0 +1,9 @@
+ici_umi_inr3.json: 5120 slots, 10240 TBs, similarity median 0.46, separable vs cuPHY first [8828, 8817]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 13.9 | 0.0 | 23.1 | 42 | 2.65 | 1.231 |
+| ai_for_ran | 13.9 | 0.0 | 22.9 | 40 | 2.69 | 1.229 |
+| ours | 13.9 | 2.9 | 17.9 | 31 | 2.02 | 1.179 |
+| ours_conv_harq | 13.9 | 2.9 | 20.1 | 41 | 2.63 | 1.201 |
+| ai_and_ran_irc | 8.8 | 0.0 | 14.4 | 39 | 1.68 | 1.144 |
+| ours_irc | 8.8 | 0.3 | 13.6 | 36 | 1.55 | 1.136 |

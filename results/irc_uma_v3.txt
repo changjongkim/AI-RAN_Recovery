@@ -1,0 +1,9 @@
+irc_uma_v3.json: 5120 slots, 10240 TBs, similarity median 0.47, separable vs cuPHY first [8866, 8848]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 13.6 | 0.0 | 21.5 | 37 | 2.26 | 1.215 |
+| ai_for_ran | 7.8 | 0.0 | 12.4 | 36 | 1.30 | 1.124 |
+| ours | 13.6 | 7.7 | 9.4 | 16 | 1.00 | 1.094 |
+| ours_conv_harq | 13.6 | 7.7 | 12.2 | 28 | 1.99 | 1.122 |
+| ai_and_ran_irc | 10.1 | 0.0 | 16.5 | 38 | 1.88 | 1.165 |
+| ours_irc | 10.1 | 4.4 | 9.2 | 21 | 0.96 | 1.092 |
