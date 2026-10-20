@@ -1,0 +1,7 @@
+p2b_uma_u8_random_more.json: 5120 slots, 10240 TBs, similarity median 0.48, separable vs cuPHY first [8875, 8871]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 13.4 | 0.0 | 20.8 | 35 | 2.09 | 1.208 |
+| ai_for_ran | 7.7 | 0.0 | 12.0 | 35 | 1.16 | 1.120 |
+| ours | 13.4 | 7.6 | 9.1 | 15 | 0.83 | 1.091 |
+| ours_conv_harq | 13.4 | 7.6 | 11.9 | 28 | 1.88 | 1.119 |

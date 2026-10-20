@@ -1,0 +1,49 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792152918.845023 1745897 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Applying low complexity LMMSE interpolation with reduced number of PRBs.
+Using automatic LMMSE splitting.
+Using reduction factor of 13.0
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Eb/No 0.0: baseline_lslin_lmmse 0.599, baseline_lmmse_kbest 0.740, baseline_perf_csi_kbest 0.766, nrx 0.714
+Eb/No 2.0: baseline_lslin_lmmse 0.776, baseline_lmmse_kbest 0.880, baseline_perf_csi_kbest 0.896, nrx 0.875
+Eb/No 4.0: baseline_lslin_lmmse 0.885, baseline_lmmse_kbest 0.943, baseline_perf_csi_kbest 0.969, nrx 0.932
+Eb/No 6.0: baseline_lslin_lmmse 0.823, baseline_lmmse_kbest 0.885, baseline_perf_csi_kbest 0.906, nrx 0.885
+Eb/No 8.0: baseline_lslin_lmmse 0.979, baseline_lmmse_kbest 0.984, baseline_perf_csi_kbest 0.995, nrx 0.984
+Eb/No 10.0: baseline_lslin_lmmse 0.938, baseline_lmmse_kbest 0.974, baseline_perf_csi_kbest 0.979, nrx 0.964
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx"
+  ],
+  "prbs": 273,
+  "nrx_weights": "",
+  "users": 2,
+  "base_config": "nrx_large_8rx.cfg",
+  "channel": "UMi",
+  "speed": 8.33,
+  "num_rx": 8,
+  "mcs": 14,
+  "slots": 576,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.2444407542343723,
+    "baseline_lmmse_kbest": 1.8781912308091302,
+    "baseline_perf_csi_kbest": 1.4914265472274717,
+    "nrx": 1.230971417204829
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 83.33333333333334,
+    "baseline_lmmse_kbest": 90.10416666666666,
+    "baseline_perf_csi_kbest": 91.84027777777779,
+    "nrx": 89.23611111111111
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lmmse_kbest": 40.625,
+    "baseline_perf_csi_kbest": 51.041666666666664,
+    "nrx": 35.416666666666664
+  }
+}

@@ -1,0 +1,48 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792159561.905311 1382895 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+Evaluating the first 3 port sets.
+Evaluating the first 3 port sets.
+Applying low complexity LMMSE interpolation with reduced number of PRBs.
+Using automatic LMMSE splitting.
+Using reduction factor of 13.0
+Evaluating the first 3 port sets.
+Evaluating the first 3 port sets.
+Eb/No 8.0: baseline_lslin_lmmse 0.715, baseline_lmmse_kbest 0.868, baseline_perf_csi_kbest 0.903, nrx 0.868
+Eb/No 10.0: baseline_lslin_lmmse 0.847, baseline_lmmse_kbest 0.944, baseline_perf_csi_kbest 0.951, nrx 0.938
+Eb/No 12.0: baseline_lslin_lmmse 0.889, baseline_lmmse_kbest 0.938, baseline_perf_csi_kbest 0.951, nrx 0.938
+Eb/No 14.0: baseline_lslin_lmmse 0.910, baseline_lmmse_kbest 0.958, baseline_perf_csi_kbest 0.986, nrx 0.944
+Eb/No 16.0: baseline_lslin_lmmse 0.931, baseline_lmmse_kbest 0.972, baseline_perf_csi_kbest 0.986, nrx 0.958
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx"
+  ],
+  "prbs": 273,
+  "nrx_weights": "",
+  "users": 3,
+  "base_config": "nrx_large_mu4.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 4,
+  "mcs": 14,
+  "slots": 240,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.674501849766663,
+    "baseline_lmmse_kbest": 2.458645635129263,
+    "baseline_perf_csi_kbest": 2.156187216879395,
+    "nrx": 1.6771896470123466
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 85.83333333333333,
+    "baseline_lmmse_kbest": 93.61111111111111,
+    "baseline_perf_csi_kbest": 95.55555555555556,
+    "nrx": 92.91666666666667
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lmmse_kbest": 54.90196078431372,
+    "baseline_perf_csi_kbest": 68.62745098039215,
+    "nrx": 50.0
+  }
+}

@@ -8,7 +8,7 @@ results/**/*.npz
 __pycache__/
 *.pyc
 third_party/
-results/n4/weights_*
+results/*/weights_*
 deps/
 queue_b/lock
 queue_b/current_job
@@ -19,3 +19,4 @@ queue*/STOP
 src/engines/
 models/*_weights
 models/*.trt
+queue/retried

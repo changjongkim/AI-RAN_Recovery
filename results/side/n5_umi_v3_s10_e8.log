@@ -1,0 +1,58 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792075594.054814 1075131 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Applying low complexity LMMSE interpolation with reduced number of PRBs.
+Using automatic LMMSE splitting.
+Using reduction factor of 13.0
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Eb/No 8.0: baseline_lslin_lmmse 0.852, baseline_lslin_lmmse@50 0.859, lslin_idd3 0.875, baseline_lmmse_kbest 0.930, baseline_perf_csi_kbest 0.969, nrx 0.945, nrx_rt 0.898
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lslin_lmmse@50",
+    "lslin_idd3",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx",
+    "nrx_rt"
+  ],
+  "prbs": 273,
+  "users": 2,
+  "base_config": "nrx_large.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 4,
+  "mcs": 14,
+  "slots": 64,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.1892437309219304,
+    "baseline_lslin_lmmse@50": 1.3577072185466932,
+    "lslin_idd3": 6.430668180703265,
+    "baseline_lmmse_kbest": 1.6990720217343096,
+    "baseline_perf_csi_kbest": 1.4624076434843118,
+    "nrx": 1.1786917381717785,
+    "nrx_rt": 1.1561038687652854
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 85.15625,
+    "baseline_lslin_lmmse@50": 85.9375,
+    "lslin_idd3": 87.5,
+    "baseline_lmmse_kbest": 92.96875,
+    "baseline_perf_csi_kbest": 96.875,
+    "nrx": 94.53125,
+    "nrx_rt": 89.84375
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lslin_lmmse@50": 5.2631578947368425,
+    "lslin_idd3": 15.789473684210526,
+    "baseline_lmmse_kbest": 52.63157894736842,
+    "baseline_perf_csi_kbest": 78.94736842105263,
+    "nrx": 63.1578947368421,
+    "nrx_rt": 31.57894736842105
+  }
+}

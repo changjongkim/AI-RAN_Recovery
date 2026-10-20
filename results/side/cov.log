@@ -1,0 +1,5 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792056475.112147  719865 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+Only GPU number 1 used.
+Evaluating the first 1 port sets.
+Setting channel type to UMi for covariance computation.

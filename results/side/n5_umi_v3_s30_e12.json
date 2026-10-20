@@ -1,0 +1,45 @@
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lslin_lmmse@50",
+    "lslin_idd3",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx",
+    "nrx_rt"
+  ],
+  "prbs": 273,
+  "users": 2,
+  "base_config": "nrx_large.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 4,
+  "mcs": 14,
+  "slots": 64,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.190187032531071,
+    "baseline_lslin_lmmse@50": 1.3700288793124855,
+    "lslin_idd3": 6.395426733156228,
+    "baseline_lmmse_kbest": 1.6262091718750753,
+    "baseline_perf_csi_kbest": 1.4356805213435564,
+    "nrx": 1.2045948763126262,
+    "nrx_rt": 1.1655645389686242
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 92.96875,
+    "baseline_lslin_lmmse@50": 93.75,
+    "lslin_idd3": 96.875,
+    "baseline_lmmse_kbest": 97.65625,
+    "baseline_perf_csi_kbest": 97.65625,
+    "nrx": 97.65625,
+    "nrx_rt": 96.875
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lslin_lmmse@50": 11.11111111111111,
+    "lslin_idd3": 55.55555555555556,
+    "baseline_lmmse_kbest": 66.66666666666667,
+    "baseline_perf_csi_kbest": 66.66666666666667,
+    "nrx": 66.66666666666667,
+    "nrx_rt": 55.55555555555556
+  }
+}

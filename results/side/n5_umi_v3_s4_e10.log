@@ -1,0 +1,58 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792072596.419810  527032 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Applying low complexity LMMSE interpolation with reduced number of PRBs.
+Using automatic LMMSE splitting.
+Using reduction factor of 13.0
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Eb/No 10.0: baseline_lslin_lmmse 0.883, baseline_lslin_lmmse@50 0.906, lslin_idd3 0.898, baseline_lmmse_kbest 0.914, baseline_perf_csi_kbest 0.930, nrx 0.914, nrx_rt 0.914
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lslin_lmmse@50",
+    "lslin_idd3",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx",
+    "nrx_rt"
+  ],
+  "prbs": 273,
+  "users": 2,
+  "base_config": "nrx_large.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 4,
+  "mcs": 14,
+  "slots": 64,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.1958929710937127,
+    "baseline_lslin_lmmse@50": 1.3513812919064776,
+    "lslin_idd3": 6.501323818109654,
+    "baseline_lmmse_kbest": 1.646715363718613,
+    "baseline_perf_csi_kbest": 1.4759099747814162,
+    "nrx": 1.2133371574377634,
+    "nrx_rt": 1.1642185512969263
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 88.28125,
+    "baseline_lslin_lmmse@50": 90.625,
+    "lslin_idd3": 89.84375,
+    "baseline_lmmse_kbest": 91.40625,
+    "baseline_perf_csi_kbest": 92.96875,
+    "nrx": 91.40625,
+    "nrx_rt": 91.40625
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lslin_lmmse@50": 20.0,
+    "lslin_idd3": 13.333333333333334,
+    "baseline_lmmse_kbest": 26.666666666666668,
+    "baseline_perf_csi_kbest": 40.0,
+    "nrx": 26.666666666666668,
+    "nrx_rt": 26.666666666666668
+  }
+}

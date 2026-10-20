@@ -1,0 +1,58 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792079723.460143  915106 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Applying low complexity LMMSE interpolation with reduced number of PRBs.
+Using automatic LMMSE splitting.
+Using reduction factor of 13.0
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Eb/No 6.0: baseline_lslin_lmmse 0.711, baseline_lslin_lmmse@50 0.719, lslin_idd3 0.766, baseline_lmmse_kbest 0.820, baseline_perf_csi_kbest 0.844, nrx 0.828, nrx_rt 0.812
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lslin_lmmse@50",
+    "lslin_idd3",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx",
+    "nrx_rt"
+  ],
+  "prbs": 273,
+  "users": 2,
+  "base_config": "nrx_large.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 4,
+  "mcs": 14,
+  "slots": 64,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.1748692983281899,
+    "baseline_lslin_lmmse@50": 1.3656964960155165,
+    "lslin_idd3": 6.383946275671747,
+    "baseline_lmmse_kbest": 1.629104633124939,
+    "baseline_perf_csi_kbest": 1.4185339508437664,
+    "nrx": 1.1697616704528855,
+    "nrx_rt": 1.1381139116092527
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 71.09375,
+    "baseline_lslin_lmmse@50": 71.875,
+    "lslin_idd3": 76.5625,
+    "baseline_lmmse_kbest": 82.03125,
+    "baseline_perf_csi_kbest": 84.375,
+    "nrx": 82.8125,
+    "nrx_rt": 81.25
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lslin_lmmse@50": 2.7027027027027026,
+    "lslin_idd3": 18.91891891891892,
+    "baseline_lmmse_kbest": 37.83783783783784,
+    "baseline_perf_csi_kbest": 45.945945945945944,
+    "nrx": 40.54054054054054,
+    "nrx_rt": 35.13513513513514
+  }
+}

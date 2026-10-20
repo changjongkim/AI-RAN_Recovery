@@ -1,0 +1,7 @@
+n1b_uma_los_alone.json: 5120 slots, 5120 TBs, similarity median 0.40, separable vs cuPHY first [4224, 4222]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 17.5 | 0.0 | 27.6 | 37 | 2.89 | 1.276 |
+| ai_for_ran | 15.4 | 0.0 | 24.7 | 38 | 2.85 | 1.247 |
+| ours | 17.5 | 4.9 | 20.3 | 27 | 2.17 | 1.203 |
+| ours_conv_harq | 17.5 | 4.9 | 22.5 | 36 | 2.87 | 1.225 |

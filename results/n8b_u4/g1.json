@@ -1,0 +1,25 @@
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "nrx"
+  ],
+  "prbs": 273,
+  "users": 4,
+  "base_config": "nrx_large_mu4.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 4,
+  "mcs": 14,
+  "slots": 320,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 0.9671635902187518,
+    "nrx": 0.991821857193736
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 81.40625,
+    "nrx": 90.078125
+  },
+  "recovers_pct_of_conventional_failures": {
+    "nrx": 46.63865546218487
+  }
+}

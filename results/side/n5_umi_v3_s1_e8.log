@@ -1,0 +1,58 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792065331.473038 1034022 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Applying low complexity LMMSE interpolation with reduced number of PRBs.
+Using automatic LMMSE splitting.
+Using reduction factor of 13.0
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Eb/No 8.0: baseline_lslin_lmmse 0.797, baseline_lslin_lmmse@50 0.820, lslin_idd3 0.844, baseline_lmmse_kbest 0.875, baseline_perf_csi_kbest 0.883, nrx 0.883, nrx_rt 0.875
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lslin_lmmse@50",
+    "lslin_idd3",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx",
+    "nrx_rt"
+  ],
+  "prbs": 273,
+  "users": 2,
+  "base_config": "nrx_large.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 4,
+  "mcs": 14,
+  "slots": 64,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.2403738697495328,
+    "baseline_lslin_lmmse@50": 1.4047449925312776,
+    "lslin_idd3": 6.737436505484425,
+    "baseline_lmmse_kbest": 1.6454423749687521,
+    "baseline_perf_csi_kbest": 1.4736800441244213,
+    "nrx": 1.2325955483436246,
+    "nrx_rt": 1.2178562114844453
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 79.6875,
+    "baseline_lslin_lmmse@50": 82.03125,
+    "lslin_idd3": 84.375,
+    "baseline_lmmse_kbest": 87.5,
+    "baseline_perf_csi_kbest": 88.28125,
+    "nrx": 88.28125,
+    "nrx_rt": 87.5
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lslin_lmmse@50": 11.538461538461538,
+    "lslin_idd3": 23.076923076923077,
+    "baseline_lmmse_kbest": 38.46153846153846,
+    "baseline_perf_csi_kbest": 42.30769230769231,
+    "nrx": 42.30769230769231,
+    "nrx_rt": 38.46153846153846
+  }
+}

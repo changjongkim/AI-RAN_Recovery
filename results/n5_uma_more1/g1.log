@@ -1,0 +1,62 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792369449.096557 1344151 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Applying low complexity LMMSE interpolation with reduced number of PRBs.
+Using automatic LMMSE splitting.
+Using reduction factor of 13.0
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Eb/No 6.0: baseline_lslin_lmmse 0.805, baseline_lslin_lmmse@50 0.820, lslin_idd3 0.844, baseline_lmmse_kbest 0.883, baseline_perf_csi_kbest 0.938, nrx 0.891, nrx_rt 0.875
+Eb/No 8.0: baseline_lslin_lmmse 0.867, baseline_lslin_lmmse@50 0.883, lslin_idd3 0.891, baseline_lmmse_kbest 0.891, baseline_perf_csi_kbest 0.938, nrx 0.906, nrx_rt 0.898
+Eb/No 10.0: baseline_lslin_lmmse 0.914, baseline_lslin_lmmse@50 0.914, lslin_idd3 0.914, baseline_lmmse_kbest 0.914, baseline_perf_csi_kbest 0.969, nrx 0.922, nrx_rt 0.922
+Eb/No 12.0: baseline_lslin_lmmse 0.898, baseline_lslin_lmmse@50 0.898, lslin_idd3 0.906, baseline_lmmse_kbest 0.922, baseline_perf_csi_kbest 0.984, nrx 0.969, nrx_rt 0.969
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lslin_lmmse@50",
+    "lslin_idd3",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx",
+    "nrx_rt"
+  ],
+  "prbs": 273,
+  "nrx_weights": "",
+  "users": 2,
+  "base_config": "nrx_large.cfg",
+  "channel": "UMa",
+  "speed": 0.83,
+  "num_rx": 4,
+  "mcs": 14,
+  "slots": 256,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.2840171733316765,
+    "baseline_lslin_lmmse@50": 1.4488446139928328,
+    "lslin_idd3": 6.8867590340692,
+    "baseline_lmmse_kbest": 1.7493310212503275,
+    "baseline_perf_csi_kbest": 1.523747164823817,
+    "nrx": 1.2804163958442132,
+    "nrx_rt": 1.262401956371832
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 87.109375,
+    "baseline_lslin_lmmse@50": 87.890625,
+    "lslin_idd3": 88.8671875,
+    "baseline_lmmse_kbest": 90.234375,
+    "baseline_perf_csi_kbest": 95.703125,
+    "nrx": 92.1875,
+    "nrx_rt": 91.6015625
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lslin_lmmse@50": 6.0606060606060606,
+    "lslin_idd3": 13.636363636363637,
+    "baseline_lmmse_kbest": 25.757575757575758,
+    "baseline_perf_csi_kbest": 66.66666666666667,
+    "nrx": 39.39393939393939,
+    "nrx_rt": 34.84848484848485
+  }
+}

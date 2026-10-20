@@ -1,0 +1,34 @@
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Eb/No 0.0: baseline_lslin_lmmse 0.641, nrx 0.438
+Eb/No 2.0: baseline_lslin_lmmse 0.734, nrx 0.594
+Eb/No 4.0: baseline_lslin_lmmse 0.797, nrx 0.688
+Eb/No 6.0: baseline_lslin_lmmse 0.922, nrx 0.812
+Eb/No 8.0: baseline_lslin_lmmse 0.953, nrx 0.875
+Eb/No 10.0: baseline_lslin_lmmse 0.953, nrx 0.875
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "nrx"
+  ],
+  "prbs": 273,
+  "nrx_weights": "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/n4b/weights_widened",
+  "users": 2,
+  "base_config": "nrx_large_8rx.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 8,
+  "mcs": 14,
+  "slots": 192,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.2000820618697314,
+    "nrx": 1.1889101847759775
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 83.33333333333334,
+    "nrx": 71.35416666666666
+  },
+  "recovers_pct_of_conventional_failures": {
+    "nrx": 12.5
+  }
+}

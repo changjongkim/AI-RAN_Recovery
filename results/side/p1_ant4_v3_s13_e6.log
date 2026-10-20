@@ -1,0 +1,30 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792077245.405016  792714 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Eb/No 6.0: baseline_lslin_lmmse 0.836, baseline_perf_csi_kbest 0.914
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_perf_csi_kbest"
+  ],
+  "prbs": 273,
+  "users": 2,
+  "base_config": "nrx_large.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 4,
+  "mcs": 14,
+  "slots": 64,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 0.5997706598438981,
+    "baseline_perf_csi_kbest": 0.8612240538280957
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 83.59375,
+    "baseline_perf_csi_kbest": 91.40625
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_perf_csi_kbest": 47.61904761904762
+  }
+}

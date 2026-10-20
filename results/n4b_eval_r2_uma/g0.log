@@ -1,0 +1,49 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792190510.644153  926293 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Applying low complexity LMMSE interpolation with reduced number of PRBs.
+Using automatic LMMSE splitting.
+Using reduction factor of 13.0
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Eb/No 0.0: baseline_lslin_lmmse 0.630, baseline_lmmse_kbest 0.828, baseline_perf_csi_kbest 0.943, nrx 0.844
+Eb/No 2.0: baseline_lslin_lmmse 0.781, baseline_lmmse_kbest 0.885, baseline_perf_csi_kbest 0.938, nrx 0.880
+Eb/No 4.0: baseline_lslin_lmmse 0.891, baseline_lmmse_kbest 0.938, baseline_perf_csi_kbest 0.974, nrx 0.948
+Eb/No 6.0: baseline_lslin_lmmse 0.917, baseline_lmmse_kbest 0.958, baseline_perf_csi_kbest 0.990, nrx 0.953
+Eb/No 8.0: baseline_lslin_lmmse 0.943, baseline_lmmse_kbest 0.958, baseline_perf_csi_kbest 0.974, nrx 0.958
+Eb/No 10.0: baseline_lslin_lmmse 0.958, baseline_lmmse_kbest 0.979, baseline_perf_csi_kbest 0.990, nrx 0.990
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx"
+  ],
+  "prbs": 273,
+  "nrx_weights": "",
+  "users": 2,
+  "base_config": "nrx_large_8rx.cfg",
+  "channel": "UMa",
+  "speed": 0.83,
+  "num_rx": 8,
+  "mcs": 14,
+  "slots": 576,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.2153223899494554,
+    "baseline_lmmse_kbest": 1.8024325959272067,
+    "baseline_perf_csi_kbest": 1.4838785775209038,
+    "nrx": 1.2273077753525286
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 85.32986111111111,
+    "baseline_lmmse_kbest": 92.44791666666666,
+    "baseline_perf_csi_kbest": 96.78819444444444,
+    "nrx": 92.88194444444444
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lmmse_kbest": 49.112426035502956,
+    "baseline_perf_csi_kbest": 78.10650887573965,
+    "nrx": 51.4792899408284
+  }
+}

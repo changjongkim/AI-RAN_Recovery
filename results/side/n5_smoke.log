@@ -1,0 +1,3 @@
+block failure %: {'baseline_lslin_lmmse': 11.7, 'lslin_idd0': 11.7, 'lslin_idd3': 7.8, 'baseline_lslin_lmmse@50': 10.2}
+seconds per slot: {'baseline_lslin_lmmse': 0.396, 'lslin_idd0': 0.38, 'lslin_idd3': 2.201, 'baseline_lslin_lmmse@50': 0.48}
+N5_SMOKE pass

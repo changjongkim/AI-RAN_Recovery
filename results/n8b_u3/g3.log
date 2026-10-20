@@ -1,0 +1,32 @@
+Evaluating the first 3 port sets.
+Evaluating the first 3 port sets.
+Eb/No 8.0: baseline_lslin_lmmse 0.698, nrx 0.839
+Eb/No 10.0: baseline_lslin_lmmse 0.839, nrx 0.891
+Eb/No 12.0: baseline_lslin_lmmse 0.880, nrx 0.943
+Eb/No 14.0: baseline_lslin_lmmse 0.932, nrx 0.943
+Eb/No 16.0: baseline_lslin_lmmse 0.969, nrx 0.990
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "nrx"
+  ],
+  "prbs": 273,
+  "users": 3,
+  "base_config": "nrx_large_mu4.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 4,
+  "mcs": 14,
+  "slots": 320,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 0.7766538782718726,
+    "nrx": 0.791319108693665
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 86.35416666666667,
+    "nrx": 92.08333333333333
+  },
+  "recovers_pct_of_conventional_failures": {
+    "nrx": 41.98473282442748
+  }
+}

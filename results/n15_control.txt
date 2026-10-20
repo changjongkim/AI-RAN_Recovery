@@ -1,0 +1,7 @@
+n15_control.json: 256 slots, 512 TBs, similarity median 0.47, separable vs cuPHY first [462, 463]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 9.6 | 0.0 | 15.6 | 39 | 1.76 | 1.156 |
+| ai_for_ran | 9.2 | 0.0 | 15.4 | 43 | 2.15 | 1.154 |
+| ours | 9.6 | 1.6 | 11.7 | 24 | 1.17 | 1.117 |
+| ours_conv_harq | 9.6 | 1.6 | 14.1 | 39 | 1.76 | 1.141 |

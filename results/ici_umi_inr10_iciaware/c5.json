@@ -1,0 +1,971 @@
+{
+  "set": "s",
+  "mcs": 14,
+  "rvs": [
+    0,
+    2,
+    3,
+    1
+  ],
+  "generator": {
+    "channel": "UMi",
+    "speed": 0.83,
+    "los": "auto",
+    "rvs": [
+      0,
+      2,
+      3,
+      1
+    ],
+    "mcs": [
+      14
+    ],
+    "gap_ms": 7.5,
+    "gap_symbols": 207,
+    "retx_alone": false,
+    "drop_users": 0,
+    "pairing": "random",
+    "interferers": 2,
+    "sir_db": null,
+    "inr_db": 10.0,
+    "sir_median_db": 11.557588577270508,
+    "pair_rho_median": null,
+    "partner_gain_db_median": null,
+    "partner_rank_mean": null,
+    "axis": "ebno",
+    "num_rx": 4,
+    "seed": 1005
+  },
+  "ldpc_iterations": 20,
+  "retx_alone": false,
+  "slots": 256,
+  "users": 2,
+  "transmissions": 4,
+  "decoded": {
+    "conv_t0": 419,
+    "sep_c0": 422,
+    "sep_c1": 468,
+    "sep_c2": 488,
+    "sep_c3": 496,
+    "nrx_c0": 464,
+    "nrx_c1": 499,
+    "nrx_c2": 501,
+    "nrx_c3": 503,
+    "small_c0": 421,
+    "small_c1": 475,
+    "small_c2": 488,
+    "small_c3": 494,
+    "irc_c0": 469,
+    "irc_c1": 497,
+    "irc_c2": 503,
+    "irc_c3": 504,
+    "sep_s1": 282,
+    "sep_s2": 412,
+    "sep_s3": 0,
+    "nrx_s1": 371,
+    "nrx_s2": 453,
+    "nrx_s3": 0,
+    "small_s1": 275,
+    "small_s2": 414,
+    "small_s3": 0,
+    "irc_s1": 390,
+    "irc_s2": 465,
+    "irc_s3": 0
+  },
+  "corr_median": 0.4667126536369324,
+  "all": {
+    "ai_and_ran": {
+      "tbs": 512,
+      "first_failures": 93,
+      "first_fail_pct": 18.1640625,
+      "done_at_bs_pct": 0.0,
+      "recovered_pct_of_failures": 0.0,
+      "resends_per_100": 31.4453125,
+      "still_failed_after_one_resend_pct_of_failures": 47.31182795698925,
+      "residual_after_all_pct": 3.125,
+      "transmissions_hist": [
+        419,
+        49,
+        20,
+        8,
+        16
+      ],
+      "mean_transmissions": 1.314453125
+    },
+    "ai_for_ran": {
+      "tbs": 512,
+      "first_failures": 91,
+      "first_fail_pct": 17.7734375,
+      "done_at_bs_pct": 0.0,
+      "recovered_pct_of_failures": 0.0,
+      "resends_per_100": 29.6875,
+      "still_failed_after_one_resend_pct_of_failures": 40.65934065934066,
+      "residual_after_all_pct": 3.515625,
+      "transmissions_hist": [
+        421,
+        54,
+        13,
+        6,
+        18
+      ],
+      "mean_transmissions": 1.296875
+    },
+    "ours": {
+      "tbs": 512,
+      "first_failures": 93,
+      "first_fail_pct": 18.1640625,
+      "done_at_bs_pct": 8.7890625,
+      "recovered_pct_of_failures": 48.38709677419355,
+      "resends_per_100": 14.0625,
+      "still_failed_after_one_resend_pct_of_failures": 13.978494623655914,
+      "residual_after_all_pct": 1.7578125,
+      "transmissions_hist": [
+        464,
+        35,
+        2,
+        2,
+        9
+      ],
+      "mean_transmissions": 1.140625
+    },
+    "ours_conv_harq": {
+      "tbs": 512,
+      "first_failures": 93,
+      "first_fail_pct": 18.1640625,
+      "done_at_bs_pct": 8.7890625,
+      "recovered_pct_of_failures": 48.38709677419355,
+      "resends_per_100": 20.5078125,
+      "still_failed_after_one_resend_pct_of_failures": 38.70967741935484,
+      "residual_after_all_pct": 2.9296875,
+      "transmissions_hist": [
+        464,
+        12,
+        15,
+        6,
+        15
+      ],
+      "mean_transmissions": 1.205078125
+    },
+    "ai_and_ran_irc": {
+      "tbs": 512,
+      "first_failures": 43,
+      "first_fail_pct": 8.3984375,
+      "done_at_bs_pct": 0.0,
+      "recovered_pct_of_failures": 0.0,
+      "resends_per_100": 13.0859375,
+      "still_failed_after_one_resend_pct_of_failures": 34.883720930232556,
+      "residual_after_all_pct": 1.5625,
+      "transmissions_hist": [
+        469,
+        28,
+        6,
+        1,
+        8
+      ],
+      "mean_transmissions": 1.130859375
+    },
+    "ours_irc": {
+      "tbs": 512,
+      "first_failures": 43,
+      "first_fail_pct": 8.3984375,
+      "done_at_bs_pct": 0.9765625,
+      "recovered_pct_of_failures": 11.627906976744185,
+      "resends_per_100": 11.71875,
+      "still_failed_after_one_resend_pct_of_failures": 30.232558139534884,
+      "residual_after_all_pct": 1.5625,
+      "transmissions_hist": [
+        474,
+        25,
+        4,
+        1,
+        8
+      ],
+      "mean_transmissions": 1.1171875
+    }
+  },
+  "by_point": {
+    "16": {
+      "ai_and_ran": {
+        "tbs": 128,
+        "first_failures": 39,
+        "first_fail_pct": 30.46875,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 53.125,
+        "still_failed_after_one_resend_pct_of_failures": 46.15384615384615,
+        "residual_after_all_pct": 7.03125,
+        "transmissions_hist": [
+          89,
+          21,
+          7,
+          2,
+          9
+        ],
+        "mean_transmissions": 1.53125
+      },
+      "ai_for_ran": {
+        "tbs": 128,
+        "first_failures": 40,
+        "first_fail_pct": 31.25,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 53.125,
+        "still_failed_after_one_resend_pct_of_failures": 42.5,
+        "residual_after_all_pct": 7.8125,
+        "transmissions_hist": [
+          88,
+          23,
+          6,
+          1,
+          10
+        ],
+        "mean_transmissions": 1.53125
+      },
+      "ours": {
+        "tbs": 128,
+        "first_failures": 39,
+        "first_fail_pct": 30.46875,
+        "done_at_bs_pct": 14.84375,
+        "recovered_pct_of_failures": 48.717948717948715,
+        "resends_per_100": 29.6875,
+        "still_failed_after_one_resend_pct_of_failures": 23.076923076923077,
+        "residual_after_all_pct": 6.25,
+        "transmissions_hist": [
+          108,
+          11,
+          0,
+          1,
+          8
+        ],
+        "mean_transmissions": 1.296875
+      },
+      "ours_conv_harq": {
+        "tbs": 128,
+        "first_failures": 39,
+        "first_fail_pct": 30.46875,
+        "done_at_bs_pct": 14.84375,
+        "recovered_pct_of_failures": 48.717948717948715,
+        "resends_per_100": 35.15625,
+        "still_failed_after_one_resend_pct_of_failures": 38.46153846153846,
+        "residual_after_all_pct": 7.03125,
+        "transmissions_hist": [
+          108,
+          5,
+          5,
+          1,
+          9
+        ],
+        "mean_transmissions": 1.3515625
+      },
+      "ai_and_ran_irc": {
+        "tbs": 128,
+        "first_failures": 19,
+        "first_fail_pct": 14.84375,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 28.125,
+        "still_failed_after_one_resend_pct_of_failures": 47.36842105263158,
+        "residual_after_all_pct": 5.46875,
+        "transmissions_hist": [
+          109,
+          10,
+          1,
+          1,
+          7
+        ],
+        "mean_transmissions": 1.28125
+      },
+      "ours_irc": {
+        "tbs": 128,
+        "first_failures": 19,
+        "first_fail_pct": 14.84375,
+        "done_at_bs_pct": 1.5625,
+        "recovered_pct_of_failures": 10.526315789473685,
+        "resends_per_100": 26.5625,
+        "still_failed_after_one_resend_pct_of_failures": 47.36842105263158,
+        "residual_after_all_pct": 5.46875,
+        "transmissions_hist": [
+          111,
+          8,
+          1,
+          1,
+          7
+        ],
+        "mean_transmissions": 1.265625
+      }
+    },
+    "18": {
+      "ai_and_ran": {
+        "tbs": 128,
+        "first_failures": 26,
+        "first_fail_pct": 20.3125,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 32.8125,
+        "still_failed_after_one_resend_pct_of_failures": 42.30769230769231,
+        "residual_after_all_pct": 0.78125,
+        "transmissions_hist": [
+          102,
+          15,
+          6,
+          4,
+          1
+        ],
+        "mean_transmissions": 1.328125
+      },
+      "ai_for_ran": {
+        "tbs": 128,
+        "first_failures": 24,
+        "first_fail_pct": 18.75,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 28.90625,
+        "still_failed_after_one_resend_pct_of_failures": 33.333333333333336,
+        "residual_after_all_pct": 1.5625,
+        "transmissions_hist": [
+          104,
+          16,
+          3,
+          3,
+          2
+        ],
+        "mean_transmissions": 1.2890625
+      },
+      "ours": {
+        "tbs": 128,
+        "first_failures": 26,
+        "first_fail_pct": 20.3125,
+        "done_at_bs_pct": 10.15625,
+        "recovered_pct_of_failures": 50.0,
+        "resends_per_100": 10.9375,
+        "still_failed_after_one_resend_pct_of_failures": 3.8461538461538463,
+        "residual_after_all_pct": 0.0,
+        "transmissions_hist": [
+          115,
+          12,
+          1,
+          0,
+          0
+        ],
+        "mean_transmissions": 1.109375
+      },
+      "ours_conv_harq": {
+        "tbs": 128,
+        "first_failures": 26,
+        "first_fail_pct": 20.3125,
+        "done_at_bs_pct": 10.15625,
+        "recovered_pct_of_failures": 50.0,
+        "resends_per_100": 21.09375,
+        "still_failed_after_one_resend_pct_of_failures": 38.46153846153846,
+        "residual_after_all_pct": 0.78125,
+        "transmissions_hist": [
+          115,
+          3,
+          6,
+          3,
+          1
+        ],
+        "mean_transmissions": 1.2109375
+      },
+      "ai_and_ran_irc": {
+        "tbs": 128,
+        "first_failures": 11,
+        "first_fail_pct": 8.59375,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 9.375,
+        "still_failed_after_one_resend_pct_of_failures": 9.090909090909092,
+        "residual_after_all_pct": 0.0,
+        "transmissions_hist": [
+          117,
+          10,
+          1,
+          0,
+          0
+        ],
+        "mean_transmissions": 1.09375
+      },
+      "ours_irc": {
+        "tbs": 128,
+        "first_failures": 11,
+        "first_fail_pct": 8.59375,
+        "done_at_bs_pct": 1.5625,
+        "recovered_pct_of_failures": 18.181818181818183,
+        "resends_per_100": 7.8125,
+        "still_failed_after_one_resend_pct_of_failures": 9.090909090909092,
+        "residual_after_all_pct": 0.0,
+        "transmissions_hist": [
+          119,
+          8,
+          1,
+          0,
+          0
+        ],
+        "mean_transmissions": 1.078125
+      }
+    },
+    "20": {
+      "ai_and_ran": {
+        "tbs": 128,
+        "first_failures": 19,
+        "first_fail_pct": 14.84375,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 28.90625,
+        "still_failed_after_one_resend_pct_of_failures": 63.1578947368421,
+        "residual_after_all_pct": 3.125,
+        "transmissions_hist": [
+          109,
+          7,
+          6,
+          2,
+          4
+        ],
+        "mean_transmissions": 1.2890625
+      },
+      "ai_for_ran": {
+        "tbs": 128,
+        "first_failures": 18,
+        "first_fail_pct": 14.0625,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 25.0,
+        "still_failed_after_one_resend_pct_of_failures": 50.0,
+        "residual_after_all_pct": 3.125,
+        "transmissions_hist": [
+          110,
+          9,
+          4,
+          1,
+          4
+        ],
+        "mean_transmissions": 1.25
+      },
+      "ours": {
+        "tbs": 128,
+        "first_failures": 19,
+        "first_fail_pct": 14.84375,
+        "done_at_bs_pct": 7.03125,
+        "recovered_pct_of_failures": 47.36842105263158,
+        "resends_per_100": 11.71875,
+        "still_failed_after_one_resend_pct_of_failures": 15.789473684210526,
+        "residual_after_all_pct": 0.78125,
+        "transmissions_hist": [
+          118,
+          7,
+          1,
+          1,
+          1
+        ],
+        "mean_transmissions": 1.1171875
+      },
+      "ours_conv_harq": {
+        "tbs": 128,
+        "first_failures": 19,
+        "first_fail_pct": 14.84375,
+        "done_at_bs_pct": 7.03125,
+        "recovered_pct_of_failures": 47.36842105263158,
+        "resends_per_100": 18.75,
+        "still_failed_after_one_resend_pct_of_failures": 47.36842105263158,
+        "residual_after_all_pct": 2.34375,
+        "transmissions_hist": [
+          118,
+          1,
+          4,
+          2,
+          3
+        ],
+        "mean_transmissions": 1.1875
+      },
+      "ai_and_ran_irc": {
+        "tbs": 128,
+        "first_failures": 8,
+        "first_fail_pct": 6.25,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 10.15625,
+        "still_failed_after_one_resend_pct_of_failures": 50.0,
+        "residual_after_all_pct": 0.78125,
+        "transmissions_hist": [
+          120,
+          4,
+          3,
+          0,
+          1
+        ],
+        "mean_transmissions": 1.1015625
+      },
+      "ours_irc": {
+        "tbs": 128,
+        "first_failures": 8,
+        "first_fail_pct": 6.25,
+        "done_at_bs_pct": 0.78125,
+        "recovered_pct_of_failures": 12.5,
+        "resends_per_100": 8.59375,
+        "still_failed_after_one_resend_pct_of_failures": 37.5,
+        "residual_after_all_pct": 0.78125,
+        "transmissions_hist": [
+          121,
+          4,
+          2,
+          0,
+          1
+        ],
+        "mean_transmissions": 1.0859375
+      }
+    },
+    "22": {
+      "ai_and_ran": {
+        "tbs": 128,
+        "first_failures": 9,
+        "first_fail_pct": 7.03125,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 10.9375,
+        "still_failed_after_one_resend_pct_of_failures": 33.333333333333336,
+        "residual_after_all_pct": 1.5625,
+        "transmissions_hist": [
+          119,
+          6,
+          1,
+          0,
+          2
+        ],
+        "mean_transmissions": 1.109375
+      },
+      "ai_for_ran": {
+        "tbs": 128,
+        "first_failures": 9,
+        "first_fail_pct": 7.03125,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 11.71875,
+        "still_failed_after_one_resend_pct_of_failures": 33.333333333333336,
+        "residual_after_all_pct": 1.5625,
+        "transmissions_hist": [
+          119,
+          6,
+          0,
+          1,
+          2
+        ],
+        "mean_transmissions": 1.1171875
+      },
+      "ours": {
+        "tbs": 128,
+        "first_failures": 9,
+        "first_fail_pct": 7.03125,
+        "done_at_bs_pct": 3.125,
+        "recovered_pct_of_failures": 44.44444444444444,
+        "resends_per_100": 3.90625,
+        "still_failed_after_one_resend_pct_of_failures": 0.0,
+        "residual_after_all_pct": 0.0,
+        "transmissions_hist": [
+          123,
+          5,
+          0,
+          0,
+          0
+        ],
+        "mean_transmissions": 1.0390625
+      },
+      "ours_conv_harq": {
+        "tbs": 128,
+        "first_failures": 9,
+        "first_fail_pct": 7.03125,
+        "done_at_bs_pct": 3.125,
+        "recovered_pct_of_failures": 44.44444444444444,
+        "resends_per_100": 7.03125,
+        "still_failed_after_one_resend_pct_of_failures": 22.22222222222222,
+        "residual_after_all_pct": 1.5625,
+        "transmissions_hist": [
+          123,
+          3,
+          0,
+          0,
+          2
+        ],
+        "mean_transmissions": 1.0703125
+      },
+      "ai_and_ran_irc": {
+        "tbs": 128,
+        "first_failures": 5,
+        "first_fail_pct": 3.90625,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 4.6875,
+        "still_failed_after_one_resend_pct_of_failures": 20.0,
+        "residual_after_all_pct": 0.0,
+        "transmissions_hist": [
+          123,
+          4,
+          1,
+          0,
+          0
+        ],
+        "mean_transmissions": 1.046875
+      },
+      "ours_irc": {
+        "tbs": 128,
+        "first_failures": 5,
+        "first_fail_pct": 3.90625,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 3.90625,
+        "still_failed_after_one_resend_pct_of_failures": 0.0,
+        "residual_after_all_pct": 0.0,
+        "transmissions_hist": [
+          123,
+          5,
+          0,
+          0,
+          0
+        ],
+        "mean_transmissions": 1.0390625
+      }
+    }
+  },
+  "by_similarity": {
+    "0.0-0.4": {
+      "ai_and_ran": {
+        "tbs": 166,
+        "first_failures": 25,
+        "first_fail_pct": 15.060240963855422,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 26.50602409638554,
+        "still_failed_after_one_resend_pct_of_failures": 48.0,
+        "residual_after_all_pct": 3.6144578313253013,
+        "transmissions_hist": [
+          141,
+          13,
+          5,
+          1,
+          6
+        ],
+        "mean_transmissions": 1.2650602409638554
+      },
+      "ai_for_ran": {
+        "tbs": 166,
+        "first_failures": 29,
+        "first_fail_pct": 17.46987951807229,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 30.120481927710845,
+        "still_failed_after_one_resend_pct_of_failures": 41.37931034482759,
+        "residual_after_all_pct": 4.216867469879518,
+        "transmissions_hist": [
+          137,
+          17,
+          3,
+          2,
+          7
+        ],
+        "mean_transmissions": 1.3012048192771084
+      },
+      "ours": {
+        "tbs": 166,
+        "first_failures": 25,
+        "first_fail_pct": 15.060240963855422,
+        "done_at_bs_pct": 7.228915662650603,
+        "recovered_pct_of_failures": 48.0,
+        "resends_per_100": 15.060240963855422,
+        "still_failed_after_one_resend_pct_of_failures": 24.0,
+        "residual_after_all_pct": 3.0120481927710845,
+        "transmissions_hist": [
+          153,
+          7,
+          0,
+          1,
+          5
+        ],
+        "mean_transmissions": 1.1506024096385543
+      },
+      "ours_conv_harq": {
+        "tbs": 166,
+        "first_failures": 25,
+        "first_fail_pct": 15.060240963855422,
+        "done_at_bs_pct": 7.228915662650603,
+        "recovered_pct_of_failures": 48.0,
+        "resends_per_100": 18.674698795180724,
+        "still_failed_after_one_resend_pct_of_failures": 44.0,
+        "residual_after_all_pct": 3.6144578313253013,
+        "transmissions_hist": [
+          153,
+          2,
+          4,
+          1,
+          6
+        ],
+        "mean_transmissions": 1.1867469879518073
+      },
+      "ai_and_ran_irc": {
+        "tbs": 166,
+        "first_failures": 8,
+        "first_fail_pct": 4.819277108433735,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 11.44578313253012,
+        "still_failed_after_one_resend_pct_of_failures": 75.0,
+        "residual_after_all_pct": 3.0120481927710845,
+        "transmissions_hist": [
+          158,
+          2,
+          1,
+          0,
+          5
+        ],
+        "mean_transmissions": 1.1144578313253013
+      },
+      "ours_irc": {
+        "tbs": 166,
+        "first_failures": 8,
+        "first_fail_pct": 4.819277108433735,
+        "done_at_bs_pct": 0.6024096385542169,
+        "recovered_pct_of_failures": 12.5,
+        "resends_per_100": 10.843373493975903,
+        "still_failed_after_one_resend_pct_of_failures": 75.0,
+        "residual_after_all_pct": 3.0120481927710845,
+        "transmissions_hist": [
+          159,
+          1,
+          1,
+          0,
+          5
+        ],
+        "mean_transmissions": 1.108433734939759
+      }
+    },
+    "0.4-0.6": {
+      "ai_and_ran": {
+        "tbs": 258,
+        "first_failures": 40,
+        "first_fail_pct": 15.503875968992247,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 25.1937984496124,
+        "still_failed_after_one_resend_pct_of_failures": 42.5,
+        "residual_after_all_pct": 1.937984496124031,
+        "transmissions_hist": [
+          218,
+          23,
+          9,
+          3,
+          5
+        ],
+        "mean_transmissions": 1.251937984496124
+      },
+      "ai_for_ran": {
+        "tbs": 258,
+        "first_failures": 37,
+        "first_fail_pct": 14.34108527131783,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 22.48062015503876,
+        "still_failed_after_one_resend_pct_of_failures": 37.83783783783784,
+        "residual_after_all_pct": 1.937984496124031,
+        "transmissions_hist": [
+          221,
+          23,
+          7,
+          2,
+          5
+        ],
+        "mean_transmissions": 1.2248062015503876
+      },
+      "ours": {
+        "tbs": 258,
+        "first_failures": 40,
+        "first_fail_pct": 15.503875968992247,
+        "done_at_bs_pct": 8.914728682170542,
+        "recovered_pct_of_failures": 57.5,
+        "resends_per_100": 8.914728682170542,
+        "still_failed_after_one_resend_pct_of_failures": 7.5,
+        "residual_after_all_pct": 0.7751937984496124,
+        "transmissions_hist": [
+          241,
+          14,
+          0,
+          1,
+          2
+        ],
+        "mean_transmissions": 1.0891472868217054
+      },
+      "ours_conv_harq": {
+        "tbs": 258,
+        "first_failures": 40,
+        "first_fail_pct": 15.503875968992247,
+        "done_at_bs_pct": 8.914728682170542,
+        "recovered_pct_of_failures": 57.5,
+        "resends_per_100": 13.565891472868216,
+        "still_failed_after_one_resend_pct_of_failures": 30.0,
+        "residual_after_all_pct": 1.937984496124031,
+        "transmissions_hist": [
+          241,
+          5,
+          6,
+          1,
+          5
+        ],
+        "mean_transmissions": 1.1356589147286822
+      },
+      "ai_and_ran_irc": {
+        "tbs": 258,
+        "first_failures": 16,
+        "first_fail_pct": 6.2015503875969,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 8.527131782945736,
+        "still_failed_after_one_resend_pct_of_failures": 25.0,
+        "residual_after_all_pct": 0.3875968992248062,
+        "transmissions_hist": [
+          242,
+          12,
+          2,
+          1,
+          1
+        ],
+        "mean_transmissions": 1.0852713178294573
+      },
+      "ours_irc": {
+        "tbs": 258,
+        "first_failures": 16,
+        "first_fail_pct": 6.2015503875969,
+        "done_at_bs_pct": 0.7751937984496124,
+        "recovered_pct_of_failures": 12.5,
+        "resends_per_100": 7.364341085271318,
+        "still_failed_after_one_resend_pct_of_failures": 18.75,
+        "residual_after_all_pct": 0.3875968992248062,
+        "transmissions_hist": [
+          244,
+          11,
+          1,
+          1,
+          1
+        ],
+        "mean_transmissions": 1.073643410852713
+      }
+    },
+    "0.6-1.0": {
+      "ai_and_ran": {
+        "tbs": 88,
+        "first_failures": 28,
+        "first_fail_pct": 31.818181818181817,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 59.09090909090909,
+        "still_failed_after_one_resend_pct_of_failures": 53.57142857142857,
+        "residual_after_all_pct": 5.681818181818182,
+        "transmissions_hist": [
+          60,
+          13,
+          6,
+          4,
+          5
+        ],
+        "mean_transmissions": 1.5909090909090908
+      },
+      "ai_for_ran": {
+        "tbs": 88,
+        "first_failures": 25,
+        "first_fail_pct": 28.40909090909091,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 50.0,
+        "still_failed_after_one_resend_pct_of_failures": 44.0,
+        "residual_after_all_pct": 6.818181818181818,
+        "transmissions_hist": [
+          63,
+          14,
+          3,
+          2,
+          6
+        ],
+        "mean_transmissions": 1.5
+      },
+      "ours": {
+        "tbs": 88,
+        "first_failures": 28,
+        "first_fail_pct": 31.818181818181817,
+        "done_at_bs_pct": 11.363636363636363,
+        "recovered_pct_of_failures": 35.714285714285715,
+        "resends_per_100": 27.272727272727273,
+        "still_failed_after_one_resend_pct_of_failures": 14.285714285714286,
+        "residual_after_all_pct": 2.272727272727273,
+        "transmissions_hist": [
+          70,
+          14,
+          2,
+          0,
+          2
+        ],
+        "mean_transmissions": 1.2727272727272727
+      },
+      "ours_conv_harq": {
+        "tbs": 88,
+        "first_failures": 28,
+        "first_fail_pct": 31.818181818181817,
+        "done_at_bs_pct": 11.363636363636363,
+        "recovered_pct_of_failures": 35.714285714285715,
+        "resends_per_100": 44.31818181818182,
+        "still_failed_after_one_resend_pct_of_failures": 46.42857142857143,
+        "residual_after_all_pct": 4.545454545454546,
+        "transmissions_hist": [
+          70,
+          5,
+          5,
+          4,
+          4
+        ],
+        "mean_transmissions": 1.4431818181818181
+      },
+      "ai_and_ran_irc": {
+        "tbs": 88,
+        "first_failures": 19,
+        "first_fail_pct": 21.59090909090909,
+        "done_at_bs_pct": 0.0,
+        "recovered_pct_of_failures": 0.0,
+        "resends_per_100": 29.545454545454547,
+        "still_failed_after_one_resend_pct_of_failures": 26.31578947368421,
+        "residual_after_all_pct": 2.272727272727273,
+        "transmissions_hist": [
+          69,
+          14,
+          3,
+          0,
+          2
+        ],
+        "mean_transmissions": 1.2954545454545454
+      },
+      "ours_irc": {
+        "tbs": 88,
+        "first_failures": 19,
+        "first_fail_pct": 21.59090909090909,
+        "done_at_bs_pct": 2.272727272727273,
+        "recovered_pct_of_failures": 10.526315789473685,
+        "resends_per_100": 26.136363636363637,
+        "still_failed_after_one_resend_pct_of_failures": 21.05263157894737,
+        "residual_after_all_pct": 2.272727272727273,
+        "transmissions_hist": [
+          71,
+          13,
+          2,
+          0,
+          2
+        ],
+        "mean_transmissions": 1.2613636363636365
+      }
+    }
+  },
+  "similarity_share": {
+    "0.0-0.4": 0.32421875,
+    "0.4-0.6": 0.50390625,
+    "0.6-1.0": 0.171875
+  },
+  "check": {
+    "sep_vs_conv_first": [
+      422,
+      419
+    ]
+  }
+}

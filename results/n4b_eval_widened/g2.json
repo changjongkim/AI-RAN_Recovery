@@ -1,0 +1,26 @@
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "nrx"
+  ],
+  "prbs": 273,
+  "nrx_weights": "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/n4b/weights_widened",
+  "users": 2,
+  "base_config": "nrx_large_8rx.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 8,
+  "mcs": 14,
+  "slots": 192,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.1916782513075457,
+    "nrx": 1.1829106196403245
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 82.8125,
+    "nrx": 70.3125
+  },
+  "recovers_pct_of_conventional_failures": {
+    "nrx": 7.575757575757576
+  }
+}

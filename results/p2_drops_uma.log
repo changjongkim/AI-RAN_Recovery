@@ -1,0 +1,7 @@
+Evaluating the first 2 port sets.
+Loading DoubleTDL with low correlation.
+U=4: pair similarity median 0.474, best pair per drop median 0.330
+U=8: pair similarity median 0.475, best pair per drop median 0.224
+U=16: pair similarity median 0.474, best pair per drop median 0.143
+U=32: pair similarity median 0.474, best pair per drop median 0.092
+saved /pscratch/sd/s/sgkim/kcj/airan_recovery/results/p2_drops_uma.npz

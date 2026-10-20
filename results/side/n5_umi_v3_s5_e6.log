@@ -1,0 +1,58 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792072980.981331  543042 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Applying low complexity LMMSE interpolation with reduced number of PRBs.
+Using automatic LMMSE splitting.
+Using reduction factor of 13.0
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Eb/No 6.0: baseline_lslin_lmmse 0.797, baseline_lslin_lmmse@50 0.812, lslin_idd3 0.828, baseline_lmmse_kbest 0.852, baseline_perf_csi_kbest 0.891, nrx 0.891, nrx_rt 0.844
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lslin_lmmse@50",
+    "lslin_idd3",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx",
+    "nrx_rt"
+  ],
+  "prbs": 273,
+  "users": 2,
+  "base_config": "nrx_large.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 4,
+  "mcs": 14,
+  "slots": 64,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.199831527500237,
+    "baseline_lslin_lmmse@50": 1.4130833518590862,
+    "lslin_idd3": 6.5551425381098625,
+    "baseline_lmmse_kbest": 1.6390769146562434,
+    "baseline_perf_csi_kbest": 1.4442174443904605,
+    "nrx": 1.2039246047186225,
+    "nrx_rt": 1.1797721167342843
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 79.6875,
+    "baseline_lslin_lmmse@50": 81.25,
+    "lslin_idd3": 82.8125,
+    "baseline_lmmse_kbest": 85.15625,
+    "baseline_perf_csi_kbest": 89.0625,
+    "nrx": 89.0625,
+    "nrx_rt": 84.375
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lslin_lmmse@50": 7.6923076923076925,
+    "lslin_idd3": 15.384615384615385,
+    "baseline_lmmse_kbest": 26.923076923076923,
+    "baseline_perf_csi_kbest": 46.15384615384615,
+    "nrx": 46.15384615384615,
+    "nrx_rt": 23.076923076923077
+  }
+}

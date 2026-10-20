@@ -1,0 +1,58 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792062927.204810  929210 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Applying low complexity LMMSE interpolation with reduced number of PRBs.
+Using automatic LMMSE splitting.
+Using reduction factor of 13.0
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Eb/No 6.0: baseline_lslin_lmmse 0.766, baseline_lslin_lmmse@50 0.781, lslin_idd3 0.805, baseline_lmmse_kbest 0.875, baseline_perf_csi_kbest 0.875, nrx 0.875, nrx_rt 0.844
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lslin_lmmse@50",
+    "lslin_idd3",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx",
+    "nrx_rt"
+  ],
+  "prbs": 273,
+  "users": 2,
+  "base_config": "nrx_large.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 4,
+  "mcs": 14,
+  "slots": 64,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.2246150177343225,
+    "baseline_lslin_lmmse@50": 1.3835130254061596,
+    "lslin_idd3": 6.6715233987968645,
+    "baseline_lmmse_kbest": 1.6766285719373855,
+    "baseline_perf_csi_kbest": 1.457937748343852,
+    "nrx": 1.2107595329373453,
+    "nrx_rt": 1.1953542997031832
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 76.5625,
+    "baseline_lslin_lmmse@50": 78.125,
+    "lslin_idd3": 80.46875,
+    "baseline_lmmse_kbest": 87.5,
+    "baseline_perf_csi_kbest": 87.5,
+    "nrx": 87.5,
+    "nrx_rt": 84.375
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lslin_lmmse@50": 6.666666666666667,
+    "lslin_idd3": 16.666666666666668,
+    "baseline_lmmse_kbest": 46.666666666666664,
+    "baseline_perf_csi_kbest": 46.666666666666664,
+    "nrx": 46.666666666666664,
+    "nrx_rt": 33.333333333333336
+  }
+}

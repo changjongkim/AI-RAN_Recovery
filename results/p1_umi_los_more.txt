@@ -1,0 +1,7 @@
+p1_umi_los_more.json: 5120 slots, 10240 TBs, similarity median 0.40, separable vs cuPHY first [8563, 8554]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 16.5 | 0.0 | 30.3 | 50 | 4.26 | 1.303 |
+| ai_for_ran | 16.1 | 0.0 | 29.1 | 49 | 4.09 | 1.291 |
+| ours | 16.5 | 3.0 | 23.3 | 36 | 2.90 | 1.233 |
+| ours_conv_harq | 16.5 | 3.0 | 27.1 | 49 | 4.24 | 1.271 |

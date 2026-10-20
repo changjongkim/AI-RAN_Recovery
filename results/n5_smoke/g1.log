@@ -1,0 +1,38 @@
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Eb/No 8.0: baseline_lslin_lmmse 0.859, lslin_idd0 0.859, lslin_idd3 0.906, baseline_lslin_lmmse@50 0.875
+Eb/No 10.0: baseline_lslin_lmmse 0.906, lslin_idd0 0.906, lslin_idd3 0.938, baseline_lslin_lmmse@50 0.922
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "lslin_idd0",
+    "lslin_idd3",
+    "baseline_lslin_lmmse@50"
+  ],
+  "users": 2,
+  "base_config": "nrx_large.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 4,
+  "mcs": 14,
+  "slots": 64,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 0.39637152017178323,
+    "lslin_idd0": 0.38042774921882483,
+    "lslin_idd3": 2.201450235187451,
+    "baseline_lslin_lmmse@50": 0.4799826376875558
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 88.28125,
+    "lslin_idd0": 88.28125,
+    "lslin_idd3": 92.1875,
+    "baseline_lslin_lmmse@50": 89.84375
+  },
+  "recovers_pct_of_conventional_failures": {
+    "lslin_idd0": 0.0,
+    "lslin_idd3": 33.333333333333336,
+    "baseline_lslin_lmmse@50": 13.333333333333334
+  }
+}

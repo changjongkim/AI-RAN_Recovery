@@ -1,0 +1,706 @@
+2026-10-15 02:21:56 pool start: 100 min on GPUs 1 2 3
+2026-10-15 02:23:51 GPU 3 p1_ant2_v3_s0_e8 rc=0
+2026-10-15 02:23:52 GPU 2 p1_ant2_v3_s0_e10 rc=0
+2026-10-15 02:25:30 GPU 3 p1_ant2_v3_s0_e12 rc=0
+2026-10-15 02:25:31 GPU 2 p1_ant2_v3_s0_e14 rc=0
+2026-10-15 02:27:10 GPU 3 p1_ant2_v3_s0_e16 rc=0
+2026-10-15 02:27:10 GPU 2 p1_ant2_v3_s0_e18 rc=0
+2026-10-15 02:27:23 GPU 1 n5 smoke: N5_SMOKE pass
+2026-10-15 02:28:08 GPU 1 covariance matrices: done
+2026-10-15 02:28:47 GPU 3 p1_ant4_v3_s0_e4 rc=0
+2026-10-15 02:28:48 GPU 2 p1_ant4_v3_s0_e6 rc=0
+2026-10-15 02:29:38 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:30:17 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:30:18 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:31:09 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:31:47 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:31:47 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:32:39 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:33:16 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:33:17 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:34:07 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:34:45 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:34:46 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:35:42 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:36:15 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:36:15 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:37:11 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:37:44 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:37:44 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:38:43 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:39:18 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:39:18 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:40:35 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:41:18 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:41:18 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:42:04 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:42:47 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:42:47 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:43:47 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:44:16 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:44:17 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:45:16 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:45:45 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:45:46 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:46:46 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:47:21 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:47:21 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:48:16 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:48:50 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:48:51 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:49:44 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:50:21 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:50:21 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:51:14 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:51:50 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:51:51 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:52:44 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:53:20 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:53:20 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:54:14 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:54:48 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:54:49 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:55:42 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:56:17 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:56:18 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 02:57:10 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:57:44 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:58:38 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 02:59:12 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 02:59:53 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:00:39 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:01:21 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:02:09 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:02:15 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:02:51 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:03:41 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:03:45 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:04:21 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:05:10 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:05:14 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:05:51 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:06:41 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:06:44 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:07:31 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:08:10 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:08:14 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:09:01 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:09:53 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:09:54 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:10:31 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:11:23 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:11:23 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:12:00 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:12:54 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:12:55 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:13:29 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:14:25 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:14:26 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:15:17 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:16:45 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:16:46 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:18:17 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:18:59 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:18:59 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:19:50 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:20:33 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:20:33 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:21:19 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:22:05 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:22:05 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:22:48 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:23:36 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:23:42 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:24:33 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:25:49 GPU 2 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:25:49 GPU 3 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:26:11 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:27:20 GPU 3 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:27:20 GPU 2 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:29:46 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:31:04 GPU 2 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:31:04 GPU 3 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:31:14 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:32:32 GPU 3 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:32:32 GPU 2 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:32:44 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:34:13 GPU 3 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:34:13 GPU 2 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:34:14 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:35:43 GPU 3 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:35:44 GPU 2 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:35:44 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:37:12 GPU 3 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:37:13 GPU 2 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:37:15 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:38:41 GPU 3 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:38:42 GPU 2 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:38:44 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:40:10 GPU 3 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:40:13 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:40:13 GPU 2 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:41:41 GPU 3 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:41:41 GPU 2 n5_umi_v3_s0_e8 rc=1
+2026-10-15 03:41:42 GPU 1 n5_umi_v3_s0_e6 rc=1
+2026-10-15 03:43:35 GPU 3 n5_umi_v3_s0_e10 rc=1
+2026-10-15 03:43:37 GPU 2 p1_ant4_v3_s0_e8 rc=0
+2026-10-15 03:43:37 GPU 1 p1_ant4_v3_s0_e10 rc=0
+2026-10-15 03:45:14 GPU 3 p1_ant4_v3_s0_e12 rc=0
+2026-10-15 03:45:15 GPU 2 p1_ant4_v3_s0_e14 rc=0
+2026-10-15 03:45:15 GPU 1 p1_ant8_v3_s0_e0 rc=0
+2026-10-15 03:47:54 GPU 3 p1_ant8_v3_s0_e2 rc=0
+2026-10-15 03:47:56 GPU 2 p1_ant8_v3_s0_e4 rc=0
+2026-10-15 03:47:57 GPU 1 p1_ant8_v3_s0_e6 rc=0
+2026-10-15 03:50:36 GPU 1 p1_ant2_v3_s1_e8 rc=0
+2026-10-15 03:50:37 GPU 3 p1_ant8_v3_s0_e8 rc=0
+2026-10-15 03:50:40 GPU 2 p1_ant8_v3_s0_e10 rc=0
+2026-10-15 03:53:18 GPU 1 p1_ant2_v3_s1_e10 rc=0
+2026-10-15 03:53:18 GPU 3 p1_ant2_v3_s1_e12 rc=0
+2026-10-15 03:53:20 GPU 2 p1_ant2_v3_s1_e14 rc=0
+2026-10-15 04:01:56 GPU 2 n5_umi_v3_s0_e10 rc=124
+2026-10-15 04:01:56 GPU 1 n5_umi_v3_s0_e6 rc=124
+2026-10-15 04:01:56 GPU 3 n5_umi_v3_s0_e8 rc=124
+2026-10-15 04:01:56 pool end: 22 items done of 448
+2026-10-15 04:10:44 pool start: 100 min on GPUs 1 2 3
+2026-10-15 04:32:23 GPU 2 n5_umi_v3_s0_e8 rc=0
+2026-10-15 04:32:29 GPU 1 n5_umi_v3_s0_e10 rc=0
+2026-10-15 04:32:39 GPU 3 n5_umi_v3_s0_e6 rc=0
+2026-10-15 04:35:06 GPU 1 p1_ant2_v3_s0_e8 rc=0
+2026-10-15 04:35:18 GPU 3 p1_ant2_v3_s0_e10 rc=0
+2026-10-15 04:37:45 GPU 1 p1_ant2_v3_s0_e12 rc=0
+2026-10-15 04:38:01 GPU 3 p1_ant2_v3_s0_e14 rc=0
+2026-10-15 04:40:24 GPU 1 p1_ant2_v3_s0_e16 rc=0
+2026-10-15 04:40:40 GPU 3 p1_ant2_v3_s0_e18 rc=0
+2026-10-15 04:43:03 GPU 1 p1_ant4_v3_s0_e4 rc=0
+2026-10-15 04:43:20 GPU 3 p1_ant4_v3_s0_e6 rc=0
+2026-10-15 04:45:43 GPU 1 p1_ant4_v3_s0_e8 rc=0
+2026-10-15 04:46:12 GPU 3 p1_ant4_v3_s0_e10 rc=0
+2026-10-15 04:48:24 GPU 1 p1_ant4_v3_s0_e12 rc=0
+2026-10-15 04:48:52 GPU 3 p1_ant4_v3_s0_e14 rc=0
+2026-10-15 04:51:05 GPU 1 p1_ant8_v3_s0_e0 rc=0
+2026-10-15 04:52:02 GPU 2 n5_umi_v3_s0_e12 rc=0
+2026-10-15 05:08:39 GPU 3 n5_umi_v3_s1_e6 rc=0
+2026-10-15 05:11:17 GPU 2 n5_umi_v3_s1_e10 rc=0
+2026-10-15 05:12:50 GPU 1 n5_umi_v3_s1_e8 rc=0
+2026-10-15 05:13:53 GPU 2 p1_ant2_v3_s1_e16 rc=0
+2026-10-15 05:15:29 GPU 1 p1_ant2_v3_s1_e18 rc=0
+2026-10-15 05:16:31 GPU 2 p1_ant4_v3_s1_e4 rc=0
+2026-10-15 05:18:07 GPU 1 p1_ant4_v3_s1_e6 rc=0
+2026-10-15 05:19:14 GPU 2 p1_ant4_v3_s1_e8 rc=0
+2026-10-15 05:20:47 GPU 1 p1_ant4_v3_s1_e10 rc=0
+2026-10-15 05:21:52 GPU 2 p1_ant4_v3_s1_e12 rc=0
+2026-10-15 05:23:25 GPU 1 p1_ant4_v3_s1_e14 rc=0
+2026-10-15 05:24:33 GPU 2 p1_ant8_v3_s1_e0 rc=0
+2026-10-15 05:26:06 GPU 1 p1_ant8_v3_s1_e2 rc=0
+2026-10-15 05:27:14 GPU 2 p1_ant8_v3_s1_e4 rc=0
+2026-10-15 05:28:17 GPU 3 n5_umi_v3_s1_e12 rc=0
+2026-10-15 05:28:48 GPU 1 p1_ant8_v3_s1_e6 rc=0
+2026-10-15 05:29:53 GPU 2 p1_ant8_v3_s1_e8 rc=0
+2026-10-15 05:31:00 GPU 3 p1_ant8_v3_s1_e10 rc=0
+2026-10-15 05:48:20 GPU 1 n5_umi_v3_s2_e6 rc=0
+2026-10-15 05:49:19 GPU 2 n5_umi_v3_s2_e8 rc=0
+2026-10-15 05:50:09 GPU 3 n5_umi_v3_s2_e10 rc=0
+2026-10-15 05:50:09 pool end: 47 items done of 448
+2026-10-15 05:59:18 pool start: 100 min on GPUs 1 2 3
+2026-10-15 06:02:09 GPU 1 p1_ant2_v3_s2_e10 rc=0
+2026-10-15 06:02:12 GPU 2 p1_ant2_v3_s2_e8 rc=0
+2026-10-15 06:04:48 GPU 2 p1_ant2_v3_s2_e14 rc=0
+2026-10-15 06:04:49 GPU 1 p1_ant2_v3_s2_e12 rc=0
+2026-10-15 06:07:27 GPU 2 p1_ant2_v3_s2_e16 rc=0
+2026-10-15 06:07:29 GPU 1 p1_ant2_v3_s2_e18 rc=0
+2026-10-15 06:10:06 GPU 2 p1_ant4_v3_s2_e4 rc=0
+2026-10-15 06:10:07 GPU 1 p1_ant4_v3_s2_e6 rc=0
+2026-10-15 06:12:45 GPU 2 p1_ant4_v3_s2_e8 rc=0
+2026-10-15 06:12:47 GPU 1 p1_ant4_v3_s2_e10 rc=0
+2026-10-15 06:15:24 GPU 1 p1_ant4_v3_s2_e14 rc=0
+2026-10-15 06:15:25 GPU 2 p1_ant4_v3_s2_e12 rc=0
+2026-10-15 06:18:06 GPU 1 p1_ant8_v3_s2_e0 rc=0
+2026-10-15 06:18:06 GPU 2 p1_ant8_v3_s2_e2 rc=0
+2026-10-15 06:19:24 GPU 3 n5_umi_v3_s2_e12 rc=0
+2026-10-15 06:20:57 GPU 1 p1_ant8_v3_s2_e4 rc=0
+2026-10-15 06:20:59 GPU 2 p1_ant8_v3_s2_e6 rc=0
+2026-10-15 06:22:02 GPU 3 p1_ant8_v3_s2_e8 rc=0
+2026-10-15 06:23:35 GPU 1 p1_ant8_v3_s2_e10 rc=0
+2026-10-15 06:40:18 GPU 2 n5_umi_v3_s3_e6 rc=0
+2026-10-15 06:41:18 GPU 3 n5_umi_v3_s3_e8 rc=0
+2026-10-15 06:42:45 GPU 1 n5_umi_v3_s3_e10 rc=0
+2026-10-15 06:43:54 GPU 3 p1_ant2_v3_s3_e8 rc=0
+2026-10-15 06:45:22 GPU 1 p1_ant2_v3_s3_e10 rc=0
+2026-10-15 06:46:30 GPU 3 p1_ant2_v3_s3_e12 rc=0
+2026-10-15 06:48:00 GPU 1 p1_ant2_v3_s3_e14 rc=0
+2026-10-15 06:49:11 GPU 3 p1_ant2_v3_s3_e16 rc=0
+2026-10-15 06:50:40 GPU 1 p1_ant2_v3_s3_e18 rc=0
+2026-10-15 06:51:57 GPU 3 p1_ant4_v3_s3_e4 rc=0
+2026-10-15 06:53:08 pool start: 229 min on GPUs 0 1 2 3
+2026-10-15 06:53:08 pool start: 229 min on GPUs 0 1 2 3
+2026-10-15 06:53:08 pool start: 229 min on GPUs 0 1 2 3
+2026-10-15 06:53:20 GPU 1 p1_ant4_v3_s3_e6 rc=0
+2026-10-15 06:54:34 GPU 3 p1_ant4_v3_s3_e8 rc=0
+2026-10-15 06:56:06 GPU 3 p1_ant8_v3_s3_e8 rc=0
+2026-10-15 06:56:07 GPU 2 p1_ant8_v3_s3_e2 rc=0
+2026-10-15 06:56:07 GPU 1 p1_ant8_v3_s3_e6 rc=0
+2026-10-15 06:56:08 GPU 0 p1_ant8_v3_s3_e4 rc=0
+2026-10-15 06:56:09 GPU 2 p1_ant8_v3_s3_e0 rc=0
+2026-10-15 06:56:11 GPU 3 p1_ant4_v3_s3_e14 rc=0
+2026-10-15 06:56:11 GPU 1 p1_ant4_v3_s3_e10 rc=0
+2026-10-15 06:56:25 GPU 0 p1_ant4_v3_s3_e12 rc=0
+2026-10-15 06:57:11 GPU 3 p1_ant2_v3_s4_e8 rc=0
+2026-10-15 06:58:13 GPU 1 p1_ant8_v3_s3_e10 rc=0
+2026-10-15 06:58:35 GPU 2 p1_ant2_v3_s4_e18 rc=0
+2026-10-15 06:58:42 GPU 2 p1_ant2_v3_s4_e12 rc=0
+2026-10-15 06:58:43 GPU 0 p1_ant2_v3_s4_e16 rc=0
+2026-10-15 06:58:44 GPU 3 p1_ant2_v3_s4_e10 rc=0
+2026-10-15 06:58:44 GPU 1 p1_ant2_v3_s4_e14 rc=0
+2026-10-15 06:59:47 GPU 2 n5_umi_v3_s3_e12 rc=0
+2026-10-15 06:59:48 GPU 3 p1_ant4_v3_s4_e10 rc=0
+2026-10-15 07:00:49 GPU 1 p1_ant4_v3_s4_e12 rc=0
+2026-10-15 07:00:53 GPU 3 p1_ant4_v3_s4_e4 rc=0
+2026-10-15 07:00:56 GPU 1 p1_ant4_v3_s4_e6 rc=0
+2026-10-15 07:00:56 GPU 0 p1_ant4_v3_s4_e8 rc=0
+2026-10-15 07:01:20 GPU 0 p1_ant8_v3_s4_e2 rc=0
+2026-10-15 07:01:21 GPU 1 p1_ant8_v3_s4_e6 rc=0
+2026-10-15 07:01:21 GPU 2 p1_ant4_v3_s4_e14 rc=0
+2026-10-15 07:01:22 GPU 2 p1_ant8_v3_s4_e0 rc=0
+2026-10-15 07:01:26 GPU 3 p1_ant8_v3_s4_e4 rc=0
+2026-10-15 07:02:25 GPU 2 p1_ant8_v3_s4_e8 rc=0
+2026-10-15 07:02:27 GPU 3 p1_ant8_v3_s4_e10 rc=0
+2026-10-15 07:03:52 GPU 2 p1_ant2_v3_s5_e12 rc=0
+2026-10-15 07:03:55 GPU 0 p1_ant2_v3_s5_e8 rc=0
+2026-10-15 07:03:57 GPU 1 p1_ant2_v3_s5_e10 rc=0
+2026-10-15 07:04:03 GPU 3 p1_ant2_v3_s5_e16 rc=0
+2026-10-15 07:04:04 GPU 2 p1_ant2_v3_s5_e14 rc=0
+2026-10-15 07:05:03 GPU 2 p1_ant2_v3_s5_e18 rc=0
+2026-10-15 07:05:04 GPU 3 p1_ant4_v3_s5_e4 rc=0
+2026-10-15 07:06:25 GPU 2 p1_ant4_v3_s5_e6 rc=0
+2026-10-15 07:06:51 GPU 0 p1_ant4_v3_s5_e8 rc=0
+2026-10-15 07:06:51 GPU 1 p1_ant4_v3_s5_e10 rc=0
+2026-10-15 07:06:51 GPU 3 p1_ant4_v3_s5_e12 rc=0
+2026-10-15 07:06:52 GPU 2 p1_ant4_v3_s5_e14 rc=0
+2026-10-15 07:07:41 GPU 2 p1_ant8_v3_s5_e0 rc=0
+2026-10-15 07:07:42 GPU 3 p1_ant8_v3_s5_e2 rc=0
+2026-10-15 07:09:22 GPU 2 p1_ant8_v3_s5_e4 rc=0
+2026-10-15 07:09:26 GPU 1 p1_ant8_v3_s5_e8 rc=0
+2026-10-15 07:09:26 GPU 3 p1_ant8_v3_s5_e10 rc=0
+2026-10-15 07:09:28 GPU 0 p1_ant8_v3_s5_e6 rc=0
+2026-10-15 07:11:59 GPU 3 p1_ant2_v3_s6_e10 rc=0
+2026-10-15 07:12:00 GPU 1 p1_ant2_v3_s6_e8 rc=0
+2026-10-15 07:12:03 GPU 0 p1_ant2_v3_s6_e12 rc=0
+2026-10-15 07:12:44 GPU 1 n5_umi_v3_s4_e12 rc=0
+2026-10-15 07:13:26 GPU 0 n5_umi_v3_s4_e10 rc=0
+2026-10-15 07:13:28 GPU 2 n5_umi_v3_s4_e6 rc=0
+2026-10-15 07:13:37 GPU 3 n5_umi_v3_s4_e8 rc=0
+2026-10-15 07:14:32 GPU 3 p1_ant2_v3_s6_e14 rc=0
+2026-10-15 07:14:36 GPU 1 p1_ant2_v3_s6_e16 rc=0
+2026-10-15 07:14:41 GPU 0 p1_ant2_v3_s6_e18 rc=0
+2026-10-15 07:15:19 GPU 1 p1_ant4_v3_s6_e4 rc=0
+2026-10-15 07:16:02 GPU 0 p1_ant4_v3_s6_e6 rc=0
+2026-10-15 07:16:08 GPU 2 p1_ant4_v3_s6_e8 rc=0
+2026-10-15 07:16:14 GPU 3 p1_ant4_v3_s6_e10 rc=0
+2026-10-15 07:17:12 GPU 3 p1_ant4_v3_s6_e12 rc=0
+2026-10-15 07:17:13 GPU 1 p1_ant4_v3_s6_e14 rc=0
+2026-10-15 07:17:17 GPU 0 p1_ant8_v3_s6_e0 rc=0
+2026-10-15 07:17:57 GPU 1 p1_ant8_v3_s6_e2 rc=0
+2026-10-15 07:18:42 GPU 0 p1_ant8_v3_s6_e4 rc=0
+2026-10-15 07:18:46 GPU 2 p1_ant8_v3_s6_e6 rc=0
+2026-10-15 07:18:56 GPU 3 p1_ant8_v3_s6_e8 rc=0
+2026-10-15 07:19:46 GPU 3 p1_ant8_v3_s6_e10 rc=0
+2026-10-15 07:19:50 GPU 1 n5_umi_v3_s5_e10 rc=0
+2026-10-15 07:19:50 GPU 0 n5_umi_v3_s5_e12 rc=0
+2026-10-15 07:19:56 GPU 1 n5_umi_v3_s5_e6 rc=0
+2026-10-15 07:20:06 GPU 3 n5_umi_v3_s5_e8 rc=0
+2026-10-15 07:21:20 GPU 2 p1_ant2_v3_s7_e8 rc=0
+2026-10-15 07:21:32 GPU 3 p1_ant2_v3_s7_e10 rc=0
+2026-10-15 07:22:17 GPU 3 p1_ant2_v3_s7_e12 rc=0
+2026-10-15 07:22:26 GPU 0 p1_ant2_v3_s7_e16 rc=0
+2026-10-15 07:22:30 GPU 1 p1_ant2_v3_s7_e14 rc=0
+2026-10-15 07:22:32 GPU 1 p1_ant2_v3_s7_e18 rc=0
+2026-10-15 07:22:43 GPU 3 p1_ant4_v3_s7_e4 rc=0
+2026-10-15 07:24:00 GPU 2 p1_ant4_v3_s7_e6 rc=0
+2026-10-15 07:24:09 GPU 3 p1_ant4_v3_s7_e8 rc=0
+2026-10-15 07:24:50 GPU 3 p1_ant4_v3_s7_e10 rc=0
+2026-10-15 07:25:02 GPU 0 p1_ant4_v3_s7_e12 rc=0
+2026-10-15 07:25:07 GPU 1 p1_ant4_v3_s7_e14 rc=0
+2026-10-15 07:25:11 GPU 1 p1_ant8_v3_s7_e0 rc=0
+2026-10-15 07:25:19 GPU 3 p1_ant8_v3_s7_e2 rc=0
+2026-10-15 07:25:51 GPU 2 n5_umi_v3_s6_e6 rc=0
+2026-10-15 07:26:38 GPU 2 p1_ant8_v3_s7_e4 rc=0
+2026-10-15 07:26:48 GPU 3 p1_ant8_v3_s7_e6 rc=0
+2026-10-15 07:26:54 GPU 2 n5_umi_v3_s6_e8 rc=0
+2026-10-15 07:27:01 GPU 3 n5_umi_v3_s6_e10 rc=0
+2026-10-15 07:27:28 GPU 3 p1_ant8_v3_s7_e8 rc=0
+2026-10-15 07:27:36 GPU 0 p1_ant8_v3_s7_e10 rc=0
+2026-10-15 07:28:24 GPU 2 n5_umi_v3_s6_e12 rc=0
+2026-10-15 07:29:11 GPU 2 p1_ant2_v3_s8_e8 rc=0
+2026-10-15 07:29:24 GPU 3 p1_ant2_v3_s8_e10 rc=0
+2026-10-15 07:29:32 GPU 2 p1_ant2_v3_s8_e12 rc=0
+2026-10-15 07:29:37 GPU 3 p1_ant2_v3_s8_e14 rc=0
+2026-10-15 07:30:03 GPU 3 p1_ant2_v3_s8_e16 rc=0
+2026-10-15 07:30:13 GPU 0 p1_ant2_v3_s8_e18 rc=0
+2026-10-15 07:31:02 GPU 2 p1_ant4_v3_s8_e4 rc=0
+2026-10-15 07:31:46 GPU 2 p1_ant4_v3_s8_e6 rc=0
+2026-10-15 07:32:01 GPU 3 p1_ant4_v3_s8_e8 rc=0
+2026-10-15 07:32:10 GPU 2 p1_ant4_v3_s8_e10 rc=0
+2026-10-15 07:32:12 GPU 3 p1_ant4_v3_s8_e12 rc=0
+2026-10-15 07:32:37 GPU 3 p1_ant4_v3_s8_e14 rc=0
+2026-10-15 07:32:49 GPU 0 p1_ant8_v3_s8_e0 rc=0
+2026-10-15 07:33:43 GPU 2 p1_ant8_v3_s8_e2 rc=0
+2026-10-15 07:34:31 GPU 2 p1_ant8_v3_s8_e4 rc=0
+2026-10-15 07:34:39 GPU 3 p1_ant8_v3_s8_e6 rc=0
+2026-10-15 07:34:55 GPU 2 p1_ant8_v3_s8_e8 rc=0
+2026-10-15 07:34:55 GPU 3 p1_ant8_v3_s8_e10 rc=0
+2026-10-15 07:36:20 GPU 0 n5_umi_v3_s7_e8 rc=0
+2026-10-15 07:36:21 GPU 1 n5_umi_v3_s7_e6 rc=0
+2026-10-15 07:37:15 GPU 3 p1_ant2_v3_s9_e8 rc=0
+2026-10-15 07:37:30 GPU 1 n5_umi_v3_s7_e10 rc=0
+2026-10-15 07:37:39 GPU 3 p1_ant2_v3_s9_e10 rc=0
+2026-10-15 07:37:48 GPU 2 p1_ant2_v3_s9_e12 rc=0
+2026-10-15 07:37:48 pool end: 196 items done of 448
+2026-10-15 07:38:12 GPU 0 n5_umi_v3_s7_e12 rc=0
+2026-10-15 07:38:54 GPU 0 p1_ant2_v3_s9_e14 rc=0
+2026-10-15 07:38:57 GPU 1 p1_ant2_v3_s9_e16 rc=0
+2026-10-15 07:39:49 GPU 3 p1_ant2_v3_s9_e18 rc=0
+2026-10-15 07:40:52 GPU 0 p1_ant4_v3_s9_e4 rc=0
+2026-10-15 07:41:40 GPU 1 p1_ant4_v3_s9_e8 rc=0
+2026-10-15 07:41:40 GPU 0 p1_ant4_v3_s9_e6 rc=0
+2026-10-15 07:42:33 GPU 3 p1_ant4_v3_s9_e10 rc=0
+2026-10-15 07:43:27 GPU 0 p1_ant4_v3_s9_e12 rc=0
+2026-10-15 07:44:00 GPU 1 n5_umi_v3_s8_e6 rc=0
+2026-10-15 07:44:15 GPU 3 n5_umi_v3_s8_e10 rc=0
+2026-10-15 07:44:15 GPU 1 n5_umi_v3_s8_e8 rc=0
+2026-10-15 07:44:21 GPU 1 p1_ant4_v3_s9_e14 rc=0
+2026-10-15 07:44:23 GPU 0 p1_ant8_v3_s9_e0 rc=0
+2026-10-15 07:44:56 GPU 2 n5_umi_v3_s8_e12 rc=0
+2026-10-15 07:45:36 GPU 3 p1_ant8_v3_s9_e2 rc=0
+2026-10-15 07:46:15 GPU 0 p1_ant8_v3_s9_e4 rc=0
+2026-10-15 07:46:43 GPU 1 p1_ant8_v3_s9_e6 rc=0
+2026-10-15 07:46:55 GPU 1 p1_ant8_v3_s9_e8 rc=0
+2026-10-15 07:46:55 GPU 3 p1_ant8_v3_s9_e10 rc=0
+2026-10-15 07:48:50 GPU 0 p1_ant2_v3_s10_e8 rc=0
+2026-10-15 07:49:18 GPU 1 p1_ant2_v3_s10_e10 rc=0
+2026-10-15 07:49:19 pool start: 100 min on GPUs 1 2 3
+2026-10-15 07:49:30 GPU 3 p1_ant2_v3_s10_e12 rc=0
+2026-10-15 07:49:31 GPU 1 p1_ant2_v3_s10_e14 rc=0
+2026-10-15 07:51:25 GPU 0 p1_ant2_v3_s10_e16 rc=0
+2026-10-15 07:51:43 GPU 3 n5_umi_v3_s9_e6 rc=0
+2026-10-15 07:51:55 GPU 1 p1_ant2_v3_s10_e18 rc=0
+2026-10-15 07:52:09 GPU 3 p1_ant4_v3_s10_e10 rc=0
+2026-10-15 07:52:11 GPU 0 n5_umi_v3_s9_e8 rc=0
+2026-10-15 07:52:12 GPU 1 p1_ant4_v3_s10_e12 rc=0
+2026-10-15 07:52:16 GPU 1 p1_ant4_v3_s10_e6 rc=0
+2026-10-15 07:52:18 GPU 3 p1_ant4_v3_s10_e8 rc=0
+2026-10-15 07:52:18 GPU 2 p1_ant4_v3_s10_e4 rc=0
+2026-10-15 07:52:46 GPU 2 n5_umi_v3_s9_e10 rc=0
+2026-10-15 07:53:58 GPU 2 n5_umi_v3_s9_e12 rc=0
+2026-10-15 07:54:02 GPU 0 p1_ant4_v3_s10_e14 rc=0
+2026-10-15 07:54:19 GPU 3 p1_ant8_v3_s10_e0 rc=0
+2026-10-15 07:54:33 GPU 1 p1_ant8_v3_s10_e2 rc=0
+2026-10-15 07:54:49 GPU 0 p1_ant8_v3_s10_e6 rc=0
+2026-10-15 07:54:50 GPU 1 p1_ant8_v3_s10_e8 rc=0
+2026-10-15 07:54:52 GPU 3 p1_ant8_v3_s10_e4 rc=0
+2026-10-15 07:54:52 GPU 1 p1_ant8_v3_s10_e10 rc=0
+2026-10-15 07:56:39 GPU 0 p1_ant2_v3_s11_e8 rc=0
+2026-10-15 07:56:57 GPU 3 p1_ant2_v3_s11_e10 rc=0
+2026-10-15 07:57:09 GPU 1 p1_ant2_v3_s11_e12 rc=0
+2026-10-15 07:57:34 GPU 1 p1_ant2_v3_s11_e16 rc=0
+2026-10-15 07:57:34 GPU 1 p1_ant4_v3_s11_e4 rc=0
+2026-10-15 07:59:17 GPU 0 p1_ant4_v3_s11_e6 rc=0
+2026-10-15 07:59:32 GPU 3 p1_ant4_v3_s11_e8 rc=0
+2026-10-15 07:59:35 GPU 3 p1_ant2_v3_s11_e18 rc=0
+2026-10-15 07:59:36 GPU 0 p1_ant2_v3_s11_e14 rc=0
+2026-10-15 07:59:39 GPU 1 p1_ant4_v3_s11_e10 rc=0
+2026-10-15 08:00:10 GPU 1 p1_ant4_v3_s11_e12 rc=0
+2026-10-15 08:00:11 GPU 1 p1_ant4_v3_s11_e14 rc=0
+2026-10-15 08:01:55 GPU 0 p1_ant8_v3_s11_e0 rc=0
+2026-10-15 08:02:07 GPU 3 p1_ant8_v3_s11_e2 rc=0
+2026-10-15 08:02:17 GPU 0 p1_ant8_v3_s11_e6 rc=0
+2026-10-15 08:02:19 GPU 3 p1_ant8_v3_s11_e4 rc=0
+2026-10-15 08:02:20 GPU 1 p1_ant8_v3_s11_e8 rc=0
+2026-10-15 08:02:53 GPU 1 p1_ant8_v3_s11_e10 rc=0
+2026-10-15 08:03:17 GPU 1 n5_umi_v3_s10_e6 rc=0
+2026-10-15 08:03:20 GPU 0 n5_umi_v3_s10_e8 rc=0
+2026-10-15 08:04:21 GPU 2 n5_umi_v3_s10_e10 rc=0
+2026-10-15 08:04:53 GPU 1 p1_ant2_v3_s12_e10 rc=0
+2026-10-15 08:04:54 GPU 3 p1_ant2_v3_s12_e8 rc=0
+2026-10-15 08:05:00 GPU 3 n5_umi_v3_s10_e12 rc=0
+2026-10-15 08:05:37 GPU 1 p1_ant2_v3_s12_e12 rc=0
+2026-10-15 08:05:55 GPU 1 p1_ant2_v3_s12_e14 rc=0
+2026-10-15 08:05:59 GPU 0 p1_ant2_v3_s12_e16 rc=0
+2026-10-15 08:07:07 GPU 2 p1_ant2_v3_s12_e18 rc=0
+2026-10-15 08:07:27 GPU 3 p1_ant4_v3_s12_e6 rc=0
+2026-10-15 08:07:27 GPU 1 p1_ant4_v3_s12_e4 rc=0
+2026-10-15 08:07:36 GPU 3 p1_ant4_v3_s12_e8 rc=0
+2026-10-15 08:08:16 GPU 1 p1_ant4_v3_s12_e10 rc=0
+2026-10-15 08:08:30 GPU 1 p1_ant4_v3_s12_e12 rc=0
+2026-10-15 08:08:35 GPU 0 p1_ant4_v3_s12_e14 rc=0
+2026-10-15 08:09:52 GPU 2 p1_ant8_v3_s12_e0 rc=0
+2026-10-15 08:10:03 GPU 1 p1_ant8_v3_s12_e4 rc=0
+2026-10-15 08:10:07 GPU 3 p1_ant8_v3_s12_e2 rc=0
+2026-10-15 08:10:12 GPU 3 p1_ant8_v3_s12_e6 rc=0
+2026-10-15 08:10:56 GPU 1 p1_ant8_v3_s12_e8 rc=0
+2026-10-15 08:11:06 GPU 1 p1_ant8_v3_s12_e10 rc=0
+2026-10-15 08:11:40 GPU 3 n5_umi_v3_s11_e6 rc=0
+2026-10-15 08:11:56 GPU 2 n5_umi_v3_s11_e8 rc=0
+2026-10-15 08:11:57 GPU 2 n5_umi_v3_s11_e10 rc=0
+2026-10-15 08:12:45 GPU 3 p1_ant2_v3_s13_e8 rc=0
+2026-10-15 08:13:07 GPU 2 n5_umi_v3_s11_e12 rc=0
+2026-10-15 08:13:40 GPU 1 p1_ant2_v3_s13_e10 rc=0
+2026-10-15 08:13:41 GPU 1 p1_ant2_v3_s13_e12 rc=0
+2026-10-15 08:14:21 GPU 3 p1_ant2_v3_s13_e14 rc=0
+2026-10-15 08:14:31 GPU 2 p1_ant2_v3_s13_e18 rc=0
+2026-10-15 08:14:36 GPU 2 p1_ant2_v3_s13_e16 rc=0
+2026-10-15 08:15:21 GPU 3 p1_ant4_v3_s13_e4 rc=0
+2026-10-15 08:15:45 GPU 2 p1_ant4_v3_s13_e6 rc=0
+2026-10-15 08:16:15 GPU 1 p1_ant4_v3_s13_e10 rc=0
+2026-10-15 08:16:23 GPU 1 p1_ant4_v3_s13_e8 rc=0
+2026-10-15 08:17:06 GPU 2 p1_ant4_v3_s13_e14 rc=0
+2026-10-15 08:17:17 GPU 3 p1_ant4_v3_s13_e12 rc=0
+2026-10-15 08:17:18 GPU 2 p1_ant8_v3_s13_e0 rc=0
+2026-10-15 08:17:59 GPU 3 p1_ant8_v3_s13_e2 rc=0
+2026-10-15 08:18:24 GPU 2 p1_ant8_v3_s13_e4 rc=0
+2026-10-15 08:18:50 GPU 1 p1_ant8_v3_s13_e6 rc=0
+2026-10-15 08:19:04 GPU 1 p1_ant8_v3_s13_e8 rc=0
+2026-10-15 08:19:24 GPU 1 n5_umi_v3_s12_e6 rc=0
+2026-10-15 08:19:41 GPU 2 p1_ant8_v3_s13_e10 rc=0
+2026-10-15 08:21:06 GPU 0 n5_umi_v3_s12_e8 rc=0
+2026-10-15 08:21:12 GPU 3 n5_umi_v3_s12_e10 rc=0
+2026-10-15 08:21:21 GPU 0 n5_umi_v3_s12_e12 rc=0
+2026-10-15 08:21:29 GPU 1 p1_ant2_v3_s14_e8 rc=0
+2026-10-15 08:21:38 GPU 1 p1_ant2_v3_s14_e10 rc=0
+2026-10-15 08:21:59 GPU 1 p1_ant2_v3_s14_e12 rc=0
+2026-10-15 08:22:31 GPU 2 p1_ant2_v3_s14_e14 rc=0
+2026-10-15 08:23:42 GPU 0 p1_ant2_v3_s14_e16 rc=0
+2026-10-15 08:23:46 GPU 3 p1_ant2_v3_s14_e18 rc=0
+2026-10-15 08:23:55 GPU 0 p1_ant4_v3_s14_e4 rc=0
+2026-10-15 08:24:05 GPU 1 p1_ant4_v3_s14_e6 rc=0
+2026-10-15 08:24:29 GPU 1 p1_ant4_v3_s14_e8 rc=0
+2026-10-15 08:24:36 GPU 1 p1_ant4_v3_s14_e10 rc=0
+2026-10-15 08:25:05 GPU 2 p1_ant4_v3_s14_e12 rc=0
+2026-10-15 08:26:19 GPU 0 p1_ant4_v3_s14_e14 rc=0
+2026-10-15 08:26:24 GPU 3 p1_ant8_v3_s14_e0 rc=0
+2026-10-15 08:26:33 GPU 0 p1_ant8_v3_s14_e2 rc=0
+2026-10-15 08:26:46 GPU 1 p1_ant8_v3_s14_e4 rc=0
+2026-10-15 08:27:10 GPU 1 p1_ant8_v3_s14_e6 rc=0
+2026-10-15 08:27:22 GPU 1 p1_ant8_v3_s14_e8 rc=0
+2026-10-15 08:27:36 GPU 0 n5_umi_v3_s13_e6 rc=0
+2026-10-15 08:27:48 GPU 2 p1_ant8_v3_s14_e10 rc=0
+2026-10-15 08:29:03 GPU 3 n5_umi_v3_s13_e12 rc=0
+2026-10-15 08:29:06 GPU 2 n5_umi_v3_s13_e8 rc=0
+2026-10-15 08:29:18 GPU 1 n5_umi_v3_s13_e10 rc=0
+2026-10-15 08:29:57 GPU 1 p1_ant2_v3_s15_e10 rc=0
+2026-10-15 08:29:57 GPU 1 p1_ant2_v3_s15_e8 rc=0
+2026-10-15 08:30:18 GPU 0 p1_ant2_v3_s15_e12 rc=0
+2026-10-15 08:30:22 GPU 2 p1_ant2_v3_s15_e14 rc=0
+2026-10-15 08:31:37 GPU 3 p1_ant2_v3_s15_e16 rc=0
+2026-10-15 08:31:40 GPU 2 p1_ant2_v3_s15_e18 rc=0
+2026-10-15 08:31:54 GPU 1 p1_ant4_v3_s15_e4 rc=0
+2026-10-15 08:32:34 GPU 1 p1_ant4_v3_s15_e6 rc=0
+2026-10-15 08:32:38 GPU 1 p1_ant4_v3_s15_e8 rc=0
+2026-10-15 08:32:54 GPU 0 p1_ant4_v3_s15_e10 rc=0
+2026-10-15 08:33:16 GPU 2 p1_ant4_v3_s15_e12 rc=0
+2026-10-15 08:34:16 GPU 3 p1_ant4_v3_s15_e14 rc=0
+2026-10-15 08:34:21 GPU 2 p1_ant8_v3_s15_e0 rc=0
+2026-10-15 08:34:48 GPU 1 p1_ant8_v3_s15_e2 rc=0
+2026-10-15 08:35:20 GPU 1 p1_ant8_v3_s15_e4 rc=0
+2026-10-15 08:35:25 GPU 1 p1_ant8_v3_s15_e6 rc=0
+2026-10-15 08:35:43 GPU 0 p1_ant8_v3_s15_e8 rc=0
+2026-10-15 08:35:59 GPU 2 p1_ant8_v3_s15_e10 rc=0
+2026-10-15 08:36:46 GPU 3 n5_umi_v3_s14_e6 rc=0
+2026-10-15 08:36:48 GPU 2 n5_umi_v3_s14_e8 rc=0
+2026-10-15 08:37:02 GPU 3 n5_umi_v3_s14_e10 rc=0
+2026-10-15 08:37:31 GPU 2 n5_umi_v3_s14_e12 rc=0
+2026-10-15 08:45:11 GPU 0 n5_umi_v3_s15_e6 rc=0
+2026-10-15 08:45:11 GPU 3 n5_umi_v3_s15_e8 rc=0
+2026-10-15 08:45:20 GPU 0 n5_umi_v3_s15_e10 rc=0
+2026-10-15 08:45:52 GPU 1 n5_umi_v3_s15_e12 rc=0
+2026-10-15 08:53:05 GPU 2 n5_umi_v3_s16_e8 rc=0
+2026-10-15 08:53:11 GPU 3 n5_umi_v3_s16_e6 rc=0
+2026-10-15 08:53:35 GPU 1 n5_umi_v3_s16_e10 rc=0
+2026-10-15 08:54:22 GPU 1 n5_umi_v3_s17_e6 rc=0
+2026-10-15 08:54:51 GPU 2 n5_umi_v3_s17_e10 rc=0
+2026-10-15 08:54:54 GPU 0 n5_umi_v3_s17_e8 rc=0
+2026-10-15 08:54:55 GPU 1 n5_umi_v3_s16_e12 rc=0
+2026-10-15 08:55:58 GPU 3 n5_umi_v3_s17_e12 rc=0
+2026-10-15 08:56:09 GPU 3 n5_umi_v3_s18_e8 rc=0
+2026-10-15 08:56:09 GPU 2 n5_umi_v3_s18_e6 rc=0
+2026-10-15 08:56:42 GPU 2 n5_umi_v3_s18_e10 rc=0
+2026-10-15 09:04:09 GPU 0 n5_umi_v3_s18_e12 rc=0
+2026-10-15 09:04:09 GPU 3 n5_umi_v3_s19_e6 rc=0
+2026-10-15 09:04:17 GPU 0 n5_umi_v3_s19_e8 rc=0
+2026-10-15 09:04:50 GPU 1 n5_umi_v3_s19_e10 rc=0
+2026-10-15 09:11:51 GPU 2 n5_umi_v3_s19_e12 rc=0
+2026-10-15 09:11:55 GPU 3 n5_umi_v3_s20_e6 rc=0
+2026-10-15 09:12:22 GPU 1 n5_umi_v3_s20_e8 rc=0
+2026-10-15 09:13:16 GPU 1 n5_umi_v3_s20_e10 rc=0
+2026-10-15 09:13:34 GPU 2 n5_umi_v3_s20_e12 rc=0
+2026-10-15 09:13:41 GPU 0 n5_umi_v3_s21_e6 rc=0
+2026-10-15 09:14:14 GPU 1 n5_umi_v3_s21_e8 rc=0
+2026-10-15 09:15:00 GPU 3 n5_umi_v3_s21_e12 rc=0
+2026-10-15 09:15:16 GPU 3 n5_umi_v3_s21_e10 rc=0
+2026-10-15 09:15:35 GPU 2 n5_umi_v3_s22_e8 rc=0
+2026-10-15 09:15:42 GPU 2 n5_umi_v3_s22_e6 rc=0
+2026-10-15 09:23:00 GPU 3 n5_umi_v3_s22_e12 rc=0
+2026-10-15 09:23:08 GPU 0 n5_umi_v3_s23_e6 rc=0
+2026-10-15 09:23:22 GPU 0 n5_umi_v3_s22_e10 rc=0
+2026-10-15 09:23:43 GPU 1 n5_umi_v3_s23_e8 rc=0
+2026-10-15 09:29:19 GPU 2 n5_umi_v3_s26_e6 rc=124
+2026-10-15 09:29:19 GPU 1 n5_umi_v3_s25_e6 rc=124
+2026-10-15 09:29:20 GPU 3 n5_umi_v3_s25_e10 rc=124
+2026-10-15 09:29:20 pool end: 382 items done of 448
+2026-10-15 09:30:38 GPU 2 n5_umi_v3_s23_e10 rc=0
+2026-10-15 09:31:06 GPU 3 n5_umi_v3_s23_e12 rc=0
+2026-10-15 09:31:11 GPU 1 n5_umi_v3_s24_e6 rc=0
+2026-10-15 09:32:01 GPU 1 n5_umi_v3_s24_e8 rc=0
+2026-10-15 09:32:21 GPU 2 n5_umi_v3_s24_e10 rc=0
+2026-10-15 09:32:31 GPU 0 n5_umi_v3_s24_e12 rc=0
+2026-10-15 09:33:45 GPU 3 n5_umi_v3_s25_e8 rc=0
+2026-10-15 09:34:33 GPU 2 n5_umi_v3_s25_e12 rc=0
+2026-10-15 09:39:26 pool start: 100 min on GPUs 1 2 3
+2026-10-15 09:41:56 GPU 0 n5_umi_v3_s26_e10 rc=0
+2026-10-15 09:41:58 GPU 3 n5_umi_v3_s26_e8 rc=0
+2026-10-15 09:42:23 GPU 0 n5_umi_v3_s26_e12 rc=0
+2026-10-15 09:42:57 GPU 1 n5_umi_v3_s27_e6 rc=0
+2026-10-15 09:49:13 GPU 2 n5_umi_v3_s25_e6 rc=0
+2026-10-15 09:49:52 GPU 3 n5_umi_v3_s25_e10 rc=0
+2026-10-15 09:50:00 GPU 1 n5_umi_v3_s26_e6 rc=0
+2026-10-15 09:50:56 GPU 1 n5_umi_v3_s27_e8 rc=0
+2026-10-15 09:51:27 GPU 2 n5_umi_v3_s27_e10 rc=0
+2026-10-15 09:51:29 GPU 0 n5_umi_v3_s27_e12 rc=0
+2026-10-15 09:52:54 GPU 3 n5_umi_v3_s28_e6 rc=0
+2026-10-15 09:53:36 GPU 2 n5_umi_v3_s28_e8 rc=0
+2026-10-15 09:58:50 GPU 1 n5_umi_v3_s28_e10 rc=0
+2026-10-15 09:59:01 GPU 3 n5_umi_v3_s28_e12 rc=0
+2026-10-15 09:59:18 GPU 2 n5_umi_v3_s29_e6 rc=0
+2026-10-15 10:00:43 GPU 0 n5_umi_v3_s29_e8 rc=0
+2026-10-15 10:00:48 GPU 3 n5_umi_v3_s29_e10 rc=0
+2026-10-15 10:01:13 GPU 0 n5_umi_v3_s29_e12 rc=0
+2026-10-15 10:01:59 GPU 1 n5_umi_v3_s30_e6 rc=0
+2026-10-15 10:08:15 GPU 2 n5_umi_v3_s30_e8 rc=0
+2026-10-15 10:08:51 GPU 1 n5_umi_v3_s30_e12 rc=0
+2026-10-15 10:09:06 GPU 3 n5_umi_v3_s30_e10 rc=0
+2026-10-15 10:09:45 GPU 1 n5_umi_v3_s31_e6 rc=0
+2026-10-15 10:10:10 GPU 2 n5_umi_v3_s31_e8 rc=0
+2026-10-15 10:10:35 GPU 0 n5_umi_v3_s31_e10 rc=0
+2026-10-15 10:12:14 GPU 3 n5_umi_v3_s31_e12 rc=0
+2026-10-15 10:12:39 GPU 2 n5_umi_v3_s32_e6 rc=0
+2026-10-15 10:18:01 GPU 1 n5_umi_v3_s32_e8 rc=0
+2026-10-15 10:18:37 GPU 2 n5_umi_v3_s32_e12 rc=0
+2026-10-15 10:18:49 GPU 3 n5_umi_v3_s32_e10 rc=0
+2026-10-15 10:19:34 GPU 0 n5_umi_v3_s33_e6 rc=0
+2026-10-15 10:19:45 GPU 3 n5_umi_v3_s33_e8 rc=0
+2026-10-15 10:20:06 GPU 0 n5_umi_v3_s33_e10 rc=0
+2026-10-15 10:22:37 pool start: 229 min on GPUs 0 1 2 3
+2026-10-15 10:22:37 pool start: 229 min on GPUs 0 1 2 3
+2026-10-15 10:22:38 pool start: 229 min on GPUs 0 1 2 3
+2026-10-15 10:22:40 GPU 1: nothing left that can run
+2026-10-15 10:22:40 GPU 0: nothing left that can run
+2026-10-15 10:37:28 GPU 1 n5_umi_v3_s36_e6 rc=0
+2026-10-15 10:37:30 GPU 1: nothing left that can run
+2026-10-15 10:38:06 GPU 2 n5_umi_v3_s36_e8 rc=0
+2026-10-15 10:38:08 GPU 2: nothing left that can run
+2026-10-15 10:38:12 GPU 3 n5_umi_v3_s36_e10 rc=0
+2026-10-15 10:38:13 GPU 3: nothing left that can run
+2026-10-15 10:38:13 pool end: 426 items done of 448
+2026-10-15 10:42:09 GPU 3 n5_umi_v3_s39_e8 rc=0
+2026-10-15 10:42:09 GPU 2 n5_umi_v3_s38_e12 rc=0
+2026-10-15 10:42:10 GPU 2: nothing left that can run
+2026-10-15 10:42:10 GPU 3: nothing left that can run
+2026-10-15 10:42:11 GPU 1 n5_umi_v3_s38_e10 rc=0
+2026-10-15 10:42:12 GPU 1: nothing left that can run
+2026-10-15 10:42:20 GPU 3 n5_umi_v3_s39_e10 rc=0
+2026-10-15 10:42:22 GPU 3: nothing left that can run
+2026-10-15 10:42:23 GPU 0 n5_umi_v3_s39_e6 rc=0
+2026-10-15 10:42:24 GPU 0: nothing left that can run
+2026-10-15 10:42:24 pool end: 431 items done of 448
+2026-10-15 10:42:25 pool start: 209 min on GPUs 0 1 2 3
+2026-10-15 10:42:26 GPU 0: nothing left that can run
+2026-10-15 10:42:26 GPU 3: nothing left that can run
+2026-10-15 10:42:26 GPU 1: nothing left that can run
+2026-10-15 10:42:26 GPU 2: nothing left that can run
+2026-10-15 10:42:26 pool end: 431 items done of 448
+2026-10-15 10:43:43 GPU 2 n5_umi_v3_s39_e12 rc=0
+2026-10-15 10:43:44 GPU 2: nothing left that can run
+2026-10-15 10:43:44 pool end: 432 items done of 448
+2026-10-15 10:43:45 pool start: 208 min on GPUs 0 1 2 3
+2026-10-15 10:43:46 GPU 0: nothing left that can run
+2026-10-15 10:43:46 GPU 3: nothing left that can run
+2026-10-15 10:43:46 GPU 2: nothing left that can run
+2026-10-15 10:43:46 GPU 1: nothing left that can run
+2026-10-15 10:43:46 pool end: 432 items done of 448
+2026-10-15 10:43:59 GPU 3 n5_umi_v3_s38_e8 rc=0
+2026-10-15 10:44:00 GPU 0 n5_umi_v3_s38_e6 rc=0
+2026-10-15 10:44:01 GPU 3: nothing left that can run
+2026-10-15 10:44:01 GPU 0: nothing left that can run
+2026-10-15 10:44:26 GPU 2 n5_umi_v3_s37_e10 rc=0
+2026-10-15 10:44:27 GPU 2: nothing left that can run
+2026-10-15 10:46:09 GPU 1 n5_umi_v3_s37_e12 rc=0
+2026-10-15 10:46:11 GPU 1: nothing left that can run
+2026-10-15 10:46:11 pool end: 436 items done of 448
+2026-10-15 10:46:13 pool start: 206 min on GPUs 0 1 2 3
+2026-10-15 10:46:14 GPU 1: nothing left that can run
+2026-10-15 10:46:14 GPU 3: nothing left that can run
+2026-10-15 10:46:14 GPU 0: nothing left that can run
+2026-10-15 10:46:14 GPU 2: nothing left that can run
+2026-10-15 10:46:14 pool end: 436 items done of 448
+2026-10-15 11:36:37 pool start: 100 min on GPUs 1 2 3
+2026-10-15 11:56:05 GPU 1 n5_umi_v3_s34_e6 rc=0
+2026-10-15 11:56:07 GPU 3 n5_umi_v3_s34_e8 rc=0
+2026-10-15 11:56:18 GPU 2 n5_umi_v3_s33_e12 rc=0
+2026-10-15 12:13:43 pool start: 229 min on GPUs 0 1 2 3
+2026-10-15 12:13:43 pool start: 229 min on GPUs 0 1 2 3
+2026-10-15 12:13:43 pool start: 229 min on GPUs 0 1 2 3
+2026-10-15 12:13:43 pool start: 230 min on GPUs 0 1 2 3
+2026-10-15 12:13:44 GPU 1: nothing left that can run
+2026-10-15 12:13:44 GPU 2: nothing left that can run
+2026-10-15 12:13:44 GPU 0: nothing left that can run
+2026-10-15 12:13:44 GPU 3: nothing left that can run
+2026-10-15 12:13:44 GPU 0: nothing left that can run
+2026-10-15 12:13:44 GPU 3: nothing left that can run
+2026-10-15 12:13:44 GPU 1: nothing left that can run
+2026-10-15 12:13:44 GPU 2: nothing left that can run
+2026-10-15 12:13:44 GPU 0: nothing left that can run
+2026-10-15 12:13:44 GPU 2: nothing left that can run
+2026-10-15 12:13:44 pool end: 439 items done of 448
+2026-10-15 12:13:44 pool end: 439 items done of 448
+2026-10-15 12:14:38 pool start: 229 min on GPUs 0 1 2 3
+2026-10-15 12:14:38 pool start: 230 min on GPUs 0 1 2 3
+2026-10-15 12:14:38 pool start: 229 min on GPUs 0 1 2 3
+2026-10-15 12:14:38 pool start: 229 min on GPUs 0 1 2 3
+2026-10-15 12:14:39 GPU 1: nothing left that can run
+2026-10-15 12:14:39 GPU 3: nothing left that can run
+2026-10-15 12:14:39 GPU 0: nothing left that can run
+2026-10-15 12:14:39 GPU 2: nothing left that can run
+2026-10-15 12:14:39 pool end: 439 items done of 448
+2026-10-15 12:14:39 GPU 2: nothing left that can run
+2026-10-15 12:14:39 GPU 0: nothing left that can run
+2026-10-15 12:14:39 GPU 1: nothing left that can run
+2026-10-15 12:14:39 GPU 3: nothing left that can run
+2026-10-15 12:14:39 pool end: 439 items done of 448
+2026-10-15 12:14:39 GPU 0: nothing left that can run
+2026-10-15 12:14:39 GPU 1: nothing left that can run
+2026-10-15 12:14:39 GPU 2: nothing left that can run
+2026-10-15 12:14:39 GPU 3: nothing left that can run
+2026-10-15 12:14:40 pool end: 439 items done of 448
+2026-10-15 12:14:40 GPU 1: nothing left that can run
+2026-10-15 12:14:40 GPU 0: nothing left that can run
+2026-10-15 12:14:40 GPU 3: nothing left that can run
+2026-10-15 12:14:40 GPU 2: nothing left that can run
+2026-10-15 12:14:40 pool end: 439 items done of 448
+2026-10-15 12:15:18 GPU 1 n5_umi_v3_s34_e10 rc=0
+2026-10-15 12:15:19 GPU 1: nothing left that can run
+2026-10-15 12:15:24 GPU 3 n5_umi_v3_s34_e12 rc=0
+2026-10-15 12:15:25 GPU 3: nothing left that can run
+2026-10-15 12:15:26 GPU 2 n5_umi_v3_s35_e6 rc=0
+2026-10-15 12:15:27 GPU 2: nothing left that can run
+2026-10-15 12:15:28 pool end: 442 items done of 448
+2026-10-15 14:01:31 pool start: 230 min on GPUs 0 1 2 3
+2026-10-15 14:20:31 GPU 0 n5_umi_v3_s35_e10 rc=0
+2026-10-15 14:20:36 GPU 2 n5_umi_v3_s36_e12 rc=0
+2026-10-15 14:20:37 GPU 1 n5_umi_v3_s35_e8 rc=0
+2026-10-15 14:20:38 GPU 1: nothing left that can run
+2026-10-15 14:20:49 GPU 3 n5_umi_v3_s35_e12 rc=0
+2026-10-15 14:20:50 GPU 3: nothing left that can run
+2026-10-15 14:38:42 GPU 0 n5_umi_v3_s37_e6 rc=0
+2026-10-15 14:38:43 GPU 0: nothing left that can run
+2026-10-15 14:38:48 GPU 2 n5_umi_v3_s37_e8 rc=0
+2026-10-15 14:38:49 GPU 2: nothing left that can run
+2026-10-15 14:38:49 pool end: 448 items done of 448

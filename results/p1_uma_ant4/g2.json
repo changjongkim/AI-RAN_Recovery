@@ -1,0 +1,26 @@
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_perf_csi_kbest"
+  ],
+  "prbs": 273,
+  "nrx_weights": "",
+  "users": 2,
+  "base_config": "nrx_large.cfg",
+  "channel": "UMa",
+  "speed": 0.83,
+  "num_rx": 4,
+  "mcs": 14,
+  "slots": 576,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 0.6494835237585903,
+    "baseline_perf_csi_kbest": 0.8820791088994357
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 86.97916666666666,
+    "baseline_perf_csi_kbest": 96.09375
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_perf_csi_kbest": 70.0
+  }
+}

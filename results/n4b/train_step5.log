@@ -1,0 +1,31 @@
+Only GPU number 0 used.
+Evaluating the first 2 port sets.
+Model: "e2e__model"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ binary_source (BinarySourc  multiple                  0         
+ e)                                                              
+                                                                 
+ pusch_transmitter (PUSCHTr  multiple                  0         
+ ansmitter)                                                      
+                                                                 
+ ofdm_channel (OFDMChannel)  multiple                  0         
+                                                                 
+ neural_pusch_receiver (Neu  multiple                  440590    
+ ralPUSCHReceiver)                                               
+                                                                 
+=================================================================
+Total params: 440590 (1.68 MB)
+Trainable params: 440590 (1.68 MB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792130097.896908  928856 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+
+Weights exist already - loading stored weights.
+Training with mixed MCS from arr. idx [0]. Eval EbNo at [4.0] dB.
+Applying multiloss:  True
+Constellation is trainable:  False
+Applying multiloss:  True
+Constellation is trainable:  False

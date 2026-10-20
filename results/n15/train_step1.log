@@ -1,0 +1,10 @@
+Evaluating the first 2 port sets.
+
+Weights exist already - loading stored weights.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792391938.108922 1003900 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+Training with mixed MCS from arr. idx [0]. Eval EbNo at [4.0] dB.
+Applying multiloss:  True
+Constellation is trainable:  False
+Applying multiloss:  True
+Constellation is trainable:  False

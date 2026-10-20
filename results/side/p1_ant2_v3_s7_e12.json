@@ -1,0 +1,25 @@
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_perf_csi_kbest"
+  ],
+  "prbs": 273,
+  "users": 2,
+  "base_config": "nrx_large.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 2,
+  "mcs": 14,
+  "slots": 64,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 0.5985130225469675,
+    "baseline_perf_csi_kbest": 0.8386516036405283
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 75.0,
+    "baseline_perf_csi_kbest": 91.40625
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_perf_csi_kbest": 65.625
+  }
+}

@@ -32,7 +32,7 @@
 3. 실패의 원인과 복구의 값: 실패와 복구는 같은 자원을 쓰는 사용자 신호가 겹치는 쌍(상향 MU-MIMO의 기본 상황)에 몰리고, 대형 기지국(UMa)에서 값이 크다. Large NRx가 고전 강한 수신기를 모두 합친 것보다 많이 살린다.
 4. 시스템 수준의 값: 링크 적응 처리량, 짝 고르기의 대체, 지연 꼬리, 끝내 못 받는 블록.
 5. 복구 비용과 고르기: GPU 한 장의 실측 처리량, L1 결과만으로 살릴 블록을 고르는 예측기, 작은 NRx → Large NRx 연쇄.
-6. 셀 간 간섭에 맞춘 복구 수신기: 간섭으로 학습한 신경 수신기가 공분산 기반 결합(IRC)보다 낫다는 것은 알려져 있다(DeepRx, TWC 2021; EqDeepRx, arXiv 2602.11834). 우리의 기여는 측정과 배치 방식이다: 셀 간 간섭 없이 학습된 공개 NVlabs NRx를 그대로 쓰면 이웃 셀 간섭(잡음 대비 3–10 dB) 아래에서 MMSE-IRC 대비 복구 이득이 거의 사라지고, AI-RAN 서버의 GPU에서 셀의 간섭에 맞춰 미세 조정하면 되살아난다. 신경 수신기를 실패 블록 복구에만 쓰는 연구와, 그 값을 IRC 앞에서 잰 연구는 찾지 못했다(조사: `/pscratch/sd/s/sgkim/kcj/reports/interference_aware_nrx_prior_work.md`).
+6. 셀 간 간섭에 맞춘 복구 수신기: 간섭으로 학습한 신경 수신기가 공분산 기반 결합(IRC)보다 낫다는 것은 알려져 있다(DeepRx, TWC 2021; EqDeepRx, arXiv 2602.11834). 우리의 기여는 측정과 배치 방식이다: 셀 간 간섭 없이 학습된 공개 NVlabs NRx를 그대로 쓰면 이웃 셀 간섭(잡음 대비 3–10 dB) 아래에서 MMSE-IRC 대비 복구 이득이 거의 사라지고, AI-RAN 서버의 GPU에서 셀의 간섭에 맞춰 미세 조정하면 되살아난다. 신경 수신기를 실패 블록 복구에만 쓰는 연구와, 그 값을 IRC 앞에서 잰 연구는 찾지 못했다(조사: [docs/related_work_interference.md](docs/related_work_interference.md)).
 
 ## 4. 핵심 결과 (2026-10-18; 전체 표와 분석은 [docs/RESULTS.md](docs/RESULTS.md), 데이터 표는 `results/summary/`)
 

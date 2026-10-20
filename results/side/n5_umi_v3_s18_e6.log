@@ -1,0 +1,58 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792078742.329276  771490 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Applying low complexity LMMSE interpolation with reduced number of PRBs.
+Using automatic LMMSE splitting.
+Using reduction factor of 13.0
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Eb/No 6.0: baseline_lslin_lmmse 0.773, baseline_lslin_lmmse@50 0.789, lslin_idd3 0.820, baseline_lmmse_kbest 0.852, baseline_perf_csi_kbest 0.875, nrx 0.852, nrx_rt 0.828
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lslin_lmmse@50",
+    "lslin_idd3",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx",
+    "nrx_rt"
+  ],
+  "prbs": 273,
+  "users": 2,
+  "base_config": "nrx_large.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 4,
+  "mcs": 14,
+  "slots": 64,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.2216606632970297,
+    "baseline_lslin_lmmse@50": 1.3901641859840765,
+    "lslin_idd3": 6.636906462140246,
+    "baseline_lmmse_kbest": 1.6766940488904538,
+    "baseline_perf_csi_kbest": 1.4631819047813224,
+    "nrx": 1.2189801663124626,
+    "nrx_rt": 1.1973638869375236
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 77.34375,
+    "baseline_lslin_lmmse@50": 78.90625,
+    "lslin_idd3": 82.03125,
+    "baseline_lmmse_kbest": 85.15625,
+    "baseline_perf_csi_kbest": 87.5,
+    "nrx": 85.15625,
+    "nrx_rt": 82.8125
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lslin_lmmse@50": 6.896551724137931,
+    "lslin_idd3": 20.689655172413794,
+    "baseline_lmmse_kbest": 34.48275862068966,
+    "baseline_perf_csi_kbest": 44.827586206896555,
+    "nrx": 34.48275862068966,
+    "nrx_rt": 24.137931034482758
+  }
+}

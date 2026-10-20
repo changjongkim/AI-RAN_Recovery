@@ -1,0 +1,36 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792156436.302557 2055056 device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+Evaluating the first 2 port sets.
+Evaluating the first 2 port sets.
+Eb/No 8.0: baseline_lslin_lmmse 0.589, baseline_perf_csi_kbest 0.844
+Eb/No 10.0: baseline_lslin_lmmse 0.677, baseline_perf_csi_kbest 0.917
+Eb/No 12.0: baseline_lslin_lmmse 0.797, baseline_perf_csi_kbest 0.953
+Eb/No 14.0: baseline_lslin_lmmse 0.807, baseline_perf_csi_kbest 0.984
+Eb/No 16.0: baseline_lslin_lmmse 0.896, baseline_perf_csi_kbest 0.979
+Eb/No 18.0: baseline_lslin_lmmse 0.849, baseline_perf_csi_kbest 0.990
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_perf_csi_kbest"
+  ],
+  "prbs": 273,
+  "nrx_weights": "",
+  "users": 2,
+  "base_config": "nrx_large.cfg",
+  "channel": "UMa",
+  "speed": 0.83,
+  "num_rx": 2,
+  "mcs": 14,
+  "slots": 576,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 0.6323113120416919,
+    "baseline_perf_csi_kbest": 0.8854737376251605
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 76.90972222222221,
+    "baseline_perf_csi_kbest": 94.44444444444444
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_perf_csi_kbest": 75.93984962406014
+  }
+}

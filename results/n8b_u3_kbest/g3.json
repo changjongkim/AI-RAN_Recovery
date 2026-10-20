@@ -1,0 +1,34 @@
+{
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx"
+  ],
+  "prbs": 273,
+  "nrx_weights": "",
+  "users": 3,
+  "base_config": "nrx_large_mu4.cfg",
+  "channel": "UMi",
+  "speed": 0.83,
+  "num_rx": 4,
+  "mcs": 14,
+  "slots": 240,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.674501849766663,
+    "baseline_lmmse_kbest": 2.458645635129263,
+    "baseline_perf_csi_kbest": 2.156187216879395,
+    "nrx": 1.6771896470123466
+  },
+  "decoded_pct": {
+    "baseline_lslin_lmmse": 85.83333333333333,
+    "baseline_lmmse_kbest": 93.61111111111111,
+    "baseline_perf_csi_kbest": 95.55555555555556,
+    "nrx": 92.91666666666667
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lmmse_kbest": 54.90196078431372,
+    "baseline_perf_csi_kbest": 68.62745098039215,
+    "nrx": 50.0
+  }
+}
