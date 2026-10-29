@@ -10,7 +10,7 @@ stored results of this repository.  PDFs carry no date, so a rerun gives the sam
   bg_pairs_cdf      correlation of two users' channels, i.i.d. Rayleigh, 2/4/8 receive antennas (analysis)
   bg_pairs_loss     share of user pairs that lose more than 3 dB under zero-forcing (analysis)
   bg_pairs_legend   legend strip of the two panels above
-  Motivational Evaluation (measured; RESULT_SUFFIX=_f35 selects the 3.5 GHz runs, empty selects the 2.14 GHz runs):
+  Motivational Analysis (measured; RESULT_SUFFIX=_f35 selects the 3.5 GHz runs, empty selects the 2.14 GHz runs):
   mot_retx, mot_lost   conventional receiver: retransmissions per 100 TBs and TBs lost after four transmissions, macro
                        and small cells at 3/30/120 km/h, with a direct path and with a blocked path (N3, N1, P1)
   mot_corr             first-transmission failure rate of the conventional receiver by the correlation of the pair
@@ -42,6 +42,7 @@ OUT = HERE
 ANT = {2: "#9cc3ea", 4: "#4f8fd6", 8: "#1f4e96"}
 INK, MUTED, GRID, AXIS = "#0b0b0b", "#52514e", "#e1e0d9", "#c3c2b7"
 PANEL = (3.4, 1.85)
+PANEL4 = (2.6, 1.85)                   # four panels in a row of the text width (scale 0.51)
 VALUE, LEGEND = 12, 14
 plt.rcParams.update({
     "font.family": "DejaVu Sans", "font.size": 14, "font.weight": "normal",
@@ -155,6 +156,25 @@ def traces(names):
     return [np.concatenate(x) for x in (corr, conv, rec, cb)]
 
 
+def slot_fail_share(names):
+    """Share of the uplink slots with at least one failed TB (MotSlotsWithFailure of src/analysis/paper_numbers.py)."""
+    fails = []
+    for n in names:
+        for f in sorted(glob.glob(os.path.join(RES, n, "c*.npz"))):
+            fails.append(~np.load(f)["conv_t0"].all(axis=1))
+    return float(np.concatenate(fails).mean())
+
+
+def antennas(cell, num_rx):
+    """Result of the receive-antenna runs: macro cells p1_uma_ant<n>, small cells p1_ant<n>_v3 (2.14 GHz side-pool
+    items) or p1_umi_ant<n>_f35 (3.5 GHz)."""
+    if cell == "Macro Cell":
+        name = f"p1_uma_ant{num_rx}" + SUFFIX
+    else:
+        name = f"p1_ant{num_rx}_v3" if not SUFFIX else f"p1_umi_ant{num_rx}" + SUFFIX
+    return json.load(open(os.path.join(RES, f"{name}.json")))
+
+
 def bars(ax, groups, series, colors, fmt="{:.1f}", values=True, width=0.38):
     """Grouped bars: series[label] = values per group."""
     n = len(series)
@@ -218,35 +238,64 @@ def motivation_redecode():
     vals = {k: float(np.dot(fails, [r["recovers_pct_of_conventional_failures"][s] for r in reps]) / fails.sum())
             for k, s in keys.items()}
     bound = float(np.dot(fails, [r["recovers_pct_of_conventional_failures"]["baseline_perf_csi_kbest"] for r in reps]) / fails.sum())
-    fig, ax = plt.subplots(figsize=PANEL)
+    fig, ax = plt.subplots(figsize=PANEL4)
+    # the receivers, and K-best detection with the true channel (an upper bound) as a hatched last bar
+    vals["True Channel"] = bound
     y = np.arange(len(vals))[::-1]
-    bs = ax.barh(y, list(vals.values()), height=0.62, color=[RX[k] for k in vals], zorder=3)
+    colors = [RX[k] for k in vals if k in RX] + ["white"]
+    bs = ax.barh(y, list(vals.values()), height=0.62, color=colors, zorder=3)
+    bs[-1].set_hatch("////"); bs[-1].set_edgecolor(BOUND); bs[-1].set_linewidth(0.8)
     for b, v in zip(bs, vals.values()):
         ax.text(v + 1.5, b.get_y() + b.get_height() / 2, f"{v:.0f}", ha="left", va="center", fontsize=VALUE)
-    ax.axvline(bound, color=BOUND, linestyle=(0, (4, 3)), linewidth=1.4, zorder=2)
-    ax.text(bound + 1.5, y[1], f"True\nchannel\n{bound:.0f}", ha="left", va="center", fontsize=VALUE - 1.5, color=MUTED)
     ax.set_yticks(y)
-    ax.set_yticklabels(list(vals), fontsize=12.5)
+    ax.set_yticklabels(list(vals), fontsize=11.5)
     ax.set_xlim(0, 100)
-    ax.set_xticks([0, 25, 50, 75, 100])
-    ax.set_xlabel("Decoded Again (%)")
+    ax.set_xticks([0, 50, 100])
+    ax.set_xlabel("Decoded (%)")
     style(ax, grid="x")
     save(fig, "mot_receivers")
+
+    # (b) the failed TBs of the LMMSE estimate that K-best detection decodes with the true channel, by receive antennas
+    fig, ax = plt.subplots(figsize=PANEL4)
+    bars(ax, ["2", "4", "8"], {c: [antennas(c, n)["recovers_pct_of_conventional_failures"]["baseline_perf_csi_kbest"]
+                                    for n in (2, 4, 8)] for c in CELL}, CELL, fmt="{:.0f}")
+    ax.set_ylim(0, 100)
+    ax.set_yticks([0, 50, 100])
+    ax.set_ylabel("Decoded (%)", fontsize=13)
+    ax.set_xlabel("Receive Antennas")
+    style(ax)
+    save(fig, "mot_estimate")
 
     lanes = json.load(open(os.path.join(RES, "n13_lanes.json")))
     one = {k: next(r for r in lanes[k] if r["lanes"] == 1)["latency_ms_mean"] for k in ("small", "large")}
     t = {"L1\n(cuPHY)": (L1_MEDIAN_MS, CONV), "Real-Time\nNRx": (one["small"], RX["Real-Time NRx"]),
          "Large\nNRx": (one["large"], RX["Large NRx"])}
-    fig, ax = plt.subplots(figsize=PANEL)
+    fig, ax = plt.subplots(figsize=PANEL4)
     bs = ax.bar(range(len(t)), [v for v, _ in t.values()], width=0.55, color=[c for _, c in t.values()], zorder=3)
     for b, (v, _) in zip(bs, t.values()):
         ax.text(b.get_x() + b.get_width() / 2, v + 0.1, f"{v:.1f}", ha="center", va="bottom", fontsize=VALUE)
     ax.set_xticks(range(len(t)))
-    ax.set_xticklabels(list(t), fontsize=12)
+    ax.set_xticklabels(list(t), fontsize=11)
     ax.set_ylim(0, 5.4)
     ax.set_ylabel("Time (ms)")
     style(ax)
     save(fig, "mot_runtime")
+
+    # (d) GPU time per uplink slot of a macro cell: the L1, the large NRx for every slot, and only for the slots with a
+    # failed TB (MotGpuTimePerSlot)
+    share = slot_fail_share(runs("n3_uma_v3_cb", "n3_uma_v3_more"))
+    t = {"L1": (L1_MEDIAN_MS, CONV), "Every\nSlot": (one["large"], "#f6c9a6"),
+         "Failed\nSlots": (share * one["large"], RX["Large NRx"])}
+    fig, ax = plt.subplots(figsize=PANEL4)
+    bs = ax.bar(range(len(t)), [v for v, _ in t.values()], width=0.55, color=[c for _, c in t.values()], zorder=3)
+    for b, (v, _) in zip(bs, t.values()):
+        ax.text(b.get_x() + b.get_width() / 2, v + 0.1, f"{v:.1f}", ha="center", va="bottom", fontsize=VALUE)
+    ax.set_xticks(range(len(t)))
+    ax.set_xticklabels(list(t), fontsize=11)
+    ax.set_ylim(0, 5.4)
+    ax.set_ylabel("Time (ms)")
+    style(ax)
+    save(fig, "mot_gputime")
 
     fig, ax = plt.subplots(figsize=PANEL)
     series = {}
@@ -309,7 +358,7 @@ def motivation_server():
         f = line.split()
         if len(f) >= 10 and f[0] in ("allb68" + N16, "allb68g4" + N16):
             rows.setdefault(f[0], {}).setdefault(int(f[2]), []).append(float(f[9]))
-    fig, ax = plt.subplots(figsize=PANEL)
+    fig, ax = plt.subplots(figsize=PANEL4)
     for label, pol in (("One GPU", "allb68" + N16), ("Four GPUs", "allb68g4" + N16)):
         cells = sorted(rows[pol])
         ax.plot(cells, [np.mean(rows[pol][c]) for c in cells], color=GPUS[label], linewidth=2.4, marker="o", markersize=6)
@@ -324,18 +373,49 @@ def motivation_server():
 
     lanes = json.load(open(os.path.join(RES, "n13_lanes.json")))["large"]
     lanes = [r for r in lanes if r["lanes"] <= 4]
-    fig, ax = plt.subplots(figsize=PANEL)
+    # (b) GPUs the recoveries of the cells of a server need: slots with a failed TB times the run time, per slot period
+    share = slot_fail_share(runs("n3_uma_v3_cb", "n3_uma_v3_more"))
+    cells = np.arange(1, 25)
+    fig, ax = plt.subplots(figsize=PANEL4)
+    ax.plot(cells, cells * share * lanes[0]["latency_ms_mean"] / 2.5, color=RX["Large NRx"], linewidth=2.4)
+    for label, cap in (("One GPU", 1), ("Four GPUs", 4)):
+        ax.axhline(cap, color=GPUS[label], linestyle=(0, (4, 3)), linewidth=1.6, zorder=2)
+        ax.text(24.5, cap + 0.25, label, ha="right", va="bottom", fontsize=VALUE - 1, color=GPUS[label])
+    ax.set_xlim(0, 25)
+    ax.set_xticks([1, 8, 16, 24])
+    ax.set_ylim(0, 10)
+    ax.set_yticks([0, 4, 8])
+    ax.set_xlabel("Cells per Server")
+    ax.set_ylabel("GPUs Needed", fontsize=13)
+    style(ax, grid="x")
+    save(fig, "mot_demand")
+
+    fig, ax = plt.subplots(figsize=PANEL4)
     bs = ax.bar([r["lanes"] for r in lanes], [r["latency_ms_mean"] for r in lanes], width=0.55,
                 color=RX["Large NRx"], zorder=3)
     for b, r in zip(bs, lanes):
         ax.text(b.get_x() + b.get_width() / 2, r["latency_ms_mean"] + 0.4, f"{r['latency_ms_mean']:.1f}",
                 ha="center", va="bottom", fontsize=VALUE)
     ax.set_xticks([r["lanes"] for r in lanes])
-    ax.set_xlabel("Runs at Once on One GPU")
+    ax.set_xlabel("Runs at Once")
     ax.set_ylim(0, 25)
     ax.set_ylabel("Time (ms)")
     style(ax)
     save(fig, "mot_lanes")
+
+    # (d) runs per second of one GPU with one to four runs at once
+    fig, ax = plt.subplots(figsize=PANEL4)
+    bs = ax.bar([r["lanes"] for r in lanes], [r["runs_per_s"] for r in lanes], width=0.55, color=RX["Large NRx"], zorder=3)
+    for b, r in zip(bs, lanes):
+        ax.text(b.get_x() + b.get_width() / 2, r["runs_per_s"] + 6, f"{r['runs_per_s']:.0f}", ha="center", va="bottom",
+                fontsize=VALUE)
+    ax.set_xticks([r["lanes"] for r in lanes])
+    ax.set_xlabel("Runs at Once")
+    ax.set_ylim(0, 300)
+    ax.set_yticks([0, 100, 200, 300])
+    ax.set_ylabel("Runs per Second", fontsize=11.5)
+    style(ax)
+    save(fig, "mot_throughput")
 
     for cell, name in (("uma", "mot_interference"), ("umi", "mot_interference_small")):
         inr = [0, 3, 6, 10]

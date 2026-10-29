@@ -93,9 +93,13 @@ def motivation(lat):
     for name, key in (("Iterations", "baseline_lslin_lmmse@50"), ("Idd", "lslin_idd3"), ("Kbest", "baseline_lmmse_kbest"),
                       ("SmallNrx", "nrx_rt"), ("LargeNrx", "nrx"), ("Bound", "baseline_perf_csi_kbest")):
         v[f"MotRx{name}"] = (float(np.dot(w, [r["recovers_pct_of_conventional_failures"][key] for r in reps]) / w.sum()), 0)
-    # the same slots decoded with the LMMSE estimate and with the true channel, macro (four seeds) and small cells
-    for tag, sets in (("Macro", ("n5_uma_v3", "n5_uma_more1", "n5_uma_more2", "n5_uma_more3")), ("Small", ("n5_umi_v3",))):
-        rs = [json.load(open(f"results/{n}{SUFFIX}.json")) for n in sets]
+    # the same slots decoded with the LMMSE estimate and with the true channel: macro cells from the receiver runs (four
+    # seeds), small cells from the four-antenna run of Figure 3(b) (p1_ant4_v3 at 2.14 GHz, p1_umi_ant4 at 3.5 GHz; the
+    # small-cell receiver run n5_umi_v3 has no 3.5 GHz version)
+    small = "p1_ant4_v3" if not SUFFIX else "p1_umi_ant4" + SUFFIX
+    for tag, sets in (("Macro", [n + SUFFIX for n in ("n5_uma_v3", "n5_uma_more1", "n5_uma_more2", "n5_uma_more3")]),
+                      ("Small", [small])):
+        rs = [json.load(open(f"results/{n}.json")) for n in sets]
         wt = np.array([r["slots"] for r in rs], float)
         est = float(np.dot(wt, [r["fail_pct"]["baseline_lslin_lmmse"] for r in rs]) / wt.sum())
         true = float(np.dot(wt, [r["fail_pct"]["baseline_perf_csi_kbest"] for r in rs]) / wt.sum())
