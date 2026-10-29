@@ -1,0 +1,40 @@
+% Figure 3: one failed TB under asynchronous uplink HARQ, for the two TDD patterns of Figure 2(a).  Time starts at the
+% uplink slot of the first transmission; slots of 0.5 ms.  (1) first transmission, (2) the L1 result with the CRC
+% failure, (3) the grant that requests the retransmission, (4) the retransmission in the first uplink slot after the
+% scheduling lead time and the preparation time of the device.  The example places (2) and (3) where the latency
+% model of the evaluation places them (L1 result after 1.4 ms, 4 ms from the request to the earliest retransmission);
+% the figure prints no times, since both depend on the base station and the TDD pattern.
+\documentclass[border=2pt]{standalone}
+\input{reverb_style}
+\begin{document}
+\figsize
+\begin{tikzpicture}[x=1cm, y=1cm]
+  \def\w{0.5}
+  \foreach \row/\name/\pat/\rtx in {
+      0/DDDSU/{U,D,D,D,S,U,D,D,D,S,U,D,D,D,S,U,D}/15,
+      1/DDDDDDDSUU/{U,U,D,D,D,D,D,D,D,S,U,U,D,D,D,D,D}/11} {
+    \pgfmathsetmacro{\y}{-1.25*\row}
+    \node[tag, anchor=east] at (-0.12, \y) {\name};
+    \foreach \c [count=\i from 0] in \pat {
+      \def\fc{dlc}
+      \ifnum\pdfstrcmp{\c}{U}=0 \def\fc{ulc}\fi
+      \ifnum\pdfstrcmp{\c}{S}=0 \def\fc{spc}\fi
+      \node[slot, fill=\fc, minimum width=\w cm] at (\w*\i+\w/2, \y) {\c};
+    }
+    % (1) first transmission, (4) retransmission
+    \draw[failc, line width=1.0pt] (\w*\rtx, \y-0.18) rectangle (\w*\rtx+\w, \y+0.18);
+    \node[num] at (\w/2, \y+0.42) {1};
+    \node[num] at (\w*\rtx+\w/2, \y+0.42) {4};
+    % (2) L1 result with the CRC failure, (3) the grant
+    \draw[failc, line width=0.6pt] (\w*2.8, \y-0.24) -- (\w*2.8, \y+0.24);
+    \node[num] at (\w*2.8, \y+0.42) {2};
+    \node[num] at (\w*2.8+0.38, \y+0.42) {3};
+    \draw[decorate, decoration={brace, amplitude=3pt}, black!65, line width=0.4pt]
+      (\w*2.8+0.6, \y+0.36) -- (\w*\rtx-0.05, \y+0.36);
+  }
+  \node[note, above] at ({0.5*(0.5*2.8+0.6+0.5*15-0.05)}, 0.47) {scheduling and preparation};
+  \node[note, above] at ({0.5*(0.5*2.8+0.6+0.5*11-0.05)}, -0.78) {scheduling and preparation};
+  \node[tag] at (4.25, -1.9) {\lgdfill{ulc}\,Uplink \quad \lgdfill{spc}\,Special \quad \lgdfill{dlc}\,Downlink \quad
+    \tikz[baseline=-0.55ex]{\draw[failc, line width=1.0pt] (0,-0.1) rectangle (0.22,0.1);}\,Retransmission};
+\end{tikzpicture}
+\end{document}

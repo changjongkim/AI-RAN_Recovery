@@ -1,0 +1,42 @@
+% Figure 4: what a base station has when the CRC of a TB fails, on dedicated hardware and on an AI-RAN server.
+% Dedicated hardware drops the received samples after decoding and sizes its computation for one decoding per TB.
+% An AI-RAN server holds the samples in GPU memory and leaves GPU time beyond the L1 to AI inference (the RAN peaks at
+% 40% of one GPU in an NVIDIA proof of concept).  Both request a retransmission for the failed TB: the figure shows
+% the state before Reverb (no component of Reverb appears before the design section).
+\documentclass[border=2pt]{standalone}
+\input{reverb_style}
+\begin{document}
+\figsize
+\begin{tikzpicture}[x=1cm, y=1cm]
+  % column headers
+  \foreach \x/\t in {3.25/{Received Samples after Decoding}, 7.45/{Processing Time of a Slot},
+                     11.5/{TB with a CRC Failure}} {
+    \node[tag] at (\x, 0.68) {\t};
+  }
+  \foreach \row/\name in {0/{Dedicated\\Hardware}, 1/{AI-RAN\\Server}} {
+    \pgfmathsetmacro{\y}{-1.15*\row}
+    \node[layer, minimum width=12.4cm, minimum height=0.95cm, anchor=west] at (1.2, \y) {};
+    \node[tag, align=center] at (0.55, \y) {\name};
+    \foreach \x in {5.3, 9.6} { \draw[black!35, line width=0.4pt] (\x, \y-0.42) -- (\x, \y+0.42); }
+    % failed TB: a retransmission request in both rows
+    \node[comp, fill=white] (crc\row) at (10.4, \y) {CRC fail};
+    \node[comp, fill=actc] (req\row) at (12.4, \y) {Retransmission\\request};
+    \draw[arr, failc] (crc\row) -- (req\row);
+  }
+  % samples: dropped / held in GPU memory
+  \foreach \i in {0,...,5} { \foreach \j in {0,1} {
+    \node[slot, fill=sampc, minimum width=0.24cm, minimum height=0.2cm] at (1.75+0.26*\i, 0.11-0.22*\j) {};
+  } }
+  \draw[failc, line width=1.4pt] (1.55, 0.3) -- (3.1, -0.42) (1.55, -0.42) -- (3.1, 0.3);
+  \node[tag, align=left, anchor=west] at (3.35, 0) {Dropped\\(soft bits kept)};
+  \node[comp, fill=gpuc, minimum width=1.95cm, minimum height=0.72cm] at (2.33, -1.15) {};
+  \foreach \i in {0,...,5} { \foreach \j in {0,1} {
+    \node[slot, fill=sampc, minimum width=0.24cm, minimum height=0.2cm] at (1.75+0.26*\i, -1.04-0.22*\j) {};
+  } }
+  \node[tag, align=left, anchor=west] at (3.35, -1.15) {Held in\\GPU memory};
+  % time of a slot: one decoding / L1 and AI inference
+  \node[comp, fill=l1c, minimum width=3.9cm, anchor=west] at (5.5, 0) {L1, sized for one decoding per TB};
+  \node[comp, fill=l1c, minimum width=1.56cm, anchor=west] at (5.5, -1.15) {L1};
+  \node[comp, fill=aic, minimum width=2.34cm, anchor=west] at (7.06, -1.15) {AI inference};
+\end{tikzpicture}
+\end{document}
