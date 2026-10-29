@@ -36,5 +36,19 @@
   thin/.style={-{Latex[length=1.3mm]}, line width=0.5pt},
   num/.style={circle, fill=black, text=white, font=\bfseries\figsize, inner sep=0.6pt, minimum size=0.33cm},
 }
+% Design figures (2026-10-29): one shape and colour per object in every figure.
+\definecolor{waitc}{HTML}{FBE3D6}    % the time a failed TB may wait for its recovery
+\tikzset{
+  band/.style={draw=black!45, fill=panel, line width=0.4pt},
+  rowlbl/.style={font=\figsize\bfseries, align=center, inner sep=1pt},
+  chip/.style={draw=black!65, line width=0.3pt, minimum width=0.21cm, minimum height=0.3cm, inner sep=0pt},
+  failarr/.style={-{Latex[length=1.6mm]}, line width=0.9pt, draw=failc},
+  okarr/.style={-{Latex[length=1.6mm]}, line width=0.9pt, draw=okc},
+  ctlarr/.style={-{Latex[length=1.6mm]}, line width=0.8pt, draw=black!80},
+  sem/.style={font=\itshape\figsize, inner sep=1pt},
+  job/.style={draw=black!80, line width=0.4pt, fill=nrxc},
+  l1job/.style={draw=black!60, line width=0.3pt, fill=l1c},
+  aijob/.style={draw=black!60, line width=0.3pt, fill=aic},
+}
 % A legend mark for a legend that is one centred line of text:  \node[tag] {\lgdfill{ulc}\,Uplink \quad ...};
 \newcommand{\lgdfill}[1]{\tikz[baseline=-0.55ex]{\draw[black!65, line width=0.35pt, fill=#1] (0,-0.1) rectangle (0.22,0.1);}}

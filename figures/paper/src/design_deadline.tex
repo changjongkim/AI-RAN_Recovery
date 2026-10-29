@@ -8,7 +8,7 @@
 \input{reverb_style}
 \begin{document}
 \figsize
-\begin{tikzpicture}[x=0.66cm, y=1cm]
+\begin{tikzpicture}[x=0.66cm, y=0.8cm]
   \def\tl{1.9}    % t_L1: end of the slot plus the L1 time
   \def\tr{8.2}    % t_R: t_L1 plus the recovery time r
   \def\us{7.5}    % U_s: first uplink slot at least L after t_L1
@@ -27,7 +27,7 @@
   \node[tag, anchor=south] at (0.25, 0.4) {TB};
   % events
   \foreach \t/\l in {\tl/{$t_{\mathrm{L1}}$}, \tr/{$t_{\mathrm{R}}$}, \dd/{$D$}} {
-    \draw[black!70, line width=0.5pt, densely dashed] (\t, -2.4) -- (\t, 0.8);
+    \draw[black!70, line width=0.5pt, densely dashed] (\t, -2.45) -- (\t, 0.8);
     \node[tag, anchor=south] at (\t, 0.8) {\l};
   }
   % the deadline: the latest grant that keeps the retransmission in U_r
@@ -40,17 +40,17 @@
   \draw[failc, line width=1.1pt] (\us, -0.7) rectangle (\us + 0.5, -0.3);
   \node[tag, anchor=north] at (\us + 0.25, -0.72) {$U_s$};
   % recovery decodes the TB
-  \node[tag, anchor=east] at (-0.6, -1.2) {Recovery decodes};
-  \draw[black!85, line width=0.4pt, fill=nrxc] (\tl, -1.34) rectangle (\tr, -1.06);
-  \node[tag] at ({(\tl + \tr) / 2}, -1.2) {recovery $r$};
-  \node[tag, anchor=west, text=okc] at (\tr + 0.1, -1.2) {\textbf{delivered}};
+  \node[tag, anchor=east] at (-0.6, -1.35) {Recovery decodes};
+  \draw[black!85, line width=0.4pt, fill=nrxc] (\tl, -1.55) rectangle (\tr, -1.15);
+  \node[tag] at ({(\tl + \tr) / 2}, -1.35) {recovery $r$};
+  \node[tag, anchor=west, text=okc] at (\tr + 0.1, -1.35) {\textbf{delivered}};
   % recovery does not decode the TB: the grant follows the recovery result, no later than D
-  \node[tag, anchor=east] at (-0.6, -1.95) {Recovery fails};
-  \draw[black!85, line width=0.4pt, fill=nrxc] (\tl, -2.09) rectangle (\tr, -1.81);
-  \node[tag] at ({(\tl + \tr) / 2}, -1.95) {recovery $r$};
-  \draw[arr] (\tr, -1.95) -- (\uf, -1.95) node[pos=0.26, tag, above] {grant, $\geq L$};
-  \draw[failc, line width=1.1pt] (\uf, -2.15) rectangle (\uf + 0.5, -1.75);
-  \node[tag, anchor=west] at (\uf + 0.55, -1.95) {no later than $U_r$};
+  \node[tag, anchor=east] at (-0.6, -2.1) {Recovery fails};
+  \draw[black!85, line width=0.4pt, fill=nrxc] (\tl, -2.3) rectangle (\tr, -1.9);
+  \node[tag] at ({(\tl + \tr) / 2}, -2.1) {recovery $r$};
+  \draw[arr] (\tr, -2.1) -- (\uf, -2.1) node[pos=0.26, tag, above] {grant, $\geq L$};
+  \draw[failc, line width=1.1pt] (\uf, -2.3) rectangle (\uf + 0.5, -1.9);
+  \node[tag, anchor=west] at (\uf + 0.55, -2.1) {no later than $U_r$};
   % legend
   \node[tag, anchor=west] at (-0.6, -2.85) {\lgdfill{ulc}\,Uplink \quad \lgdfill{spc}\,Special \quad \lgdfill{dlc}\,Downlink \quad
     \tikz[baseline=-0.55ex]{\draw[failc, line width=1.1pt] (0,-0.1) rectangle (0.22,0.1);}\,Retransmission slot \quad
