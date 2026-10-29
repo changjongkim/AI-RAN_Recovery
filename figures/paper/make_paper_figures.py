@@ -126,7 +126,7 @@ RX = {"More Iterations": "#dedcd3", "Iterative": "#c2bfb2", "K-Best": "#a39f8f",
 CONV = "#6b685c"                       # the conventional receiver (cuPHY)
 BOUND = "#8c897b"                      # receivers with the true channel: an upper bound
 GPUS = {"One GPU": "#9a9a92", "Four GPUs": "#2f8f6f"}
-NRX = {"Published Large NRx": "#e07b39", "Interference-Trained": "#8a3d0f"}
+NRX = {"NRx Trained without Interference": "#e07b39", "NRx Trained with Interference": "#8a3d0f"}
 L1_MEDIAN_MS = 1.4                     # median cuPHY run time per slot, the Timing class of src/analysis/paper_numbers.py
 WAIT = {"Retransmission Only": "#6b685c", "Wait for Recovery": "#c4561d"}
 
@@ -343,7 +343,7 @@ def motivation_server():
         ici = runs(f"ici_{cell}_v3_iciaware", f"ici_{cell}_inr3_iciaware", f"ici_{cell}_inr6_iciaware",
                    f"ici_{cell}_inr10_iciaware")
         fig, ax = plt.subplots(figsize=PANEL)
-        for label, names in (("Published Large NRx", pub), ("Interference-Trained", ici)):
+        for label, names in (("NRx Trained without Interference", pub), ("NRx Trained with Interference", ici)):
             y = [merged([n])["resends_per_100"] / merged([n], "ours")["resends_per_100"] for n in names]
             ax.plot(inr, y, color=NRX[label], linewidth=2.4, marker="o", markersize=6)
             ax.text(inr[-1] + 0.4, y[-1], f"{y[-1]:.1f}\u00d7", va="center", fontsize=VALUE, color=INK)
@@ -356,7 +356,7 @@ def motivation_server():
         style(ax, grid="both")
         save(fig, name)
     legend("mot_gpu_legend", list(GPUS.items()))
-    legend("mot_interference_legend", list(NRX.items()), width=5.6)
+    legend("mot_interference_legend", list(NRX.items()), width=8.0)
 
 
 if __name__ == "__main__":

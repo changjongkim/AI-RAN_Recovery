@@ -6,14 +6,14 @@
 \begin{tikzpicture}[x=1cm, y=1cm]
   \def\p{0.34}
   \foreach \name/\pat/\y in {DDDSU/{D,D,D,S,U,D,D,D,S,U}/1.45, DDDDDDDSUU/{D,D,D,D,D,D,D,S,U,U}/0.45} {
-    \node[btxt, anchor=south west] at (0, \y + 0.2) {\name};
+    \node[txt, anchor=south west] at (0, \y + 0.2) {\name};
     \foreach \s [count=\i from 0] in \pat {
       \if U\s\def\fc{ulc}\else\if S\s\def\fc{spc}\else\def\fc{white}\fi\fi
-      \node[cl, fill=\fc, minimum width=\p cm, minimum height=0.36cm, font=\fontsize{6.2}{7}\selectfont] at ({\p*\i + \p/2}, \y) {\s};
+      \node[cl, fill=\fc, minimum width=\p cm, minimum height=0.36cm, font=\tabsize] at ({\p*\i + \p/2}, \y) {\s};
     }
   }
   \draw[{Latex[length=1.3mm]}-{Latex[length=1.3mm]}, line width=0.6pt] (0, 0.0) -- (3.4, 0.0);
   \node[txt, fill=white, inner xsep=2pt] at (1.7, 0.0) {5 ms};
-  \node[stxt, anchor=north] at (1.7, -0.22) {\lgd{ulc}\,Uplink\hspace{3pt}\lgd{spc}\,Special\hspace{3pt}\lgd{white}\,Downlink};
+  \node[stxt, font=\fontsize{6.1}{7}\selectfont, anchor=north] at (1.7, -0.22) {\lgd{ulc}\,Uplink\hspace{3pt}\lgd{spc}\,Special\hspace{3pt}\lgd{white}\,Downlink};
 \end{tikzpicture}
 \end{document}

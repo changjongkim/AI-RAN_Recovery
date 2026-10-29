@@ -1,56 +1,45 @@
-% Figure (Section 4.1, b): the recovery deadline of a failed TB on the DDDSU slots.  The TB arrives in an uplink slot;
-% its L1 result (CRC fail) is known at t_L1.  Without recovery, the grant follows at t_L1 and the retransmission uses the
-% first uplink slot U_s at least the grant lead L later.  With recovery, the large NRx runs for r and its result arrives at
-% t_R; the base station may hold the grant until D = U_r - L, where U_r is the latest uplink slot it allows for the
-% retransmission, so the retransmission of a TB that recovery does not decode still uses U_r at the latest.  Geometry
-% follows the timing of the evaluation (Section 5.1) but no value is printed (Design section rule).
+% Figure (Section 4.1, b): the recovery deadline of a failed TB on the DDDSU slots.  The L1 result (CRC fail) of the TB
+% is known at t_L1.  U_r is the latest uplink slot the base station allows for the retransmission, and a grant must
+% leave at least the grant lead L before it, so the grant can wait until D = U_r - L.  A recovery that ends by D lets a
+% TB that it does not decode still be retransmitted in U_r.  Geometry follows the timing of the evaluation (Section 5.1)
+% but no value is printed (Design section rule).
 \documentclass[border=1pt]{standalone}
 \input{reverb_style}
 \newcommand{\tL}{\textit{t}\textsubscript{L1}}
-\newcommand{\tR}{\textit{t}\textsubscript{R}}
-\newcommand{\Us}{\textit{U}\textsubscript{s}}
 \newcommand{\Ur}{\textit{U}\textsubscript{r}}
 \begin{document}
 \begin{tikzpicture}[x=1cm, y=1cm]
-  \foreach \y/\t in {0/Slots, -0.52/Without recovery, -1.0/Recovery decodes, -1.48/Recovery fails} {
-    \node[rowh, minimum width=2.3cm, minimum height=0.36cm, font=\tabsize\bfseries] at (1.15, \y) {\t};
-  }
+  \node[exrow, minimum width=2.3cm, minimum height=0.34cm] at (1.15, 0) {Uplink slots};
+  \node[rrow, minimum width=2.3cm, minimum height=0.34cm] at (1.15, -0.46) {Recovery};
+  \node[exrow, minimum width=2.3cm, minimum height=0.34cm] at (1.15, -0.92) {Grant};
   \begin{scope}[xshift=2.72cm, x=0.665cm]
-    \def\tl{1.9} \def\tr{8.2} \def\us{7.5} \def\ur{15.0} \def\dd{11.0} \def\uf{12.5}
-    % slots of 0.5 ms; uplink slots at 0, 2.5, 5.0, ...
+    \def\tl{1.9} \def\ur{15.0} \def\dd{11.0}
     \foreach \k in {-1,...,31} {
       \pgfmathsetmacro{\t}{0.5*\k}
       \pgfmathsetmacro{\m}{mod(\k+10, 5)}
       \ifdim \m pt = 0pt \def\c{ulc}\else\ifdim \m pt = 4pt \def\c{spc}\else\def\c{white}\fi\fi
-      \draw[black!60, line width=0.3pt, fill=\c] (\t, -0.18) rectangle (\t + 0.5, 0.18);
+      \draw[black!55, line width=0.3pt, fill=\c] (\t, -0.17) rectangle (\t + 0.5, 0.17);
     }
-    \draw[black, line width=1.2pt] (0, -0.18) rectangle (0.5, 0.18);
-    \node[btxt, anchor=south] at (0.25, 0.22) {Failed TB};
-    % events
-    \foreach \t/\l in {\tl/\tL, \tr/\tR, \dd/\vD} {
-      \draw[black!70, line width=0.5pt, densely dashed] (\t, -1.7) -- (\t, 0.22);
-      \node[btxt, anchor=south] at (\t, 0.22) {\l};
+    \draw[black, line width=1.1pt] (0, -0.17) rectangle (0.5, 0.17);
+    \node[txt, anchor=south] at (0.25, 0.2) {Failed TB};
+    \foreach \t/\l in {\tl/\tL, \dd/\vD} {
+      \draw[black!70, line width=0.5pt, densely dashed] (\t, -1.1) -- (\t, 0.2);
+      \node[txt, anchor=south] at (\t, 0.2) {\l};
     }
-    \draw[dred, line width=1.2pt, densely dashed] (\ur+0.03, -0.15) rectangle (\ur+0.47, 0.15);
-    \draw[black!70, line width=0.5pt, densely dashed] (\ur, -0.7) -- (\ur, -0.18);
-    \node[btxt, anchor=south] at (\ur + 0.25, 0.22) {\Ur};
-    \draw[{Latex[length=1.3mm]}-{Latex[length=1.3mm]}, line width=0.6pt] (\dd, -0.52) -- (\ur, -0.52);
-    \node[btxt, fill=white, inner sep=1pt] at ({(\dd+\ur)/2}, -0.52) {Grant lead \vL};
-    % without recovery: the grant follows the L1 result
-    \draw[arr] (\tl, -0.52) -- (\us, -0.52) node[pos=0.5, txt, above=-1pt] {Grant};
-    \draw[dred, line width=1.2pt, fill=ulc] (\us+0.03, -0.68) rectangle (\us + 0.47, -0.36);
-    \node[btxt, anchor=west] at (\us + 0.55, -0.52) {\Us};
-    % recovery decodes the TB
-    \node[cl, fill=nrxc, minimum height=0.36cm, minimum width={0.665*(\tr-\tl)*1cm}, anchor=west, font=\figsize\bfseries] at (\tl, -1.0) {Recovery, \vr};
-    \node[btxt, anchor=west, text=dgreen] at (\tr + 0.1, -1.0) {✓ Delivered, no retransmission};
-    % recovery does not decode the TB: the grant follows the recovery result, no later than D
-    \node[cl, fill=nrxc, minimum height=0.36cm, minimum width={0.665*(\tr-\tl)*1cm}, anchor=west, font=\figsize\bfseries] at (\tl, -1.48) {Recovery, \vr};
-    \draw[arr] (\tr, -1.48) -- (\uf, -1.48) node[pos=0.5, txt, above=-1pt] {Grant};
-    \draw[dred, line width=1.2pt, fill=ulc] (\uf+0.03, -1.64) rectangle (\uf + 0.47, -1.32);
-    \node[btxt, anchor=west] at (\uf + 0.55, -1.48) {by \Ur};
+    \draw[dred, line width=1.1pt, fill=ulc] (\ur+0.04, -0.14) rectangle (\ur+0.46, 0.14);
+    \node[txt, anchor=south] at (\ur + 0.25, 0.2) {\Ur};
+    \draw[black!70, line width=0.5pt, densely dashed] (\ur, -1.1) -- (\ur, -0.17);
+    % the recovery may run from the L1 result until D
+    \fill[revfill] (\tl, -0.62) rectangle (\dd, -0.3);
+    \node[cl, fill=nrxc, minimum height=0.3cm, minimum width={0.665*6.3cm}, anchor=west] at (\tl, -0.46) {Recovery, run time \vr};
+    \node[ann, anchor=east] at (\dd - 0.1, -0.46) {Ends by \vD};
+    % the latest grant that keeps the retransmission in U_r
+    \draw[{Latex[length=1.3mm]}-{Latex[length=1.3mm]}, line width=0.6pt] (\dd, -0.92) -- (\ur, -0.92);
+    \node[txt, fill=white, inner sep=1pt] at ({(\dd+\ur)/2}, -0.92) {Grant lead \vL};
+    \node[ann, anchor=east] at (\dd - 0.1, -0.92) {Latest grant};
   \end{scope}
-  \node[txt, anchor=north west] at (0, -1.8) {\lgd{ulc}\,Uplink\enspace \lgd{spc}\,Special\enspace \lgd{white}\,Downlink\enspace
-    \tikz[baseline=-0.6ex]{\draw[dred, line width=1.0pt, fill=ulc] (0,-0.09) rectangle (0.24,0.09);}\,Retransmission\enspace \lgd{nrxc}\,Recovery run};
-  \node[key, anchor=north east] at (13.9, -1.8) {Recovery deadline \vD\,=\,\Ur\,−\,\vL};
+  \node[key, anchor=north east] at (13.9, -1.18) {Recovery deadline \vD\,=\,\Ur\,−\,\vL};
+  \node[txt, font=\tabsize, anchor=north west] at (0, -1.2) {\lgd{ulc}\,Uplink\enspace \lgd{spc}\,Special\enspace
+    \lgd{white}\,Downlink\enspace \lgdrtx\,Latest retransmission slot};
 \end{tikzpicture}
 \end{document}

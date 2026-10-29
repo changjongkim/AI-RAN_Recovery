@@ -28,7 +28,8 @@
     % the failed TB and its retransmission request
     \cbs{9.5}{\y-\rh/2}{3}{0.12}{0.26}
     \draw[arr] (10.8, \y-\rh/2) -- (11.25, \y-\rh/2);
-    \node[act, anchor=west] at (11.3, \y-\rh/2) {Retransmission};
+    \draw[dred, line width=1.1pt, fill=ulc] (11.33, \y-\rh/2-0.13) rectangle (11.6, \y-\rh/2+0.13);
+    \node[txt, anchor=west] at (11.65, \y-\rh/2) {Retransmission};
   }
   % dedicated hardware: the samples are gone, only LLRs remain; the L1 fills a fixed budget
   \draw[dred, line width=1.2pt] (2.12, -0.47) -- (3.72, -1.0) (2.12, -1.0) -- (3.72, -0.47);

@@ -1,103 +1,101 @@
-% Figure (Section 4.1, a): the architecture of Reverb in an AI-RAN server and the procedure for a failed TB.  Running
-% example: three failed TBs A, B and C.  (1) the L1 decodes every slot and the received samples of a slot with a failed TB
-% stay in GPU memory; (2) Recovery Gate: A and C failed few code blocks (at most K) and wait, B failed all ten and the
-% base station requests its retransmission at once; (3) Receiver Selector: the cell of C has interference above theta
-% and uses the interference-trained NRx, the others the published NRx; (4) Recovery Scheduler: earliest deadline first,
-% one recovery per GPU, and a TB that cannot start by D - r is rejected; (5) each GPU decodes its TB again from the
-% stored samples between the L1 slots, in time that AI inference used; (6) the L2 scheduler delivers a decoded TB and
-% sends the grant of any other.  No measured value appears (Design section rule).
+% Figure (Section 4.1, a): the architecture of Reverb in an AI-RAN server and the procedure for a failed TB.  Gray: what
+% exists without Reverb (L1, L2 scheduler, the GPUs of the server, AI inference); orange: what Reverb adds (its three
+% components and the paths they open).  Running example: failed TBs A and B of cell 1 and C of cell 2.
+% (1) the received samples of a slot with a failed TB stay in GPU memory; (2) Recovery Gate: A and C failed at most K
+% code blocks and wait for their recovery, B failed all ten and gets its grant at once; (3) Receiver Selector: cell 2 has
+% interference above theta and uses the NRx trained with interference, cell 1 the NRx trained without it (published);
+% (4) Recovery Scheduler: earliest deadline first, one recovery per GPU, rejection after D - r; (5) each GPU decodes its
+% TB again from the stored samples between the L1 slots; (6) the result goes to the L2 scheduler, which holds the grant
+% of a waiting TB, delivers a decoded TB and sends the grant of any other.  No measured value appears.
 \documentclass[border=1pt]{standalone}
 \input{reverb_style}
+\newcommand{\tbc}[3]{\node[draw=black!65, line width=0.35pt, fill=white, minimum width=0.3cm, minimum height=0.28cm,
+  inner sep=0pt, font=\tabsize] at (#1, #2) {#3};}
 \begin{document}
 \begin{tikzpicture}[x=1cm, y=1cm]
-  % ------------------------------------------------------------------ L1: the CRC of each code block of A, B and C
-  \node[comp, minimum width=2.0cm, minimum height=2.7cm, anchor=north west] at (0, 0) {};
-  \node[ctitle] at (1.0, -0.24) {L1 (cuPHY)};
-  \node[th, minimum width=0.4cm, anchor=north west] at (0.1, -0.9) {TB};
-  \node[th, minimum width=1.4cm, anchor=north west] at (0.5, -0.9) {Code Blocks};
+  % ------------------------------------------------------------------ L1 (existing)
+  \draw[existing] (0, 0) rectangle (2.0, -2.25);
+  \node[ctitle, text=extext] at (1.0, -0.22) {L1 (cuPHY)};
   \foreach \t/\f [count=\k from 0] in {A/2, B/10, C/3} {
-    \node[td, minimum width=0.4cm, anchor=north west, font=\tabsize\bfseries] at (0.1, -1.21-0.29*\k) {\t};
-    \node[td, minimum width=1.4cm, anchor=north west] at (0.5, -1.21-0.29*\k) {};
-    \cbs{0.56}{-1.355-0.29*\k}{\f}{0.13}{0.19}
+    \node[gtxt] at (0.24, -0.66-0.34*\k) {\t};
+    \cbs{0.45}{-0.66-0.34*\k}{\f}{0.14}{0.22}
   }
-  \node[ann, font=\tabsize\itshape, anchor=north] at (1.0, -2.1) {CRC result of\\[-1pt]each code block};
-  % ------------------------------------------------------------------ Reverb: three cards
-  \node[pan, minimum width=8.95cm, minimum height=2.7cm, anchor=north west] at (2.3, 0) {};
-  \node[ptitle, anchor=north west] at (2.62, -0.05) {Reverb};
-  \node[key, anchor=north east] at (11.17, -0.08) {Runs only for TBs whose CRC failed};
-  \foreach \x/\t/\n in {2.4/Recovery Gate/2, 5.35/Receiver Selector/3, 8.3/Recovery Scheduler/4} {
-    \node[comp, minimum width=2.85cm, minimum height=2.17cm, anchor=north west] at (\x, -0.45) {};
-    \node[num] at (\x, -0.45) {\n};
-    \node[ctitle] at (\x+1.425, -0.69) {\t};
+  \node[gtxt, font=\tabsize] at (1.0, -1.85) {CRC of each\\[-1pt]code block};
+  % ------------------------------------------------------------------ Reverb
+  \draw[rev] (2.3, 0) rectangle (11.6, -2.25);
+  \node[ptitle, anchor=north west] at (2.36, -0.04) {Reverb};
+  \node[key, font=\tabsize\itshape, anchor=north east] at (11.52, -0.07) {Only for TBs whose CRC failed};
+  \foreach \x/\t/\n in {2.4/Recovery Gate/2, 5.5/Receiver Selector/3, 8.6/Recovery Scheduler/4} {
+    \draw[card] (\x, -0.4) rectangle (\x+2.9, -2.15);
+    \node[num] at (\x+0.2, -0.6) {\n};
+    \node[ctitle, anchor=west] at (\x+0.38, -0.6) {\t};
   }
-  % gate: wait when at most K code blocks failed
-  \node[dec, minimum width=2.6cm] at (3.825, -1.1) {Wait if failed ≤ \vK};
-  \node[th, minimum width=0.6cm, anchor=north west] at (2.525, -1.4) {TB};
-  \node[th, minimum width=2.0cm, anchor=north west] at (3.125, -1.4) {Action};
-  \foreach \t/\a/\c [count=\k from 0] in {A/Wait/actc, B/Request at once/white, C/Wait/actc} {
-    \node[td, minimum width=0.6cm, anchor=north west, font=\tabsize\bfseries] at (2.525, -1.71-0.29*\k) {\t};
-    \node[td, minimum width=2.0cm, anchor=north west, fill=\c] at (3.125, -1.71-0.29*\k) {\a};
-  }
-  % selector: the interference of the cell against theta
-  \node[dec, minimum width=2.6cm] at (6.775, -1.1) {Interference > \vth\,?};
-  \node[th, minimum width=0.6cm, anchor=north west] at (5.475, -1.4) {TB};
-  \node[th, minimum width=2.0cm, anchor=north west] at (6.075, -1.4) {Receiver};
-  \foreach \t/\r/\c/\tc [count=\k from 0] in {A/Published NRx/nrxc/black, B/Published NRx/nrxc/black, C/Trained NRx/nrxt/white} {
-    \node[td, minimum width=0.6cm, anchor=north west, font=\tabsize\bfseries] at (5.475, -1.71-0.29*\k) {\t};
-    \node[td, minimum width=2.0cm, anchor=north west, fill=\c, text=\tc] at (6.075, -1.71-0.29*\k) {\r};
-  }
-  % scheduler: deadline order, one recovery per GPU, rejection after the latest start
-  \node[act, minimum width=2.6cm] at (9.725, -1.1) {Earliest deadline first};
-  \node[th, minimum width=1.3cm, anchor=north west] at (8.425, -1.4) {GPU 1};
-  \node[th, minimum width=1.3cm, anchor=north west] at (9.725, -1.4) {GPU 2};
-  \node[td, minimum width=1.3cm, anchor=north west, fill=nrxc, font=\tabsize\bfseries] at (8.425, -1.71) {A};
-  \node[td, minimum width=1.3cm, anchor=north west, fill=nrxt, text=white, font=\tabsize\bfseries] at (9.725, -1.71) {C};
-  \node[td, minimum width=2.6cm, anchor=north west] at (8.425, -2.0) {Waiting: B};
-  \node[key, anchor=north, font=\tabsize\bfseries\itshape] at (9.725, -2.29) {Reject after \vD\,−\,\vr};
-  % ------------------------------------------------------------------ L2: deliver or grant
-  \node[comp, minimum width=2.35cm, minimum height=2.7cm, anchor=north west] at (11.55, 0) {};
-  \node[num] at (11.55, 0) {6};
-  \node[ctitle] at (12.725, -0.24) {L2 Scheduler};
-  \node[th, minimum width=1.2cm, anchor=north west] at (11.625, -0.9) {Result};
-  \node[th, minimum width=1.0cm, anchor=north west] at (12.825, -0.9) {Action};
-  \node[td, minimum width=1.2cm, anchor=north west, text=dgreen, font=\tabsize\bfseries] at (11.625, -1.21) {Decoded};
-  \node[td, minimum width=1.0cm, anchor=north west] at (12.825, -1.21) {Deliver};
-  \node[td, minimum width=1.2cm, anchor=north west, text=dred, font=\tabsize\bfseries] at (11.625, -1.5) {Failed};
-  \node[td, minimum width=1.0cm, anchor=north west] at (12.825, -1.5) {Grant};
-  \node[ann, anchor=north] at (12.725, -1.95) {Grant by \vD};
-  % arrows between L1, Reverb and L2
-  \node[barrow, minimum height=0.3cm] at (2.15, -1.35) {};
-  \node[barrow, minimum height=0.3cm] at (11.4, -1.35) {};
-  % ------------------------------------------------------------------ GPUs of the server
-  \def\gt{-3.2}
-  \node[pan, minimum width=13.9cm, minimum height=1.75cm, anchor=north west] at (0, \gt) {};
-  \node[ptitle, anchor=north west] at (0.07, \gt-0.05) {AI-RAN Server};
-  \node[txt, anchor=north east] at (13.82, \gt-0.08) {\lgd{l1c}\,L1\enspace \lgd{nrxc}\,Published NRx\enspace
-    \lgd{nrxt}\,Trained NRx\enspace \lgd{aic}\,AI inference\enspace \lgd{dred}\,Failed code block};
-  \node[comp, minimum width=1.9cm, minimum height=1.2cm, anchor=north west] at (0.1, \gt-0.45) {};
-  \node[btxt, anchor=north] at (1.05, \gt-0.49) {GPU Memory};
+  % gate: A and C wait, B gets its grant at once
+  \tbc{2.7}{-1.0}{A} \tbc{3.04}{-1.0}{C}
+  \draw[arr] (3.25, -1.0) -- (3.6, -1.0);
+  \node[stxt, anchor=west] at (3.63, -1.0) {Wait};
+  \tbc{2.7}{-1.38}{B}
+  \draw[arr] (3.25, -1.38) -- (3.6, -1.38);
+  \node[stxt, anchor=west] at (3.63, -1.38) {Grant at once};
+  \node[ann, font=\tabsize\itshape] at (3.85, -1.82) {Wait if ≤ \vK\ blocks failed};
+  % selector: interference of the cell against theta
+  \node[stxt, anchor=west] at (5.62, -1.0) {A, B};
+  \draw[black!60, line width=0.35pt, fill=black!25] (6.2, -1.07) rectangle (6.7, -0.93);
+  \node[stxt, anchor=west] at (5.62, -1.38) {C};
+  \draw[black!60, line width=0.35pt, fill=black!25] (6.2, -1.45) rectangle (7.45, -1.31);
+  \draw[black, line width=0.7pt, densely dashed] (7.05, -0.84) -- (7.05, -1.56);
+  \node[stxt, anchor=north west] at (7.08, -1.56) {\vth};
+  \node[ann, font=\tabsize\itshape, anchor=north west] at (5.6, -1.58) {Interference};
+  \draw[arr] (7.55, -1.0) -- (7.85, -1.0);
+  \draw[arr] (7.55, -1.38) -- (7.85, -1.38);
+  \node[cl, fill=nrxc, minimum width=0.45cm, minimum height=0.28cm] at (8.13, -1.0) {NRx};
+  \node[cl, fill=nrxt, text=white, minimum width=0.45cm, minimum height=0.28cm] at (8.13, -1.38) {NRx};
+  % scheduler: deadline order, rejection after the latest start
+  \tbc{8.95}{-1.0}{A} \tbc{9.29}{-1.0}{C} \tbc{9.63}{-1.0}{B}
+  \draw[arr] (9.84, -1.0) -- (10.19, -1.0);
+  \node[stxt, anchor=west] at (10.22, -1.0) {Free GPU};
+  \node[stxt] at (10.05, -1.38) {Earliest deadline first};
+  \node[key, font=\tabsize\itshape] at (10.05, -1.82) {Reject after \vD\,−\,\vr};
+  % ------------------------------------------------------------------ L2 (existing)
+  \draw[existing] (11.9, 0) rectangle (13.9, -2.25);
+  \node[ctitle, text=extext] at (12.9, -0.22) {L2 Scheduler};
+  \node[stxt, text=revline, anchor=west] at (12.05, -0.66) {Hold grant};
+  \node[stxt, text=dgreen, anchor=west] at (12.05, -1.0) {✓ Deliver};
+  \draw[dred, line width=1.0pt, fill=ulc] (12.08, -1.47) rectangle (12.3, -1.29);
+  \node[gtxt, font=\tabsize, anchor=west] at (12.36, -1.38) {Grant};
+  % arrows into and out of Reverb
+  \node[barrow, minimum height=0.3cm] at (2.15, -1.02) {};
+  \node[barrow, minimum height=0.3cm] at (11.75, -1.02) {};
+  % ------------------------------------------------------------------ AI-RAN server (existing)
+  \draw[existing] (0, -2.7) rectangle (13.9, -4.4);
+  \node[ptitle, text=extext, anchor=north west] at (0.06, -2.74) {AI-RAN Server};
+  \node[gtxt, font=\tabsize, anchor=north east] at (13.82, -2.78) {\lgd{l1c}\,L1\enspace \lgd{aic}\,AI inference\enspace
+    \lgd{nrxc}\,NRx trained without interference\enspace \lgd{nrxt}\,NRx trained with interference};
+  \draw[draw=exline, fill=white, line width=0.5pt] (0.1, -3.1) rectangle (2.0, -4.3);
+  \node[ctitle, text=extext] at (1.05, -3.27) {GPU Memory};
   \foreach \i in {0,...,5} { \foreach \j in {0,1} {
-    \draw[black!65, line width=0.3pt, fill=sampc] (0.3+0.26*\i, \gt-0.88-0.2*\j) rectangle (0.53+0.26*\i, \gt-1.06-0.2*\j);
+    \draw[black!60, line width=0.3pt, fill=sampc] (0.3+0.26*\i, -3.44-0.18*\j) rectangle (0.53+0.26*\i, -3.6-0.18*\j);
   } }
-  \node[stxt, anchor=north] at (1.05, \gt-1.29) {Samples};
-  \foreach \g/\y/\rc/\tc/\t in {1/-3.88/nrxc/black/A, 2/-4.33/nrxt/white/C} {
-    \node[rowh, minimum width=0.85cm, minimum height=0.36cm] at (2.75, \y) {GPU \g};
-    \draw[black!70, line width=0.35pt, fill=aic] (3.25, \y-0.18) rectangle (13.8, \y+0.18);
-    \draw[black!70, line width=0.35pt, fill=\rc] (9.85, \y-0.18) rectangle (12.6, \y+0.18);
-    \node[btxt, text=\tc] at (10.65, \y) {\t};
-    \foreach \s in {3.25, 5.3, 7.35, 9.4, 11.45} { \draw[black!70, line width=0.35pt, fill=l1c] (\s, \y-0.18) rectangle (\s+0.45, \y+0.18); }
-    \draw[black!70, line width=0.35pt, fill=l1c] (13.5, \y-0.18) rectangle (13.8, \y+0.18);
+  \node[gtxt, font=\tabsize] at (1.05, -4.08) {Samples of\\[-1pt]failed TBs};
+  \foreach \g/\y/\rc/\tc/\t in {1/-3.32/nrxc/black/A, 2/-3.77/nrxt/white/C} {
+    \node[exrow, minimum width=0.8cm, minimum height=0.34cm] at (2.65, \y) {GPU \g};
+    \draw[black!55, line width=0.35pt, fill=aic] (3.15, \y-0.17) rectangle (13.8, \y+0.17);
+    \draw[black!55, line width=0.35pt, fill=\rc] (9.55, \y-0.17) rectangle (12.3, \y+0.17);
+    \node[txt, text=\tc] at (10.4, \y) {\t};
+    \foreach \s in {3.15, 5.2, 7.25, 9.3, 11.35} { \draw[black!55, line width=0.35pt, fill=l1c] (\s, \y-0.17) rectangle (\s+0.4, \y+0.17); }
+    \draw[black!55, line width=0.35pt, fill=l1c] (13.4, \y-0.17) rectangle (13.8, \y+0.17);
   }
   % (5) decode again from the stored samples
-  \draw[arr, draw=sampc!55!black, densely dashed] (2.0, -4.71) -- (10.65, -4.71) -- (10.65, -4.53);
-  \node[fill=pan, inner sep=1pt, anchor=west] at (2.4, -4.71) {\nm{5}\,\textit{Decode again from the stored samples, between the L1 slots}};
-  % ------------------------------------------------------------------ arrows between the tiers
-  \node[barrow, minimum height=0.46cm, shape border rotate=270] at (1.0, -2.95) {};
-  \node[num] at (0.6, -2.95) {1};
-  \node[ann, anchor=west] at (1.22, -2.95) {Keep samples in GPU memory};
-  \node[barrow, minimum height=0.46cm, shape border rotate=270] at (9.725, -2.95) {};
-  \node[ann, anchor=west] at (9.95, -2.95) {Place};
-  \node[barrow, minimum height=0.46cm, shape border rotate=90] at (12.725, -2.95) {};
-  \node[ann, anchor=west] at (12.95, -2.95) {Result};
+  \draw[oarr, densely dashed] (2.0, -4.16) -- (10.4, -4.16) -- (10.4, -3.96);
+  \node[fill=exfill, inner sep=1pt, anchor=west] at (2.4, -4.16) {\nm{5}\,\textit{Decode again from the stored samples, between the L1 slots}};
+  % ------------------------------------------------------------------ paths between the tiers
+  \node[barrow, minimum height=0.4cm, shape border rotate=270] at (1.0, -2.47) {};
+  \node[num] at (0.6, -2.47) {1};
+  \node[txt, anchor=west] at (1.2, -2.47) {Keep the samples};
+  \node[barrow, minimum height=0.4cm, shape border rotate=270] at (10.05, -2.47) {};
+  \node[txt, anchor=west] at (10.25, -2.47) {Place};
+  \node[barrow, minimum height=0.4cm, shape border rotate=90] at (12.9, -2.47) {};
+  \node[num] at (13.3, -2.47) {6};
+  \node[txt, anchor=east] at (12.7, -2.47) {Result};
 \end{tikzpicture}
 \end{document}
