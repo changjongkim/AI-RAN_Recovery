@@ -1,0 +1,49 @@
+{
+ "checks": {
+  "latency_sim_conventional_equals_harq_stats": true,
+  "latency_sim_full_wait_equals_harq_stats": true,
+  "no_added_delay_latency_neutral": true
+ },
+ "inputs": {
+  "added_p99_delay_latency_neutral_ms": 0.0,
+  "goodput_vs_conventional_by_snr": {
+   "10": 1.3553948692375417,
+   "12": 1.4213678837854498,
+   "14": 1.2506185210720202,
+   "16": 1.2491047998797338,
+   "6": 1.2243781588345557,
+   "8": 1.3518229165228328
+  },
+  "lost_pct": {
+   "conventional": 2.197265625,
+   "reverb_full_wait": 0.91796875
+  },
+  "retx_per_100": {
+   "conventional": 20.9619140625,
+   "latency_policies": {
+    "harq_only": {
+     "p99_unrecovered_ms": 24.4,
+     "retx_per_100": 20.9619140625,
+     "tbs": 20480
+    },
+    "select_cb5": {
+     "p99_unrecovered_ms": 24.4,
+     "retx_per_100": 15.0390625,
+     "tbs": 20480
+    },
+    "wait": {
+     "p99_unrecovered_ms": 29.4,
+     "retx_per_100": 9.0283203125,
+     "tbs": 20480
+    }
+   },
+   "reverb_full_wait": 9.0283203125
+  }
+ },
+ "values": {
+  "LostCutFullWait": 2.393617021276596,
+  "RetxCutFullWait": 2.3217955651703623,
+  "RetxCutNoDelay": 1.3938311688311689,
+  "ThroughputGainLA": 1.3087811915553558
+ }
+}
