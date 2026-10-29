@@ -42,6 +42,84 @@ class Timing:
     l1, run, deadline, lead = 1.4, 6.3, 11.5, 4.0
 
 
+SUFFIX = os.environ.get("RESULT_SUFFIX", "")   # "_f35": the 3.5 GHz runs (motivation macros; the others follow later)
+
+
+def stats(names, structure="ai_and_ran"):
+    rows = [json.load(open(f"results/{n}{SUFFIX}.json"))["all"][structure] for n in names]
+    w = np.array([r["tbs"] for r in rows], float)
+    return {k: float(np.dot(w, [r[k] for r in rows]) / w.sum()) for k in ("resends_per_100", "residual_after_all_pct")}
+
+
+def per_slot(names):
+    """Per TB: correlation of the pair, conventional result, recovery result, failed code blocks; per slot: any failure."""
+    corr, conv, rec, cb, slot_fail = [], [], [], [], []
+    for n in names:
+        for f in sorted(glob.glob(f"results/{n}{SUFFIX}/c*.npz")):
+            z = np.load(f)
+            u = z["conv_t0"].shape[1]
+            corr.append(np.repeat(z["corr"][:, 0], u)); conv.append(z["conv_t0"].reshape(-1))
+            rec.append(z["nrx_c0"].reshape(-1)); cb.append(z["cbfail_t0"].reshape(-1))
+            slot_fail.append(~z["conv_t0"].all(axis=1))
+    return [np.concatenate(x) for x in (corr, conv, rec, cb, slot_fail)]
+
+
+def motivation(lat):
+    """Macros of the Motivational Evaluation, from the same results as the panels of figures/paper/make_paper_figures.py."""
+    v = {}
+    macro, small = ["n3_uma_v3_cb", "n3_uma_v3_more"], ["n1_umi_v3_cb"]
+    for tag, names in (("Macro", macro), ("Small", small)):
+        corr, conv, rec, cb, slot_fail = per_slot(names)
+        f = ~conv
+        v[f"MotFirstFail{tag}"] = (100 * f.mean(), 1)
+        v[f"MotRecovered{tag}"] = (100 * (rec & f).sum() / f.sum(), 0)
+        v[f"MotCorrFailLow{tag}"] = (100 * f[corr < 0.2].mean(), 0)
+        v[f"MotCorrFailHigh{tag}"] = (100 * f[corr >= 0.8].mean(), 0)
+        v[f"MotFewCb{tag}"] = (100 * rec[f & (cb >= 1) & (cb <= 3)].mean(), 0)
+        v[f"MotAllCb{tag}"] = (100 * rec[f & (cb == 10)].mean(), 0)
+        if tag == "Macro":
+            v["MotAllCbShare"] = (100 * (f & (cb == 10)).sum() / f.sum(), 0)
+            v["MotSlotsWithFailure"] = (100 * slot_fail.mean(), 0)
+    conds = {"": (["n3_uma_v3_cb", "n3_uma_v3_more"], ["n1_umi_v3_cb"]),
+             "Direct": (["n3_uma_los_v3", "n3_uma_los_more"], ["p1_umi_los_v3", "p1_umi_los_more"]),
+             "Blocked": (["n3_uma_nlos_v3", "n3_uma_nlos_more"], ["p1_umi_nlos_v3", "p1_umi_nlos_more"])}
+    for c, (m, s) in conds.items():
+        sm, ss = stats(m), stats(s)
+        v[f"MotRetx{c}Macro"] = (sm["resends_per_100"], 1); v[f"MotRetx{c}Small"] = (ss["resends_per_100"], 1)
+        v[f"MotLost{c}Macro"] = (sm["residual_after_all_pct"], 1); v[f"MotLost{c}Small"] = (ss["residual_after_all_pct"], 1)
+    reps = [json.load(open(f"results/{n}{SUFFIX}.json")) for n in ("n5_uma_v3", "n5_uma_more1", "n5_uma_more2", "n5_uma_more3")]
+    w = np.array([r["fail_pct"]["baseline_lslin_lmmse"] * r["slots"] for r in reps])
+    for name, key in (("Iterations", "baseline_lslin_lmmse@50"), ("Idd", "lslin_idd3"), ("Kbest", "baseline_lmmse_kbest"),
+                      ("SmallNrx", "nrx_rt"), ("LargeNrx", "nrx"), ("Bound", "baseline_perf_csi_kbest")):
+        v[f"MotRx{name}"] = (float(np.dot(w, [r["recovers_pct_of_conventional_failures"][key] for r in reps]) / w.sum()), 0)
+    lanes = json.load(open("results/n13_lanes.json"))
+    large = {r["lanes"]: r for r in lanes["large"] if r["lanes"] <= 4}
+    v["MotTimeSmallNrx"] = (lanes["small"][0]["latency_ms_mean"], 1)
+    v["MotTimeLargeNrx"] = (large[1]["latency_ms_mean"], 1)
+    v["MotTimeLargeFour"] = (large[4]["latency_ms_mean"], 1)
+    v["MotRunsMin"] = (min(r["runs_per_s"] for r in large.values()), 0)
+    v["MotRunsMax"] = (max(r["runs_per_s"] for r in large.values()), 0)
+    v["MotGpuTimePerSlot"] = (v["MotSlotsWithFailure"][0] / 100 * large[1]["latency_ms_mean"], 1)
+    v["MotRecoveryResultMs"] = (Timing.l1 + Timing.run, 1)
+    v["MotFirstRetxMs"] = (lat["first_retx_ms"], 1)
+    v["MotWaitDelayMs"] = (lat["wait_delay_ms"], 1)
+    v["MotPNinetyNineNoWait"] = (lat["harq_only"]["p99_unrecovered_ms"], 1)
+    v["MotPNinetyNineWait"] = (lat["wait"]["p99_unrecovered_ms"], 1)
+    v["MotRetxWait"] = (lat["wait"]["retx_per_100"], 1)
+    rows = {}
+    for line in open("results/n16_summary.txt"):
+        f = line.split()
+        if len(f) >= 10 and f[0] in ("allb68", "allb68g4"):
+            rows.setdefault((f[0], int(f[2])), []).append(float(f[9]))
+    g = lambda pol, c: float(np.mean(rows[(pol, c)]))
+    v["MotGpuOneCell"] = (g("allb68", 1), 0); v["MotGpuOneEight"] = (g("allb68", 8), 0)
+    v["MotGpuFourEight"] = (g("allb68g4", 8), 0); v["MotGpuFourMax"] = (g("allb68g4", 24), 0)
+    red = lambda n: stats([n])["resends_per_100"] / stats([n], "ours")["resends_per_100"]
+    v["MotIciPubNone"] = (red("irc_uma_v3"), 1); v["MotIciPubTen"] = (red("ici_uma_inr10"), 1)
+    v["MotIciTrainedNone"] = (red("ici_uma_v3_iciaware"), 1); v["MotIciTrainedTen"] = (red("ici_uma_inr10_iciaware"), 1)
+    return v
+
+
 def load_traces(sets):
     parts = []
     for s in sets:
@@ -67,12 +145,17 @@ def load_traces(sets):
 def latency_policies():
     conv, rec, steps, conv_steps, cand = load_traces(MACRO_SETS)
     out = {}
+    dones = {}
     for pol in ("harq_only", "wait", "select_cb5"):
         done, tx = simulate(conv, rec, conv_steps if pol == "harq_only" else steps, cand, pol, "DDDSU", Timing)
         unrec = ~conv & ~(rec & (Timing.l1 + Timing.run <= Timing.deadline)) & np.isfinite(done)
+        dones[pol] = (done, unrec)
         out[pol] = {"retx_per_100": float(100.0 * (tx - 1).sum() / len(tx)),
                     "p99_unrecovered_ms": float(np.percentile(done[unrec], 99)),
                     "tbs": int(len(tx))}
+    (d0, u0), (d1, u1) = dones["harq_only"], dones["wait"]
+    out["first_retx_ms"] = float(d0[u0].min())                      # the first retransmission is decoded
+    out["wait_delay_ms"] = float(d1[u1].min() - d0[u0].min())      # waiting moves it by this much
     return out
 
 
@@ -92,7 +175,7 @@ def main():
         "latency_sim_conventional_equals_harq_stats": abs(lat["harq_only"]["retx_per_100"] - conv_retx) < 1e-9,
         "no_added_delay_latency_neutral": added <= 0.05,
     }
-    values = {
+    values = {**motivation(lat),
         "RetxCutFullWait": (conv_retx / ours_retx, 1),
         "RetxCutNoDelay": (lat["harq_only"]["retx_per_100"] / lat["select_cb5"]["retx_per_100"], 1),
         "LostCutFullWait": (allstats["ai_and_ran"]["residual_after_all_pct"] / allstats["ours"]["residual_after_all_pct"], 1),

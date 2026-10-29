@@ -17,11 +17,13 @@ stored results of this repository.  PDFs carry no date, so a rerun gives the sam
   mot_receivers        failed TBs that each receiver decodes again from the same samples, macro cell (N5)
   mot_runtime          time per slot of the L1 (cuPHY median), the small and the large NRx on an A100 (N13)
   mot_codeblocks       failed TBs the large NRx recovers, by the number of code blocks the conventional receiver failed
+  mot_delay            delivery time of the failed TBs of a macro cell: retransmission only, or waiting for every
+                       recovery (src/sim/harq_latency.py, DDDSU, the timing of src/analysis/paper_numbers.py)
   mot_gpu              failed TBs recovered before the deadline, by cells per server, one GPU or four GPUs (N16)
   mot_lanes            time of one large-NRx run when several run at once on one A100 (N13)
   mot_interference     retransmission reduction against the conventional receiver under neighbor-cell interference,
                        published and interference-trained large NRx, macro cell (N15)
-  mot_fail_legend, mot_redecode_legend, mot_server_legend   legend strips
+  mot_fail_legend, mot_time_legend, mot_server_legend   legend strips
 """
 import glob
 import json
@@ -125,6 +127,7 @@ BOUND = "#8c897b"                      # receivers with the true channel: an upp
 GPUS = {"One GPU": "#9a9a92", "Four GPUs": "#2f8f6f"}
 NRX = {"Published Large NRx": "#e07b39", "Interference-Trained": "#8a3d0f"}
 L1_MEDIAN_MS = 1.4                     # median cuPHY run time per slot, the Timing class of src/analysis/paper_numbers.py
+WAIT = {"Retransmission Only": "#6b685c", "Wait for Recovery": "#c4561d"}
 
 
 def runs(*names):
@@ -258,7 +261,45 @@ def motivation_redecode():
     ax.set_xlabel("Failed Code Blocks of a TB")
     style(ax)
     save(fig, "mot_codeblocks")
-    legend("mot_redecode_legend", list(CELL.items()), width=3.3)
+    legend("mot_time_legend", list(WAIT.items()) + list(CELL.items()), width=9.4)
+
+
+class Timing:          # the timing of src/analysis/paper_numbers.py (Evaluation Setup)
+    l1, run, deadline, lead = 1.4, 6.3, 11.5, 4.0
+
+
+def motivation_delay():
+    """CDF of the delivery time of the failed TBs of a macro cell, without recovery and waiting for every recovery."""
+    import sys
+    sys.path.insert(0, os.path.join(ROOT, "src", "sim"))
+    from harq_latency import simulate
+    good, total = {}, None
+    for n in runs("n3_uma_v3_cb", "n3_uma_v3_more"):
+        for f in sorted(glob.glob(os.path.join(RES, n, "c*.npz")), key=lambda f: int(re.search(r"c(\d+)\.npz$", f).group(1))):
+            z = np.load(f)
+            total = int(z["total"])
+            for k in z.files:
+                if k.startswith(("conv_", "sep_", "nrx_")):
+                    good.setdefault(k, []).append(z[k].reshape(-1))
+    g = {k: np.concatenate(v) for k, v in good.items()}
+    conv, rec = g["conv_t0"], g["nrx_c0"]
+    sep = [None] + [g[f"sep_c{t}"] for t in range(1, total)]
+    both = [None] + [g[f"sep_c{t}"] | g[f"nrx_c{t}"] for t in range(1, total)]
+    fig, ax = plt.subplots(figsize=PANEL)
+    for label, pol, steps in (("Retransmission Only", "harq_only", sep), ("Wait for Recovery", "wait", both)):
+        done, _ = simulate(conv, rec, steps, None, pol, "DDDSU", Timing)
+        d = np.sort(done[~conv])
+        x = np.concatenate([[0], np.repeat(d[np.isfinite(d)], 2), [45]])
+        y = np.concatenate([[0, 0], np.repeat(np.arange(1, np.isfinite(d).sum() + 1) / d.size * 100, 2)])[:x.size]
+        ax.plot(x, y, color=WAIT[label], linewidth=2.4)
+    ax.set_xlim(0, 40)
+    ax.set_xticks([0, 10, 20, 30, 40])
+    ax.set_ylim(0, 100)
+    ax.set_yticks([0, 50, 100])
+    ax.set_xlabel("Delivery Time (ms)")
+    ax.set_ylabel("Failed TBs (%)", fontsize=13.5)
+    style(ax, grid="both")
+    save(fig, "mot_delay")
 
 
 def motivation_server():
@@ -318,4 +359,5 @@ if __name__ == "__main__":
     pairs()
     motivation_failures()
     motivation_redecode()
+    motivation_delay()
     motivation_server()
