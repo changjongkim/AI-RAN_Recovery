@@ -170,6 +170,7 @@ def main() -> None:
     order = np.random.default_rng(int(meta.get("shuffle_seed", 73001))).permutation(len(info["point"]))[:count]
     point, corr, change = info["point"][order], info["corr"][order], info["change"][order]
     gain = info["gain"][order]
+    extra = {"sir": info["sir"][order]} if "sir" in info.files else {}   # per slot and transmission, with interferers
     assert np.allclose(point, np.asarray(meta["esno_db"][:count]), atol=1e-3), "slot order differs from the dataset"
 
     stream = cp.cuda.Stream(non_blocking=True)
@@ -255,7 +256,7 @@ def main() -> None:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     np.savez(args.output.with_suffix(".npz"), point=point, corr=corr, change=change, gain=gain, total=total,
              meta=json.dumps({"set": args.set, "mcs": args.mcs, "rvs": rvs, "tb_bytes": int(tb), "generator": gmeta,
-                              "retx_alone": alone}), cbfail_t0=cbfail, **good)
+                              "retx_alone": alone}), cbfail_t0=cbfail, **extra, **good)
     args.output.write_text(json.dumps(rep, indent=2))
     print(f"set {args.set} MCS {args.mcs}: {count} slots, similarity median {rep['corr_median']:.2f}, "
           f"separable vs cuPHY first {rep['check']['sep_vs_conv_first']}")

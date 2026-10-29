@@ -1,7 +1,8 @@
 % Figure 4: what a base station has when the CRC of a TB fails, on dedicated hardware and on an AI-RAN server.
-% Dedicated hardware discards the received samples after decoding and sizes its computation for one decoding per TB.
-% An AI-RAN server stores the samples in GPU memory and leaves GPU time beyond the L1 to AI inference (the RAN peaks at
-% 40% of one GPU in an NVIDIA proof of concept).  Both request a retransmission for the failed TB: the figure shows
+% Purpose-built baseband hardware runs the L1 within a fixed compute budget (Ericsson Technology Review 2026) and keeps
+% only the combined LLRs of a failed TB for HARQ (DPDK bbdev, Lee et al. TCOM'15).  On an AI-RAN server the fronthaul
+% data is copied directly to GPU memory (NVIDIA cuPHY Components), and the GPU has time beyond the L1 for AI inference
+% (the RAN peaks at 40% of one GPU in an NVIDIA proof of concept).  Both request a retransmission for the failed TB: the figure shows
 % the state before Reverb (no component of Reverb appears before the design section).
 % Each column has its content centred on the same x in both rows; the bars of the middle column are drawn as exact
 % rectangles that end 0.3 cm before the column line.
@@ -36,11 +37,11 @@
     } }
   }
   \draw[failc, line width=1.4pt] (\cx-0.82, 0.3) -- (\cx+0.82, -0.3) (\cx-0.82, -0.3) -- (\cx+0.82, 0.3);
-  \node[tag, align=left, anchor=west] at (\cx+1.05, 0) {Discarded\\(LLRs stored)};
-  \node[tag, align=left, anchor=west] at (\cx+1.05, -1.15) {Stored in\\GPU memory};
+  \node[tag, align=left, anchor=west] at (\cx+1.05, 0) {Only LLRs\\stored};
+  \node[tag, align=left, anchor=west] at (\cx+1.05, -1.15) {In GPU\\memory};
   % time of a slot: one decoding / L1 and AI inference
   \draw[black!85, line width=0.4pt, fill=l1c] (\bl, -0.25) rectangle (\br, 0.25);
-  \node[tag] at ({(\bl+\br)/2}, 0) {L1 for one decoding per TB};
+  \node[tag] at ({(\bl+\br)/2}, 0) {L1 with fixed compute budget};
   \draw[black!85, line width=0.4pt, fill=l1c] (\bl, -1.4) rectangle (7.1, -0.9);
   \draw[black!85, line width=0.4pt, fill=aic] (7.1, -1.4) rectangle (\br, -0.9);
   \node[tag] at ({(\bl+7.1)/2}, -1.15) {L1};
