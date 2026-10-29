@@ -92,6 +92,18 @@ def motivation(lat):
     for name, key in (("Iterations", "baseline_lslin_lmmse@50"), ("Idd", "lslin_idd3"), ("Kbest", "baseline_lmmse_kbest"),
                       ("SmallNrx", "nrx_rt"), ("LargeNrx", "nrx"), ("Bound", "baseline_perf_csi_kbest")):
         v[f"MotRx{name}"] = (float(np.dot(w, [r["recovers_pct_of_conventional_failures"][key] for r in reps]) / w.sum()), 0)
+    # the same slots decoded with the LMMSE estimate and with the true channel, macro (four seeds) and small cells
+    for tag, sets in (("Macro", ("n5_uma_v3", "n5_uma_more1", "n5_uma_more2", "n5_uma_more3")), ("Small", ("n5_umi_v3",))):
+        rs = [json.load(open(f"results/{n}{SUFFIX}.json")) for n in sets]
+        wt = np.array([r["slots"] for r in rs], float)
+        est = float(np.dot(wt, [r["fail_pct"]["baseline_lslin_lmmse"] for r in rs]) / wt.sum())
+        true = float(np.dot(wt, [r["fail_pct"]["baseline_perf_csi_kbest"] for r in rs]) / wt.sum())
+        v[f"MotEstFail{tag}"] = (est, 1); v[f"MotTrueFail{tag}"] = (true, 1)
+        v[f"MotEstShare{tag}"] = (100 * (est - true) / est, 0)
+    # median delay spread of the 3GPP TR 38.901 models without a direct path at 3.5 GHz (Table 7.5-6: lgDS =
+    # a log10(b + fc) + c; UMa uses fc = 6 GHz below 6 GHz), the parameters of the channel generator (Sionna)
+    v["MotDelaySpreadMacro"] = (1e9 * 10 ** (-0.204 * np.log10(6.0) - 6.28), 0)
+    v["MotDelaySpreadSmall"] = (1e9 * 10 ** (-0.24 * np.log10(1.0 + 3.5) - 6.83), 0)
     lanes = json.load(open("results/n13_lanes.json"))
     large = {r["lanes"]: r for r in lanes["large"] if r["lanes"] <= 4}
     v["MotTimeSmallNrx"] = (lanes["small"][0]["latency_ms_mean"], 1)
