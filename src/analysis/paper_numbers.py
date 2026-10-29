@@ -11,7 +11,7 @@ Macros (value, source):
                        macro cell, the 20,480 TBs of n3_uma_v3_cb + n3_uma_v3_more (results/n3_uma_v3_all.json)
   \\RetxCutNoDelay      the same with the latency-neutral rule (wait only when at most 5 of 10 code blocks failed),
                        from the latency simulation (src/sim/harq_latency.py, DDDSU, L1 1.4 ms, recovery 6.3 ms,
-                       recovery deadline 11.5 ms, lead 4.0 ms) on the same traces; checked: no added p99 delay for
+                       recovery deadline 11.0 ms, lead 4.0 ms) on the same traces; checked: no added p99 delay for
                        the TBs recovery does not decode
   \\LostCutFullWait     TBs never received after four transmissions, conventional / Reverb waiting for every recovery
   \\ThroughputGainLA    goodput under outer-loop link adaptation (target 10%), Reverb / conventional, mean over the
@@ -39,10 +39,11 @@ MACRO_SETS = ["n3_uma_v3_cb", "n3_uma_v3_more"]
 
 
 class Timing:
-    l1, run, deadline, lead = 1.4, 6.3, 11.5, 4.0
+    l1, run, deadline, lead = 1.4, 6.3, 11.0, 4.0   # deadline: retransmission slot 15.0 ms minus the lead 4.0 ms
 
 
 SUFFIX = os.environ.get("RESULT_SUFFIX", "")   # "_f35": the 3.5 GHz runs (motivation macros; the others follow later)
+N16 = os.environ.get("N16_SUFFIX", "")         # "d110_f35": GPU runtime at the 11.0 ms deadline on the 3.5 GHz slots
 
 
 def stats(names, structure="ai_and_ran"):
@@ -121,9 +122,9 @@ def motivation(lat):
     rows = {}
     for line in open("results/n16_summary.txt"):
         f = line.split()
-        if len(f) >= 10 and f[0] in ("allb68", "allb68g4"):
+        if len(f) >= 10 and f[0] in ("allb68" + N16, "allb68g4" + N16):
             rows.setdefault((f[0], int(f[2])), []).append(float(f[9]))
-    g = lambda pol, c: float(np.mean(rows[(pol, c)]))
+    g = lambda pol, c: float(np.mean(rows[(pol + N16, c)]))
     v["MotGpuOneCell"] = (g("allb68", 1), 0); v["MotGpuOneEight"] = (g("allb68", 8), 0)
     v["MotGpuFourEight"] = (g("allb68g4", 8), 0); v["MotGpuFourMax"] = (g("allb68g4", 24), 0)
     red = lambda n: stats([n])["resends_per_100"] / stats([n], "ours")["resends_per_100"]

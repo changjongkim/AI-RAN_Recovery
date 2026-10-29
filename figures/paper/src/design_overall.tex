@@ -1,0 +1,67 @@
+% Figure (Section 4.1): the architecture of Reverb in an AI-RAN server and the procedure for one failed TB.
+% (1) the fronthaul samples of every slot land in GPU memory and the L1 decodes them; (2) for a TB whose CRC fails, the
+% Recovery Gate decides from the failed code blocks whether the base station waits for the recovery; (3) the Receiver
+% Selector picks the receiver by the interference of the cell; (4) the Recovery Scheduler places the recovery on a GPU in
+% deadline order, or rejects it when it cannot start by its latest start time; (5) the receiver decodes the TB again from
+% the stored samples; (6) the result goes to the L2 scheduler: a decoded TB is delivered, any other gets its grant.
+% No measured value appears (Design section rule).
+\documentclass[border=2pt]{standalone}
+\input{reverb_style}
+\begin{document}
+\figsize
+\begin{tikzpicture}[x=1cm, y=1cm]
+  % ------------------------------------------------------------------ outside the server
+  \node[comp, fill=white, minimum width=2.2cm] (ru) at (2.55, 6.55) {Radio Units};
+  \node[comp, fill=actc, minimum width=2.3cm] (l2) at (11.55, 6.55) {\textbf{L2 Scheduler}};
+  % ------------------------------------------------------------------ server
+  \node[layer, minimum width=13.6cm, minimum height=5.5cm, anchor=south west] at (0, 0) {};
+  \node[ttl, anchor=north west] at (0.1, 5.45) {AI-RAN Server};
+  \node[comp, fill=l1c, minimum width=2.4cm, minimum height=0.9cm] (l1) at (1.5, 3.95) {\textbf{L1 (cuPHY)}\\of each cell};
+  \node[comp, fill=sampc, minimum width=2.4cm, minimum height=0.9cm] (buf) at (1.5, 2.45) {\textbf{Received Samples}\\in GPU memory};
+  \draw[black!70, line width=0.6pt, dashed, rounded corners=2pt] (3.85, 1.85) rectangle (10.4, 4.75);
+  \node[ttl, anchor=north west] at (3.95, 4.72) {Reverb};
+  \node[comp, fill=recc, minimum width=2.6cm, minimum height=0.9cm] (gate) at (5.45, 3.55) {\textbf{Recovery Gate}\\wait or request};
+  \node[comp, fill=recc, minimum width=2.6cm, minimum height=0.9cm] (sel) at (8.8, 3.55) {\textbf{Receiver Selector}\\by interference};
+  \node[comp, fill=recc, minimum width=6.15cm, minimum height=0.62cm] (sch) at (7.125, 2.3) {\textbf{Recovery Scheduler}: deadline order, latest start $D - r$};
+  % GPUs: L1, recovery and AI inference share each GPU
+  \node[comp, fill=gpuc, minimum width=13.2cm, minimum height=1.2cm, anchor=south west] at (0.2, 0.2) {};
+  \node[ttl, anchor=west] at (0.3, 0.8) {GPUs};
+  \foreach \i/\x in {1/1.6, 2/4.5, 3/7.4, 4/10.3} {
+    \node[tag, anchor=south] at (\x + 1.6, 0.98) {GPU \i};
+    \draw[black!85, line width=0.4pt, fill=l1c] (\x, 0.35) rectangle (\x + 0.6, 0.95);
+    \node[tag] at (\x + 0.3, 0.65) {L1};
+    \draw[black!85, line width=0.4pt, fill=nrxc] (\x + 0.6, 0.35) rectangle (\x + 1.95, 0.95);
+    \node[tag] at (\x + 1.275, 0.65) {Recovery};
+    \draw[black!85, line width=0.4pt, fill=aic] (\x + 1.95, 0.35) rectangle (\x + 2.8, 0.95);
+    \node[tag] at (\x + 2.375, 0.65) {AI};
+  }
+  % ------------------------------------------------------------------ procedure
+  \draw[arr] (ru.south) -- (2.55, 4.4);
+  \node[tag, anchor=west] at (2.65, 5.95) {fronthaul};
+  \node[num] at (2.2, 5.95) {1};
+  \draw[arr] (l1.south) -- (buf.north);
+  \draw[arr] (l1.east) -- (gate.west |- l1.east);
+  \node[tag, anchor=south] at (3.28, 3.97) {CRC fail};
+  \node[num] at (3.28, 3.62) {2};
+  \draw[arr] (gate.east) -- (sel.west);
+  \node[num] at (7.125, 3.85) {3};
+  \draw[arr] (sel.south) -- (sel.south |- sch.north);
+  \draw[arr] (sch.south) -- (sch.south |- 0, 1.5);
+  \node[num] at (7.45, 1.62) {4};
+  \draw[arr, densely dashed] (buf.south) -- (1.5, 1.62) -- (2.4, 1.62) -- (2.4, 0.95);
+  \node[num] at (1.95, 1.62) {5};
+  \draw[arr] (11.55, 1.4) -- (l2.south);
+  \node[num] at (11.2, 3.3) {6};
+  \node[tag, anchor=west, align=left] at (11.65, 3.3) {decoded: deliver\\otherwise: grant\\by $D$};
+  \draw[thin] (gate.north) |- (11.55, 5.0);
+  \node[tag, anchor=south] at (8.6, 5.0) {no wait: request at once};
+  % ------------------------------------------------------------------ legend
+  \node[tag, anchor=west] at (0.0, -0.4) {%
+    \tikz[baseline=-0.6ex]\node[num]{1}; Store samples\quad
+    \tikz[baseline=-0.6ex]\node[num]{2}; Decide to wait\quad
+    \tikz[baseline=-0.6ex]\node[num]{3}; Select receiver\quad
+    \tikz[baseline=-0.6ex]\node[num]{4}; Schedule by deadline\quad
+    \tikz[baseline=-0.6ex]\node[num]{5}; Decode again\quad
+    \tikz[baseline=-0.6ex]\node[num]{6}; Report to L2};
+\end{tikzpicture}
+\end{document}

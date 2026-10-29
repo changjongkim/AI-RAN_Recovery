@@ -8,7 +8,7 @@ delivered (ms after the samples of its first transmission arrive).
 
 Timeline (all in ms after the samples of the first transmission arrive):
   conventional result   L1 (median of the runtime, 1.4)
-  recovery result       L1 + recovery run (6.3); recovery has a deadline D (11.5)
+  recovery result       L1 + recovery run (6.3); recovery has a deadline D (11.0: the retransmission slot 15.0 ms minus the lead 4.0 ms)
   retransmission k      the grant for transmission k may be sent once the decision is known; the UE transmits in the
                         first uplink slot at least LEAD after the grant (MAC lead time + K2 + PUSCH preparation);
                         its samples are decoded L1 after that slot
@@ -24,7 +24,7 @@ Policies:
   select_cbK    wait only when the conventional receiver failed at most K code blocks of the TB (known when L1
                 finishes; needs cbfail_t0 in the trace, decode_harq.py from 2026-10-15 06:30)
 TDD patterns: DDDSU (one uplink slot every 2.5 ms) and DDDSUUDDDD (two uplink slots every 5 ms), 0.5 ms slots.
-usage: harq_latency.py --inputs C0.npz [...] --output OUT.json [--lead 2.0 --l1 1.4 --run 6.3 --deadline 11.5]
+usage: harq_latency.py --inputs C0.npz [...] --output OUT.json [--lead 2.0 --l1 1.4 --run 6.3 --deadline 11.0]
 """
 
 from __future__ import annotations
@@ -98,7 +98,7 @@ def main() -> None:
     parser.add_argument("--lead", type=float, default=4.0, help="ms from the grant decision to the earliest UL slot")
     parser.add_argument("--l1", type=float, default=1.4)
     parser.add_argument("--run", type=float, default=6.3)
-    parser.add_argument("--deadline", type=float, default=11.5)
+    parser.add_argument("--deadline", type=float, default=11.0)
     parser.add_argument("--rho", type=float, default=0.4, help="similarity threshold of select_rho")
     a = parser.parse_args()
     good, total, rho, cbf = {}, None, [], []

@@ -51,7 +51,7 @@
   "SetupEbNoLow": "6",
   "SetupLOneMs": "1.4",
   "SetupLeadMs": "4.0",
-  "SetupRecoveryDeadlineMs": "11.5",
+  "SetupRecoveryDeadlineMs": "11.0",
   "SetupRecoveryRunMs": "6.3",
   "SetupRetxGapMs": "7.5",
   "SetupSlots": "10,240",

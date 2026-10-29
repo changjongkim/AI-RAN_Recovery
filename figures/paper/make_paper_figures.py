@@ -119,6 +119,7 @@ def pairs():
 ROOT = os.path.dirname(os.path.dirname(HERE))
 RES = os.path.join(ROOT, "results")
 SUFFIX = os.environ.get("RESULT_SUFFIX", "")
+N16 = os.environ.get("N16_SUFFIX", "")   # "d110_f35": GPU runtime at the 11.0 ms deadline, 3.5 GHz slots
 CELL = {"Macro Cell": "#2b6cb0", "Small Cell": "#9ec5ea"}
 RX = {"More Iterations": "#dedcd3", "Iterative": "#c2bfb2", "K-Best": "#a39f8f", "Small Neural": "#f3c27a",
       "Large Neural": "#e07b39"}
@@ -265,7 +266,7 @@ def motivation_redecode():
 
 
 class Timing:          # the timing of src/analysis/paper_numbers.py (Evaluation Setup)
-    l1, run, deadline, lead = 1.4, 6.3, 11.5, 4.0
+    l1, run, deadline, lead = 1.4, 6.3, 11.0, 4.0
 
 
 def motivation_delay():
@@ -306,10 +307,10 @@ def motivation_server():
     rows = {}
     for line in open(os.path.join(RES, "n16_summary.txt")):
         f = line.split()
-        if len(f) >= 10 and f[0] in ("allb68", "allb68g4"):
+        if len(f) >= 10 and f[0] in ("allb68" + N16, "allb68g4" + N16):
             rows.setdefault(f[0], {}).setdefault(int(f[2]), []).append(float(f[9]))
     fig, ax = plt.subplots(figsize=PANEL)
-    for label, pol in (("One GPU", "allb68"), ("Four GPUs", "allb68g4")):
+    for label, pol in (("One GPU", "allb68" + N16), ("Four GPUs", "allb68g4" + N16)):
         cells = sorted(rows[pol])
         ax.plot(cells, [np.mean(rows[pol][c]) for c in cells], color=GPUS[label], linewidth=2.4, marker="o", markersize=6)
     ax.set_xlim(0, 25)
