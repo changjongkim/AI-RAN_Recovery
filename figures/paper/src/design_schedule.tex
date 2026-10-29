@@ -1,47 +1,49 @@
-% Figure (Section 4.3): admission by the latest start time on one GPU.  Failed TBs 1 and 2 come from one uplink slot,
-% TB 3 from the next slot and TB 4 from the slot after it.  Each TB can start its recovery from its L1 result until its
-% latest start time D - r and must finish by its deadline D (11.0 ms after its slot; the run time is drawn as the 4.3 ms
-% of the network alone to keep the example short).  In arrival order without rejection, TB 3 starts after its latest start, runs past its
-% deadline and holds the GPU, so TB 4 also ends past its deadline: 2 of 4 TBs are recovered in time.  Reverb rejects
+% Figure (Section 4.3): admission by the latest start time on one GPU.  Failed TBs 1 and 2 come from uplink slot 0,
+% TB 3 from slot 1 and TB 4 from slot 2.  Each TB can start its recovery from its L1 result until its latest start time
+% D - r and must finish by its deadline D (11.0 ms after its slot; the run time is drawn as the 4.3 ms of the network
+% alone to keep the example short).  In arrival order without rejection, TB 3 starts after its latest start, runs past
+% its deadline and holds the GPU, so TB 4 also ends past its deadline: 2 of 4 TBs are recovered in time.  Reverb rejects
 % TB 3 at its latest start (its grant goes out at once) and recovers TB 4: 3 of 4 in time.  With the same deadline rule
 % in every cell, the deadline order equals the arrival order; the difference is the rejection.  No value is printed.
 \documentclass[border=1pt]{standalone}
 \input{reverb_style}
 \begin{document}
 \begin{tikzpicture}[x=1cm, y=1cm]
-  \foreach \y/\t in {0/{TB 1, 2}, -0.32/{TB 3}, -0.64/{TB 4}} {
-    \node[ctxrow, minimum width=2.15cm, minimum height=0.26cm] at (1.075, \y) {\t};
+  \foreach \y/\t in {0/{TB 1, 2 (slot 0)}, -0.3/{TB 3 (slot 1)}, -0.6/{TB 4 (slot 2)}} {
+    \node[ctxrow, minimum width=2.3cm, minimum height=0.24cm] at (1.15, \y) {\t};
   }
-  \node[exrow, minimum width=2.15cm, minimum height=0.46cm] at (1.075, -1.12) {Arrival order\\[-1pt]2 of 4 in time};
-  \node[rrow, minimum width=2.15cm, minimum height=0.46cm] at (1.075, -1.66) {Reverb\\[-1pt]3 of 4 in time};
-  \begin{scope}[xshift=2.3cm, x=0.59cm]
+  \node[exrow, minimum width=2.3cm, minimum height=0.44cm] at (1.15, -1.2) {Arrival order\\[-1pt]2 of 4 in time};
+  \node[rrow, minimum width=2.3cm, minimum height=0.44cm] at (1.15, -1.7) {Reverb\\[-1pt]3 of 4 in time};
+  \begin{scope}[xshift=2.45cm, x=0.585cm]
     \def\r{4.3}
     % the window of each TB: from its L1 result it can start until D - r, and it must end by D
-    \foreach \y/\a/\s/\d in {0/1.9/6.7/11.0, -0.32/4.4/9.2/13.5, -0.64/6.9/11.7/16.0} {
+    \foreach \y/\a/\s/\d in {0/1.9/6.7/11.0, -0.3/4.4/9.2/13.5, -0.6/6.9/11.7/16.0} {
       \draw[black!45, line width=0.5pt] (\a, \y) -- (\d, \y);
-      \fill[black!18] (\a, \y-0.07) rectangle (\s, \y+0.07);
+      \fill[black!18] (\a, \y-0.065) rectangle (\s, \y+0.065);
       \fill[black] (\a, \y) circle (0.045);
-      \draw[dred, line width=0.9pt, densely dashed] (\s, \y-0.11) -- (\s, \y+0.11);
-      \draw[dred, line width=1.1pt] (\d, \y-0.11) -- (\d, \y+0.11);
+      \draw[dred, line width=0.9pt, densely dashed] (\s, \y-0.1) -- (\s, \y+0.1);
+      \draw[dred, line width=1.1pt] (\d, \y-0.1) -- (\d, \y+0.1);
     }
     \newcommand{\job}[3]{% start, lane y, label
-      \node[cl, fill=nrxc, minimum width={0.59*\r cm - 0.04cm}, minimum height=0.3cm, anchor=west] at (#1 + 0.035, #2) {#3};}
+      \node[cl, fill=nrxc, minimum width={0.585*\r cm - 0.04cm}, minimum height=0.3cm, anchor=west] at (#1 + 0.035, #2) {#3};}
     % arrival order without rejection
-    \job{1.9}{-1.12}{1} \job{6.2}{-1.12}{2} \job{10.5}{-1.12}{3} \job{14.8}{-1.12}{}
-    \fill[pattern=north east lines, pattern color=dred] (13.5, -1.27) rectangle (14.8, -0.97);
-    \fill[pattern=north east lines, pattern color=dred] (16.0, -1.27) rectangle (19.1, -0.97);
-    \draw[dred, line width=1.1pt] (13.5, -1.3) -- (13.5, -0.94) (16.0, -1.3) -- (16.0, -0.94);
-    \node[txt] at (15.4, -1.12) {4};
+    \node[key, font=\tabsize\itshape, anchor=west] at (10.4, -0.88) {TB 3 starts after its latest start and holds the GPU};
+    \job{1.9}{-1.2}{1} \job{6.2}{-1.2}{2} \job{10.5}{-1.2}{3} \job{14.8}{-1.2}{}
+    \fill[pattern=north east lines, pattern color=dred] (13.5, -1.35) rectangle (14.8, -1.05);
+    \fill[pattern=north east lines, pattern color=dred] (16.0, -1.35) rectangle (19.1, -1.05);
+    \draw[dred, line width=1.1pt] (13.5, -1.38) -- (13.5, -1.02) (16.0, -1.38) -- (16.0, -1.02);
+    \node[txt] at (15.4, -1.2) {4};
     % Reverb: TB 3 rejected at its latest start, TB 4 in time
-    \job{1.9}{-1.66}{1} \job{6.2}{-1.66}{2} \job{10.5}{-1.66}{4}
-    \draw[dred, line width=0.9pt, densely dashed] (9.2, -0.43) -- (9.2, -1.84);
-    \node[key, font=\tabsize\itshape, anchor=west] at (15.0, -1.66) {✗ TB 3: grant at once};
+    \job{1.9}{-1.7}{1} \job{6.2}{-1.7}{2} \job{10.5}{-1.7}{4}
+    \node[stxt, text=dgreen, anchor=west] at (14.95, -1.7) {✓ TB 4 ends before its \vD};
+    \draw[dred, line width=0.9pt, densely dashed] (9.2, -0.4) -- (9.2, -1.9);
+    \node[key, font=\tabsize\itshape, anchor=west] at (9.1, -2.02) {✗ TB 3 rejected at its latest start: grant at once};
   \end{scope}
-  \node[stxt, anchor=north west] at (0, -1.98) {\tikz[baseline=-0.6ex]{\fill[black] (0,0) circle (0.045);}\,L1 result\enspace
-    \tikz[baseline=-0.6ex]{\fill[black!18] (0,-0.07) rectangle (0.3,0.07);}\,Can start\enspace
+  \node[stxt, anchor=north west] at (0, -2.2) {\tikz[baseline=-0.6ex]{\fill[black] (0,0) circle (0.045);}\,L1 result\enspace
+    \tikz[baseline=-0.6ex]{\fill[black!18] (0,-0.065) rectangle (0.3,0.065);}\,Can start\enspace
     \tikz[baseline=-0.6ex]\draw[dred, line width=0.9pt, densely dashed] (0,-0.1) -- (0,0.1);\,Latest start \vD\,−\,\vr\enspace
     \tikz[baseline=-0.6ex]\draw[dred, line width=1.1pt] (0,-0.1) -- (0,0.1);\,Deadline \vD\enspace
-    \lgd{nrxc}\,Recovery\enspace
+    \lgd{nrxc}\,Recovery (run time \vr)\enspace
     \tikz[baseline=-0.6ex]\fill[pattern=north east lines, pattern color=dred] (0,-0.09) rectangle (0.24,0.09);\,Past the deadline};
 \end{tikzpicture}
 \end{document}
