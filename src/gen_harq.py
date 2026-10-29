@@ -514,7 +514,7 @@ np.savez(args.output.parent / f"{args.output.name}_info.npz", point=point, corr=
                           "pair_rho_median": float(np.median(picked["rho"])) if args.drop_users else None,
                           "partner_gain_db_median": float(np.median(picked["gain_db"])) if args.drop_users else None,
                           "partner_rank_mean": float(np.mean(picked["rank"])) if args.drop_users else None, "axis": "ebno" if args.ebno else "snr_db",
-                          "num_rx": int(first.params.num_rx_antennas), "seed": args.seed}))
+                          "num_rx": int(first.params.num_rx_antennas), "seed": args.seed, "carrier_ghz": FC_GHZ}))
 for link in links:
     payload = np.concatenate(bits[link.mcs])
     for t, rv in enumerate(RVS):
