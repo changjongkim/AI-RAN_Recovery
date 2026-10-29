@@ -10,8 +10,23 @@ stored results of this repository.  PDFs carry no date, so a rerun gives the sam
   bg_pairs_cdf      correlation of two users' channels, i.i.d. Rayleigh, 2/4/8 receive antennas (analysis)
   bg_pairs_loss     share of user pairs that lose more than 3 dB under zero-forcing (analysis)
   bg_pairs_legend   legend strip of the two panels above
+  Motivational Evaluation (measured; RESULT_SUFFIX=_f35 selects the 3.5 GHz runs, empty selects the 2.14 GHz runs):
+  mot_retx, mot_lost   conventional receiver: retransmissions per 100 TBs and TBs lost after four transmissions, macro
+                       and small cells at 3/30/120 km/h, with a direct path and with a blocked path (N3, N1, P1)
+  mot_corr             first-transmission failure rate of the conventional receiver by the correlation of the pair
+  mot_receivers        failed TBs that each receiver decodes again from the same samples, macro cell (N5)
+  mot_runtime          time per slot of the L1 (cuPHY median), the small and the large NRx on an A100 (N13)
+  mot_codeblocks       failed TBs the large NRx recovers, by the number of code blocks the conventional receiver failed
+  mot_gpu              failed TBs recovered before the deadline, by cells per server, one GPU or four GPUs (N16)
+  mot_lanes            time of one large-NRx run when several run at once on one A100 (N13)
+  mot_interference     retransmission reduction against the conventional receiver under neighbor-cell interference,
+                       published and interference-trained large NRx, macro cell (N15)
+  mot_fail_legend, mot_redecode_legend, mot_server_legend   legend strips
 """
+import glob
+import json
 import os
+import re
 
 import matplotlib
 matplotlib.use("Agg")
@@ -52,8 +67,8 @@ def save(fig, name):
     print("wrote", name)
 
 
-def legend(name, entries):
-    fig = plt.figure(figsize=(1.9 * len(entries) + 0.6, 0.38))
+def legend(name, entries, width=None):
+    fig = plt.figure(figsize=(width or 1.9 * len(entries) + 0.6, 0.38))
     handles = [plt.Rectangle((0, 0), 1, 1, color=c) for _, c in entries]
     fig.legend(handles, [label for label, _ in entries], loc="center", ncol=len(entries), fontsize=LEGEND,
                borderpad=0.15, columnspacing=1.6, handlelength=1.3)
@@ -99,5 +114,208 @@ def pairs():
     legend("bg_pairs_legend", [(f"{n} Antennas", c) for n, c in ANT.items()])
 
 
+ROOT = os.path.dirname(os.path.dirname(HERE))
+RES = os.path.join(ROOT, "results")
+SUFFIX = os.environ.get("RESULT_SUFFIX", "")
+CELL = {"Macro Cell": "#2b6cb0", "Small Cell": "#9ec5ea"}
+RX = {"More Iterations": "#dedcd3", "Iterative": "#c2bfb2", "K-Best": "#a39f8f", "Small Neural": "#f3c27a",
+      "Large Neural": "#e07b39"}
+CONV = "#6b685c"                       # the conventional receiver (cuPHY)
+BOUND = "#8c897b"                      # receivers with the true channel: an upper bound
+GPUS = {"One GPU": "#9a9a92", "Four GPUs": "#2f8f6f"}
+NRX = {"Published Large NRx": "#e07b39", "Interference-Trained": "#8a3d0f"}
+L1_MEDIAN_MS = 1.4                     # median cuPHY run time per slot, the Timing class of src/analysis/paper_numbers.py
+
+
+def runs(*names):
+    return [n + SUFFIX for n in names]
+
+
+def merged(names, structure="ai_and_ran"):
+    """TB-weighted mean of the per-run statistics of results/<name>.json."""
+    rows = [json.load(open(os.path.join(RES, f"{n}.json")))["all"][structure] for n in names]
+    w = np.array([r["tbs"] for r in rows], float)
+    return {k: float(np.dot(w, [r[k] for r in rows]) / w.sum()) for k in ("resends_per_100", "residual_after_all_pct")}
+
+
+def traces(names):
+    corr, conv, rec, cb = [], [], [], []
+    for n in names:
+        for f in sorted(glob.glob(os.path.join(RES, n, "c*.npz")), key=lambda f: int(re.search(r"c(\d+)\.npz$", f).group(1))):
+            z = np.load(f)
+            u = z["conv_t0"].shape[1]
+            corr.append(np.repeat(z["corr"][:, 0], u))
+            conv.append(z["conv_t0"].reshape(-1))
+            rec.append(z["nrx_c0"].reshape(-1))
+            cb.append(z["cbfail_t0"].reshape(-1))
+    return [np.concatenate(x) for x in (corr, conv, rec, cb)]
+
+
+def bars(ax, groups, series, colors, fmt="{:.1f}", values=True, width=0.38):
+    """Grouped bars: series[label] = values per group."""
+    n = len(series)
+    for i, (label, vals) in enumerate(series.items()):
+        x = np.arange(len(groups)) + (i - (n - 1) / 2) * width
+        bs = ax.bar(x, vals, width=width * 0.92, color=colors[label], zorder=3)
+        if values:
+            for b, v in zip(bs, vals):
+                ax.text(b.get_x() + b.get_width() / 2, v, fmt.format(v), ha="center", va="bottom", fontsize=VALUE - 2)
+    ax.set_xticks(range(len(groups)))
+    ax.set_xticklabels(groups)
+
+
+CONDITIONS = {   # macro cell runs, small cell runs (each list: runs of one condition, different seeds)
+    "3\nkm/h": (("n3_uma_v3_cb", "n3_uma_v3_more"), ("n1_umi_v3_cb",)),
+    "30\nkm/h": (("n3_uma_v30", "n3_uma_v30_more"), ("n1_umi_v30",)),
+    "120\nkm/h": (("n3_uma_v120", "n3_uma_v120_more"), ("n3_umi_v120",)),
+    "Direct\nPath": (("n3_uma_los_v3", "n3_uma_los_more"), ("p1_umi_los_v3", "p1_umi_los_more")),
+    "Blocked\nPath": (("n3_uma_nlos_v3", "n3_uma_nlos_more"), ("p1_umi_nlos_v3", "p1_umi_nlos_more")),
+}
+
+
+def motivation_failures():
+    st = {c: (merged(runs(*m)), merged(runs(*s))) for c, (m, s) in CONDITIONS.items()}
+    for key, name, ylab, top in (("resends_per_100", "mot_retx", "Per 100 TBs", 35),
+                                 ("residual_after_all_pct", "mot_lost", "TBs (%)", 5)):
+        fig, ax = plt.subplots(figsize=PANEL)
+        bars(ax, list(st), {"Macro Cell": [st[c][0][key] for c in st], "Small Cell": [st[c][1][key] for c in st]}, CELL,
+             values=False)
+        ax.set_ylim(0, top)
+        ax.set_ylabel(ylab)
+        ax.tick_params(axis="x", labelsize=10.5)
+        style(ax)
+        save(fig, name)
+    edges = [0.0, 0.2, 0.4, 0.6, 0.8, 1.01]
+    fig, ax = plt.subplots(figsize=PANEL)
+    series = {}
+    for label, names in (("Macro Cell", runs("n3_uma_v3_cb", "n3_uma_v3_more")), ("Small Cell", runs("n1_umi_v3_cb"))):
+        corr, conv, _, _ = traces(names)
+        series[label] = [100 * (~conv[(corr >= lo) & (corr < hi)]).mean() for lo, hi in zip(edges[:-1], edges[1:])]
+    for i, (label, vals) in enumerate(series.items()):
+        x = np.arange(5) * 0.2 + 0.1 + (i - 0.5) * 0.08
+        ax.bar(x, vals, width=0.075, color=CELL[label], zorder=3)
+    ax.set_xlim(0, 1)
+    ax.set_xticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    ax.set_xticklabels(["", "0.2", "0.4", "0.6", "0.8", "1"])
+    ax.set_ylim(0, 35)
+    ax.set_ylabel("Failed TBs (%)", fontsize=13.5)
+    ax.set_xlabel("Correlation of Two Users")
+    style(ax)
+    save(fig, "mot_corr")
+    legend("mot_fail_legend", list(CELL.items()))
+
+
+def motivation_redecode():
+    names = runs("n5_uma_v3", "n5_uma_more1", "n5_uma_more2", "n5_uma_more3")
+    reps = [json.load(open(os.path.join(RES, f"{n}.json"))) for n in names]
+    fails = np.array([r["fail_pct"]["baseline_lslin_lmmse"] * r["slots"] for r in reps])   # weight: failed TBs
+    keys = {"More Iterations": "baseline_lslin_lmmse@50", "Iterative": "lslin_idd3", "K-Best": "baseline_lmmse_kbest",
+            "Small Neural": "nrx_rt", "Large Neural": "nrx"}
+    vals = {k: float(np.dot(fails, [r["recovers_pct_of_conventional_failures"][s] for r in reps]) / fails.sum())
+            for k, s in keys.items()}
+    bound = float(np.dot(fails, [r["recovers_pct_of_conventional_failures"]["baseline_perf_csi_kbest"] for r in reps]) / fails.sum())
+    fig, ax = plt.subplots(figsize=PANEL)
+    y = np.arange(len(vals))[::-1]
+    bs = ax.barh(y, list(vals.values()), height=0.62, color=[RX[k] for k in vals], zorder=3)
+    for b, v in zip(bs, vals.values()):
+        ax.text(v + 1.5, b.get_y() + b.get_height() / 2, f"{v:.0f}", ha="left", va="center", fontsize=VALUE)
+    ax.axvline(bound, color=BOUND, linestyle=(0, (4, 3)), linewidth=1.4, zorder=2)
+    ax.text(bound + 1.5, y[1], f"True\nchannel\n{bound:.0f}", ha="left", va="center", fontsize=VALUE - 1.5, color=MUTED)
+    ax.set_yticks(y)
+    ax.set_yticklabels(list(vals), fontsize=12.5)
+    ax.set_xlim(0, 100)
+    ax.set_xticks([0, 25, 50, 75, 100])
+    ax.set_xlabel("Decoded Again (%)")
+    style(ax, grid="x")
+    save(fig, "mot_receivers")
+
+    lanes = json.load(open(os.path.join(RES, "n13_lanes.json")))
+    one = {k: next(r for r in lanes[k] if r["lanes"] == 1)["latency_ms_mean"] for k in ("small", "large")}
+    t = {"L1\n(cuPHY)": (L1_MEDIAN_MS, CONV), "Small\nNeural": (one["small"], RX["Small Neural"]),
+         "Large\nNeural": (one["large"], RX["Large Neural"])}
+    fig, ax = plt.subplots(figsize=PANEL)
+    bs = ax.bar(range(len(t)), [v for v, _ in t.values()], width=0.55, color=[c for _, c in t.values()], zorder=3)
+    for b, (v, _) in zip(bs, t.values()):
+        ax.text(b.get_x() + b.get_width() / 2, v + 0.1, f"{v:.1f}", ha="center", va="bottom", fontsize=VALUE)
+    ax.set_xticks(range(len(t)))
+    ax.set_xticklabels(list(t), fontsize=12)
+    ax.set_ylim(0, 5.4)
+    ax.set_ylabel("Time (ms)")
+    style(ax)
+    save(fig, "mot_runtime")
+
+    fig, ax = plt.subplots(figsize=PANEL)
+    series = {}
+    for label, names in (("Macro Cell", runs("n3_uma_v3_cb", "n3_uma_v3_more")), ("Small Cell", runs("n1_umi_v3_cb"))):
+        _, conv, rec, cb = traces(names)
+        f = ~conv
+        groups = [(1, 3), (4, 6), (7, 9), (10, 10)]
+        series[label] = [100 * (rec[f & (cb >= lo) & (cb <= hi)]).mean() for lo, hi in groups]
+    bars(ax, ["1-3", "4-6", "7-9", "All 10"], series, CELL, fmt="{:.0f}")
+    ax.set_ylim(0, 118)
+    ax.set_yticks([0, 50, 100])
+    ax.set_ylabel("Recovered (%)", fontsize=13)
+    ax.set_xlabel("Failed Code Blocks of a TB")
+    style(ax)
+    save(fig, "mot_codeblocks")
+    legend("mot_redecode_legend", list(CELL.items()), width=3.3)
+
+
+def motivation_server():
+    rows = {}
+    for line in open(os.path.join(RES, "n16_summary.txt")):
+        f = line.split()
+        if len(f) >= 10 and f[0] in ("allb68", "allb68g4"):
+            rows.setdefault(f[0], {}).setdefault(int(f[2]), []).append(float(f[9]))
+    fig, ax = plt.subplots(figsize=PANEL)
+    for label, pol in (("One GPU", "allb68"), ("Four GPUs", "allb68g4")):
+        cells = sorted(rows[pol])
+        ax.plot(cells, [np.mean(rows[pol][c]) for c in cells], color=GPUS[label], linewidth=2.4, marker="o", markersize=6)
+    ax.set_xlim(0, 25)
+    ax.set_xticks([1, 4, 8, 12, 16, 20, 24])
+    ax.set_ylim(0, 55)
+    ax.set_yticks([0, 25, 50])
+    ax.set_xlabel("Cells per Server")
+    ax.set_ylabel("Recovered (%)", fontsize=13)
+    style(ax, grid="both")
+    save(fig, "mot_gpu")
+
+    lanes = json.load(open(os.path.join(RES, "n13_lanes.json")))["large"]
+    lanes = [r for r in lanes if r["lanes"] <= 4]
+    fig, ax = plt.subplots(figsize=PANEL)
+    bs = ax.bar([r["lanes"] for r in lanes], [r["latency_ms_mean"] for r in lanes], width=0.55,
+                color=RX["Large Neural"], zorder=3)
+    for b, r in zip(bs, lanes):
+        ax.text(b.get_x() + b.get_width() / 2, r["latency_ms_mean"] + 0.4, f"{r['latency_ms_mean']:.1f}",
+                ha="center", va="bottom", fontsize=VALUE)
+    ax.set_xticks([r["lanes"] for r in lanes])
+    ax.set_xlabel("Runs at Once on One GPU")
+    ax.set_ylim(0, 25)
+    ax.set_ylabel("Time (ms)")
+    style(ax)
+    save(fig, "mot_lanes")
+
+    inr = [0, 3, 6, 10]
+    pub = runs("irc_uma_v3", "ici_uma_inr3", "ici_uma_inr6", "ici_uma_inr10")
+    ici = runs("ici_uma_v3_iciaware", "ici_uma_inr3_iciaware", "ici_uma_inr6_iciaware", "ici_uma_inr10_iciaware")
+    fig, ax = plt.subplots(figsize=PANEL)
+    for label, names in (("Published Large NRx", pub), ("Interference-Trained", ici)):
+        y = [merged([n])["resends_per_100"] / merged([n], "ours")["resends_per_100"] for n in names]
+        ax.plot(inr, y, color=NRX[label], linewidth=2.4, marker="o", markersize=6)
+        ax.text(inr[-1] + 0.4, y[-1], f"{y[-1]:.1f}\u00d7", va="center", fontsize=VALUE, color=INK)
+    ax.set_xlim(-0.5, 12)
+    ax.set_xticks(inr)
+    ax.set_ylim(1, 3)
+    ax.set_yticks([1, 2, 3])
+    ax.set_xlabel("Interference (dB)")
+    ax.set_ylabel("Reduction (\u00d7)")
+    style(ax, grid="both")
+    save(fig, "mot_interference")
+    legend("mot_server_legend", list(GPUS.items()) + list(NRX.items()), width=10.2)
+
+
 if __name__ == "__main__":
     pairs()
+    motivation_failures()
+    motivation_redecode()
+    motivation_server()
