@@ -2,8 +2,9 @@
 % (figures/deck/src/tikz_style2.tex) at the size of the one-column page, in the font of the data panels:
 %   - DejaVu Sans everywhere (make_paper_figures.py and the STATOR data panels use it), built with LuaLaTeX
 %   - bold only for the names of panels and components; every other text in the regular weight
-%   - what exists without Reverb (L1, L2 scheduler, GPUs, AI inference, the conventional receiver) is gray: gray
-%     panel, gray border, gray text (existing); what Reverb adds is orange: orange panel and border, black text (rev)
+%   - text is black everywhere; colour marks what a part is: gray fill and border for what exists without Reverb (L1,
+%     L2 scheduler, the GPUs of the server, AI inference, the conventional base station, scheduling in arrival order),
+%     orange for what Reverb adds, white with a black border for context such as the uplink slots (ctxrow)
 %   - state is drawn as rows of cells (cl), tables with a blue header row (th) where a table is needed
 %   - red (dred) only for failed code blocks, retransmissions, missed deadlines and the key note of a figure
 % One colour per entity in every figure: uplink slot teal, special slot gray, L1 gray, AI light blue, received samples
@@ -30,8 +31,8 @@
 \definecolor{thblue}{HTML}{0070C0}  % table header
 \definecolor{dred}{HTML}{C00000}
 \definecolor{dgreen}{HTML}{2E7D32}
-\definecolor{exfill}{HTML}{F2F2F2}  % a part that exists without Reverb
-\definecolor{exline}{HTML}{A6A6A6}
+\definecolor{exfill}{HTML}{E7E6E6}  % a part that exists without Reverb
+\definecolor{exline}{HTML}{8C8C8C}
 \definecolor{extext}{HTML}{6E6E6E}
 \definecolor{revfill}{HTML}{FBE5D6} % a part that Reverb adds
 \definecolor{revline}{HTML}{C55A11}
@@ -52,14 +53,15 @@
   ptitle/.style={font=\fontsize{7.2}{8.6}\selectfont\bfseries, inner sep=1pt},
   ctitle/.style={font=\fontsize{6.3}{7.6}\selectfont\bfseries, inner sep=1pt},
   txt/.style={font=\figsize, inner sep=1pt, align=center},
-  gtxt/.style={font=\figsize, text=extext, inner sep=1pt, align=center},
+  gtxt/.style={font=\figsize, inner sep=1pt, align=center},
   stxt/.style={font=\tabsize, inner sep=1pt, align=center},
   ann/.style={font=\figsize\itshape, inner sep=1pt, align=center},
   key/.style={font=\figsize\itshape, text=dred, inner sep=1pt, align=center},
   th/.style={draw=black, fill=thblue, text=white, font=\tabsize, inner sep=0pt, line width=0.4pt,
              minimum height=0.31cm, text height=0.18cm, text depth=0.05cm},
   rowh/.style={draw=black, fill=navy, text=white, font=\tabsize, inner sep=0pt, line width=0.4pt, align=center},
-  exrow/.style={draw=exline, fill=exfill, text=extext, font=\tabsize, inner sep=0pt, line width=0.5pt, align=center},
+  exrow/.style={draw=exline, fill=exfill, font=\tabsize, inner sep=0pt, line width=0.5pt, align=center},
+  ctxrow/.style={draw=black!70, fill=white, font=\tabsize, inner sep=0pt, line width=0.5pt, align=center},
   rrow/.style={draw=revline, fill=revfill, text=black, font=\tabsize, inner sep=0pt, line width=0.6pt, align=center},
   cl/.style={draw=black!65, line width=0.35pt, inner sep=0pt, minimum width=0.4cm, minimum height=0.34cm, font=\tabsize},
   arr/.style={-{Latex[length=1.5mm,width=1.3mm]}, line width=0.7pt},

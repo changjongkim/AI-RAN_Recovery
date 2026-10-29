@@ -11,7 +11,7 @@
 \begin{document}
 \begin{tikzpicture}[x=1cm, y=1cm]
   % row labels: slots, the conventional base station, Reverb
-  \node[exrow, minimum width=3.0cm, minimum height=0.34cm] at (1.5, 0) {Uplink slots};
+  \node[ctxrow, minimum width=3.0cm, minimum height=0.34cm] at (1.5, 0) {Uplink slots};
   \node[exrow, minimum width=1.5cm, minimum height=0.34cm] at (0.75, -0.46) {Conventional};
   \node[exrow, minimum width=1.45cm, minimum height=0.34cm] at (2.275, -0.46) {A, B, C};
   \node[rrow, minimum width=1.5cm, minimum height=1.14cm] at (0.75, -1.32) {Reverb};
@@ -33,7 +33,7 @@
     \draw[black!70, line width=0.5pt, densely dashed] (\tl, -1.92) -- (\tl, 0.2);
     \node[txt, anchor=south west] at (\tl, 0.2) {L1 result};
     % conventional: grant at once, retransmission in the next uplink slot
-    \draw[garr] (\tl, -0.46) -- (\us - 0.05, -0.46) node[pos=0.5, stxt, text=extext, above=1pt] {Grant at once};
+    \draw[garr] (\tl, -0.46) -- (\us - 0.05, -0.46) node[pos=0.5, stxt, above=1pt] {Grant at once};
     \draw[dred, line width=1.1pt, fill=ulc] (\us+0.04, -0.6) rectangle (\us+0.46, -0.32);
     \node[stxt, anchor=west] at (\us + 0.6, -0.46) {Every failed TB is retransmitted};
     % Reverb, A: wait, recovery with the NRx trained without interference, delivered

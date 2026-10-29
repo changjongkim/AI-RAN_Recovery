@@ -20,17 +20,21 @@ case $pol in off) nrx=off; cb=10 ;; all) nrx=rescue; cb=10 ;; cb5) nrx=rescue; c
   *) echo "policy?"; exit 2 ;; esac
 #        DEADLINE (recovery deadline in ms, default 11.5; 11.0 since 2026-10-29: the retransmission slot 15.0 ms minus the
 #        grant lead of 4.0 ms) and N16_DATA (dataset, default n16_uma; n16_uma_f35 is the 3.5 GHz one) add to the tag.
+#        NRX_FLAGS overrides the NeuralRx mechanisms of the runtime (make_config.py --nrx-flags) and adds its letters and
+#        digits to the tag: admit=0 starts a recovery even after its latest start (no rejection), rank=value serves
+#        TBs with fewer failed code blocks first (the TBs whose grant waits before those granted at once).
 bound=${BOUND:-7.6}; gpus=${RT_GPUS:-1}; tagpol=$pol; [ "$bound" = 7.6 ] || tagpol=${pol}b${bound/./}
 deadline=${DEADLINE:-11.5}; data=${N16_DATA:-n16_uma}
 [ "$gpus" = 1 ] || tagpol=${tagpol}g$gpus
 [ "${PERIODS:-2400}" = 2400 ] || tagpol=${tagpol}p${PERIODS}
 [ "$deadline" = 11.5 ] || tagpol=${tagpol}d${deadline/./}
 [ "$data" = n16_uma ] || tagpol=${tagpol}${data#n16_uma}
+[ -z "${NRX_FLAGS:-}" ] || tagpol=${tagpol}$(echo "$NRX_FLAGS" | tr -cd 'a-z0-9')
 [ -s $REC/data/$data/nv_mu2_meta.json ] || { echo "no dataset (exp/n16_data.sh)"; exit 1; }
 matrix=""; for c in $cells; do matrix="$matrix c$c:$nrx:none"; done
 cd /pscratch/sd/s/sgkim/kcj/airan_cloudlab || exit 1
 out=$(SLOT_TAG=rec16${tagpol}s$seed SLOT_PERIODS=${PERIODS:-2400} SLOT_AI_RATE=4 \
-  SLOT_EXTRA="--gpus $gpus --weak-fraction 1.0 --weak-profile nv_mu2 --dataset $REC/data/$data --engine /softwall_runtime/engines/nv/nrx_large_273prb_2ue.trt --conv-ldpc-iterations 20 --nrx-ldpc-iterations 20 --lanes-per-gpu 1 --nrx-max-cb-fail $cb --rescue-deadline-ms $deadline --nrx-bound-ms $bound --nrx-bound-corun-ms $bound --ring 512 --seed $((83000 + 1000 * seed)) --ring-offset $((50 * (seed - 1)))" \
+  SLOT_EXTRA="--gpus $gpus --weak-fraction 1.0 --weak-profile nv_mu2 --dataset $REC/data/$data --engine /softwall_runtime/engines/nv/nrx_large_273prb_2ue.trt --conv-ldpc-iterations 20 --nrx-ldpc-iterations 20 --lanes-per-gpu 1 --nrx-max-cb-fail $cb --rescue-deadline-ms $deadline --nrx-bound-ms $bound --nrx-bound-corun-ms $bound --ring 512 --seed $((83000 + 1000 * seed)) --ring-offset $((50 * (seed - 1)))${NRX_FLAGS:+ --nrx-flags $NRX_FLAGS}" \
   SLOT_MATRIX="$matrix" bash scripts_for_node/backstop_slot/run_matrix.sh 2>&1)
 echo "$out"
 echo "$out" | grep -q "^FAILED" && exit 1

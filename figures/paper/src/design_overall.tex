@@ -15,7 +15,7 @@
 \begin{tikzpicture}[x=1cm, y=1cm]
   % ------------------------------------------------------------------ L1 (existing)
   \draw[existing] (0, 0) rectangle (1.85, -2.25);
-  \node[ctitle, text=extext] at (0.925, -0.22) {L1 (cuPHY)};
+  \node[ctitle] at (0.925, -0.22) {L1 (cuPHY)};
   \foreach \t/\f [count=\k from 0] in {A/2, B/10, C/3} {
     \node[gtxt] at (0.22, -0.64-0.34*\k) {\t};
     \cbs{0.4}{-0.64-0.34*\k}{\f}{0.13}{0.2}
@@ -58,12 +58,12 @@
   \node[key, font=\tabsize\itshape] at (9.775, -1.82) {Reject after \vD\,−\,\vr};
   % ------------------------------------------------------------------ L2 (existing): hold, grant, deliver
   \draw[existing] (11.65, 0) rectangle (13.9, -2.25);
-  \node[ctitle, text=extext] at (12.775, -0.22) {L2 Scheduler};
+  \node[ctitle] at (12.775, -0.22) {L2 Scheduler};
   \tbc{11.92}{-0.64}{A} \tbc{12.24}{-0.64}{C}
   \fill[revline] (12.48, -0.75) rectangle (12.54, -0.53) (12.6, -0.75) rectangle (12.66, -0.53);
-  \node[txt, text=revline, anchor=west] at (12.72, -0.64) {Hold};
+  \node[txt, text=revline, anchor=west] at (12.72, -0.64) {Wait};
   \tbc{11.92}{-1.02}{B}
-  \node[stxt, text=extext, anchor=west] at (12.09, -1.02) {Grant};
+  \node[stxt, anchor=west] at (12.09, -1.02) {Grant};
   \draw[garr] (12.73, -1.02) -- (12.93, -1.02);
   \foreach \c/\f [count=\i from 0] in {D/white, S/spc, U/ulc} {
     \node[cl, fill=\f, minimum width=0.24cm, minimum height=0.24cm, font=\fontsize{5}{5}\selectfont, anchor=west] at (12.96+0.24*\i, -1.02) {\c};
@@ -72,17 +72,17 @@
   \tbc{11.92}{-1.4}{A} \tbc{12.24}{-1.4}{C}
   \draw[garr] (12.42, -1.4) -- (12.68, -1.4);
   \node[txt, text=dgreen, anchor=west] at (12.72, -1.4) {✓ Deliver};
-  \node[ann, font=\tabsize\itshape, text=extext] at (12.775, -1.85) {Grant by \vD};
+  \node[ann, font=\tabsize\itshape] at (12.775, -1.85) {Grant by \vD};
   % arrows into and out of Reverb
   \node[barrow, minimum height=0.25cm] at (1.975, -1.0) {};
   \node[barrow, minimum height=0.25cm] at (11.5, -1.0) {};
   % ------------------------------------------------------------------ AI-RAN server (existing)
   \draw[existing] (0, -2.7) rectangle (13.9, -4.35);
-  \node[ptitle, text=extext, anchor=north west] at (0.06, -2.74) {AI-RAN Server};
+  \node[ptitle, anchor=north west] at (0.06, -2.74) {AI-RAN Server};
   \node[gtxt, font=\tabsize, anchor=north east] at (13.82, -2.79) {\lgd{l1c}\,L1\enspace \lgd{aic}\,AI inference\enspace
     \lgd{nrxc}\,NRx trained without interference\enspace \lgd{nrxt}\,NRx trained with interference};
   \draw[draw=exline, fill=white, line width=0.5pt] (0.1, -3.08) rectangle (1.85, -4.25);
-  \node[ctitle, text=extext] at (0.975, -3.25) {GPU Memory};
+  \node[ctitle] at (0.975, -3.25) {GPU Memory};
   \foreach \i in {0,...,5} { \foreach \j in {0,1} {
     \draw[black!60, line width=0.3pt, fill=sampc] (0.22+0.255*\i, -3.42-0.17*\j) rectangle (0.44+0.255*\i, -3.57-0.17*\j);
   } }
@@ -102,6 +102,8 @@
   \node[barrow, minimum height=0.4cm, shape border rotate=270] at (0.925, -2.47) {};
   \node[num] at (0.55, -2.47) {1};
   \node[txt, anchor=west] at (1.12, -2.47) {Keep the samples};
+  \node[txt] at (6.45, -2.47) {\tikz[baseline=-0.6ex]{\draw[exline, fill=exfill, line width=0.6pt] (0,-0.1) rectangle (0.3,0.1);}\,Exists without Reverb\qquad
+    \tikz[baseline=-0.6ex]{\draw[revline, fill=revfill, line width=0.8pt] (0,-0.1) rectangle (0.3,0.1);}\,Added by Reverb};
   \node[barrow, minimum height=0.4cm, shape border rotate=270] at (9.775, -2.47) {};
   \node[txt, anchor=west] at (9.97, -2.47) {Place};
   \node[barrow, minimum height=0.4cm, shape border rotate=90] at (12.775, -2.47) {};
