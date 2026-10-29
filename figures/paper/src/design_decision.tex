@@ -1,54 +1,64 @@
-% Figure (Section 4.2): the same three failed TBs without Reverb and with it.  A and B are TBs of cell 1, C of cell 2,
-% which has interference from neighbor cells above theta.  Conventional: every failed TB gets its grant at the L1 result
-% and is retransmitted in the next uplink slot U_s after the grant lead.  Reverb: Recovery Gate holds the grant of A
-% (2 of 10 code blocks failed) and C (3 failed), which wait for their recovery and are delivered without a
-% retransmission; B failed all ten code blocks and gets its grant at once, as without Reverb, while its recovery runs in
-% parallel.  Receiver Selector runs the NRx trained with interference for C and the NRx trained without it for A.
-% Geometry follows the timing of Section 5.1 (L1 result 1.4 ms after the slot, recovery 6.3 ms, DDDSU, grant lead
-% 4 ms); no value is printed.
+% Figure (Section 4.2): the same three failed TBs without Reverb (gray) and with Reverb (orange).  A and B are TBs of
+% cell 1, C of cell 2, which has interference from neighbor cells above theta.  Conventional: every failed TB gets its
+% grant at the L1 result, is sent again in the next uplink slot U_s after the grant lead, and the L1 decodes the
+% retransmission; the TB is delivered at the L1 result of U_s.  Reverb: Recovery Gate lets A (2 of 10 code blocks
+% failed) and C (3 failed) wait for their recovery, which ends before the retransmission would be decoded: they are
+% delivered earlier and the uplink slot carries no retransmission.  B failed all ten code blocks and gets its grant at
+% once, as without Reverb, while its recovery runs in parallel.  Receiver Selector runs the NRx trained with interference
+% for C and the NRx trained without it for A.  Geometry follows the timing of Section 5.1 (L1 result 1.4 ms after the
+% slot, recovery 6.3 ms, DDDSU, grant lead 4 ms); no value is printed.
 \documentclass[border=1pt]{standalone}
 \input{reverb_style}
+\newcommand{\rtx}[2]{\draw[dred, line width=1.1pt, fill=ulc] (#1+0.04, #2-0.14) rectangle (#1+0.46, #2+0.14);}
+\newcommand{\lone}[1]{\node[cl, fill=l1c, minimum height=0.28cm, minimum width={0.62*1.4cm}, anchor=west] at (8.0, #1) {L1};}
 \begin{document}
 \begin{tikzpicture}[x=1cm, y=1cm]
-  % row labels: slots, the conventional base station, Reverb
-  \node[ctxrow, minimum width=3.0cm, minimum height=0.34cm] at (1.5, 0) {Uplink slots};
-  \node[exrow, minimum width=1.5cm, minimum height=0.34cm] at (0.75, -0.46) {Conventional};
-  \node[exrow, minimum width=1.45cm, minimum height=0.34cm] at (2.275, -0.46) {A, B, C};
-  \node[rrow, minimum width=1.5cm, minimum height=1.14cm] at (0.75, -1.32) {Reverb};
+  \node[ctxrow, minimum width=3.0cm, minimum height=0.32cm] at (1.5, 0) {Uplink slots};
+  \node[exrow, minimum width=1.5cm, minimum height=0.32cm] at (0.75, -0.44) {Conventional};
+  \node[exrow, minimum width=1.45cm, minimum height=0.32cm] at (2.275, -0.44) {A, B, C};
+  \node[rrow, minimum width=1.5cm, minimum height=1.12cm] at (0.75, -1.3) {Reverb};
   \foreach \t/\f [count=\k from 0] in {A/2, B/10, C/3} {
-    \node[rrow, minimum width=1.45cm, minimum height=0.34cm] at (2.275, -0.92-0.4*\k) {};
-    \node[stxt, anchor=west] at (1.58, -0.92-0.4*\k) {\t};
-    \cbs{1.79}{-0.92-0.4*\k}{\f}{0.12}{0.2}
+    \node[rrow, minimum width=1.45cm, minimum height=0.32cm] at (2.275, -0.9-0.4*\k) {};
+    \node[stxt, anchor=west] at (1.58, -0.9-0.4*\k) {\t};
+    \cbs{1.79}{-0.9-0.4*\k}{\f}{0.12}{0.2}
   }
-  \begin{scope}[xshift=3.35cm, x=0.6cm]
-    \def\tl{1.9} \def\us{7.5} \def\tr{8.2}
-    \foreach \k in {-1,...,33} {
+  \begin{scope}[xshift=3.41cm, x=0.62cm]
+    \def\tl{1.9} \def\us{7.5} \def\tr{8.2} \def\dl{9.4}
+    \foreach \k in {-1,...,20} {
       \pgfmathsetmacro{\t}{0.5*\k}
       \pgfmathsetmacro{\m}{mod(\k+10, 5)}
       \ifdim \m pt = 0pt \def\c{ulc}\else\ifdim \m pt = 4pt \def\c{spc}\else\def\c{white}\fi\fi
-      \draw[black!55, line width=0.3pt, fill=\c] (\t, -0.17) rectangle (\t + 0.5, 0.17);
+      \draw[black!55, line width=0.3pt, fill=\c] (\t, -0.16) rectangle (\t + 0.5, 0.16);
     }
-    \draw[black, line width=1.1pt] (0, -0.17) rectangle (0.5, 0.17);
-    \node[txt, anchor=south east] at (0.5, 0.2) {Failed TBs};
-    \draw[black!70, line width=0.5pt, densely dashed] (\tl, -1.92) -- (\tl, 0.2);
-    \node[txt, anchor=south west] at (\tl, 0.2) {L1 result};
-    % conventional: grant at once, retransmission in the next uplink slot
-    \draw[garr] (\tl, -0.46) -- (\us - 0.05, -0.46) node[pos=0.5, stxt, above=1pt] {Grant at once};
-    \draw[dred, line width=1.1pt, fill=ulc] (\us+0.04, -0.6) rectangle (\us+0.46, -0.32);
-    \node[stxt, anchor=west] at (\us + 0.6, -0.46) {Every failed TB is retransmitted};
-    % Reverb, A: wait, recovery with the NRx trained without interference, delivered
-    \node[cl, fill=nrxc, minimum height=0.28cm, minimum width={0.6*6.3cm}, anchor=west] at (\tl, -0.92) {NRx trained without interference};
-    \node[stxt, text=dgreen, anchor=west] at (\tr + 0.15, -0.92) {✓ Delivered, no retransmission};
-    % Reverb, B: grant at once, recovery in parallel
-    \draw[oarr] (\tl, -1.32) -- (\us - 0.05, -1.32);
-    \draw[dred, line width=1.1pt, fill=ulc] (\us+0.04, -1.46) rectangle (\us+0.46, -1.18);
-    \node[stxt, anchor=west] at (\us + 0.6, -1.32) {Grant at once, recovery in parallel};
-    % Reverb, C: wait, recovery with the NRx trained with interference, delivered
-    \node[cl, fill=nrxt, text=white, minimum height=0.28cm, minimum width={0.6*6.3cm}, anchor=west] at (\tl, -1.72) {NRx trained with interference};
-    \node[stxt, text=dgreen, anchor=west] at (\tr + 0.15, -1.72) {✓ Delivered, no retransmission};
+    \draw[black, line width=1.1pt] (0, -0.16) rectangle (0.5, 0.16);
+    \node[txt, anchor=south east] at (0.5, 0.19) {Failed TBs};
+    \draw[black!65, line width=0.5pt, densely dashed] (\tl, -1.88) -- (\tl, 0.19);
+    \node[txt, anchor=south west] at (\tl - 0.1, 0.19) {L1 result};
+    \draw[black!65, line width=0.5pt, densely dashed] (\dl, -1.88) -- (\dl, 0.19);
+    \node[txt, anchor=south] at (\dl, 0.19) {Delivered without Reverb};
+    % conventional: grant, retransmission in U_s, the L1 decodes it again, delivery
+    \draw[garr] (\tl, -0.44) -- (\us - 0.02, -0.44) node[pos=0.5, stxt, above=0.5pt] {Grant};
+    \rtx{\us}{-0.44}
+    \lone{-0.44}
+    % Reverb, A: wait for the recovery, delivered earlier, no retransmission
+    \node[cl, fill=nrxc, minimum height=0.28cm, minimum width={0.62*6.3cm}, anchor=west] at (\tl, -0.9) {NRx trained without interference};
+    \draw[dgreen, line width=0.8pt, {Latex[length=1.2mm]}-{Latex[length=1.2mm]}] (\tr + 0.05, -0.9) -- (\dl - 0.05, -0.9);
+    % Reverb, B: grant at once as without Reverb, recovery in parallel
+    \draw[oarr] (\tl, -1.3) -- (\us - 0.02, -1.3) node[pos=0.5, stxt, above=0.5pt] {Grant at once};
+    \rtx{\us}{-1.3}
+    \lone{-1.3}
+    % Reverb, C: wait for the recovery with the NRx trained with interference
+    \node[cl, fill=nrxt, text=white, minimum height=0.28cm, minimum width={0.62*6.3cm}, anchor=west] at (\tl, -1.7) {NRx trained with interference};
+    \draw[dgreen, line width=0.8pt, {Latex[length=1.2mm]}-{Latex[length=1.2mm]}] (\tr + 0.05, -1.7) -- (\dl - 0.05, -1.7);
   \end{scope}
-  \node[stxt, anchor=north west] at (0, -2.0) {\lgdrtx\,Retransmission};
-  \node[stxt, text=revline, anchor=north east] at (13.9, -2.0) {Recovery Gate: wait if ≤ \vK\ blocks failed\quad
+  % outcome of each row
+  \foreach \y/\t/\c in {-0.44/{Retransmitted, then delivered}/black, -0.9/{✓ Earlier, no retransmission}/dgreen,
+                        -1.3/{As without Reverb}/black, -1.7/{✓ Earlier, no retransmission}/dgreen} {
+    \node[stxt, text=\c, anchor=west] at (10.05, \y) {\t};
+  }
+  \node[stxt, anchor=north west] at (0, -1.98) {\lgdrtx\,Retransmission\enspace \lgd{l1c}\,L1 decodes the retransmission\enspace
+    \tikz[baseline=-0.6ex]\draw[dgreen, line width=0.8pt, {Latex[length=1.1mm]}-{Latex[length=1.1mm]}] (0,0) -- (0.4,0);\,Earlier delivery};
+  \node[stxt, text=revline, anchor=north west] at (0, -2.28) {Recovery Gate: wait if ≤ \vK\ code blocks failed, otherwise grant at once\quad
     Receiver Selector: NRx by the interference of the cell};
 \end{tikzpicture}
 \end{document}

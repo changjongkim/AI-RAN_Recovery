@@ -1,45 +1,57 @@
-% Figure (Section 4.1, b): the recovery deadline of a failed TB on the DDDSU slots.  The L1 result (CRC fail) of the TB
-% is known at t_L1.  U_r is the latest uplink slot the base station allows for the retransmission, and a grant must
-% leave at least the grant lead L before it, so the grant can wait until D = U_r - L.  A recovery that ends by D lets a
-% TB that it does not decode still be retransmitted in U_r.  Geometry follows the timing of the evaluation (Section 5.1)
-% but no value is printed (Design section rule).
+% Figure (Section 4.1, b): the recovery deadline bounds the cost of waiting.  A failed TB arrives in an uplink slot and
+% its L1 result is known at t_L1.  Conventional: the grant follows at t_L1 and the retransmission uses the first uplink
+% slot U_s at least the grant lead L later.  With Reverb the TB waits for its recovery: if the recovery fails, the grant
+% follows the recovery result; a recovery that starts at its latest start D - r ends at D, and the grant at D still
+% reaches U_r = D + L, the latest uplink slot the operator allows for the retransmission.  So waiting delays the
+% retransmission of a TB that recovery does not decode by at most U_r - U_s.  Geometry follows the timing of Section 5.1
+% (L1 result 1.4 ms after the slot, recovery 6.3 ms, DDDSU, grant lead 4 ms, D = 11.0 ms); no value is printed.
 \documentclass[border=1pt]{standalone}
 \input{reverb_style}
 \newcommand{\tL}{\textit{t}\textsubscript{L1}}
+\newcommand{\Us}{\textit{U}\textsubscript{s}}
 \newcommand{\Ur}{\textit{U}\textsubscript{r}}
+\newcommand{\rtx}[2]{\draw[dred, line width=1.1pt, fill=ulc] (#1+0.04, #2-0.14) rectangle (#1+0.46, #2+0.14);}
 \begin{document}
 \begin{tikzpicture}[x=1cm, y=1cm]
-  \node[ctxrow, minimum width=2.3cm, minimum height=0.34cm] at (1.15, 0) {Uplink slots};
-  \node[rrow, minimum width=2.3cm, minimum height=0.34cm] at (1.15, -0.46) {Recovery};
-  \node[exrow, minimum width=2.3cm, minimum height=0.34cm] at (1.15, -0.92) {Grant};
-  \begin{scope}[xshift=2.72cm, x=0.665cm]
-    \def\tl{1.9} \def\ur{15.0} \def\dd{11.0}
-    \foreach \k in {-1,...,31} {
+  \node[ctxrow, minimum width=2.4cm, minimum height=0.32cm] at (1.2, 0) {Uplink slots};
+  \node[exrow, minimum width=2.4cm, minimum height=0.32cm] at (1.2, -0.44) {Conventional};
+  \node[rrow, minimum width=2.4cm, minimum height=0.32cm] at (1.2, -0.88) {Recovery fails};
+  \node[rrow, minimum width=2.4cm, minimum height=0.32cm] at (1.2, -1.32) {Recovery ends at \vD};
+  \begin{scope}[xshift=2.88cm, x=0.655cm]
+    \def\tl{1.9} \def\tr{8.2} \def\us{7.5} \def\ur{15.0} \def\dd{11.0} \def\ls{4.7}
+    \foreach \k in {-1,...,32} {
       \pgfmathsetmacro{\t}{0.5*\k}
       \pgfmathsetmacro{\m}{mod(\k+10, 5)}
       \ifdim \m pt = 0pt \def\c{ulc}\else\ifdim \m pt = 4pt \def\c{spc}\else\def\c{white}\fi\fi
-      \draw[black!55, line width=0.3pt, fill=\c] (\t, -0.17) rectangle (\t + 0.5, 0.17);
+      \draw[black!55, line width=0.3pt, fill=\c] (\t, -0.16) rectangle (\t + 0.5, 0.16);
     }
-    \draw[black, line width=1.1pt] (0, -0.17) rectangle (0.5, 0.17);
-    \node[txt, anchor=south] at (0.25, 0.2) {Failed TB};
+    \draw[black, line width=1.1pt] (0, -0.16) rectangle (0.5, 0.16);
+    \node[txt, anchor=south east] at (0.5, 0.19) {Failed TB};
     \foreach \t/\l in {\tl/\tL, \dd/\vD} {
-      \draw[black!70, line width=0.5pt, densely dashed] (\t, -1.1) -- (\t, 0.2);
-      \node[txt, anchor=south] at (\t, 0.2) {\l};
+      \draw[black!65, line width=0.5pt, densely dashed] (\t, -1.5) -- (\t, 0.19);
+      \node[txt, anchor=south] at (\t, 0.19) {\l};
     }
-    \draw[dred, line width=1.1pt, fill=ulc] (\ur+0.04, -0.14) rectangle (\ur+0.46, 0.14);
-    \node[txt, anchor=south] at (\ur + 0.25, 0.2) {\Ur};
-    \draw[black!70, line width=0.5pt, densely dashed] (\ur, -1.1) -- (\ur, -0.17);
-    % the recovery may run from the L1 result until D
-    \fill[revfill] (\tl, -0.62) rectangle (\dd, -0.3);
-    \node[cl, fill=nrxc, minimum height=0.3cm, minimum width={0.665*6.3cm}, anchor=west] at (\tl, -0.46) {Recovery, run time \vr};
-    \node[ann, anchor=east] at (\dd - 0.1, -0.46) {Ends by \vD};
-    % the latest grant that keeps the retransmission in U_r
-    \draw[{Latex[length=1.3mm]}-{Latex[length=1.3mm]}, line width=0.6pt] (\dd, -0.92) -- (\ur, -0.92);
-    \node[txt, fill=white, inner sep=1pt] at ({(\dd+\ur)/2}, -0.92) {Grant lead \vL};
-    \node[ann, anchor=east] at (\dd - 0.1, -0.92) {Latest grant};
+    \node[txt, anchor=south] at (\us + 0.25, 0.19) {\Us};
+    \node[txt, anchor=south] at (\ur + 0.25, 0.19) {\Ur};
+    % conventional: grant at the L1 result, retransmission in U_s
+    \draw[garr] (\tl, -0.44) -- (\us - 0.02, -0.44) node[pos=0.5, stxt, above=0.5pt] {Grant};
+    \rtx{\us}{-0.44}
+    % the recovery fails: grant at its result
+    \node[cl, fill=nrxc, minimum height=0.28cm, minimum width={0.655*6.3cm}, anchor=west] at (\tl, -0.88) {Recovery};
+    \draw[oarr] (\tr, -0.88) -- (12.48, -0.88) node[pos=0.5, stxt, above=0.5pt] {Grant};
+    \rtx{12.5}{-0.88}
+    % the latest case: the recovery starts at its latest start and ends at D; the grant at D reaches U_r
+    \fill[waitc] (\tl, -1.45) rectangle (\ls, -1.19);
+    \node[stxt] at ({(\tl+\ls)/2}, -1.32) {Waits for a GPU};
+    \node[cl, fill=nrxc, minimum height=0.28cm, minimum width={0.655*6.3cm}, anchor=west] at (\ls, -1.32) {Recovery};
+    \draw[oarr] (\dd, -1.32) -- (\ur - 0.02, -1.32) node[pos=0.5, stxt, above=0.5pt] {Grant lead \vL};
+    \rtx{\ur}{-1.32}
+    % the bound
+    \draw[dred, line width=0.6pt, {Latex[length=1.3mm]}-{Latex[length=1.3mm]}] (\us + 0.25, -1.68) -- (\ur + 0.25, -1.68);
+    \node[key, fill=white, inner sep=1.5pt] at ({(\us+\ur)/2 + 0.25}, -1.68) {Largest delay of a retransmission};
   \end{scope}
-  \node[key, anchor=north east] at (13.9, -1.18) {Recovery deadline \vD\,=\,\Ur\,−\,\vL};
-  \node[txt, font=\tabsize, anchor=north west] at (0, -1.2) {\lgd{ulc}\,Uplink\enspace \lgd{spc}\,Special\enspace
-    \lgd{white}\,Downlink\enspace \lgdrtx\,Latest retransmission slot};
+  \node[stxt, anchor=north west] at (0, -1.88) {\lgd{ulc}\,Uplink\enspace \lgd{spc}\,Special\enspace \lgd{white}\,Downlink\enspace
+    \lgdrtx\,Retransmission\enspace \lgd{nrxc}\,Recovery (run time \vr)};
+  \node[key, anchor=north east] at (13.9, -1.88) {Recovery deadline \vD\,=\,\Ur\,−\,\vL};
 \end{tikzpicture}
 \end{document}
