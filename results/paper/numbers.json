@@ -44,6 +44,19 @@
    "reverb_full_wait": 9.0283203125
   }
  },
+ "setup": {
+  "SetupEbNoHigh": "12",
+  "SetupEbNoLow": "6",
+  "SetupLOneMs": "1.4",
+  "SetupLeadMs": "4.0",
+  "SetupRecoveryDeadlineMs": "11.5",
+  "SetupRecoveryRunMs": "6.3",
+  "SetupRetxGapMs": "7.5",
+  "SetupSlots": "10,240",
+  "SetupTBs": "20,480",
+  "SetupTbBytes": "10,497",
+  "SetupTransmissions": "4"
+ },
  "values": {
   "LostCutFullWait": 2.393617021276596,
   "PairingCutBestSixteen": 1.6455424274973147,

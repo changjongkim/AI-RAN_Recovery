@@ -19,6 +19,10 @@ Macros (value, source):
   \\PairingCutBestSixteen  retransmissions per 100 TBs, conventional receiver with the best partner among 16
                        candidates by MMSE sum rate (results/p2b_uma_u16_pf.json) / Reverb with a random partner
                        (results/p2b_uma_u8_random.json), macro cell, the same seeds
+Setup macros (text, Evaluation Setup): \\SetupLOneMs, \\SetupRecoveryRunMs, \\SetupRecoveryDeadlineMs, \\SetupLeadMs (the
+  timing of the latency simulation, class Timing), \\SetupSlots and \\SetupTBs (slots and TBs of the macro traces),
+  \\SetupTbBytes (TB size), \\SetupTransmissions, \\SetupRetxGapMs (channel time between transmissions), \\SetupEbNoLow
+  and \\SetupEbNoHigh (Eb/No points), all read from the macro traces of results/n3_uma_v3_all.json and its chunks
 """
 import glob
 import json
@@ -95,8 +99,17 @@ def main():
         "ThroughputGainLA": (float(np.mean(goodput)), 2),
         "PairingCutBestSixteen": (pf16["ai_and_ran"]["resends_per_100"] / rand["ours"]["resends_per_100"], 1),
     }
+    full = json.load(open("results/n3_uma_v3_all.json"))
+    meta = json.loads(str(np.load(sorted(glob.glob(f"results/{MACRO_SETS[0]}/c*.npz"))[0])["meta"]))
+    points = sorted(float(k) for k in full["by_point"])
+    setup = {"SetupLOneMs": f"{Timing.l1:.1f}", "SetupRecoveryRunMs": f"{Timing.run:.1f}",
+             "SetupRecoveryDeadlineMs": f"{Timing.deadline:.1f}", "SetupLeadMs": f"{Timing.lead:.1f}",
+             "SetupSlots": f"{full['slots']:,}", "SetupTBs": f"{full['slots'] * full['users']:,}",
+             "SetupTbBytes": f"{meta['tb_bytes']:,}", "SetupTransmissions": f"{full['transmissions']}",
+             "SetupRetxGapMs": f"{meta['generator']['gap_ms']:.1f}",
+             "SetupEbNoLow": f"{points[0]:g}", "SetupEbNoHigh": f"{points[-1]:g}"}
     os.makedirs(OUT, exist_ok=True)
-    report = {"values": {k: v for k, (v, _) in values.items()},
+    report = {"values": {k: v for k, (v, _) in values.items()}, "setup": setup,
               "inputs": {"retx_per_100": {"conventional": conv_retx, "reverb_full_wait": ours_retx,
                                           "latency_policies": lat},
                          "lost_pct": {"conventional": allstats["ai_and_ran"]["residual_after_all_pct"],
@@ -111,6 +124,8 @@ def main():
              "% Values, sources and checks: airan_recovery/results/paper/numbers.json"]
     for k, (v, digits) in values.items():
         lines.append(f"\\newcommand{{\\{k}}}{{{v:.{digits}f}}}")
+    for k, v in setup.items():
+        lines.append(f"\\newcommand{{\\{k}}}{{{v}}}")
     open(f"{OUT}/numbers.tex", "w").write("\n".join(lines) + "\n")
     print("\n".join(lines[2:]))
     bad = [k for k, ok in checks.items() if not ok]
