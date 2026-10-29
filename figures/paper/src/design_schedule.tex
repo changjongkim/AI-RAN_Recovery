@@ -1,50 +1,42 @@
-% Figure (Section 4.3): the recoveries of failed TBs of cells A, B and C on the two GPUs of a server, in the order of
-% arrival (as in Section 3.4) and with Recovery Scheduler.  The index of a TB is its uplink slot; each TB has the deadline
-% D of its slot and needs the run time r, so it must start by D - r.  In arrival order, B1 starts after its latest start,
-% misses its deadline and holds GPU 1 while C3 waits, so C3 misses its deadline as well.  Recovery Scheduler runs C0
-% before A1 and B1 (earliest deadline first), rejects B1 when its latest start passes (its grant goes out at once), and
-% recovers every other TB in time.  Geometry follows the timing of Section 5.1 (slots every 2.5 ms, deadline 11.0 ms
-% after the slot, a run of 4.3 ms); no value is printed.
+% Figure (Section 4.3): admission by the latest start time on one GPU.  Failed TBs 1 and 2 come from one uplink slot,
+% TB 3 from the next slot and TB 4 from the slot after it; each has the deadline D of its slot (11.0 ms after the slot)
+% and needs the run time r (4.3 ms), so it must start by D - r.  In arrival order (as in Section 3.4), TB 3 starts after
+% its latest start, runs past its deadline and holds the GPU, so TB 4 also ends past its deadline.  Reverb rejects TB 3
+% when its latest start passes (the base station sends its grant at once) and recovers TB 4 by its deadline.  With the
+% same deadline rule in every cell, the deadline order equals the arrival order; the difference is the rejection.
+% Geometry follows the timing of Section 5.1 (slots every 2.5 ms); no value is printed.
 \documentclass[border=1pt]{standalone}
 \input{reverb_style}
+\newcommand{\tbc}[3]{\node[draw=black!65, line width=0.35pt, fill=white, minimum width=0.27cm, minimum height=0.26cm,
+  inner sep=0pt, font=\tabsize, anchor=west] at (#1, #2) {#3};}
 \begin{document}
 \begin{tikzpicture}[x=1cm, y=1cm]
-  \node[exrow, minimum width=2.6cm, minimum height=0.32cm] at (1.3, 0) {Uplink slots};
-  \node[exrow, minimum width=2.6cm, minimum height=0.32cm] at (1.3, -0.42) {Failed TBs};
-  \node[exrow, minimum width=1.55cm, minimum height=0.74cm] at (0.775, -1.05) {Arrival order};
-  \node[rrow, minimum width=1.55cm, minimum height=0.74cm] at (0.775, -1.95) {Reverb};
-  \foreach \y/\g in {-0.86/1, -1.24/2} {\node[exrow, minimum width=1.0cm, minimum height=0.34cm] at (2.1, \y) {GPU \g};}
-  \foreach \y/\g in {-1.76/1, -2.14/2} {\node[rrow, minimum width=1.0cm, minimum height=0.34cm] at (2.1, \y) {GPU \g};}
-  \begin{scope}[xshift=2.75cm, x=0.565cm]
+  \node[exrow, minimum width=2.0cm, minimum height=0.3cm] at (1.0, 0) {Uplink slots};
+  \node[exrow, minimum width=2.0cm, minimum height=0.3cm] at (1.0, -0.4) {Failed TBs};
+  \node[exrow, minimum width=2.0cm, minimum height=0.36cm] at (1.0, -0.84) {Arrival order};
+  \node[rrow, minimum width=2.0cm, minimum height=0.36cm] at (1.0, -1.28) {Reverb};
+  \begin{scope}[xshift=2.15cm, x=0.6cm]
     \def\r{4.3}
-    \draw[black!40, line width=0.4pt] (0, 0) -- (19.5, 0);
-    \foreach \k in {0,...,7} {
-      \node[cl, fill=ulc, minimum width=0.3cm, minimum height=0.28cm] at (2.5*\k + 0.25, 0) {\k};
-    }
-    \foreach \t/\l in {1.9/{A0 B0 C0}, 4.4/{A1 B1}, 6.9/{B2}, 9.4/{C3}} {
-      \draw[arr, line width=0.6pt] (\t, -0.15) -- (\t, -0.56);
-      \node[stxt, anchor=west] at (\t + 0.05, -0.42) {\l};
-    }
-    \newcommand{\job}[4]{% start, lane y, label, border
-      \node[cl, fill=nrxc, draw=#4, minimum width={0.565*\r cm - 0.04cm}, minimum height=0.3cm, anchor=west] at (#1 + 0.04, #2) {#3};}
-    % arrival order: B1 starts late and misses, C3 waits behind it and misses
-    \job{1.9}{-0.86}{A0}{black!65} \job{6.2}{-0.86}{C0}{black!65} \job{10.5}{-0.86}{B1}{dred} \job{14.8}{-0.86}{C3}{dred}
-    \job{1.9}{-1.24}{B0}{black!65} \job{6.2}{-1.24}{A1}{black!65} \job{10.5}{-1.24}{B2}{black!65}
-    \draw[dred, line width=1.1pt] (13.5, -1.03) -- (13.5, -0.69);
-    \node[key, font=\tabsize\itshape, anchor=south] at (13.5, -0.7) {\vD\ of B1};
-    \draw[dred, line width=1.1pt] (18.5, -1.03) -- (18.5, -0.69);
-    \node[key, font=\tabsize\itshape, anchor=south] at (18.5, -0.7) {\vD\ of C3};
-    \node[key, font=\tabsize\itshape, anchor=west] at (15.0, -1.24) {B1 and C3 missed};
-    % Reverb: earliest deadline first, B1 rejected at its latest start
-    \job{1.9}{-1.76}{A0}{black!65} \job{6.2}{-1.76}{C0}{black!65} \job{10.5}{-1.76}{B2}{black!65}
-    \job{1.9}{-2.14}{B0}{black!65} \job{6.2}{-2.14}{A1}{black!65} \job{10.5}{-2.14}{C3}{black!65}
-    \draw[dred, line width=1.0pt, densely dashed] (9.2, -2.33) -- (9.2, -1.57);
-    \node[key, font=\tabsize\itshape, anchor=west] at (15.0, -1.76) {B1 rejected at \vD\,−\,\vr:};
-    \node[key, font=\tabsize\itshape, anchor=west] at (15.0, -2.14) {grant at once};
+    \draw[black!35, line width=0.4pt] (0, 0) -- (19.5, 0);
+    \foreach \k in {0,...,7} { \draw[black!55, line width=0.3pt, fill=ulc] (2.5*\k, -0.12) rectangle (2.5*\k + 0.5, 0.12); }
+    % arrivals at the L1 results: each chip starts at its arrival time
+    \tbc{1.9}{-0.4}{1} \tbc{2.39}{-0.4}{2} \tbc{4.4}{-0.4}{3} \tbc{6.9}{-0.4}{4}
+    \newcommand{\job}[3]{% start, lane y, label
+      \node[cl, fill=nrxc, minimum width={0.6*\r cm - 0.04cm}, minimum height=0.3cm, anchor=west] at (#1 + 0.035, #2) {#3};}
+    % arrival order: TB 3 starts too late, TB 4 waits behind it
+    \job{1.9}{-0.84}{1} \job{6.2}{-0.84}{2} \job{10.5}{-0.84}{3} \job{14.8}{-0.84}{}
+    \fill[pattern=north east lines, pattern color=dred] (13.5, -0.99) rectangle (14.8, -0.69);
+    \fill[pattern=north east lines, pattern color=dred] (16.0, -0.99) rectangle (19.1, -0.69);
+    \draw[dred, line width=1.1pt] (13.5, -1.02) -- (13.5, -0.66) (16.0, -1.02) -- (16.0, -0.66);
+    \node[txt] at (15.4, -0.84) {4};
+    % Reverb: TB 3 rejected at its latest start, TB 4 in time
+    \job{1.9}{-1.28}{1} \job{6.2}{-1.28}{2} \job{10.5}{-1.28}{4}
+    \draw[dred, line width=1.0pt, densely dashed] (9.2, -1.46) -- (9.2, -0.53);
+    \node[key, font=\tabsize\itshape, anchor=west] at (15.0, -1.28) {✗ TB 3 rejected};
   \end{scope}
-  \node[stxt, anchor=north west] at (0, -2.4) {\lgd{nrxc}\,Recovery (run time \vr)\enspace
+  \node[stxt, anchor=north west] at (0, -1.55) {\lgd{nrxc}\,Recovery (run time \vr)\enspace
     \tikz[baseline=-0.6ex]\draw[dred, line width=1.1pt] (0,-0.1) -- (0,0.1);\,Deadline \vD\enspace
-    \tikz[baseline=-0.6ex]\draw[dred, line width=1.0pt, densely dashed] (0,-0.1) -- (0,0.1);\,Latest start \vD\,−\,\vr\ of B1};
-  \node[stxt, text=revline, anchor=north east] at (13.9, -2.4) {Reverb: earliest deadline first};
+    \tikz[baseline=-0.6ex]\fill[pattern=north east lines, pattern color=dred] (0,-0.09) rectangle (0.24,0.09);\,Past the deadline\enspace
+    \tikz[baseline=-0.6ex]\draw[dred, line width=1.0pt, densely dashed] (0,-0.1) -- (0,0.1);\,Latest start of TB 3 (\vD\,−\,\vr)};
 \end{tikzpicture}
 \end{document}
