@@ -19,7 +19,7 @@ chunk() {   # K GPU
   local last=${list##*,}
   [ -s $out/m${last}_c$k.npz ] && { echo "chunk $k done before"; return 0; }
   mkdir -p $d
-  tfgen python3 $REC/src/gen_harq.py --nrx-repo $NRX_REPO --gpu $g --seed $((2000 + k)) --mcs $list $gen_opts \
+  tfgen python3 $REC/src/gen_harq.py --nrx-repo $NRX_REPO --gpu $g --seed $((2000 + k)) --mcs $list ${CARRIER_GHZ:+--carrier-ghz $CARRIER_GHZ} $gen_opts \
       --output $d/s > $d/gen.log 2>&1 || { echo "chunk $k: generation failed"; tail -5 $d/gen.log; return 1; }
   n=$(GPU=$g rx python3 -c "import json,numpy as np; print(len(json.loads(str(np.load('$d/s_info.npz')['meta']))['rvs']))")
   for m in ${list//,/ }; do

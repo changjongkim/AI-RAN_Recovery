@@ -31,6 +31,7 @@ from pathlib import Path
 parser = argparse.ArgumentParser()
 parser.add_argument("--nrx-repo", type=Path, required=True)
 parser.add_argument("--base-config", default="nrx_large.cfg")
+parser.add_argument("--carrier-ghz", type=float, default=None, help="carrier frequency in GHz (default: the configuration)")
 parser.add_argument("--rt-config", default="nrx_rt.cfg")
 parser.add_argument("--nrx-weights", default="", help="weights file for the nrx system instead of ../weights/<label>_weights")
 parser.add_argument("--prbs", type=int, default=273, help="bandwidth in PRBs (273 as in N1 and the runtime receivers)")
@@ -74,6 +75,8 @@ def make_config(base: str, bp_iter: int) -> tuple[str, str]:
             (r"(?m)^num_bp_iter\s*=.*", f"num_bp_iter = {bp_iter}")]
     if args.num_rx:
         subs.append((r"(?m)^num_rx_antennas\s*=.*", f"num_rx_antennas = {args.num_rx}"))
+    if args.carrier_ghz:
+        subs.append((r"(?m)^carrier_frequency\s*=.*", f"carrier_frequency = {args.carrier_ghz * 1e9:.1f}"))
     for pattern, value in subs:
         text, n = re.subn(pattern, value, text)
         assert n >= 1 or "num_bp_iter" in pattern, pattern
@@ -169,7 +172,7 @@ args.output.parent.mkdir(parents=True, exist_ok=True)
 np.savez(args.output.with_suffix(".npz"), point=np.asarray(points, np.float32), corr=np.concatenate(corr),
          **{f"ok_{s}": v for s, v in good.items()})
 conv = good[systems[0]]
-report = {"systems": systems, "prbs": args.prbs, "nrx_weights": args.nrx_weights, "users": args.users, "base_config": args.base_config, "channel": args.channel, "speed": args.speed, "num_rx": args.num_rx or 4, "mcs": args.mcs,
+report = {"systems": systems, "prbs": args.prbs, "carrier_ghz": args.carrier_ghz, "nrx_weights": args.nrx_weights, "users": args.users, "base_config": args.base_config, "channel": args.channel, "speed": args.speed, "num_rx": args.num_rx or 4, "mcs": args.mcs,
           "slots": int(conv.shape[0]), "seconds_per_slot": {s: seconds[s] / conv.shape[0] for s in systems},
           "decoded_pct": {s: 100.0 * good[s].mean() for s in systems},
           "recovers_pct_of_conventional_failures": {s: 100.0 * (good[s] & ~conv).sum() / max(1, (~conv).sum())

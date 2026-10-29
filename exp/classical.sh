@@ -8,7 +8,7 @@ out=$RESULTS/$name; mkdir -p $out
 pids=()
 for g in ${GPUS:-0 1 2 3}; do
   [ -s $out/g$g.npz ] && continue
-  tfgen python3 $REC/src/classical_rx.py --nrx-repo $NRX_REPO --gpu $g --seed $((${SEED0:-300} + g)) "$@" --output $out/g$g.json \
+  tfgen python3 $REC/src/classical_rx.py --nrx-repo $NRX_REPO --gpu $g --seed $((${SEED0:-300} + g)) ${CARRIER_GHZ:+--carrier-ghz $CARRIER_GHZ} "$@" --output $out/g$g.json \
       > $out/g$g.log 2>&1 & pids+=($!)
 done
 rc=0; for p in "${pids[@]}"; do wait $p || rc=1; done

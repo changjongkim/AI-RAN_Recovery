@@ -6,7 +6,8 @@
 #        bash exp/harq_ir.sh n1_umi_v3 8 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64
 #   environment: MCS (default 14; one MCS per call), GPUS (default "0 1 2 3"), KEEP=1 keeps the received samples
 #                SEED0 (default 1000; chunk k uses seed SEED0 + k), IRC=1 adds the MMSE-IRC conventional receiver,
-#                NRX_ENGINE=/rec/engines/X.trt replaces the large neural receiver
+#                NRX_ENGINE=/rec/engines/X.trt replaces the large neural receiver, SMALL_ENGINE the small one,
+#                REC_NUM_PRBS (default 273) with --prbs: a pair on fewer PRBs (N21, engines of that size)
 # results: results/<NAME>/c<k>.json/.npz per chunk, results/<NAME>.json and .txt merged
 set -uo pipefail
 source /pscratch/sd/s/sgkim/kcj/airan_recovery/env.sh
@@ -20,7 +21,7 @@ chunk() {   # K GPU
   local k=$1 g=$2 d=$DATA/$name/c$1 t n
   [ -s $out/c$k.npz ] && { echo "chunk $k done before"; return 0; }
   mkdir -p $d
-  tfgen python3 $REC/src/gen_harq.py --nrx-repo $NRX_REPO --gpu $g --seed $((${SEED0:-1000} + k)) --mcs $mcs $gen_opts \
+  tfgen python3 $REC/src/gen_harq.py --nrx-repo $NRX_REPO --gpu $g --seed $((${SEED0:-1000} + k)) --mcs $mcs ${CARRIER_GHZ:+--carrier-ghz $CARRIER_GHZ} $gen_opts \
       --output $d/s > $d/gen.log 2>&1 || { echo "chunk $k: generation failed"; tail -5 $d/gen.log; return 1; }
   n=$(GPU=$g rx python3 -c "import json,numpy as np; print(len(json.loads(str(np.load('$d/s_info.npz')['meta']))['rvs']))")
   for ((t = 0; t < n; t++)); do
@@ -28,7 +29,7 @@ chunk() {   # K GPU
         --output $d/rt_s_m${mcs}_t$t > $d/build_t$t.log 2>&1 || { echo "chunk $k: build failed"; return 1; }
     [ "${KEEP:-0}" = 1 ] || rm -f $d/s_m${mcs}_t$t.npz
   done
-  GPU=$g rx python3 /rec/decode_harq.py --root $d --set s --mcs $mcs --engine ${NRX_ENGINE:-$ENGINE_LARGE} --small-engine $ENGINE_SMALL \
+  GPU=$g rx python3 /rec/decode_harq.py --root $d --set s --mcs $mcs --engine ${NRX_ENGINE:-$ENGINE_LARGE} --small-engine ${SMALL_ENGINE:-$ENGINE_SMALL} \
       ${IRC:+--irc} --output $out/c$k.json > $d/decode.log 2>&1 || { echo "chunk $k: decode failed"; tail -8 $d/decode.log; return 1; }
   [ "${KEEP:-0}" = 1 ] || rm -rf $d/rt_s_m${mcs}_t*
   echo "chunk $k (GPU $g) $(date +%T)"; tail -6 $d/decode.log
