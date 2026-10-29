@@ -18,6 +18,10 @@
    "conventional": 2.197265625,
    "reverb_full_wait": 0.91796875
   },
+  "pairing_retx_per_100": {
+   "conventional_best_of_16_sum_rate": 14.9609375,
+   "reverb_random_partner": 9.091796875
+  },
   "retx_per_100": {
    "conventional": 20.9619140625,
    "latency_policies": {
@@ -42,6 +46,7 @@
  },
  "values": {
   "LostCutFullWait": 2.393617021276596,
+  "PairingCutBestSixteen": 1.6455424274973147,
   "RetxCutFullWait": 2.3217955651703623,
   "RetxCutNoDelay": 1.3938311688311689,
   "ThroughputGainLA": 1.3087811915553558

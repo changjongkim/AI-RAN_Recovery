@@ -16,6 +16,9 @@ Macros (value, source):
   \\LostCutFullWait     TBs never received after four transmissions, conventional / Reverb waiting for every recovery
   \\ThroughputGainLA    goodput under outer-loop link adaptation (target 10%), Reverb / conventional, mean over the
                        SNR points 6-16 dB, macro cell (results/n6_uma_v3_olla.json)
+  \\PairingCutBestSixteen  retransmissions per 100 TBs, conventional receiver with the best partner among 16
+                       candidates by MMSE sum rate (results/p2b_uma_u16_pf.json) / Reverb with a random partner
+                       (results/p2b_uma_u8_random.json), macro cell, the same seeds
 """
 import glob
 import json
@@ -75,6 +78,8 @@ def main():
     olla = json.load(open("results/n6_uma_v3_olla.json"))["results"]
     snr = sorted({float(k.split("_")[0][3:]) for k in olla})
     goodput = [olla[f"snr{x:g}_target0.1"]["ours"]["goodput_vs_ai_and_ran"] for x in snr]
+    pf16 = json.load(open("results/p2b_uma_u16_pf.json"))["all"]
+    rand = json.load(open("results/p2b_uma_u8_random.json"))["all"]
 
     conv_retx, ours_retx = allstats["ai_and_ran"]["resends_per_100"], allstats["ours"]["resends_per_100"]
     added = lat["select_cb5"]["p99_unrecovered_ms"] - lat["harq_only"]["p99_unrecovered_ms"]
@@ -88,6 +93,7 @@ def main():
         "RetxCutNoDelay": (lat["harq_only"]["retx_per_100"] / lat["select_cb5"]["retx_per_100"], 1),
         "LostCutFullWait": (allstats["ai_and_ran"]["residual_after_all_pct"] / allstats["ours"]["residual_after_all_pct"], 1),
         "ThroughputGainLA": (float(np.mean(goodput)), 2),
+        "PairingCutBestSixteen": (pf16["ai_and_ran"]["resends_per_100"] / rand["ours"]["resends_per_100"], 1),
     }
     os.makedirs(OUT, exist_ok=True)
     report = {"values": {k: v for k, (v, _) in values.items()},
@@ -96,6 +102,8 @@ def main():
                          "lost_pct": {"conventional": allstats["ai_and_ran"]["residual_after_all_pct"],
                                       "reverb_full_wait": allstats["ours"]["residual_after_all_pct"]},
                          "goodput_vs_conventional_by_snr": dict(zip([f"{x:g}" for x in snr], goodput)),
+                         "pairing_retx_per_100": {"conventional_best_of_16_sum_rate": pf16["ai_and_ran"]["resends_per_100"],
+                                                  "reverb_random_partner": rand["ours"]["resends_per_100"]},
                          "added_p99_delay_latency_neutral_ms": added},
               "checks": checks}
     json.dump(report, open(f"{OUT}/numbers.json", "w"), indent=1, sort_keys=True)
