@@ -121,8 +121,8 @@ RES = os.path.join(ROOT, "results")
 SUFFIX = os.environ.get("RESULT_SUFFIX", "")
 N16 = os.environ.get("N16_SUFFIX", "")   # "d110_f35": GPU runtime at the 11.0 ms deadline, 3.5 GHz slots
 CELL = {"Macro Cell": "#2b6cb0", "Small Cell": "#9ec5ea"}
-RX = {"More Iterations": "#dedcd3", "Iterative": "#c2bfb2", "K-Best": "#a39f8f", "Small Neural": "#f3c27a",
-      "Large Neural": "#e07b39"}
+RX = {"More Iterations": "#dedcd3", "Iterative": "#c2bfb2", "K-Best": "#a39f8f", "Real-Time NRx": "#f3c27a",
+      "Large NRx": "#e07b39"}
 CONV = "#6b685c"                       # the conventional receiver (cuPHY)
 BOUND = "#8c897b"                      # receivers with the true channel: an upper bound
 GPUS = {"One GPU": "#9a9a92", "Four GPUs": "#2f8f6f"}
@@ -214,7 +214,7 @@ def motivation_redecode():
     reps = [json.load(open(os.path.join(RES, f"{n}.json"))) for n in names]
     fails = np.array([r["fail_pct"]["baseline_lslin_lmmse"] * r["slots"] for r in reps])   # weight: failed TBs
     keys = {"More Iterations": "baseline_lslin_lmmse@50", "Iterative": "lslin_idd3", "K-Best": "baseline_lmmse_kbest",
-            "Small Neural": "nrx_rt", "Large Neural": "nrx"}
+            "Real-Time NRx": "nrx_rt", "Large NRx": "nrx"}
     vals = {k: float(np.dot(fails, [r["recovers_pct_of_conventional_failures"][s] for r in reps]) / fails.sum())
             for k, s in keys.items()}
     bound = float(np.dot(fails, [r["recovers_pct_of_conventional_failures"]["baseline_perf_csi_kbest"] for r in reps]) / fails.sum())
@@ -235,8 +235,8 @@ def motivation_redecode():
 
     lanes = json.load(open(os.path.join(RES, "n13_lanes.json")))
     one = {k: next(r for r in lanes[k] if r["lanes"] == 1)["latency_ms_mean"] for k in ("small", "large")}
-    t = {"L1\n(cuPHY)": (L1_MEDIAN_MS, CONV), "Small\nNeural": (one["small"], RX["Small Neural"]),
-         "Large\nNeural": (one["large"], RX["Large Neural"])}
+    t = {"L1\n(cuPHY)": (L1_MEDIAN_MS, CONV), "Real-Time\nNRx": (one["small"], RX["Real-Time NRx"]),
+         "Large\nNRx": (one["large"], RX["Large NRx"])}
     fig, ax = plt.subplots(figsize=PANEL)
     bs = ax.bar(range(len(t)), [v for v, _ in t.values()], width=0.55, color=[c for _, c in t.values()], zorder=3)
     for b, (v, _) in zip(bs, t.values()):
@@ -326,7 +326,7 @@ def motivation_server():
     lanes = [r for r in lanes if r["lanes"] <= 4]
     fig, ax = plt.subplots(figsize=PANEL)
     bs = ax.bar([r["lanes"] for r in lanes], [r["latency_ms_mean"] for r in lanes], width=0.55,
-                color=RX["Large Neural"], zorder=3)
+                color=RX["Large NRx"], zorder=3)
     for b, r in zip(bs, lanes):
         ax.text(b.get_x() + b.get_width() / 2, r["latency_ms_mean"] + 0.4, f"{r['latency_ms_mean']:.1f}",
                 ha="center", va="bottom", fontsize=VALUE)
