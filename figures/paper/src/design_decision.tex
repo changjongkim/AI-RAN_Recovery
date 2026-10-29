@@ -1,51 +1,51 @@
-% Figure (Section 4.2): the per-TB decision at the L1 result.  (a) Recovery Gate: TB A failed 2 of its 10 code blocks, so
-% the base station holds its grant and waits for the recovery; TB B failed all 10, so the base station requests the
-% retransmission at once and the recovery runs only when a GPU has time (a decoded TB ends before its retransmission is
-% decoded).  K is the gate threshold (Latency-Neutral; Full Wait waits for every failed TB).  (b) Receiver Selector:
-% each cell measures the interference over thermal of its slots; a cell above the threshold theta uses the
-% interference-trained NRx, a cell below it the published NRx.  No measured value appears (Design section rule).
-\documentclass[border=2pt]{standalone}
+% Figure (Section 4.2): the decisions at the L1 result of a failed TB.  Left, Recovery Gate: TB A failed 2 of its 10 code
+% blocks (at most K), so the base station holds its grant and waits for the recovery, which decodes it; TB B failed all
+% 10, so the base station sends the grant at once and the recovery runs in parallel when a GPU has time (a decoded TB ends
+% before its retransmission is decoded).  Right, Receiver Selector: each cell measures the interference over thermal of
+% its slots; a cell above the threshold theta uses the interference-trained NRx, a cell below it the published NRx.
+% No measured value appears (Design section rule).
+\documentclass[border=1pt]{standalone}
 \input{reverb_style}
 \begin{document}
-\figsize
 \begin{tikzpicture}[x=1cm, y=1cm]
-  % ------------------------------------------------------------------ (a) Recovery Gate
-  \node[layer, minimum width=8.65cm, minimum height=3.3cm, anchor=south west] at (0, 0) {};
-  \node[ttl, anchor=north west] at (0.1, 3.25) {Recovery Gate};
-  \node[tag, anchor=north] at (2.25, 2.62) {Code blocks of the TB};
-  \node[tag, anchor=north] at (4.65, 2.62) {Rule};
-  \node[tag, anchor=north] at (7.15, 2.62) {Action};
-  \foreach \name/\nf/\y in {TB A/2/1.7, TB B/10/0.65} {
-    \node[tag, anchor=east] at (0.95, \y) {\name};
-    \foreach \i in {1,...,10} {
-      \pgfmathsetmacro{\c}{ifthenelse(\i <= \nf, 1, 0)}
-      \ifdim \c pt = 1pt \def\fc{failc}\else\def\fc{okc!45}\fi
-      \draw[black!65, line width=0.3pt, fill=\fc] (0.78 + 0.25*\i, \y - 0.15) rectangle (0.78 + 0.25*\i + 0.21, \y + 0.15);
-    }
+  % ------------------------------------------------------------------ Recovery Gate
+  \node[pan, minimum width=8.1cm, minimum height=2.12cm, anchor=north west] at (0, 0) {};
+  \node[ptitle, anchor=north west] at (0.06, -0.04) {Recovery Gate};
+  \foreach \x/\w/\t in {0.1/0.75/TB, 0.85/1.55/Code Blocks, 2.4/1.05/Rule, 3.45/4.55/Operation} {
+    \node[th, minimum width=\w cm, anchor=north west] at (\x, -0.42) {\t};
   }
-  \node[comp, fill=recc, minimum width=1.4cm] (ra) at (4.65, 1.7) {$2 \leq K$};
-  \node[comp, fill=recc, minimum width=1.4cm] (rb) at (4.65, 0.65) {$10 > K$};
-  \node[comp, fill=actc, minimum width=2.85cm, minimum height=0.66cm, align=center] (aa) at (7.15, 1.7) {\textbf{Wait}: hold the grant\\until the result or $D$};
-  \node[comp, fill=actc, minimum width=2.85cm, minimum height=0.66cm, align=center] (ab) at (7.15, 0.65) {\textbf{Request at once}\\recovery in parallel};
-  \draw[arr] (3.55, 1.7) -- (ra.west);
-  \draw[arr] (3.55, 0.65) -- (rb.west);
-  \draw[arr] (ra.east) -- (aa.west);
-  \draw[arr] (rb.east) -- (ab.west);
-  \node[tag, anchor=west] at (0.15, 0.17) {\lgdfill{failc}\,failed \quad \lgdfill{okc!45}\,decoded};
-  % ------------------------------------------------------------------ (b) Receiver Selector
-  \node[layer, minimum width=4.75cm, minimum height=3.3cm, anchor=south west] at (8.85, 0) {};
-  \node[ttl, anchor=north west] at (8.95, 3.25) {Receiver Selector};
-  \draw[black!60, line width=0.5pt] (9.1, 0.4) -- (11.1, 0.4);
-  \node[tag, anchor=north] at (10.1, 0.38) {Interference};
-  \draw[black!85, line width=0.4pt, fill=sampc] (9.1, 0.75) rectangle (9.75, 1.05);
-  \draw[black!85, line width=0.4pt, fill=sampc] (9.1, 1.85) rectangle (10.95, 2.15);
-  \node[tag, anchor=south west] at (9.05, 1.06) {Cell 1};
-  \node[tag, anchor=south west] at (9.05, 2.16) {Cell 2};
-  \draw[black!80, line width=0.6pt, densely dashed] (10.3, 0.4) -- (10.3, 2.55);
-  \node[tag, anchor=south] at (10.3, 2.55) {$\theta$};
-  \node[comp, fill=nrxc!60, minimum width=1.75cm, minimum height=0.62cm, align=center] (pub) at (12.6, 0.9) {Published\\large NRx};
-  \node[comp, fill=nrxc, minimum width=1.75cm, minimum height=0.62cm, align=center] (ici) at (12.6, 2.0) {Interference-\\trained NRx};
-  \draw[arr] (9.75, 0.9) -- (pub.west);
-  \draw[arr] (10.95, 2.0) -- (ici.west);
+  \node[comp, minimum width=7.9cm, minimum height=0.46cm, anchor=north west] at (0.1, -0.76) {};
+  \node[comp, minimum width=7.9cm, minimum height=0.8cm, anchor=north west] at (0.1, -1.25) {};
+  % TB A: two failed code blocks, wait for the recovery
+  \node[btxt] at (0.475, -0.99) {A};
+  \cbs{0.95}{-0.99}{2}{0.137}{0.22}
+  \node[dec, minimum width=0.85cm] at (2.925, -0.99) {2 ≤ \vK};
+  \node[cl, fill=nrxc, minimum width=1.9cm, minimum height=0.3cm, anchor=west, font=\tabsize\bfseries] at (3.6, -0.99) {Recovery};
+  \draw[arr] (5.55, -0.99) -- (5.85, -0.99);
+  \node[btxt, anchor=west, text=dgreen] at (5.9, -0.99) {✓ Delivered};
+  % TB B: all ten failed, grant at once and recover in parallel
+  \node[btxt] at (0.475, -1.65) {B};
+  \cbs{0.95}{-1.65}{10}{0.137}{0.22}
+  \node[dec, minimum width=0.85cm] at (2.925, -1.65) {10 > \vK};
+  \node[act, minimum width=1.9cm, minimum height=0.3cm, anchor=west] at (3.6, -1.46) {Grant at once};
+  \draw[arr] (5.55, -1.46) -- (5.85, -1.46);
+  \draw[dred, line width=1.1pt, fill=ulc] (5.92, -1.58) rectangle (6.2, -1.34);
+  \node[txt, font=\tabsize, anchor=west] at (6.25, -1.46) {Retransmission};
+  \node[cl, fill=nrxc!45, densely dashed, minimum width=1.9cm, minimum height=0.3cm, anchor=west, font=\tabsize\bfseries] at (3.6, -1.84) {Recovery};
+  \node[ann, anchor=west] at (5.55, -1.84) {in parallel};
+  % ------------------------------------------------------------------ Receiver Selector
+  \node[pan, minimum width=5.65cm, minimum height=2.12cm, anchor=north west] at (8.25, 0) {};
+  \node[ptitle, anchor=north west] at (8.31, -0.04) {Receiver Selector};
+  \foreach \x/\w/\t in {8.35/0.95/Cell, 9.3/2.45/Interference, 11.75/2.05/Receiver} {
+    \node[th, minimum width=\w cm, anchor=north west] at (\x, -0.42) {\t};
+  }
+  \foreach \y/\c/\l/\r/\f/\tc in {-0.99/1/0.75/Published NRx/nrxc/black, -1.45/2/2.05/Trained NRx/nrxt/white} {
+    \node[comp, minimum width=5.45cm, minimum height=0.42cm, anchor=west] at (8.35, \y) {};
+    \node[btxt] at (8.825, \y) {Cell \c};
+    \draw[black!70, line width=0.35pt, fill=black!30] (9.4, \y-0.1) rectangle (9.4+\l, \y+0.1);
+    \node[cl, fill=\f, text=\tc, minimum width=1.95cm, minimum height=0.3cm, font=\tabsize\bfseries] at (12.775, \y) {\r};
+  }
+  \draw[black, line width=0.8pt, densely dashed] (10.65, -1.72) -- (10.65, -0.76);
+  \node[btxt, anchor=north] at (10.65, -1.7) {\vth};
 \end{tikzpicture}
 \end{document}

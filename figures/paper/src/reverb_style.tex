@@ -1,54 +1,86 @@
-% Shared TikZ style of the Reverb paper figures, after the STATOR (LLM-Share) figures: Times text at 8 pt (printed at
-% about 7 pt, the size of the tick labels of the graphs), thin lines, one fill colour per kind of object, regular
-% weight everywhere except the panel titles.  The PDFs are deterministic (no date, no trailer id) so that a rebuild
-% gives the same bytes.
-\pdfinfoomitdate=1
-\pdftrailerid{}
-\usepackage{newtxtext}
+% Shared TikZ style of the Reverb paper figures (2026-10-29, second version).  The look of the deck figures
+% (figures/deck/src/tikz_style2.tex) at the size of the one-column page, in the font of the data panels:
+%   - DejaVu Sans everywhere (make_paper_figures.py and the STATOR data panels use it), built with LuaLaTeX
+%   - a part of the system is a tinted panel (pan) with a bold title; inside it, white cards (comp) with a navy border,
+%     a bold title and a black numbered circle (num) for a step of the procedure
+%   - state is drawn as tables with a blue header row (th) and example values (td), or as rows of cells (cl)
+%   - stages are joined by fat block arrows (barrow); an action is a yellow box (act), a decision a mint box (dec)
+%   - red (dred) only for failed code blocks, retransmissions and the key value of a figure
+% One colour per entity in every figure: uplink slot teal, special slot gray, L1 gray-brown, AI blue, received samples
+% violet, published large NRx light orange, interference-trained NRx dark orange (the two NRx colours of the data panels).
+% Canvas: at most 13.9 cm wide (the text width), and as low as the content allows.  The PDFs carry no date or id.
+\pdfvariable suppressoptionalinfo 1023
+\usepackage{fontspec}
+\setmainfont{DejaVu Sans}
+\setsansfont{DejaVu Sans}
 \usepackage{tikz}
-\newcommand{\figsize}{\fontsize{8}{9.5}\selectfont}
-\usetikzlibrary{arrows.meta, positioning, fit, calc, patterns, decorations.pathreplacing}
 
-\definecolor{panel}{HTML}{F3F4F6}    % a group of components
-\definecolor{dlc}{HTML}{FFFFFF}      % a downlink slot
-\definecolor{spc}{HTML}{D9D9D6}      % a special slot
-\definecolor{ulc}{HTML}{7FCBC1}      % an uplink slot
-\definecolor{sampc}{HTML}{BFD6F2}    % received samples
-\definecolor{gpuc}{HTML}{E4E0F6}     % the GPU and its memory
-\definecolor{l1c}{HTML}{D6D5CF}      % Layer-1 processing
-\definecolor{aic}{HTML}{F7B955}      % AI inference
-\definecolor{actc}{HTML}{FDE9C9}     % an operation of the base station
-\definecolor{failc}{HTML}{C5432F}    % a failed CRC and its retransmission
-\definecolor{okc}{HTML}{14786F}      % a decoded TB
-\definecolor{recc}{HTML}{D7ECE4}     % a component of Reverb (design figures)
-\definecolor{nrxc}{HTML}{F4A582}     % a recovery run of the large NRx (design figures)
+\usetikzlibrary{arrows.meta, positioning, fit, calc, patterns, shapes.arrows, decorations.pathreplacing}
+\newcommand{\figsize}{\fontsize{7}{8.4}\selectfont}
+\newcommand{\tabsize}{\fontsize{6.5}{7.8}\selectfont}
+% Symbols of the text in the text font (no math font in the figures).
+\newcommand{\vK}{\textit{K}}
+\newcommand{\vth}{\textit{θ}}
+\newcommand{\vD}{\textit{D}}
+\newcommand{\vr}{\textit{r}}
+\newcommand{\vL}{\textit{L}}
+
+\definecolor{pan}{HTML}{D9D8C4}     % a panel
+\definecolor{navy}{HTML}{1F3864}
+\definecolor{thblue}{HTML}{0070C0}  % table header
+\definecolor{dred}{HTML}{C00000}
+\definecolor{dgreen}{HTML}{2E7D32}
+\definecolor{actc}{HTML}{FFE699}    % an action
+\definecolor{decc}{HTML}{D5F2E3}    % a decision
+\definecolor{ulc}{HTML}{7FCBC1}     % an uplink slot
+\definecolor{spc}{HTML}{D9D9D9}     % a special slot
+\definecolor{l1c}{HTML}{CFCCC0}     % L1 processing (the conventional receiver)
+\definecolor{aic}{HTML}{8FAADC}     % AI inference
+\definecolor{sampc}{HTML}{CDB5E8}   % received samples
+\definecolor{nrxc}{HTML}{F4B183}    % the published large NRx, a recovery run
+\definecolor{nrxt}{HTML}{C55A11}    % the interference-trained NRx
+\definecolor{waitc}{HTML}{FBE0DD}   % the time a failed TB waits
 
 \tikzset{
-  layer/.style={draw=black!60, fill=panel, line width=0.5pt},
-  comp/.style={draw=black!85, fill=white, line width=0.4pt, align=center,
-               font=\figsize, inner xsep=3pt, inner ysep=1.5pt, minimum height=0.5cm},
-  slot/.style={draw=black!65, line width=0.35pt, minimum width=0.42cm, minimum height=0.36cm,
-               inner sep=0pt, font=\figsize},
-  tag/.style={font=\figsize, inner sep=1pt},
-  ttl/.style={font=\bfseries\small},
-  note/.style={font=\itshape\figsize, inner sep=1pt},
-  arr/.style={-{Latex[length=1.6mm]}, line width=0.8pt},
-  thin/.style={-{Latex[length=1.3mm]}, line width=0.5pt},
-  num/.style={circle, fill=black, text=white, font=\bfseries\figsize, inner sep=0.6pt, minimum size=0.33cm},
+  every node/.append style={font=\figsize},
+  pan/.style={draw=black!70, fill=pan, line width=0.5pt},
+  comp/.style={draw=navy, fill=white, line width=0.6pt},
+  ptitle/.style={font=\fontsize{8.5}{10}\selectfont\bfseries, inner sep=1pt},
+  ctitle/.style={font=\fontsize{7}{8.4}\selectfont\bfseries, inner sep=1pt},
+  txt/.style={font=\figsize, inner sep=1pt, align=center},
+  btxt/.style={font=\figsize\bfseries, inner sep=1pt, align=center},
+  stxt/.style={font=\fontsize{6.2}{7.4}\selectfont, inner sep=1pt, align=center},
+  ann/.style={font=\figsize\itshape, inner sep=1pt, align=center},
+  key/.style={font=\figsize\bfseries\itshape, text=dred, inner sep=1pt, align=center},
+  th/.style={draw=black, fill=thblue, text=white, font=\tabsize\bfseries, inner sep=0pt, line width=0.4pt,
+             minimum height=0.31cm, text height=0.18cm, text depth=0.05cm},
+  td/.style={draw=black, fill=white, font=\tabsize, inner sep=0pt, line width=0.4pt,
+             minimum height=0.29cm, text height=0.18cm, text depth=0.05cm},
+  rowh/.style={draw=black, fill=navy, text=white, font=\figsize\bfseries, inner sep=0pt, line width=0.4pt, align=center},
+  cl/.style={draw=black!75, line width=0.35pt, inner sep=0pt, minimum width=0.4cm, minimum height=0.34cm, font=\figsize},
+  act/.style={draw=black, fill=actc, rounded corners=2pt, line width=0.5pt, font=\tabsize\bfseries, align=center,
+              inner sep=1.5pt, minimum height=0.38cm},
+  dec/.style={draw=black, fill=decc, line width=0.5pt, font=\tabsize\bfseries, align=center, inner sep=1.5pt,
+              minimum height=0.38cm},
+  ext/.style={draw=black, fill=navy, text=white, line width=0.5pt, font=\fontsize{7.5}{9}\selectfont\bfseries,
+              align=center, inner sep=2pt},
+  barrow/.style={single arrow, fill=black, draw=black, inner xsep=0pt, inner ysep=0.07cm, minimum height=0.45cm,
+                 single arrow head extend=0.1cm, single arrow tip angle=90},
+  arr/.style={-{Latex[length=1.6mm,width=1.4mm]}, line width=0.8pt},
+  rarr/.style={arr, draw=dred},
+  garr/.style={arr, draw=dgreen},
+  num/.style={circle, fill=black, text=white, font=\fontsize{6}{6}\selectfont\bfseries, inner sep=0pt,
+              minimum size=0.32cm},
+  grd/.style={black!45, densely dotted, line width=0.4pt},
 }
-% Design figures (2026-10-29): one shape and colour per object in every figure.
-\definecolor{waitc}{HTML}{FBE3D6}    % the time a failed TB may wait for its recovery
-\tikzset{
-  band/.style={draw=black!45, fill=panel, line width=0.4pt},
-  rowlbl/.style={font=\figsize\bfseries, align=center, inner sep=1pt},
-  chip/.style={draw=black!65, line width=0.3pt, minimum width=0.21cm, minimum height=0.3cm, inner sep=0pt},
-  failarr/.style={-{Latex[length=1.6mm]}, line width=0.9pt, draw=failc},
-  okarr/.style={-{Latex[length=1.6mm]}, line width=0.9pt, draw=okc},
-  ctlarr/.style={-{Latex[length=1.6mm]}, line width=0.8pt, draw=black!80},
-  sem/.style={font=\itshape\figsize, inner sep=1pt},
-  job/.style={draw=black!80, line width=0.4pt, fill=nrxc},
-  l1job/.style={draw=black!60, line width=0.3pt, fill=l1c},
-  aijob/.style={draw=black!60, line width=0.3pt, fill=aic},
-}
-% A legend mark for a legend that is one centred line of text:  \node[tag] {\lgdfill{ulc}\,Uplink \quad ...};
-\newcommand{\lgdfill}[1]{\tikz[baseline=-0.55ex]{\draw[black!65, line width=0.35pt, fill=#1] (0,-0.1) rectangle (0.22,0.1);}}
+% A failed TB as its ten code blocks: \cbs{x}{y}{failed}{pitch}{height} (left end x, centre y; failed blocks red).
+\newcommand{\cbs}[5]{%
+  \foreach \i in {1,...,10} {
+    \pgfmathsetmacro{\f}{ifthenelse(\i <= #3, 1, 0)}
+    \ifdim \f pt = 1pt \def\fc{dred}\else\def\fc{white}\fi
+    \draw[black!70, line width=0.3pt, fill=\fc] ({#1 + #4*(\i-1)}, {#2 - #5/2}) rectangle ({#1 + #4*\i - 0.03}, {#2 + #5/2});
+  }}
+% A legend chip inside one line of text.
+\newcommand{\lgd}[1]{\tikz[baseline=-0.6ex]{\draw[black!70, line width=0.35pt, fill=#1] (0,-0.09) rectangle (0.24,0.09);}}
+\newcommand{\lgdred}{\tikz[baseline=-0.6ex]{\draw[dred, line width=1.0pt] (0,-0.09) rectangle (0.24,0.09);}}
+\newcommand{\nm}[1]{\tikz[baseline=(n.base)]\node[num](n){#1};}

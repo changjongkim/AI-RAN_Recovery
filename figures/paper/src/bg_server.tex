@@ -1,50 +1,42 @@
-% Figure 4: what a base station has when the CRC of a TB fails, on dedicated hardware and on an AI-RAN server.
-% Purpose-built baseband hardware runs the L1 within a fixed compute budget (Ericsson Technology Review 2026) and keeps
-% only the combined LLRs of a failed TB for HARQ (DPDK bbdev, Lee et al. TCOM'15).  On an AI-RAN server the fronthaul
-% data is copied directly to GPU memory (NVIDIA cuPHY Components), and the GPU has time beyond the L1 for AI inference
-% (the RAN peaks at 40% of one GPU in an NVIDIA proof of concept).  Both request a retransmission for the failed TB: the figure shows
-% the state before Reverb (no component of Reverb appears before the design section).
-% Each column has its content centred on the same x in both rows; the bars of the middle column are drawn as exact
-% rectangles that end 0.3 cm before the column line.
-\documentclass[border=2pt]{standalone}
+% Figure (Section 2.4): what a base station has when the CRC of a TB fails, on dedicated hardware and on an AI-RAN
+% server.  Purpose-built baseband hardware runs the L1 within a fixed compute budget (Ericsson Technology Review 2026)
+% and keeps only the combined LLRs of a failed TB for HARQ (DPDK bbdev, Lee et al. TCOM'15).  On an AI-RAN server the
+% fronthaul data is copied directly to GPU memory (NVIDIA cuPHY Components), and the GPU has time beyond the L1 for AI
+% inference (the RAN peaks at 40% of one GPU in an NVIDIA proof of concept).  Both request a retransmission for the
+% failed TB: the figure shows the state before Reverb (no component of Reverb appears before the design section).
+\documentclass[border=1pt]{standalone}
 \input{reverb_style}
 \begin{document}
-\figsize
 \begin{tikzpicture}[x=1cm, y=1cm]
-  \def\cx{2.35}   % centre of the sample grid
-  \def\bl{5.6}    % left end of the bars of the middle column
-  \def\br{9.3}    % right end of the bars
-  % column headers
-  \foreach \x/\t in {3.25/{Received Samples after Decoding}, 7.45/{Processing Time of a Slot},
-                     11.6/{TB with a CRC Failure}} {
-    \node[tag] at (\x, 0.68) {\t};
+  \def\rh{0.72}
+  % header row and row names
+  \node[th, minimum width=2.0cm, anchor=north west, fill=white, draw=none] at (0, 0) {};
+  \foreach \x/\w/\t in {2.0/3.6/{Received Samples}, 5.6/3.7/{Time of a Slot},
+                        9.3/4.5/{TB with a CRC Failure}} {
+    \node[th, minimum width=\w cm, anchor=north west] at (\x, 0) {\t};
   }
-  \foreach \row/\name in {0/{Dedicated\\Hardware}, 1/{AI-RAN\\Server}} {
-    \pgfmathsetmacro{\y}{-1.15*\row}
-    \node[layer, minimum width=12.4cm, minimum height=0.95cm, anchor=west] at (1.2, \y) {};
-    \node[tag, align=center] at (0.55, \y) {\name};
-    \foreach \x in {5.3, 9.6} { \draw[black!35, line width=0.4pt] (\x, \y-0.42) -- (\x, \y+0.42); }
-    % failed TB: a retransmission request in both rows
-    \node[comp, fill=white] (crc\row) at (10.4, \y) {CRC fail};
-    \node[comp, fill=actc] (req\row) at (12.4, \y) {Retransmission\\request};
-    \draw[arr, failc] (crc\row) -- (req\row);
-  }
-  % samples: discarded / stored in GPU memory (the GPU box is centred on the grid)
-  \node[comp, fill=gpuc, minimum width=1.9cm, minimum height=0.72cm] at (\cx, -1.15) {};
-  \foreach \y in {0, -1.15} {
+  \foreach \r/\t in {0/{Dedicated\\Hardware}, 1/{AI-RAN\\Server}} {
+    \pgfmathsetmacro{\y}{-0.36-\rh*\r}
+    \node[rowh, minimum width=2.0cm, minimum height=\rh cm, anchor=north west] at (0, \y) {\t};
+    \foreach \x/\w in {2.0/3.6, 5.6/3.7, 9.3/4.5} {
+      \draw[black, line width=0.4pt, fill=white] (\x, \y) rectangle (\x+\w, \y-\rh);
+    }
+    % received samples: a grid of resource elements
     \foreach \i in {0,...,5} { \foreach \j in {0,1} {
-      \node[slot, fill=sampc, minimum width=0.24cm, minimum height=0.2cm] at (\cx+0.26*\i-0.65, \y+0.11-0.22*\j) {};
+      \draw[black!65, line width=0.3pt, fill=sampc] (2.2+0.24*\i, \y-0.17-0.2*\j) rectangle (2.42+0.24*\i, \y-0.35-0.2*\j);
     } }
+    % the failed TB and its retransmission request
+    \cbs{9.5}{\y-\rh/2}{3}{0.12}{0.26}
+    \draw[arr] (10.8, \y-\rh/2) -- (11.25, \y-\rh/2);
+    \node[act, anchor=west] at (11.3, \y-\rh/2) {Retransmission};
   }
-  \draw[failc, line width=1.4pt] (\cx-0.82, 0.3) -- (\cx+0.82, -0.3) (\cx-0.82, -0.3) -- (\cx+0.82, 0.3);
-  \node[tag, align=left, anchor=west] at (\cx+1.05, 0) {Only LLRs\\stored};
-  \node[tag, align=left, anchor=west] at (\cx+1.05, -1.15) {In GPU\\memory};
-  % time of a slot: one decoding / L1 and AI inference
-  \draw[black!85, line width=0.4pt, fill=l1c] (\bl, -0.25) rectangle (\br, 0.25);
-  \node[tag] at ({(\bl+\br)/2}, 0) {L1 with fixed compute budget};
-  \draw[black!85, line width=0.4pt, fill=l1c] (\bl, -1.4) rectangle (7.1, -0.9);
-  \draw[black!85, line width=0.4pt, fill=aic] (7.1, -1.4) rectangle (\br, -0.9);
-  \node[tag] at ({(\bl+7.1)/2}, -1.15) {L1};
-  \node[tag] at ({(7.1+\br)/2}, -1.15) {AI inference};
+  % dedicated hardware: the samples are gone, only LLRs remain; the L1 fills a fixed budget
+  \draw[dred, line width=1.2pt] (2.12, -0.47) -- (3.72, -1.0) (2.12, -1.0) -- (3.72, -0.47);
+  \node[txt, anchor=west] at (3.85, -0.72) {LLRs only};
+  \node[cl, fill=l1c, minimum width=3.3cm, minimum height=0.36cm, anchor=west] at (5.8, -0.72) {L1, fixed compute budget};
+  % AI-RAN server: the samples stay in GPU memory; the L1 leaves GPU time to AI inference
+  \node[txt, anchor=west] at (3.85, -1.44) {In GPU\\[-1pt]memory};
+  \node[cl, fill=l1c, minimum width=1.3cm, minimum height=0.36cm, anchor=west] at (5.8, -1.44) {L1};
+  \node[cl, fill=aic, minimum width=2.0cm, minimum height=0.36cm, anchor=west] at (7.1, -1.44) {AI inference};
 \end{tikzpicture}
 \end{document}

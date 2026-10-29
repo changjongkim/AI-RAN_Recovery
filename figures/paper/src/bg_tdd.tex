@@ -1,22 +1,19 @@
-% Figure 2(a): the two TDD patterns of 3.5 GHz bands (GSMA), one 5 ms period each, slots of 0.5 ms (30 kHz).
-% Both assign two slots in ten (20%) to the uplink: DDDSU twice, or DDDDDDDSUU once.  Narrow, with the names above
-% the strips, so that it stands next to the two data panels of Figure 2 at the size of their text.
-\documentclass[border=2pt]{standalone}
+% Figure (Section 2.1, a): the two TDD patterns of the 3.5 GHz bands over 5 ms (ten slots of 0.5 ms): DDDSU twice and
+% DDDDDDDSUU once.  Both give two of every ten slots to the uplink.  Sits in a minipage of 0.26 of the text width.
+\documentclass[border=1pt]{standalone}
 \input{reverb_style}
 \begin{document}
-\figsize
 \begin{tikzpicture}[x=1cm, y=1cm]
-  \def\w{0.32}
-  \foreach \row/\name/\pat in {
-      0/DDDSU/{D/dlc,D/dlc,D/dlc,S/spc,U/ulc,D/dlc,D/dlc,D/dlc,S/spc,U/ulc},
-      1/DDDDDDDSUU/{D/dlc,D/dlc,D/dlc,D/dlc,D/dlc,D/dlc,D/dlc,S/spc,U/ulc,U/ulc}} {
-    \pgfmathsetmacro{\y}{-0.95*\row}
-    \node[tag, anchor=south west] at (0, \y+0.2) {\name};
-    \foreach \c/\fc [count=\i from 0] in \pat {
-      \node[slot, fill=\fc, minimum width=\w cm] at (\w*\i+\w/2, \y) {\c};
+  \def\p{0.34}
+  \foreach \name/\pat/\y in {DDDSU/{D,D,D,S,U,D,D,D,S,U}/1.45, DDDDDDDSUU/{D,D,D,D,D,D,D,S,U,U}/0.45} {
+    \node[btxt, anchor=south west] at (0, \y + 0.2) {\name};
+    \foreach \s [count=\i from 0] in \pat {
+      \if U\s\def\fc{ulc}\else\if S\s\def\fc{spc}\else\def\fc{white}\fi\fi
+      \node[cl, fill=\fc, minimum width=\p cm, minimum height=0.36cm, font=\fontsize{6.2}{7}\selectfont] at ({\p*\i + \p/2}, \y) {\s};
     }
   }
-  \draw[thin, {Latex[length=1.3mm]}-{Latex[length=1.3mm]}] (0, -1.32) -- node[tag, below] {5 ms} (10*\w, -1.32);
-  \node[tag, anchor=north] at (5*\w, -1.68) {\lgdfill{ulc}\,Uplink \ \lgdfill{spc}\,Special};
+  \draw[{Latex[length=1.3mm]}-{Latex[length=1.3mm]}, line width=0.6pt] (0, 0.0) -- (3.4, 0.0);
+  \node[txt, fill=white, inner xsep=2pt] at (1.7, 0.0) {5 ms};
+  \node[stxt, anchor=north] at (1.7, -0.22) {\lgd{ulc}\,Uplink\hspace{3pt}\lgd{spc}\,Special\hspace{3pt}\lgd{white}\,Downlink};
 \end{tikzpicture}
 \end{document}

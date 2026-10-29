@@ -2,58 +2,55 @@
 % its L1 result (CRC fail) is known at t_L1.  Without recovery, the grant follows at t_L1 and the retransmission uses the
 % first uplink slot U_s at least the grant lead L later.  With recovery, the large NRx runs for r and its result arrives at
 % t_R; the base station may hold the grant until D = U_r - L, where U_r is the latest uplink slot it allows for the
-% retransmission, so the retransmission of a TB that recovery does not decode still uses U_r.  Geometry follows the
-% timing of the evaluation (Section 5.1) but no value is printed (Design section rule).
-\documentclass[border=2pt]{standalone}
+% retransmission, so the retransmission of a TB that recovery does not decode still uses U_r at the latest.  Geometry
+% follows the timing of the evaluation (Section 5.1) but no value is printed (Design section rule).
+\documentclass[border=1pt]{standalone}
 \input{reverb_style}
+\newcommand{\tL}{\textit{t}\textsubscript{L1}}
+\newcommand{\tR}{\textit{t}\textsubscript{R}}
+\newcommand{\Us}{\textit{U}\textsubscript{s}}
+\newcommand{\Ur}{\textit{U}\textsubscript{r}}
 \begin{document}
-\figsize
-\begin{tikzpicture}[x=0.66cm, y=0.8cm]
-  \def\tl{1.9}    % t_L1: end of the slot plus the L1 time
-  \def\tr{8.2}    % t_R: t_L1 plus the recovery time r
-  \def\us{7.5}    % U_s: first uplink slot at least L after t_L1
-  \def\ur{15.0}   % U_r: latest uplink slot allowed for the retransmission
-  \def\dd{11.0}   % D = U_r - L
-  \def\uf{12.5}   % first uplink slot at least L after t_R
-  % slots of 0.5 ms from -0.5 to 16.0; uplink slots start at 0, 2.5, 5.0, ...
-  \foreach \k in {-1,...,31} {
-    \pgfmathsetmacro{\t}{0.5*\k}
-    \pgfmathsetmacro{\m}{mod(\k+10, 5)}
-    \ifdim \m pt = 0pt \def\c{ulc}\else\ifdim \m pt = 4pt \def\c{spc}\else\def\c{dlc}\fi\fi
-    \draw[black!55, line width=0.3pt, fill=\c] (\t, 0) rectangle (\t + 0.5, 0.36);
+\begin{tikzpicture}[x=1cm, y=1cm]
+  \foreach \y/\t in {0/Slots, -0.52/Without recovery, -1.0/Recovery decodes, -1.48/Recovery fails} {
+    \node[rowh, minimum width=2.3cm, minimum height=0.36cm, font=\tabsize\bfseries] at (1.15, \y) {\t};
   }
-  \node[tag, anchor=east] at (-0.6, 0.18) {Slots};
-  \draw[black, line width=1.1pt] (0, 0) rectangle (0.5, 0.36);
-  \node[tag, anchor=south] at (0.25, 0.4) {TB};
-  % events
-  \foreach \t/\l in {\tl/{$t_{\mathrm{L1}}$}, \tr/{$t_{\mathrm{R}}$}, \dd/{$D$}} {
-    \draw[black!70, line width=0.5pt, densely dashed] (\t, -2.45) -- (\t, 0.8);
-    \node[tag, anchor=south] at (\t, 0.8) {\l};
-  }
-  % the deadline: the latest grant that keeps the retransmission in U_r
-  \draw[failc, line width=1.1pt, densely dashed] (\ur, 0) rectangle (\ur + 0.5, 0.36);
-  \node[tag, anchor=south] at (\ur + 0.25, 0.8) {$U_r$};
-  \draw[{Latex[length=1.3mm]}-{Latex[length=1.3mm]}, line width=0.5pt] (\dd, 0.58) -- (\ur, 0.58) node[pos=0.5, tag, above] {$L$};
-  % without recovery: the grant follows the L1 result
-  \node[tag, anchor=east] at (-0.6, -0.5) {Without recovery};
-  \draw[arr] (\tl, -0.5) -- (\us, -0.5) node[pos=0.5, tag, above] {grant, $\geq L$};
-  \draw[failc, line width=1.1pt] (\us, -0.7) rectangle (\us + 0.5, -0.3);
-  \node[tag, anchor=north] at (\us + 0.25, -0.72) {$U_s$};
-  % recovery decodes the TB
-  \node[tag, anchor=east] at (-0.6, -1.35) {Recovery decodes};
-  \draw[black!85, line width=0.4pt, fill=nrxc] (\tl, -1.55) rectangle (\tr, -1.15);
-  \node[tag] at ({(\tl + \tr) / 2}, -1.35) {recovery $r$};
-  \node[tag, anchor=west, text=okc] at (\tr + 0.1, -1.35) {\textbf{delivered}};
-  % recovery does not decode the TB: the grant follows the recovery result, no later than D
-  \node[tag, anchor=east] at (-0.6, -2.1) {Recovery fails};
-  \draw[black!85, line width=0.4pt, fill=nrxc] (\tl, -2.3) rectangle (\tr, -1.9);
-  \node[tag] at ({(\tl + \tr) / 2}, -2.1) {recovery $r$};
-  \draw[arr] (\tr, -2.1) -- (\uf, -2.1) node[pos=0.26, tag, above] {grant, $\geq L$};
-  \draw[failc, line width=1.1pt] (\uf, -2.3) rectangle (\uf + 0.5, -1.9);
-  \node[tag, anchor=west] at (\uf + 0.55, -2.1) {no later than $U_r$};
-  % legend
-  \node[tag, anchor=west] at (-0.6, -2.85) {\lgdfill{ulc}\,Uplink \quad \lgdfill{spc}\,Special \quad \lgdfill{dlc}\,Downlink \quad
-    \tikz[baseline=-0.55ex]{\draw[failc, line width=1.1pt] (0,-0.1) rectangle (0.22,0.1);}\,Retransmission slot \quad
-    \textbf{Recovery deadline} $D = U_r - L$};
+  \begin{scope}[xshift=2.72cm, x=0.665cm]
+    \def\tl{1.9} \def\tr{8.2} \def\us{7.5} \def\ur{15.0} \def\dd{11.0} \def\uf{12.5}
+    % slots of 0.5 ms; uplink slots at 0, 2.5, 5.0, ...
+    \foreach \k in {-1,...,31} {
+      \pgfmathsetmacro{\t}{0.5*\k}
+      \pgfmathsetmacro{\m}{mod(\k+10, 5)}
+      \ifdim \m pt = 0pt \def\c{ulc}\else\ifdim \m pt = 4pt \def\c{spc}\else\def\c{white}\fi\fi
+      \draw[black!60, line width=0.3pt, fill=\c] (\t, -0.18) rectangle (\t + 0.5, 0.18);
+    }
+    \draw[black, line width=1.2pt] (0, -0.18) rectangle (0.5, 0.18);
+    \node[btxt, anchor=south] at (0.25, 0.22) {Failed TB};
+    % events
+    \foreach \t/\l in {\tl/\tL, \tr/\tR, \dd/\vD} {
+      \draw[black!70, line width=0.5pt, densely dashed] (\t, -1.7) -- (\t, 0.22);
+      \node[btxt, anchor=south] at (\t, 0.22) {\l};
+    }
+    \draw[dred, line width=1.2pt, densely dashed] (\ur+0.03, -0.15) rectangle (\ur+0.47, 0.15);
+    \draw[black!70, line width=0.5pt, densely dashed] (\ur, -0.7) -- (\ur, -0.18);
+    \node[btxt, anchor=south] at (\ur + 0.25, 0.22) {\Ur};
+    \draw[{Latex[length=1.3mm]}-{Latex[length=1.3mm]}, line width=0.6pt] (\dd, -0.52) -- (\ur, -0.52);
+    \node[btxt, fill=white, inner sep=1pt] at ({(\dd+\ur)/2}, -0.52) {Grant lead \vL};
+    % without recovery: the grant follows the L1 result
+    \draw[arr] (\tl, -0.52) -- (\us, -0.52) node[pos=0.5, txt, above=-1pt] {Grant};
+    \draw[dred, line width=1.2pt, fill=ulc] (\us+0.03, -0.68) rectangle (\us + 0.47, -0.36);
+    \node[btxt, anchor=west] at (\us + 0.55, -0.52) {\Us};
+    % recovery decodes the TB
+    \node[cl, fill=nrxc, minimum height=0.36cm, minimum width={0.665*(\tr-\tl)*1cm}, anchor=west, font=\figsize\bfseries] at (\tl, -1.0) {Recovery, \vr};
+    \node[btxt, anchor=west, text=dgreen] at (\tr + 0.1, -1.0) {✓ Delivered, no retransmission};
+    % recovery does not decode the TB: the grant follows the recovery result, no later than D
+    \node[cl, fill=nrxc, minimum height=0.36cm, minimum width={0.665*(\tr-\tl)*1cm}, anchor=west, font=\figsize\bfseries] at (\tl, -1.48) {Recovery, \vr};
+    \draw[arr] (\tr, -1.48) -- (\uf, -1.48) node[pos=0.5, txt, above=-1pt] {Grant};
+    \draw[dred, line width=1.2pt, fill=ulc] (\uf+0.03, -1.64) rectangle (\uf + 0.47, -1.32);
+    \node[btxt, anchor=west] at (\uf + 0.55, -1.48) {by \Ur};
+  \end{scope}
+  \node[txt, anchor=north west] at (0, -1.8) {\lgd{ulc}\,Uplink\enspace \lgd{spc}\,Special\enspace \lgd{white}\,Downlink\enspace
+    \tikz[baseline=-0.6ex]{\draw[dred, line width=1.0pt, fill=ulc] (0,-0.09) rectangle (0.24,0.09);}\,Retransmission\enspace \lgd{nrxc}\,Recovery run};
+  \node[key, anchor=north east] at (13.9, -1.8) {Recovery deadline \vD\,=\,\Ur\,−\,\vL};
 \end{tikzpicture}
 \end{document}
