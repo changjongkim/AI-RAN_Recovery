@@ -129,6 +129,9 @@ def motivation(lat):
     red = lambda n: stats([n])["resends_per_100"] / stats([n], "ours")["resends_per_100"]
     v["MotIciPubNone"] = (red("irc_uma_v3"), 1); v["MotIciPubTen"] = (red("ici_uma_inr10"), 1)
     v["MotIciTrainedNone"] = (red("ici_uma_v3_iciaware"), 1); v["MotIciTrainedTen"] = (red("ici_uma_inr10_iciaware"), 1)
+    v["MotIciPubNoneSmall"] = (red("irc_umi_v3"), 1); v["MotIciPubTenSmall"] = (red("ici_umi_inr10"), 1)
+    v["MotIciTrainedNoneSmall"] = (red("ici_umi_v3_iciaware"), 1); v["MotIciTrainedTenSmall"] = (red("ici_umi_inr10_iciaware"), 1)
+    v["MotIciConvNone"] = (stats(["irc_uma_v3"])["resends_per_100"], 1); v["MotIciConvTen"] = (stats(["ici_uma_inr10"])["resends_per_100"], 1)
     return v
 
 

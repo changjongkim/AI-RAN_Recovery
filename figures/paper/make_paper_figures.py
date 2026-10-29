@@ -21,9 +21,9 @@ stored results of this repository.  PDFs carry no date, so a rerun gives the sam
                        recovery (src/sim/harq_latency.py, DDDSU, the timing of src/analysis/paper_numbers.py)
   mot_gpu              failed TBs recovered before the deadline, by cells per server, one GPU or four GPUs (N16)
   mot_lanes            time of one large-NRx run when several run at once on one A100 (N13)
-  mot_interference     retransmission reduction against the conventional receiver under neighbor-cell interference,
-                       published and interference-trained large NRx, macro cell (N15)
-  mot_fail_legend, mot_time_legend, mot_server_legend   legend strips
+  mot_interference, mot_interference_small   retransmission reduction against the conventional receiver under
+                       neighbor-cell interference, published and interference-trained large NRx, macro and small cell (N15)
+  mot_fail_legend, mot_time_legend, mot_gpu_legend, mot_interference_legend   legend strips
 """
 import glob
 import json
@@ -336,23 +336,26 @@ def motivation_server():
     style(ax)
     save(fig, "mot_lanes")
 
-    inr = [0, 3, 6, 10]
-    pub = runs("irc_uma_v3", "ici_uma_inr3", "ici_uma_inr6", "ici_uma_inr10")
-    ici = runs("ici_uma_v3_iciaware", "ici_uma_inr3_iciaware", "ici_uma_inr6_iciaware", "ici_uma_inr10_iciaware")
-    fig, ax = plt.subplots(figsize=PANEL)
-    for label, names in (("Published Large NRx", pub), ("Interference-Trained", ici)):
-        y = [merged([n])["resends_per_100"] / merged([n], "ours")["resends_per_100"] for n in names]
-        ax.plot(inr, y, color=NRX[label], linewidth=2.4, marker="o", markersize=6)
-        ax.text(inr[-1] + 0.4, y[-1], f"{y[-1]:.1f}\u00d7", va="center", fontsize=VALUE, color=INK)
-    ax.set_xlim(-0.5, 12)
-    ax.set_xticks(inr)
-    ax.set_ylim(1, 3)
-    ax.set_yticks([1, 2, 3])
-    ax.set_xlabel("Interference (dB)")
-    ax.set_ylabel("Reduction (\u00d7)")
-    style(ax, grid="both")
-    save(fig, "mot_interference")
-    legend("mot_server_legend", list(GPUS.items()) + list(NRX.items()), width=10.2)
+    for cell, name in (("uma", "mot_interference"), ("umi", "mot_interference_small")):
+        inr = [0, 3, 6, 10]
+        pub = runs(f"irc_{cell}_v3", f"ici_{cell}_inr3", f"ici_{cell}_inr6", f"ici_{cell}_inr10")
+        ici = runs(f"ici_{cell}_v3_iciaware", f"ici_{cell}_inr3_iciaware", f"ici_{cell}_inr6_iciaware",
+                   f"ici_{cell}_inr10_iciaware")
+        fig, ax = plt.subplots(figsize=PANEL)
+        for label, names in (("Published Large NRx", pub), ("Interference-Trained", ici)):
+            y = [merged([n])["resends_per_100"] / merged([n], "ours")["resends_per_100"] for n in names]
+            ax.plot(inr, y, color=NRX[label], linewidth=2.4, marker="o", markersize=6)
+            ax.text(inr[-1] + 0.4, y[-1], f"{y[-1]:.1f}\u00d7", va="center", fontsize=VALUE, color=INK)
+        ax.set_xlim(-0.5, 12)
+        ax.set_xticks(inr)
+        ax.set_ylim(1, 3)
+        ax.set_yticks([1, 2, 3])
+        ax.set_xlabel("Interference (dB)")
+        ax.set_ylabel("Reduction (\u00d7)")
+        style(ax, grid="both")
+        save(fig, name)
+    legend("mot_gpu_legend", list(GPUS.items()))
+    legend("mot_interference_legend", list(NRX.items()), width=5.6)
 
 
 if __name__ == "__main__":
