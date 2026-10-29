@@ -66,7 +66,7 @@ NRx와 기존 수신기를 고르는 연구도 HARQ와 CRC를 판단에 쓰지 �
 | [DeepRx MIMO](https://arxiv.org/abs/2010.16283) | IEEE ICC 2021 | 4 layer, 16 RX, 1 pilot NRx가 2 pilot LMMSE보다 약 2 dB | 보고 없음 | 시뮬레이션 | 예 | 아니오 | 아니오 |
 | [HybridDeepRx](https://arxiv.org/abs/2106.16079) | IEEE PIMRC 2021 | 높은 EVM 상향 신호 복조 | 보고 없음 | 시뮬레이션 | 예 | 아니오 | 아니오 |
 | [NVIDIA MU-MIMO NRx](https://arxiv.org/abs/2312.02601) | IEEE GLOBECOM Workshops 2023 | CNN+GNN, 1–4 layer, HIL 2 UE·4 RX | 730k weight, 실시간은 future work | HIL | 예 | 아니오 | 아니오 |
-| [NVIDIA real-time NRx](https://arxiv.org/abs/2409.02912) | IEEE ICMLCN 2025 | 1 ms 안 inline, MCS 변경에 재학습 없음, 미세조정 최대 2.2 dB | A100: 반복당 350 µs + 270 µs (132 PRB, 2 UE), N_it=2 | 표준 호환 PUSCH 체인 (지연 측정) | 예 | 아니오 | 아니오 |
+| [NVIDIA real-time NRx](https://arxiv.org/abs/2409.02912) | IEEE ICMLCN 2025 | 1 ms 안 inline, MCS 변경에 재학습 없음, 미세조정 최대 2.2 dB | A100: 반복당 350 µs + 고정 준비·판독 270 µs (132 PRB, 2 UE), N_it=2, weight 14만(큰 모델 8회 반복 44만) — 2026-10-29 원문 확인 | 표준 호환 PUSCH 체인 (지연 측정) | 예 | 아니오 | 아니오 |
 | [NI/Ettus OAI NRx](https://www.ni.com/en/solutions/electronics/5g-6g-wireless-research-prototyping/prototyping-real-time-neural-receiver-usrp-openairint.html) | 업체 자료 2024-12 | OAI gNB 안에서 기존 수신기와 설정으로 전환 | 700k → 47k param, 6 PRB만 | 예 (OAI) | 예 | 아니오 | 아니오 |
 | [Sionna Research Kit](https://arxiv.org/abs/2505.15848) | arXiv 2025-05 | Jetson AGX Orin + OAI에 TensorRT NRx | 수치 없음 | 예 | 예 | 아니오 | 아니오 |
 | [Abdollahpour 외](https://arxiv.org/abs/2508.12892) | IEEE GLOBECOM 2025 | model-driven MU-MIMO NRx, FLOPs 66배·parameter 396배 감소 | 지연 수치 없음 | 시뮬레이션 | 예 | 아니오 | 아니오 |
@@ -161,7 +161,7 @@ GSMA는 5G끼리 공존할 때 DDDSU를, TD-LTE와 공존할 때 DDDDDDDSUU 또�
 |---|---|---|
 | 한 GPU의 작업 | L1(또는 LDPC)+AI (PoC, YinYangRAN, Weaver, Eunoia) 또는 L1+NRx (NVIDIA 실시간 NRx, ARCHES, OCUDU) | L1 + 큰 NRx + AI/LLM |
 | NRx를 부르는 조건 | 모든 블록에 LDPC 앞 inline (NVIDIA, DeepRx, AI Aerial), 또는 매 슬롯 MMSE와 병렬 (detect-and-rollback) | CRC가 실패한 TB만 |
-| NRx 크기와 마감 | L1 슬롯 마감(A100에서 1 ms)에 맞춰 축소 (N_it=2, 47k param, 6 PRB) | 큰 모델(A100, 273 PRB, 2 UE에서 약 6.3 ms 측정), 복구 마감 11.5 ms(설계값) |
+| NRx 크기와 마감 | L1 슬롯 마감(A100에서 1 ms)에 맞춰 축소 (N_it=2, weight 14만, 132 PRB — 2026-10-29 원문 확인으로 47k를 바로잡음) | 큰 모델(A100, 273 PRB, 2 UE에서 약 6.3 ms 측정), 복구 마감 11.5 ms(설계값) |
 | 두 번째 처리의 신호 | 없음, 복호 전 LLR 통계 (detect-and-rollback), 예측한 decodability (Nuberu, Hades, E-HARQ) | 실제 CRC 결과 |
 | 다시 계산하는 범위 | 같은 LLR 위 복호기만 (adaptive SCL, BP→OSD/GRAND, US 7254769), 같은 복호기의 남은 반복 (Nuberu, Hades), 다른 수신기의 사본 (SOFT, MRD) | 같은 샘플에서 채널 추정·등화·demapping부터 다른 수신기로 |
 | HARQ와의 관계 | 끄거나 다루지 않음 (NRx 연구), 예측으로 응답 (vRAN), 재전송을 작게 (PPR, Maranello) | HARQ 앞의 단계: 성공하면 재전송 grant를 내지 않고, 실패하거나 마감을 넘기면 표준 HARQ로 |
