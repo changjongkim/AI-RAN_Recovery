@@ -1,0 +1,278 @@
+{
+ "four_12": {
+  "at_l1": {
+   "failed_slots": 13290,
+   "on_time_per_failed": 0.564484574868322,
+   "pred_error_ms": [
+    -0.7924094156250004,
+    -0.031003000000000114,
+    0.27684031250000024
+   ],
+   "rejected_at_l1_per_failed": 0.36666666666666664,
+   "rejected_later_per_failed": 0.06869826937547027
+  },
+  "cells": 12,
+  "gpus": "four",
+  "latest_start": {
+   "failed_slots": 26596,
+   "on_time_per_failed": 0.5635433899834562,
+   "rejected_at_l1_per_failed": 0.0,
+   "rejected_later_per_failed": 0.43593021506993535
+  },
+  "wait_end_p50_ms": 8.455149500000001,
+  "wait_share_of_on_time": 0.6928818981604905
+ },
+ "four_16": {
+  "at_l1": {
+   "failed_slots": 17820,
+   "on_time_per_failed": 0.422334455667789,
+   "pred_error_ms": [
+    -0.8697014812499994,
+    -0.06847750000000019,
+    0.43197575000000044
+   ],
+   "rejected_at_l1_per_failed": 0.548989898989899,
+   "rejected_later_per_failed": 0.028282828282828285
+  },
+  "cells": 16,
+  "gpus": "four",
+  "latest_start": {
+   "failed_slots": 35469,
+   "on_time_per_failed": 0.42504722433674474,
+   "rejected_at_l1_per_failed": 0.0,
+   "rejected_later_per_failed": 0.5747554202261129
+  },
+  "wait_end_p50_ms": 8.484615,
+  "wait_share_of_on_time": 0.5466383204889715
+ },
+ "four_20": {
+  "at_l1": {
+   "failed_slots": 21884,
+   "on_time_per_failed": 0.3352677755437763,
+   "pred_error_ms": [
+    -1.0365153437499997,
+    -0.1371194374999991,
+    0.41521400624999943
+   ],
+   "rejected_at_l1_per_failed": 0.574026686163407,
+   "rejected_later_per_failed": 0.09033997441052824
+  },
+  "cells": 20,
+  "gpus": "four",
+  "latest_start": {
+   "failed_slots": 43726,
+   "on_time_per_failed": 0.3358185061519462,
+   "rejected_at_l1_per_failed": 0.0,
+   "rejected_later_per_failed": 0.663724100077757
+  },
+  "wait_end_p50_ms": 8.822658,
+  "wait_share_of_on_time": 0.4910726454954341
+ },
+ "four_24": {
+  "at_l1": {
+   "failed_slots": 26552,
+   "on_time_per_failed": 0.2656297077432962,
+   "pred_error_ms": [
+    -0.8260923750000008,
+    -0.09418090625000008,
+    0.4714773687499997
+   ],
+   "rejected_at_l1_per_failed": 0.6495932509792106,
+   "rejected_later_per_failed": 0.08285628201265441
+  },
+  "cells": 24,
+  "gpus": "four",
+  "latest_start": {
+   "failed_slots": 53097,
+   "on_time_per_failed": 0.26560822645347193,
+   "rejected_at_l1_per_failed": 0.0,
+   "rejected_later_per_failed": 0.731717422829915
+  },
+  "wait_end_p50_ms": 8.8340435,
+  "wait_share_of_on_time": 0.35389196086771585
+ },
+ "four_4": {
+  "at_l1": {
+   "failed_slots": 4707,
+   "on_time_per_failed": 0.9719566602931804,
+   "pred_error_ms": [
+    -0.07446952500000012,
+    -0.0029079687499997675,
+    0.08053219999999969
+   ],
+   "rejected_at_l1_per_failed": 0.012534523050775442,
+   "rejected_later_per_failed": 0.01550881665604419
+  },
+  "cells": 4,
+  "gpus": "four",
+  "latest_start": {
+   "failed_slots": 9334,
+   "on_time_per_failed": 0.9720377115920291,
+   "rejected_at_l1_per_failed": 0.0,
+   "rejected_later_per_failed": 0.027426612384829654
+  },
+  "wait_end_p50_ms": 6.8944485,
+  "wait_share_of_on_time": 0.9940983606557378
+ },
+ "four_8": {
+  "at_l1": {
+   "failed_slots": 8858,
+   "on_time_per_failed": 0.7967938586588394,
+   "pred_error_ms": [
+    -0.211125925,
+    -0.014802906249999026,
+    0.15186434375000032
+   ],
+   "rejected_at_l1_per_failed": 0.17983743508692707,
+   "rejected_later_per_failed": 0.022804244750508015
+  },
+  "cells": 8,
+  "gpus": "four",
+  "latest_start": {
+   "failed_slots": 17573,
+   "on_time_per_failed": 0.8073180447277073,
+   "rejected_at_l1_per_failed": 0.0,
+   "rejected_later_per_failed": 0.19228361691230866
+  },
+  "wait_end_p50_ms": 8.1189155,
+  "wait_share_of_on_time": 0.9045055256446586
+ },
+ "one_1": {
+  "at_l1": {
+   "failed_slots": 1183,
+   "on_time_per_failed": 0.8901098901098901,
+   "pred_error_ms": [
+    -0.1195643562499999,
+    -0.041094656250000305,
+    0.018668412499999947
+   ],
+   "rejected_at_l1_per_failed": 0.08622147083685545,
+   "rejected_later_per_failed": 0.023668639053254437
+  },
+  "cells": 1,
+  "gpus": "one",
+  "latest_start": {
+   "failed_slots": 2378,
+   "on_time_per_failed": 0.8839360807401178,
+   "rejected_at_l1_per_failed": 0.0,
+   "rejected_later_per_failed": 0.11606391925988226
+  },
+  "wait_end_p50_ms": 6.641708,
+  "wait_share_of_on_time": 0.798670465337132
+ },
+ "one_2": {
+  "at_l1": {
+   "failed_slots": 2376,
+   "on_time_per_failed": 0.585016835016835,
+   "pred_error_ms": [
+    -0.12436260937499996,
+    -0.03251646874999947,
+    0.07829859062499979
+   ],
+   "rejected_at_l1_per_failed": 0.4137205387205387,
+   "rejected_later_per_failed": 0.0012626262626262627
+  },
+  "cells": 2,
+  "gpus": "one",
+  "latest_start": {
+   "failed_slots": 4742,
+   "on_time_per_failed": 0.5843525938422607,
+   "rejected_at_l1_per_failed": 0.0,
+   "rejected_later_per_failed": 0.4156474061577394
+  },
+  "wait_end_p50_ms": 6.9384565,
+  "wait_share_of_on_time": 0.9568345323741008
+ },
+ "one_3": {
+  "at_l1": {
+   "failed_slots": 3543,
+   "on_time_per_failed": 0.46062658763759523,
+   "pred_error_ms": [
+    -0.14810289375000033,
+    -0.030128781249999292,
+    0.10949887187499965
+   ],
+   "rejected_at_l1_per_failed": 0.532881738639571,
+   "rejected_later_per_failed": 0.006491673722833756
+  },
+  "cells": 3,
+  "gpus": "one",
+  "latest_start": {
+   "failed_slots": 7083,
+   "on_time_per_failed": 0.45955103769589156,
+   "rejected_at_l1_per_failed": 0.0,
+   "rejected_later_per_failed": 0.5404489623041084
+  },
+  "wait_end_p50_ms": 7.981505,
+  "wait_share_of_on_time": 0.9638480392156863
+ },
+ "one_4": {
+  "at_l1": {
+   "failed_slots": 4715,
+   "on_time_per_failed": 0.3679745493107105,
+   "pred_error_ms": [
+    -0.15071274375000138,
+    -0.031732062499999714,
+    0.15971833749999972
+   ],
+   "rejected_at_l1_per_failed": 0.6224814422057264,
+   "rejected_later_per_failed": 0.009544008483563097
+  },
+  "cells": 4,
+  "gpus": "one",
+  "latest_start": {
+   "failed_slots": 9336,
+   "on_time_per_failed": 0.36868037703513284,
+   "rejected_at_l1_per_failed": 0.0,
+   "rejected_later_per_failed": 0.6312125107112254
+  },
+  "wait_end_p50_ms": 8.343347000000001,
+  "wait_share_of_on_time": 0.7919308357348703
+ },
+ "one_6": {
+  "at_l1": {
+   "failed_slots": 6813,
+   "on_time_per_failed": 0.25069719653603406,
+   "pred_error_ms": [
+    -0.2957969906250012,
+    -0.014257062500000472,
+    0.3329943437500002
+   ],
+   "rejected_at_l1_per_failed": 0.7240569499486276,
+   "rejected_later_per_failed": 0.02495229707911346
+  },
+  "cells": 6,
+  "gpus": "one",
+  "latest_start": {
+   "failed_slots": 13444,
+   "on_time_per_failed": 0.25349598333829215,
+   "rejected_at_l1_per_failed": 0.0,
+   "rejected_later_per_failed": 0.7450907468015472
+  },
+  "wait_end_p50_ms": 8.611406,
+  "wait_share_of_on_time": 0.5708430913348946
+ },
+ "one_8": {
+  "at_l1": {
+   "failed_slots": 8865,
+   "on_time_per_failed": 0.1728144388042865,
+   "pred_error_ms": [
+    -0.48441345937500024,
+    -0.02298351562500045,
+    0.4349083593749991
+   ],
+   "rejected_at_l1_per_failed": 0.7816130851663846,
+   "rejected_later_per_failed": 0.03406655386350818
+  },
+  "cells": 8,
+  "gpus": "one",
+  "latest_start": {
+   "failed_slots": 17572,
+   "on_time_per_failed": 0.1732870475756886,
+   "rejected_at_l1_per_failed": 0.0,
+   "rejected_later_per_failed": 0.8137946733439563
+  },
+  "wait_end_p50_ms": 9.1764445,
+  "wait_share_of_on_time": 0.4608355091383812
+ }
+}

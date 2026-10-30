@@ -7,6 +7,8 @@ rejection time of Section 4.3 (exp/n30_runtime_arrival.sh):
                    from the lanes and the slots ahead of it in the queue (each run taking the moving average of the
                    finished runs, MS at the start) and drop the slot at once if the predicted start is after its latest
                    start; the predicted end of every admitted slot goes to the output (predicted_end_ms).
+  arrival_margin=MS  reject at the L1 result only when the predicted start is more than MS after the latest start; a
+                   slot closer to it waits for the rule at the latest start (default 0)
 
 Two deadlines per TB (from data arrival):
   L1 deadline      the conventional CRC must be ready (UL indication).
@@ -130,6 +132,7 @@ def main() -> None:
     flags = dict(PRESETS[config["nrx_policy"]])
     flags.update(config.get("nrx_flags", {}))
     run_est = float(flags.get("arrival_pred", 0)) * ms      # 0: the runtime's rule (rejection at the latest start)
+    margin = float(flags.get("arrival_margin", 0)) * ms
     predicted: dict[str, float] = {}
     state = SlotState(args.state, args.num_cells, args.periods, gpus)
 
@@ -276,7 +279,7 @@ def main() -> None:
                             continue
                         if run_est and flags["admit"]:
                             start = predicted_start(key, release + slack, loop_start)
-                            if start > release + slack:
+                            if start > release + slack + margin:
                                 state.set_nrx(cell, k, DROPPED, loop_start)
                                 job_state[key] = DONE
                                 counters["dropped_at_l1"] += 1

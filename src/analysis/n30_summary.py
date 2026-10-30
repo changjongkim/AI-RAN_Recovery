@@ -11,6 +11,7 @@ and share_scale, the on-time recoveries of the rejection at the L1 result over t
 usage: RESULT_SUFFIX=_f35 N16_SUFFIX=d110_f35 n30_summary.py [OUT.json]       (from the repository root)"""
 import glob
 import json
+import os
 import re
 import sys
 
@@ -20,7 +21,7 @@ sys.path[:0] = ["src", "src/sim", "src/analysis"]
 import paper_numbers as pn  # noqa: E402
 import server_effect as se  # noqa: E402
 
-ARRIVAL = "arrivalpred60"
+ARRIVAL = os.environ.get("N30_TAG", "arrivalpred60")   # arrivalpred60arrivalmargin015: the rerun with a margin
 
 
 def run_slots(f):
@@ -104,7 +105,7 @@ def main():
                   f"later {a['rejected_later_per_failed']:.3f}; end - predicted p10/p50/p90 "
                   + ("/".join(f"{x:+.2f}" for x in e) if e else "-")
                   + f" ms; wait (predicted by {cut_ms} ms) {row['wait_share_of_on_time']:.2f} of on-time")
-    path = sys.argv[1] if len(sys.argv) > 1 else f"results/n30_summary{pn.SUFFIX}.json"
+    path = sys.argv[1] if len(sys.argv) > 1 else f"results/n30_summary{pn.SUFFIX}{'' if ARRIVAL == 'arrivalpred60' else '_' + ARRIVAL}.json"
     json.dump(out, open(path, "w"), indent=1, sort_keys=True)
 
 
