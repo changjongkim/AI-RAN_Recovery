@@ -241,5 +241,23 @@ N|n25_la_all_g1_s2|45|grep -qP "^n25_la_data\t0\t" queue_b/done || { echo no slo
 # 2026-10-30: the retransmission-gap check at 30 km/h (channel coherence about 4 ms at 3.5 GHz, where 7.5 ms and 12.5 ms
 # differ most; at 3 km/h both gaps gave 2.30x), same seeds as n3_uma_v30_f35
 N|n3_uma_v30_gap125_f35|55|CARRIER_GHZ=3.5 bash exp/harq_ir.sh n3_uma_v30_gap125_f35 20 --channel UMa --speed 8.33 --ebno 6,8,10,12 --slots 64 --batch 8 --gap-ms 12.5
+# 2026-10-30 09:00 rerun of N26 (user: rerun problems in the chain): 3-10 dB of interference at Eb/No 6-12 dB raised the
+# failed TBs to 3.4-6.6x the MCS 14 runs, far above the 1.5x and 1.8x of the timeline and link adaptation; weak
+# interference of 0.5, 1.0 and 1.5 dB over thermal on the MCS 16 slots lands near these loads (datasets *_w05/_w10/_w15)
+N|n26_data_w05|30|INR=0.5 N16_DATA=n16_uma_f35_m16_w05 bash exp/n26_load_data.sh
+N|n26_data_w10|30|INR=1.0 N16_DATA=n16_uma_f35_m16_w10 bash exp/n26_load_data.sh
+N|n26_data_w15|30|INR=1.5 N16_DATA=n16_uma_f35_m16_w15 bash exp/n26_load_data.sh
+N|n26_all_g4_w05_s1|30|grep -qP "^n26_data_w05\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_w05 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "4 8 12 16 20 24" 1
+N|n26_all_g4_w05_s2|30|grep -qP "^n26_data_w05\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_w05 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "4 8 12 16 20 24" 2
+N|n26_all_g1_w05_s1|30|grep -qP "^n26_data_w05\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_w05 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "1 2 3 4 6 8" 1
+N|n26_all_g1_w05_s2|30|grep -qP "^n26_data_w05\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_w05 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "1 2 3 4 6 8" 2
+N|n26_all_g4_w10_s1|30|grep -qP "^n26_data_w10\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_w10 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "4 8 12 16 20 24" 1
+N|n26_all_g4_w10_s2|30|grep -qP "^n26_data_w10\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_w10 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "4 8 12 16 20 24" 2
+N|n26_all_g1_w10_s1|30|grep -qP "^n26_data_w10\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_w10 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "1 2 3 4 6 8" 1
+N|n26_all_g1_w10_s2|30|grep -qP "^n26_data_w10\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_w10 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "1 2 3 4 6 8" 2
+N|n26_all_g4_w15_s1|30|grep -qP "^n26_data_w15\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_w15 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "4 8 12 16 20 24" 1
+N|n26_all_g4_w15_s2|30|grep -qP "^n26_data_w15\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_w15 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "4 8 12 16 20 24" 2
+N|n26_all_g1_w15_s1|30|grep -qP "^n26_data_w15\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_w15 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "1 2 3 4 6 8" 1
+N|n26_all_g1_w15_s2|30|grep -qP "^n26_data_w15\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_w15 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "1 2 3 4 6 8" 2
 # 2026-10-30 07:55 moved from queue/todo so that the fine-tuning chain starts earlier on the other node
 N|i3v2_uma_l50_iciaware_f35|180|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt OLLA_OPTS="--sir-bins -10,-5,0,5,10,15,30" CARRIER_GHZ=3.5 bash exp/harq_mcs.sh i3v2_uma_l50_iciaware_f35 24 --channel UMa --speed 0.83 --snr-db 10,15,20 --slots 16 --batch 8 --interferers 4 --layout hex:0.5:0.8
