@@ -1,3 +1,4 @@
+N|n13_lanes_ici|15|bash exp/nrx_lanes_ici.sh
 # second node: N4 fine-tuning of the four-user neural receiver, its checks, and N8b (3-4 users)
 N|tf_gpu_check|10|bash exp/tf_gpu_check.sh
 N|tf_conv_check|15|bash exp/tf_conv_check.sh
@@ -81,25 +82,159 @@ N|ici_uma_inr3_iciaware|60|grep -qP "^n15_control\t0\t" queue_b/done || exit 1; 
 N|ici_uma_inr6_iciaware|60|grep -qP "^n15_control\t0\t" queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt bash exp/harq_ir.sh ici_uma_inr6_iciaware 20 --channel UMa --speed 0.83 --ebno 13,15,17,19 --slots 64 --batch 8 --interferers 2 --inr-db 6
 N|ici_uma_inr10_iciaware|60|grep -qP "^n15_control\t0\t" queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt bash exp/harq_ir.sh ici_uma_inr10_iciaware 20 --channel UMa --speed 0.83 --ebno 16,18,20,22 --slots 64 --batch 8 --interferers 2 --inr-db 10
 N|n4_train16|150|LR=0.0005 bash exp/n4_train.sh 16 40000
-N|n4_train17|150|LR=0.0005 bash exp/n4_train.sh 17 40000
-N|n4_train18|150|LR=0.0005 bash exp/n4_train.sh 18 40000
-N|n8b_u4_s18|200|bash exp/classical.sh n8b_u4_s18 --base-config nrx_large_mu4.cfg --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --batch 4 --slots 48 --users 4 --ebno 10,12,14,16,18
-N|n4_train19|150|LR=0.0005 bash exp/n4_train.sh 19 40000
-N|n4_train20|150|LR=0.0005 bash exp/n4_train.sh 20 40000
-N|n4_train21|150|LR=0.0005 bash exp/n4_train.sh 21 40000
-N|n4_train22|150|LR=0.0005 bash exp/n4_train.sh 22 40000
-N|n4_train23|150|LR=0.0005 bash exp/n4_train.sh 23 40000
-N|n8b_u4_s23|200|bash exp/classical.sh n8b_u4_s23 --base-config nrx_large_mu4.cfg --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --batch 4 --slots 48 --users 4 --ebno 10,12,14,16,18
-N|n4_train24|150|LR=0.0001 bash exp/n4_train.sh 24 40000
-N|n4_train25|150|LR=0.0001 bash exp/n4_train.sh 25 40000
-N|n4_train26|150|LR=0.0001 bash exp/n4_train.sh 26 40000
-N|n4_train27|150|LR=0.0001 bash exp/n4_train.sh 27 40000
-N|n4_train28|150|LR=0.0001 bash exp/n4_train.sh 28 40000
-N|n8b_u4_s28|200|bash exp/classical.sh n8b_u4_s28 --base-config nrx_large_mu4.cfg --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --batch 4 --slots 48 --users 4 --ebno 10,12,14,16,18
-N|n4_train29|150|LR=0.0001 bash exp/n4_train.sh 29 40000
-N|n4_train30|150|LR=0.0001 bash exp/n4_train.sh 30 40000
-N|n4_train31|150|LR=0.0001 bash exp/n4_train.sh 31 40000
-N|n4_train32|150|LR=0.0001 bash exp/n4_train.sh 32 40000
-N|n4_train33|150|LR=0.0001 bash exp/n4_train.sh 33 40000
-N|n8b_u4_s33|200|bash exp/classical.sh n8b_u4_s33 --base-config nrx_large_mu4.cfg --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --batch 4 --slots 48 --users 4 --ebno 10,12,14,16,18
-N|n8b_u3_s33|200|bash exp/classical.sh n8b_u3_s33 --base-config nrx_large_mu4.cfg --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --batch 4 --slots 48 --users 3 --ebno 8,10,12,14,16
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train17|150|LR=0.0005 bash exp/n4_train.sh 17 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train18|150|LR=0.0005 bash exp/n4_train.sh 18 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n8b_u4_s18|200|bash exp/classical.sh n8b_u4_s18 --base-config nrx_large_mu4.cfg --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --batch 4 --slots 48 --users 4 --ebno 10,12,14,16,18
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train19|150|LR=0.0005 bash exp/n4_train.sh 19 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train20|150|LR=0.0005 bash exp/n4_train.sh 20 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train21|150|LR=0.0005 bash exp/n4_train.sh 21 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train22|150|LR=0.0005 bash exp/n4_train.sh 22 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train23|150|LR=0.0005 bash exp/n4_train.sh 23 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n8b_u4_s23|200|bash exp/classical.sh n8b_u4_s23 --base-config nrx_large_mu4.cfg --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --batch 4 --slots 48 --users 4 --ebno 10,12,14,16,18
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train24|150|LR=0.0001 bash exp/n4_train.sh 24 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train25|150|LR=0.0001 bash exp/n4_train.sh 25 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train26|150|LR=0.0001 bash exp/n4_train.sh 26 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train27|150|LR=0.0001 bash exp/n4_train.sh 27 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train28|150|LR=0.0001 bash exp/n4_train.sh 28 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n8b_u4_s28|200|bash exp/classical.sh n8b_u4_s28 --base-config nrx_large_mu4.cfg --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --batch 4 --slots 48 --users 4 --ebno 10,12,14,16,18
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train29|150|LR=0.0001 bash exp/n4_train.sh 29 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train30|150|LR=0.0001 bash exp/n4_train.sh 30 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train31|150|LR=0.0001 bash exp/n4_train.sh 31 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train32|150|LR=0.0001 bash exp/n4_train.sh 32 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n4_train33|150|LR=0.0001 bash exp/n4_train.sh 33 40000
+#dropped 2026-10-29 (3-4 users not an operating point): N|n8b_u4_s33|200|bash exp/classical.sh n8b_u4_s33 --base-config nrx_large_mu4.cfg --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --batch 4 --slots 48 --users 4 --ebno 10,12,14,16,18
+#dropped 2026-10-29 (3-4 users not an operating point): N|n8b_u3_s33|200|bash exp/classical.sh n8b_u3_s33 --base-config nrx_large_mu4.cfg --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --batch 4 --slots 48 --users 3 --ebno 8,10,12,14,16
+
+# Round 8 (2026-10-29), N18: the resend panels and the latency panels of evaluation 1 on the same 20,480 UMa blocks.
+# The first UMa seed set again, now recording the conventional receiver's failed code blocks (the second set,
+# n3_uma_v3_more, has them); the same seeds must reproduce n3_uma_v3 block for block.
+N|n3_uma_v3_cb|75|bash exp/harq_ir.sh n3_uma_v3_cb 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+L|n18_merge|0|/global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/harq_stats.py --inputs results/n3_uma_v3_cb/c*.npz results/n3_uma_v3_more/c*.npz --output results/n3_uma_v3_all.json > results/n3_uma_v3_all.txt && /global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/analysis/same_blocks.py results/n3_uma_v3 results/n3_uma_v3_cb > results/n18_same_blocks.txt
+# N16 (2026-10-29): Layer 1 of C cells and the large-receiver recovery lane together on one A100, no AI (Antiphase slot
+# runtime, read only, with our UMa slots and engine): cells per GPU with the L1 time counted; L1 only / every failure / <= 5 failed code blocks
+N|n16_data|40|bash exp/n16_data.sh
+N|n16_smoke|25|grep -qP "^n16_data\t0\t" queue_b/done || exit 1; PERIODS=400 bash exp/n16_runtime.sh all "2" 9
+N|n16_off_s1|60|grep -qP "^n16_smoke\t0\t" queue_b/done || exit 1; bash exp/n16_runtime.sh off "1 2 4 6 8 10 12" 1
+N|n16_all_s1|60|grep -qP "^n16_smoke\t0\t" queue_b/done || exit 1; bash exp/n16_runtime.sh all "1 2 3 4 6 8" 1
+N|n16_cb5_s1|60|grep -qP "^n16_smoke\t0\t" queue_b/done || exit 1; bash exp/n16_runtime.sh cb5 "1 2 3 4 6 8" 1
+N|n16_all_s2|60|grep -qP "^n16_smoke\t0\t" queue_b/done || exit 1; bash exp/n16_runtime.sh all "1 2 3 4 6 8" 2
+N|n16_cb5_s2|60|grep -qP "^n16_smoke\t0\t" queue_b/done || exit 1; bash exp/n16_runtime.sh cb5 "1 2 3 4 6 8" 2
+L|n16_summary|0|/global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/analysis/n16_summary.py > results/n16_summary.txt
+# N17: whole-path throughput on the same slots: small neural receiver + LDPC (AI-for-RAN Layer 1, every block), large
+# (recovery path), cuPHY; 1/2/4 threads.  Gives the AI-for-RAN cells per GPU with its Layer 1 counted.
+N|n17_paths|30|grep -qP "^n16_data\t0\t" queue_b/done || exit 1; source env.sh; GPU=0 rx python3 /rec/n17_paths.py --dataset $DATA/n16_uma --small $ENGINE_SMALL --large $ENGINE_LARGE --output $RESULTS/n17_paths.json
+# N20: pairing by the pair's MMSE sum rate (proportional fair with equal past rates), the criterion a MU-MIMO scheduler
+# uses; the earlier criterion (1 - rho^2) * min gain made 16 candidates no better than 8.  UMa first, same seeds as P2.
+N|n20_smoke|20|bash exp/harq_ir.sh n20_smoke 1 --drop-users 8 --pairing pf --channel UMa --speed 0.83 --ebno 8 --slots 16 --batch 8
+# N16b (2026-10-29, after the first N16 runs): the controller assumed a 7.6 ms path (Antiphase runs with AI); the path
+# alone takes 5.3 ms.  Tighter bounds 5.8 and 6.8 ms (late rescues are counted), and the value rule with <= 5 failed code blocks.
+N|n16_all_b58_s1|30|grep -qP "^n16_smoke\t0\t" queue_b/done || exit 1; BOUND=5.8 bash exp/n16_runtime.sh all "1 2 3 4 6 8" 1
+N|n16_all_b68_s1|30|grep -qP "^n16_smoke\t0\t" queue_b/done || exit 1; BOUND=6.8 bash exp/n16_runtime.sh all "1 2 3 4 6 8" 1
+N|n16_val5_b58_s1|30|grep -qP "^n16_smoke\t0\t" queue_b/done || exit 1; BOUND=5.8 bash exp/n16_runtime.sh val5 "1 2 3 4 6 8" 1
+N|n16_all_b58_s2|30|grep -qP "^n16_smoke\t0\t" queue_b/done || exit 1; BOUND=5.8 bash exp/n16_runtime.sh all "1 2 3 4 6 8" 2
+L|n16_summary2|0|/global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/analysis/n16_summary.py > results/n16_summary.txt
+N|p2b_uma_u4_pf|70|grep -qP "^n20_smoke\t0\t" queue_b/done || exit 1; bash exp/harq_ir.sh p2b_uma_u4_pf 20 --drop-users 4 --pairing pf --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|p2b_uma_u8_pf|75|grep -qP "^n20_smoke\t0\t" queue_b/done || exit 1; bash exp/harq_ir.sh p2b_uma_u8_pf 20 --drop-users 8 --pairing pf --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+# Round 9 (2026-10-29), on the head node because they time the GPU: the 6.8 ms bound as the reference (second seed),
+# S1 a four-GPU server with 4-24 cells (one recovery lane per GPU, a failure goes to any free lane), its L1-only
+# reference, S3 the AI-for-RAN Layer 1 and the recovery path with 1-8 processes under MPS, S2 60-second runs.
+N|n16_all_b68_s2|30|grep -qP "^n16_smoke\t0\t" queue_b/done || exit 1; BOUND=6.8 bash exp/n16_runtime.sh all "1 2 3 4 6 8" 2
+N|s1_server_s1|60|grep -qP "^n16_smoke\t0\t" queue_b/done || exit 1; RT_GPUS=4 BOUND=6.8 bash exp/n16_runtime.sh all "4 8 12 16 20 24" 1
+N|s1_server_off|40|grep -qP "^n16_smoke\t0\t" queue_b/done || exit 1; RT_GPUS=4 bash exp/n16_runtime.sh off "8 16 24" 1
+N|s1_server_s2|60|grep -qP "^n16_smoke\t0\t" queue_b/done || exit 1; RT_GPUS=4 BOUND=6.8 bash exp/n16_runtime.sh all "4 8 12 16 20 24" 2
+N|s3_n17_mps|45|grep -qP "^n16_data\t0\t" queue_b/done || exit 1; bash exp/n17_mps.sh
+N|s2_long|40|grep -qP "^n16_smoke\t0\t" queue_b/done || exit 1; PERIODS=24000 BOUND=6.8 bash exp/n16_runtime.sh all "1" 1 && PERIODS=24000 BOUND=6.8 RT_GPUS=4 bash exp/n16_runtime.sh all "16 20" 1
+L|n16_summary3|0|/global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3 src/analysis/n16_summary.py > results/n16_summary.txt
+N|p2b_uma_u16_pf|90|grep -qP "^n20_smoke\t0\t" queue_b/done || exit 1; bash exp/harq_ir.sh p2b_uma_u16_pf 20 --drop-users 16 --pairing pf --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+# N19: a cell whose interference over thermal changes over time (none with probability 0.25, else 0-10 dB per batch of
+# 8 slots, Eb/No moved up by the rise); the same slots received with the published and the interference-aware large
+# receiver (same seeds), MMSE-IRC as the conventional receiver; the model is then chosen from the cell's interference.
+N|n19_smoke|20|IRC=1 bash exp/harq_ir.sh n19_smoke 1 --channel UMa --speed 0.83 --ebno 8 --slots 16 --batch 8 --interferers 2 --inr-mix 0.25:0:10
+N|n19_uma_mix|75|grep -qP "^n19_smoke\t0\t" queue_b/done || exit 1; IRC=1 bash exp/harq_ir.sh n19_uma_mix 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --inr-mix 0.25:0:10
+N|n19_uma_mix_iciaware|75|grep -qP "^n19_smoke\t0\t" queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt bash exp/harq_ir.sh n19_uma_mix_iciaware 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --inr-mix 0.25:0:10
+N|n19_umi_mix|75|grep -qP "^n19_smoke\t0\t" queue_b/done || exit 1; IRC=1 bash exp/harq_ir.sh n19_umi_mix 20 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --inr-mix 0.25:0:10
+N|n19_umi_mix_iciaware|75|grep -qP "^n19_smoke\t0\t" queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt bash exp/harq_ir.sh n19_umi_mix_iciaware 20 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --inr-mix 0.25:0:10
+# N20 on UMi (P2's UMi runs had the earlier criterion)
+N|p2b_u4_pf|70|grep -qP "^n20_smoke\t0\t" queue_b/done || exit 1; bash exp/harq_ir.sh p2b_u4_pf 20 --drop-users 4 --pairing pf --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|p2b_u8_pf|75|grep -qP "^n20_smoke\t0\t" queue_b/done || exit 1; bash exp/harq_ir.sh p2b_u8_pf 20 --drop-users 8 --pairing pf --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|p2b_u16_pf|90|grep -qP "^n20_smoke\t0\t" queue_b/done || exit 1; bash exp/harq_ir.sh p2b_u16_pf 20 --drop-users 16 --pairing pf --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+# N21 (2026-10-29): a pair allocated part of the band (106 and 52 PRBs instead of 273), where frequency no longer averages
+# the fading and the speed can matter; UMa 3 and 120 km/h (the 273-PRB runs n3_uma_v3, n3_uma_v120 are the reference), same Eb/No grid.  Engines of both receivers at those sizes.
+N|n21_export|60|bash exp/n21_export.sh
+N|n21_smoke|20|grep -qP "^n21_export\t0\t" queue_b/done || exit 1; REC_NUM_PRBS=106 NRX_ENGINE=/rec/engines/nrx_large_106prb_2ue.trt SMALL_ENGINE=/rec/engines/nrx_rt_106prb_2ue.trt bash exp/harq_ir.sh n21_smoke 1 --prbs 106 --channel UMa --speed 0.83 --ebno 8 --slots 16 --batch 8
+N|n21_uma_p106_v3|60|grep -qP "^n21_smoke\t0\t" queue_b/done || exit 1; REC_NUM_PRBS=106 NRX_ENGINE=/rec/engines/nrx_large_106prb_2ue.trt SMALL_ENGINE=/rec/engines/nrx_rt_106prb_2ue.trt bash exp/harq_ir.sh n21_uma_p106_v3 20 --prbs 106 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n21_uma_p106_v120|60|grep -qP "^n21_smoke\t0\t" queue_b/done || exit 1; REC_NUM_PRBS=106 NRX_ENGINE=/rec/engines/nrx_large_106prb_2ue.trt SMALL_ENGINE=/rec/engines/nrx_rt_106prb_2ue.trt bash exp/harq_ir.sh n21_uma_p106_v120 20 --prbs 106 --channel UMa --speed 33.33 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n21_uma_p52_v3|50|grep -qP "^n21_smoke\t0\t" queue_b/done || exit 1; REC_NUM_PRBS=52 NRX_ENGINE=/rec/engines/nrx_large_52prb_2ue.trt SMALL_ENGINE=/rec/engines/nrx_rt_52prb_2ue.trt bash exp/harq_ir.sh n21_uma_p52_v3 20 --prbs 52 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n21_uma_p52_v120|50|grep -qP "^n21_smoke\t0\t" queue_b/done || exit 1; REC_NUM_PRBS=52 NRX_ENGINE=/rec/engines/nrx_large_52prb_2ue.trt SMALL_ENGINE=/rec/engines/nrx_rt_52prb_2ue.trt bash exp/harq_ir.sh n21_uma_p52_v120 20 --prbs 52 --channel UMa --speed 33.33 --ebno 6,8,10,12 --slots 64 --batch 8
+
+# Moved from the second node (balance), Round 9: U2 32 candidates per cell, and UMi under heavy interference
+N|p2b_uma_u32_pf|110|grep -qP "^n20_smoke\t0\t" queue_b/done || exit 1; bash exp/harq_ir.sh p2b_uma_u32_pf 20 --drop-users 32 --pairing pf --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 4
+# (held 2026-10-29 04:10: replaced by the 3.5 GHz step *_f35) N|p2b_u32_pf|110|grep -qP "^n20_smoke\t0\t" queue_b/done || exit 1; bash exp/harq_ir.sh p2b_u32_pf 20 --drop-users 32 --pairing pf --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 4
+# (held 2026-10-29 04:10: replaced by the 3.5 GHz step *_f35) N|i1_umi_k4_inr10|60|grep -qP "^i1_smoke\t0\t" queue_b/done || exit 1; IRC=1 bash exp/harq_ir.sh i1_umi_k4_inr10 12 --channel UMi --speed 0.83 --ebno 16,18,20,22 --slots 64 --batch 8 --interferers 4 --inr-db 10
+# (held 2026-10-29 04:10: replaced by the 3.5 GHz step *_f35) N|i1_umi_k4_inr10_iciaware|60|grep -qP "^i1_smoke\t0\t" queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt bash exp/harq_ir.sh i1_umi_k4_inr10_iciaware 12 --channel UMi --speed 0.83 --ebno 16,18,20,22 --slots 64 --batch 8 --interferers 4 --inr-db 10
+# (held 2026-10-29 04:10: replaced by the 3.5 GHz step *_f35) N|i1_umi_k2_inr20|60|grep -qP "^i1_smoke\t0\t" queue_b/done || exit 1; IRC=1 bash exp/harq_ir.sh i1_umi_k2_inr20 12 --channel UMi --speed 0.83 --ebno 26,28,30,32 --slots 64 --batch 8 --interferers 2 --inr-db 20
+# (held 2026-10-29 04:10: replaced by the 3.5 GHz step *_f35) N|i1_umi_k2_inr20_iciaware|60|grep -qP "^i1_smoke\t0\t" queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt bash exp/harq_ir.sh i1_umi_k2_inr20_iciaware 12 --channel UMi --speed 0.83 --ebno 26,28,30,32 --slots 64 --batch 8 --interferers 2 --inr-db 20
+# 3.5 GHz reruns (2026-10-29 04:10): the paper's runs move from the 2.14 GHz of the NVlabs configuration to 3.5 GHz,
+# the band of the TDD patterns in the paper (CARRIER_GHZ=3.5: Doppler and UMi large-scale parameters change; UMa
+# uses its 6 GHz values below 6 GHz; path loss is off in link-level generation).  Same commands and seeds as the
+# 2.14 GHz steps of the same name without _f35; each step waits for smoke_f35 (queue_b head) before it starts.
+N|smoke_f35|20|bash exp/smoke_f35.sh
+N|n3_uma_v3_cb_f35|50|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/harq_ir.sh n3_uma_v3_cb_f35 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n6_uma_v3_f35|119|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/harq_mcs.sh n6_uma_v3_f35 24 --channel UMa --speed 0.83 --snr-db 6,8,10,12,14,16 --slots 16 --batch 8
+N|p1_umi_nlos_v3_f35|49|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/harq_ir.sh p1_umi_nlos_v3_f35 20 --channel UMi --los nlos --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|p1_umi_nlos_more_f35|49|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; SEED0=2000 CARRIER_GHZ=3.5 bash exp/harq_ir.sh p1_umi_nlos_more_f35 20 --channel UMi --los nlos --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|ici_umi_sir10_f35|60|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/harq_ir.sh ici_umi_sir10_f35 20 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --sir-db 10
+N|ici_umi_inr3_f35|60|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; IRC=1 CARRIER_GHZ=3.5 bash exp/harq_ir.sh ici_umi_inr3_f35 20 --channel UMi --speed 0.83 --ebno 11,13,15,17 --slots 64 --batch 8 --interferers 2 --inr-db 3
+N|ici_uma_inr3_f35|60|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; IRC=1 CARRIER_GHZ=3.5 bash exp/harq_ir.sh ici_uma_inr3_f35 20 --channel UMa --speed 0.83 --ebno 11,13,15,17 --slots 64 --batch 8 --interferers 2 --inr-db 3
+N|n5_uma_more2_f35|92|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; SEED0=420 CARRIER_GHZ=3.5 bash exp/classical.sh n5_uma_more2_f35 --channel UMa --systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4
+N|ici_umi_v3_iciaware_f35|50|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt CARRIER_GHZ=3.5 bash exp/harq_ir.sh ici_umi_v3_iciaware_f35 20 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|ici_umi_inr10_iciaware_f35|60|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt CARRIER_GHZ=3.5 bash exp/harq_ir.sh ici_umi_inr10_iciaware_f35 20 --channel UMi --speed 0.83 --ebno 16,18,20,22 --slots 64 --batch 8 --interferers 2 --inr-db 10
+N|ici_uma_inr6_iciaware_f35|60|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt CARRIER_GHZ=3.5 bash exp/harq_ir.sh ici_uma_inr6_iciaware_f35 20 --channel UMa --speed 0.83 --ebno 13,15,17,19 --slots 64 --batch 8 --interferers 2 --inr-db 6
+N|n1_umi_v60_f35|92|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/harq_ir.sh n1_umi_v60_f35 40 --channel UMi --speed 16.67 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n3_uma_los_v3_f35|49|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/harq_ir.sh n3_uma_los_v3_f35 20 --channel UMa --los los --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|p2b_u8_random_f35|49|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/harq_ir.sh p2b_u8_random_f35 20 --drop-users 8 --pairing random --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|p2b_u8_partner_f35|49|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/harq_ir.sh p2b_u8_partner_f35 20 --drop-users 8 --pairing partner --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|p2b_uma_u8_partner_f35|49|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/harq_ir.sh p2b_uma_u8_partner_f35 20 --drop-users 8 --pairing partner --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|p2b_uma_u16_partner_f35|52|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/harq_ir.sh p2b_uma_u16_partner_f35 20 --drop-users 16 --pairing partner --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n3_uma_nlos_more_f35|49|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; SEED0=2000 CARRIER_GHZ=3.5 bash exp/harq_ir.sh n3_uma_nlos_more_f35 20 --channel UMa --los nlos --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n6_uma_nlos_f35|119|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/harq_mcs.sh n6_uma_nlos_f35 24 --channel UMa --los nlos --speed 0.83 --snr-db 6,8,10,12,14,16 --slots 16 --batch 8
+N|n6_umi_nlos_f35|121|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/harq_mcs.sh n6_umi_nlos_f35 24 --channel UMi --los nlos --speed 0.83 --snr-db 6,8,10,12,14,16 --slots 16 --batch 8
+N|u1_uma_r16_u2_b1_f35|150|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/classical.sh u1_uma_r16_u2_b1_f35 --base-config nrx_large_16rx.cfg --num-rx 16 --users 2 --channel UMa --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest --ebno=-4,-2,0,2,4,6 --slots 48 --batch 1
+N|p2b_uma_u8_pf_f35|52|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/harq_ir.sh p2b_uma_u8_pf_f35 20 --drop-users 8 --pairing pf --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+N|n19_umi_mix_f35|68|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; IRC=1 CARRIER_GHZ=3.5 bash exp/harq_ir.sh n19_umi_mix_f35 20 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --inr-mix 0.25:0:10
+N|i3v2_uma_l50_f35|180|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; IRC=1 OLLA_OPTS="--sir-bins -10,-5,0,5,10,15,30" CARRIER_GHZ=3.5 bash exp/harq_mcs.sh i3v2_uma_l50_f35 24 --channel UMa --speed 0.83 --snr-db 10,15,20 --slots 16 --batch 8 --interferers 4 --layout hex:0.5:0.8
+# 2026-10-29 19:35: Receiver Selector where most slots have no interference (75%; N19 has 25%), same seeds as N19
+N|n19_uma_mix75_f35|68|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; IRC=1 CARRIER_GHZ=3.5 bash exp/harq_ir.sh n19_uma_mix75_f35 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --inr-mix 0.75:0:10
+N|n19_uma_mix75_iciaware_f35|68|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt CARRIER_GHZ=3.5 bash exp/harq_ir.sh n19_uma_mix75_iciaware_f35 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --inr-mix 0.75:0:10
+# 2026-10-29 19:00: the 8-antenna NRx (n4b s30) at 3.5 GHz, the only receiver result of Section 5.3 left at 2.14 GHz
+N|n4b_eval_s30_uma_f35|70|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/classical.sh n4b_eval_s30_uma_f35 --base-config nrx_large_8rx.cfg --num-rx 8 --ebno 0,2,4,6,8,10 --batch 4 --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx --channel UMa --slots 96
+N|p2b_uma_u32_pf_f35|110|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/harq_ir.sh p2b_uma_u32_pf_f35 20 --drop-users 32 --pairing pf --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 4
+# 2026-10-30 user approved (third review, item 16): the macro traces with 12.5 ms between transmissions, the time when a wait moves the retransmission 5 ms later; same seeds as n3_uma_v3_cb_f35
+N|n3_uma_v3_cb_gap125_f35|55|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/harq_ir.sh n3_uma_v3_cb_gap125_f35 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --gap-ms 12.5
+# 2026-10-30 user approved (fifth review): N26 on-time share at the recovery loads of the timeline and of link adaptation
+# (MCS 16 slots with two users of neighbor cells at 3/6/10 dB over thermal; check of the load matching), then N25
+# closed-loop link adaptation in the real-time runs (MCS 10-16 rings per SNR point 6-16 dB, Reverb against no recovery)
+N|n26_data_i3|30|INR=3 bash exp/n26_load_data.sh
+N|n26_data_i6|30|INR=6 bash exp/n26_load_data.sh
+N|n26_data_i10|30|INR=10 bash exp/n26_load_data.sh
+N|n26_all_g4_i3_s1|30|grep -qP "^n26_data_i3\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_i3 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "4 8 12 16 20 24" 1
+N|n26_all_g4_i3_s2|30|grep -qP "^n26_data_i3\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_i3 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "4 8 12 16 20 24" 2
+N|n26_all_g1_i3_s1|30|grep -qP "^n26_data_i3\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_i3 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "1 2 3 4 6 8" 1
+N|n26_all_g1_i3_s2|30|grep -qP "^n26_data_i3\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_i3 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "1 2 3 4 6 8" 2
+N|n26_all_g4_i6_s1|30|grep -qP "^n26_data_i6\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_i6 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "4 8 12 16 20 24" 1
+N|n26_all_g4_i6_s2|30|grep -qP "^n26_data_i6\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_i6 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "4 8 12 16 20 24" 2
+N|n26_all_g1_i6_s1|30|grep -qP "^n26_data_i6\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_i6 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "1 2 3 4 6 8" 1
+N|n26_all_g1_i6_s2|30|grep -qP "^n26_data_i6\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_i6 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "1 2 3 4 6 8" 2
+N|n26_all_g4_i10_s1|30|grep -qP "^n26_data_i10\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_i10 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "4 8 12 16 20 24" 1
+N|n26_all_g4_i10_s2|30|grep -qP "^n26_data_i10\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_i10 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "4 8 12 16 20 24" 2
+N|n26_all_g1_i10_s1|30|grep -qP "^n26_data_i10\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_i10 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "1 2 3 4 6 8" 1
+N|n26_all_g1_i10_s2|30|grep -qP "^n26_data_i10\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 DEADLINE=11.0 N16_DATA=n16_uma_f35_m16_i10 PROFILE=nv_mu2_m16 BOUND=6.8 bash exp/n23_runtime.sh all "1 2 3 4 6 8" 2
+N|n25_la_data|90|bash exp/n25_la_data.sh
+N|n25_la_off_g4_s1|60|grep -qP "^n25_la_data\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=4 bash exp/n25_runtime_la.sh off "4 8 16 24" 1
+N|n25_la_all_g4_s1|60|grep -qP "^n25_la_data\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=4 bash exp/n25_runtime_la.sh all "4 8 16 24" 1
+N|n25_la_off_g4_s2|60|grep -qP "^n25_la_data\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=4 bash exp/n25_runtime_la.sh off "4 8 16 24" 2
+N|n25_la_all_g4_s2|60|grep -qP "^n25_la_data\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=4 bash exp/n25_runtime_la.sh all "4 8 16 24" 2
+N|n25_la_off_g1_s1|45|grep -qP "^n25_la_data\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 bash exp/n25_runtime_la.sh off "1 2 4" 1
+N|n25_la_all_g1_s1|45|grep -qP "^n25_la_data\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 bash exp/n25_runtime_la.sh all "1 2 4" 1
+N|n25_la_off_g1_s2|45|grep -qP "^n25_la_data\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 bash exp/n25_runtime_la.sh off "1 2 4" 2
+N|n25_la_all_g1_s2|45|grep -qP "^n25_la_data\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 bash exp/n25_runtime_la.sh all "1 2 4" 2
