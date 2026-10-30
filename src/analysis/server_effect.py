@@ -241,9 +241,10 @@ def effect(avail):
     return base, rows, loads
 
 
-def check_load_matching(avail):
-    """N23: on-time share of the runs on MCS 16 slots against the share predicted from the MCS 14 runs."""
-    m16 = availability({f"allb68{N16}_m16": "one", f"allb68g4{N16}_m16": "four"})
+def check_load_matching(avail, data="_m16"):
+    """N23: on-time share of the runs on MCS 16 slots against the share predicted from the MCS 14 runs (N26: `data` of
+    the slots with interference, e.g. _m16_w05)."""
+    m16 = availability({f"allb68{N16}{data}": "one", f"allb68g4{N16}{data}": "four"})
     out = {}
     for (g, c), v in m16.items():
         f14 = np.mean([r["failed_per_tb"] for r in avail.values() if r["gpus"] == g])
