@@ -1,0 +1,7 @@
+n3_uma_v3_cb_f35t.json: 5120 slots, 10240 TBs, similarity median 0.47, separable vs cuPHY first [8858, 8843]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 13.6 | 0.0 | 21.5 | 36 | 2.31 | 1.215 |
+| ai_for_ran | 7.9 | 0.0 | 12.4 | 36 | 1.29 | 1.124 |
+| ours | 13.6 | 8.3 | 8.6 | 15 | 0.90 | 1.086 |
+| ours_conv_harq | 13.6 | 8.3 | 11.3 | 25 | 1.95 | 1.113 |

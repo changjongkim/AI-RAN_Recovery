@@ -1,0 +1,58 @@
+{
+ "macro": {
+  "fine_tuned": {
+   "conventional_retx_per_100": 21.513671875,
+   "first_failure_pct": 13.642578124999998,
+   "recovered_pct_by_ebno": {
+    "10": 70.03257328990227,
+    "12": 72.86821705426357,
+    "6": 47.80793319415449,
+    "8": 60.623229461756374
+   },
+   "recovered_pct_of_failed": 60.558339298496776,
+   "retx_cut": 2.497732426303855,
+   "reverb_retx_per_100": 8.61328125
+  },
+  "published": {
+   "conventional_retx_per_100": 21.513671875,
+   "first_failure_pct": 13.6328125,
+   "recovered_pct_by_ebno": {
+    "10": 67.10097719869707,
+    "12": 65.89147286821705,
+    "6": 45.093945720250524,
+    "8": 56.25
+   },
+   "recovered_pct_of_failed": 56.59025787965616,
+   "retx_cut": 2.299582463465553,
+   "reverb_retx_per_100": 9.35546875
+  }
+ },
+ "small": {
+  "fine_tuned": {
+   "conventional_retx_per_100": 17.4267578125,
+   "first_failure_pct": 10.302734375,
+   "recovered_pct_by_ebno": {
+    "10": 26.342710997442456,
+    "12": 33.45070422535211,
+    "6": 20.833333333333332,
+    "8": 24.201680672268907
+   },
+   "recovered_pct_of_failed": 24.502369668246445,
+   "retx_cut": 1.3758673862760216,
+   "reverb_retx_per_100": 12.666015625
+  },
+  "published": {
+   "conventional_retx_per_100": 17.4365234375,
+   "first_failure_pct": 10.3076171875,
+   "recovered_pct_by_ebno": {
+    "10": 24.04092071611253,
+    "12": 26.760563380281692,
+    "6": 20.09512485136742,
+    "8": 22.18487394957983
+   },
+   "recovered_pct_of_failed": 22.311700615821884,
+   "retx_cut": 1.3359521137298915,
+   "reverb_retx_per_100": 13.0517578125
+  }
+ }
+}
