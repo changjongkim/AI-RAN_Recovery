@@ -238,3 +238,6 @@ N|n25_la_off_g1_s1|45|grep -qP "^n25_la_data\t0\t" queue_b/done || { echo no slo
 N|n25_la_all_g1_s1|45|grep -qP "^n25_la_data\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 bash exp/n25_runtime_la.sh all "1 2 4" 1
 N|n25_la_off_g1_s2|45|grep -qP "^n25_la_data\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 bash exp/n25_runtime_la.sh off "1 2 4" 2
 N|n25_la_all_g1_s2|45|grep -qP "^n25_la_data\t0\t" queue_b/done || { echo no slots; exit 1; }; RT_GPUS=1 bash exp/n25_runtime_la.sh all "1 2 4" 2
+# 2026-10-30: the retransmission-gap check at 30 km/h (channel coherence about 4 ms at 3.5 GHz, where 7.5 ms and 12.5 ms
+# differ most; at 3 km/h both gaps gave 2.30x), same seeds as n3_uma_v30_f35
+N|n3_uma_v30_gap125_f35|55|CARRIER_GHZ=3.5 bash exp/harq_ir.sh n3_uma_v30_gap125_f35 20 --channel UMa --speed 8.33 --ebno 6,8,10,12 --slots 64 --batch 8 --gap-ms 12.5
