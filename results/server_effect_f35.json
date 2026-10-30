@@ -1,135 +1,327 @@
 {
  "conventional": {
   "lost_pct": 2.1826171875,
-  "p99_unrecovered_ms": 24.4,
   "retx_per_100": 20.947265625
+ },
+ "load_matching_check": {},
+ "loads": {
+  "first_failures_per_tb_fixed_mcs14": 0.133837890625,
+  "recovery_runs_per_tb_fixed_mcs14": 0.199853515625,
+  "recovery_runs_per_tb_la": 0.23775925925925925,
+  "recovery_runs_per_tb_la_by_snr": {
+   "10": 0.2441111111111111,
+   "12": 0.2511111111111111,
+   "14": 0.1942222222222222,
+   "16": 0.18672222222222223,
+   "6": 0.284,
+   "8": 0.2663888888888889
+  }
  },
  "rows": {
   "every_recovery": {
    "goodput_gain_la": 1.3088563714451864,
    "lost_pct": 0.9033203125,
-   "p99_unrecovered_ms": 45.3,
    "retx_per_100": 9.1064453125
   },
   "four_12": {
-   "availability": 0.5688795924780928,
+   "availability": 0.5692521506669496,
+   "availability_by_esno": {
+    "10": 0.5609785334748173,
+    "12": 0.5676633552376504,
+    "6": 0.5755256811992654,
+    "8": 0.5724834751363056
+   },
+   "availability_fixed": 0.37280428550599565,
+   "availability_la": 0.30307712696174766,
    "cells": 12,
-   "goodput_gain_la": 1.1819374105886424,
+   "failed_per_tb": 0.13018644957983194,
+   "goodput_gain_la": 1.0865216687479133,
    "gpus": "four",
-   "lost_pct": 1.1083984375,
-   "p99_unrecovered_ms": 45.3,
-   "recoverable_share": 0.5381375760411792,
-   "retx_per_100": 13.4375
+   "load_fixed": 1.5351330055471508,
+   "load_la": 1.82629805196018,
+   "lost_pct": 1.298828125,
+   "recoverable_share": 0.5377853813934281,
+   "retx_per_100": 15.7470703125,
+   "unmatched": {
+    "goodput_gain_la": 1.1819374105886424,
+    "lost_pct": 1.1083984375,
+    "retx_per_100": 13.4326171875
+   }
   },
   "four_16": {
-   "availability": 0.4285521485920334,
+   "availability": 0.42830601890694114,
+   "availability_by_esno": {
+    "10": 0.4289891395154553,
+    "12": 0.41561790798432013,
+    "6": 0.4342519105838992,
+    "8": 0.43371632712175345
+   },
+   "availability_fixed": 0.26133508192762833,
+   "availability_la": 0.21967066621128842,
    "cells": 16,
-   "goodput_gain_la": 1.1394853296131076,
+   "failed_per_tb": 0.13061974789915967,
+   "goodput_gain_la": 1.0651098539482007,
    "gpus": "four",
-   "lost_pct": 1.2451171875,
-   "p99_unrecovered_ms": 45.3,
-   "recoverable_share": 0.5411381356918422,
-   "retx_per_100": 15.0048828125
+   "load_fixed": 1.5300405860474466,
+   "load_la": 1.8202397652980684,
+   "lost_pct": 1.5087890625,
+   "recoverable_share": 0.5414491053094749,
+   "retx_per_100": 17.3583984375,
+   "unmatched": {
+    "goodput_gain_la": 1.1394853296131076,
+    "lost_pct": 1.2451171875,
+    "retx_per_100": 15.009765625
+   }
   },
   "four_20": {
-   "availability": 0.33636670608165936,
+   "availability": 0.3366280810918945,
+   "availability_by_esno": {
+    "10": 0.33329204214587493,
+    "12": 0.3351116105795865,
+    "6": 0.3435601287241193,
+    "8": 0.33415516388558275
+   },
+   "availability_fixed": 0.20678571814384447,
+   "availability_la": 0.17381805815193815,
    "cells": 20,
-   "goodput_gain_la": 1.0987384012030732,
+   "failed_per_tb": 0.1291938025210084,
+   "goodput_gain_la": 1.0496572458251967,
    "gpus": "four",
-   "lost_pct": 1.3330078125,
-   "p99_unrecovered_ms": 45.3,
-   "recoverable_share": 0.5441668658857279,
-   "retx_per_100": 16.30859375
+   "load_fixed": 1.5469280393113403,
+   "load_la": 1.8403302218819426,
+   "lost_pct": 1.6162109375,
+   "recoverable_share": 0.5437443473017787,
+   "retx_per_100": 17.9736328125,
+   "unmatched": {
+    "goodput_gain_la": 1.0987384012030732,
+    "lost_pct": 1.3330078125,
+    "retx_per_100": 16.30859375
+   }
   },
   "four_24": {
-   "availability": 0.26659019956726127,
+   "availability": 0.2665688546048706,
+   "availability_by_esno": {
+    "10": 0.2659562770676809,
+    "12": 0.2655748997902217,
+    "6": 0.26571559040100284,
+    "8": 0.26888455322231497
+   },
+   "availability_fixed": 0.1735082571038736,
+   "availability_la": 0.1458459926238397,
    "cells": 24,
-   "goodput_gain_la": 1.0746336721992806,
+   "failed_per_tb": 0.13008359593837535,
+   "goodput_gain_la": 1.0416966471800637,
    "gpus": "four",
-   "lost_pct": 1.4892578125,
-   "p99_unrecovered_ms": 45.3,
-   "recoverable_share": 0.5433232028778763,
-   "retx_per_100": 17.28515625
+   "load_fixed": 1.5363467944080884,
+   "load_la": 1.827742057283635,
+   "lost_pct": 1.7041015625,
+   "recoverable_share": 0.5433667083854818,
+   "retx_per_100": 18.4521484375,
+   "unmatched": {
+    "goodput_gain_la": 1.0746336721992806,
+    "lost_pct": 1.4892578125,
+    "retx_per_100": 17.28515625
+   }
   },
   "four_4": {
-   "availability": 0.9700479214060148,
+   "availability": 0.970323873835264,
+   "availability_by_esno": {
+    "10": 0.9705579385944683,
+    "12": 0.9736531230486271,
+    "6": 0.9605699582636852,
+    "8": 0.9768322322253791
+   },
+   "availability_fixed": 0.8944979813891428,
+   "availability_la": 0.8497221838957366,
    "cells": 4,
-   "goodput_gain_la": 1.3017919562646052,
+   "failed_per_tb": 0.13566176470588234,
+   "goodput_gain_la": 1.2650796043416963,
    "gpus": "four",
-   "lost_pct": 0.9033203125,
-   "p99_unrecovered_ms": 45.3,
-   "recoverable_share": 0.5255157437567861,
-   "retx_per_100": 9.4580078125
+   "load_fixed": 1.4731749661246614,
+   "load_la": 1.7525885777376293,
+   "lost_pct": 0.9130859375,
+   "recoverable_share": 0.5253662912389115,
+   "retx_per_100": 10.2392578125,
+   "unmatched": {
+    "goodput_gain_la": 1.3017919562646052,
+    "lost_pct": 0.9033203125,
+    "retx_per_100": 9.4580078125
+   }
   },
   "four_8": {
-   "availability": 0.810291129803726,
+   "availability": 0.8100747104715701,
+   "availability_by_esno": {
+    "10": 0.8237875203860994,
+    "12": 0.796154641306595,
+    "6": 0.8017341165496836,
+    "8": 0.8185970944691746
+   },
+   "availability_fixed": 0.5600673775059537,
+   "availability_la": 0.47812656492743716,
    "cells": 8,
-   "goodput_gain_la": 1.2508951098604912,
+   "failed_per_tb": 0.1304030987394958,
+   "goodput_gain_la": 1.153852353743113,
    "gpus": "four",
-   "lost_pct": 0.9521484375,
-   "p99_unrecovered_ms": 45.3,
-   "recoverable_share": 0.5466978807294234,
-   "retx_per_100": 11.0693359375
+   "load_fixed": 1.5325825655741832,
+   "load_la": 1.8232638760695952,
+   "lost_pct": 1.1083984375,
+   "recoverable_share": 0.5468439363817097,
+   "retx_per_100": 13.544921875,
+   "unmatched": {
+    "goodput_gain_la": 1.2508951098604912,
+    "lost_pct": 0.9521484375,
+    "retx_per_100": 11.07421875
+   }
   },
   "one_1": {
-   "availability": 0.8910387452807426,
+   "availability": 0.8933951332560833,
+   "availability_by_esno": {
+    "10": 0.9113043478260869,
+    "12": 0.8777969018932874,
+    "6": 0.8948751642575559,
+    "8": 0.8898809523809523
+   },
+   "availability_fixed": 0.7530450530260835,
+   "availability_la": 0.6697583394406077,
    "cells": 1,
-   "goodput_gain_la": 1.2764843154979546,
+   "failed_per_tb": 0.1359768907563025,
+   "goodput_gain_la": 1.2101189295555976,
    "gpus": "one",
-   "lost_pct": 0.9130859375,
-   "p99_unrecovered_ms": 45.3,
-   "recoverable_share": 0.4980711530218603,
-   "retx_per_100": 10.263671875
+   "load_fixed": 1.469760887408266,
+   "load_la": 1.7485269587857462,
+   "lost_pct": 0.9765625,
+   "recoverable_share": 0.496757457846952,
+   "retx_per_100": 11.6064453125,
+   "unmatched": {
+    "goodput_gain_la": 1.2766827235430962,
+    "lost_pct": 0.9130859375,
+    "retx_per_100": 10.2490234375
+   }
   },
   "one_2": {
-   "availability": 0.5921618273404371,
+   "availability": 0.5946259423931954,
+   "availability_by_esno": {
+    "10": 0.5885810243492863,
+    "12": 0.5557377049180329,
+    "6": 0.6218130311614731,
+    "8": 0.6066666666666667
+   },
+   "availability_fixed": 0.4704505157860549,
+   "availability_la": 0.4183987531816971,
    "cells": 2,
-   "goodput_gain_la": 1.1913436758715203,
+   "failed_per_tb": 0.1358455882352941,
+   "goodput_gain_la": 1.1338886003829558,
    "gpus": "one",
-   "lost_pct": 1.07421875,
-   "p99_unrecovered_ms": 45.3,
-   "recoverable_share": 0.512853470437018,
-   "retx_per_100": 13.212890625
+   "load_fixed": 1.4711814952638702,
+   "load_la": 1.7502170099734378,
+   "lost_pct": 1.19140625,
+   "recoverable_share": 0.5107282184655396,
+   "retx_per_100": 14.5458984375,
+   "unmatched": {
+    "goodput_gain_la": 1.1932847553297574,
+    "lost_pct": 1.07421875,
+    "retx_per_100": 13.18359375
+   }
   },
   "one_3": {
-   "availability": 0.46127164060501946,
+   "availability": 0.4628556714304107,
+   "availability_by_esno": {
+    "10": 0.48528595224875065,
+    "12": 0.4387164650184114,
+    "6": 0.45752254390128144,
+    "8": 0.47139938712972423
+   },
+   "availability_fixed": 0.3478316102172338,
+   "availability_la": 0.29432232074303843,
    "cells": 3,
-   "goodput_gain_la": 1.1489279321128028,
+   "failed_per_tb": 0.1359768907563025,
+   "goodput_gain_la": 1.0847043650035717,
    "gpus": "one",
-   "lost_pct": 1.19140625,
-   "p99_unrecovered_ms": 45.3,
-   "recoverable_share": 0.486784140969163,
-   "retx_per_100": 14.6240234375
+   "load_fixed": 1.469760887408266,
+   "load_la": 1.7485269587857462,
+   "lost_pct": 1.3232421875,
+   "recoverable_share": 0.4851182197496523,
+   "retx_per_100": 16.1328125,
+   "unmatched": {
+    "goodput_gain_la": 1.1494909798674384,
+    "lost_pct": 1.19140625,
+    "retx_per_100": 14.619140625
+   }
   },
   "one_4": {
-   "availability": 0.37404158551198496,
+   "availability": 0.37401894875229824,
+   "availability_by_esno": {
+    "10": 0.4071367774687276,
+    "12": 0.3505317053958251,
+    "6": 0.35927701954998154,
+    "8": 0.38145100972326107
+   },
+   "availability_fixed": 0.2529903508043958,
+   "availability_la": 0.2092865422988156,
    "cells": 4,
-   "goodput_gain_la": 1.1149863360671388,
+   "failed_per_tb": 0.13568802521008402,
+   "goodput_gain_la": 1.0630687764743394,
    "gpus": "one",
-   "lost_pct": 1.298828125,
-   "p99_unrecovered_ms": 45.3,
-   "recoverable_share": 0.5295774647887324,
-   "retx_per_100": 15.7421875
+   "load_fixed": 1.472889853880395,
+   "load_la": 1.752249388928313,
+   "lost_pct": 1.5380859375,
+   "recoverable_share": 0.5296095164209982,
+   "retx_per_100": 17.4755859375,
+   "unmatched": {
+    "goodput_gain_la": 1.1149863360671388,
+    "lost_pct": 1.298828125,
+    "retx_per_100": 15.7421875
+   }
   },
   "one_6": {
-   "availability": 0.24513196738476928,
+   "availability": 0.24605194231858285,
+   "availability_by_esno": {
+    "10": 0.27703423014631007,
+    "12": 0.24015365165807642,
+    "6": 0.23156305059149254,
+    "8": 0.23854118064089735
+   },
+   "availability_fixed": 0.15276339105894454,
+   "availability_la": 0.12840846180730942,
    "cells": 6,
-   "goodput_gain_la": 1.0726896366989231,
+   "failed_per_tb": 0.1322216386554622,
+   "goodput_gain_la": 1.0350330935211478,
    "gpus": "one",
-   "lost_pct": 1.552734375,
-   "p99_unrecovered_ms": 45.3,
-   "recoverable_share": 0.5196182396606575,
-   "retx_per_100": 17.5537109375
+   "load_fixed": 1.5115038480635552,
+   "load_la": 1.7981872080620838,
+   "lost_pct": 1.7578125,
+   "recoverable_share": 0.5176754151044456,
+   "retx_per_100": 18.6962890625,
+   "unmatched": {
+    "goodput_gain_la": 1.0727335209029114,
+    "lost_pct": 1.552734375,
+    "retx_per_100": 17.5439453125
+   }
   },
   "one_8": {
-   "availability": 0.17301017038192723,
+   "availability": 0.17317684007162432,
+   "availability_by_esno": {
+    "10": 0.19308197306570937,
+    "12": 0.18388263239379862,
+    "6": 0.1557888030580553,
+    "8": 0.16167085880843962
+   },
+   "availability_fixed": 0.11299105535797259,
+   "availability_la": 0.09497699361035673,
    "cells": 8,
-   "goodput_gain_la": 1.0494580426338007,
+   "failed_per_tb": 0.1303965336134454,
+   "goodput_gain_la": 1.0265457385722103,
    "gpus": "one",
-   "lost_pct": 1.7041015625,
-   "p99_unrecovered_ms": 45.3,
-   "recoverable_share": 0.5223599137931034,
-   "retx_per_100": 18.45703125
+   "load_fixed": 1.532659727117108,
+   "load_la": 1.8233556726598714,
+   "lost_pct": 1.826171875,
+   "recoverable_share": 0.5218571816453977,
+   "retx_per_100": 19.23828125,
+   "unmatched": {
+    "goodput_gain_la": 1.0494580426338007,
+    "lost_pct": 1.7041015625,
+    "retx_per_100": 18.4521484375
+   }
   }
  }
 }

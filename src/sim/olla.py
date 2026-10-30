@@ -114,7 +114,9 @@ def main() -> None:
                 if sel.sum() < 32:
                     continue
             for target in [float(t) for t in a.targets.split(",")]:
-                row = {s: simulate(tab, ladder, sel, s, target, a.steps, a.delta, rng) for s in structures}
+                # common random numbers: every structure sees the same sequence of TBs (seed 5), as
+                # src/analysis/server_effect.py, so the multiples compare the structures on the same draws
+                row = {s: simulate(tab, ladder, sel, s, target, a.steps, a.delta, np.random.default_rng(5)) for s in structures}
                 for s, base in ((s, "ai_and_ran_irc" if s.endswith("_irc") else "ai_and_ran") for s in structures):
                     row[s]["goodput_vs_base"] = row[s]["goodput_bits_per_tx"] / max(1e-9, row[base]["goodput_bits_per_tx"])
                     row[s]["goodput_vs_ai_and_ran"] = row[s]["goodput_bits_per_tx"] / max(1e-9, row["ai_and_ran"]["goodput_bits_per_tx"])

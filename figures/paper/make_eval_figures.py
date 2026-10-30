@@ -275,9 +275,14 @@ def gpu():
             rows = sorted((r for k, r in eff["rows"].items() if r.get("gpus") == gpus), key=lambda r: r["cells"])
             y = [conv / r["retx_per_100"] if key == "retx" else r["goodput_gain_la"] for r in rows]
             ax.plot([r["cells"] for r in rows], y, color=GPUS[label], linewidth=2.4, marker="o", markersize=5)
-            ax.text(rows[-1]["cells"] + 0.6, y[-1], label, ha="left" if gpus == "one" else "right", va="bottom",
-                    fontsize=VALUE - 2, color=base.INK) if gpus == "one" else ax.text(rows[-1]["cells"], y[[r["cells"] for r in rows].index(16)] + (0.3 if key == "retx" else 0.09),
-                    label, ha="right", va="bottom", fontsize=VALUE - 2, color=base.INK)
+            # direct labels: one GPU right of its last point, four GPUs above its curve at 12 cells
+            if gpus == "one":
+                ax.text(rows[-1]["cells"] + 0.7, y[-1] + (0.0 if key == "retx" else -0.001), label, ha="left",
+                        va="center", fontsize=VALUE - 2.5, color=base.INK)
+            else:
+                ya = y[[r["cells"] for r in rows].index(12)]
+                ax.text(12.4, ya + (0.12 if key == "retx" else 0.03), label, ha="left", va="bottom",
+                        fontsize=VALUE - 2, color=base.INK)
         ax.axhline(ref, color=REVERB, linewidth=1.6, linestyle=(0, (4, 3)), zorder=2)
         ax.axhline(1, color=CONV, linewidth=1.2, linestyle=(0, (2, 2)), zorder=2)
         ax.set_xticks([1, 4, 8, 12, 16, 20, 24])

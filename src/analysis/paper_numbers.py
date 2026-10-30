@@ -346,12 +346,24 @@ def evaluation(lat):
     conv = eff["conventional"]["retx_per_100"]
     row = lambda g, c: eff["rows"][f"{g}_{c}"]
     v["EvalServerEvery"] = (conv / eff["rows"]["every_recovery"]["retx_per_100"], 1)
+    ld = eff["loads"]
+    v["EvalLoadFixed"] = (ld["recovery_runs_per_tb_fixed_mcs14"] / ld["first_failures_per_tb_fixed_mcs14"], 1)
+    v["EvalLoadLa"] = (ld["recovery_runs_per_tb_la"] / ld["first_failures_per_tb_fixed_mcs14"], 1)
+    v["EvalLoadRetxPct"] = (100.0 * (ld["recovery_runs_per_tb_fixed_mcs14"] / ld["first_failures_per_tb_fixed_mcs14"] - 1), 0)
+    spread = [100.0 * (max(r["availability_by_esno"].values()) - min(r["availability_by_esno"].values()))
+              for k, r in eff["rows"].items() if k.startswith("four_")]
+    v["EvalOnTimeEsnoSpread"] = (max(spread), 0)
+    chk = eff.get("load_matching_check", {})
+    if chk:
+        v["EvalLoadCheckMaxPp"] = (max(100.0 * abs(c["measured"] - c["predicted"]) for c in chk.values()), 0)
+        v["EvalLoadCheckFailPct"] = (100.0 * float(np.mean([c["failed_per_tb"] for c in chk.values()])), 1)
     v["EvalServerGoodEvery"] = (eff["rows"]["every_recovery"]["goodput_gain_la"], 2)
     for name, g, c in (("FourFew", "four", 4), ("FourEight", "four", 8), ("FourMid", "four", 16), ("FourMax", "four", 24),
                        ("OneFew", "one", 1), ("OneTwo", "one", 2), ("OneMax", "one", 8)):
         v[f"EvalServer{name}"] = (conv / row(g, c)["retx_per_100"], 1)
         v[f"EvalServerGood{name}"] = (row(g, c)["goodput_gain_la"], 2)
         v[f"EvalAvail{name}"] = (100.0 * row(g, c)["availability"], 0)
+        v[f"EvalAvailLoad{name}"] = (100.0 * row(g, c)["availability_fixed"], 0)
     return v
 
 
