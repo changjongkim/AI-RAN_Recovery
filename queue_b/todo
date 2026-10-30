@@ -300,3 +300,9 @@ N|i3v2_uma_l50_iciaware_f35|180|for w in $(seq 120); do grep -qP "^smoke_f35\t0\
 # bernoulli runs and the steps skipped every run as done; the tag letter of bursty is u now (exp/n29_runtime_load.sh)
 N|n29_all_g4_a50u_s1r|45|ACT=0.5 ACT_MODE=bursty RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35 BOUND=6.8 bash exp/n29_runtime_load.sh all "8 16 24 32 48" 1
 N|n29_all_g4_a50u_s2r|45|ACT=0.5 ACT_MODE=bursty RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35 BOUND=6.8 bash exp/n29_runtime_load.sh all "8 16 24 32 48" 2
+# 2026-10-30 15:05 N29 end-of-run check: at 48 cells the L1 of every cell stalled in the last 12-37 periods of two runs
+# (bursty s1: 154 late slots in periods 2363-2399, up to 19 ms; 25% s1: 64 in 2388-2399).  The same runs at 4800
+# periods show whether the stall moves to the new end (an artifact of the end of a run) or stays (overload)
+N|n29_end_a50u_s1|30|ACT=0.5 ACT_MODE=bursty PERIODS=4800 RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35 BOUND=6.8 bash exp/n29_runtime_load.sh all "48" 1
+N|n29_end_a50u_s2|30|ACT=0.5 ACT_MODE=bursty PERIODS=4800 RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35 BOUND=6.8 bash exp/n29_runtime_load.sh all "48" 2
+N|n29_end_a25b_s1|30|ACT=0.25 PERIODS=4800 RT_GPUS=4 DEADLINE=11.0 N16_DATA=n16_uma_f35 BOUND=6.8 bash exp/n29_runtime_load.sh all "48" 1
