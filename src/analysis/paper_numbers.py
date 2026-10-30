@@ -34,7 +34,7 @@ import numpy as np
 sys.path.insert(0, "src/sim")
 from harq_latency import simulate  # noqa: E402
 
-OUT = "results/paper"
+OUT = os.environ.get("PAPER_NUMBERS_OUT", "results/paper")   # another folder to compare without replacing
 MACRO_SETS = ["n3_uma_v3_cb", "n3_uma_v3_more"]
 
 
@@ -42,7 +42,7 @@ class Timing:
     l1, run, deadline, lead = 1.4, 6.3, 11.0, 4.0   # deadline: retransmission slot 15.0 ms minus the lead 4.0 ms
 
 
-SUFFIX = os.environ.get("RESULT_SUFFIX", "")   # "_f35": the 3.5 GHz runs (motivation macros; the others follow later)
+SUFFIX = os.environ.get("RESULT_SUFFIX", "")   # "_f35": the 3.5 GHz runs (every macro since 2026-10-29 19:30)
 N16 = os.environ.get("N16_SUFFIX", "")         # "d110_f35": GPU runtime at the 11.0 ms deadline on the 3.5 GHz slots
 
 
@@ -144,7 +144,7 @@ def load_traces(sets):
     parts = []
     for s in sets:
         good, total = {}, None
-        for f in sorted(glob.glob(f"results/{s}/c*.npz")):
+        for f in sorted(glob.glob(f"results/{s}{SUFFIX}/c*.npz")):
             d = np.load(f)
             total = int(d["total"])
             for k in d.files:
@@ -180,13 +180,13 @@ def latency_policies():
 
 
 def main():
-    allstats = json.load(open("results/n3_uma_v3_all.json"))["all"]
+    allstats = json.load(open(f"results/n3_uma_v3_all{SUFFIX}.json"))["all"]
     lat = latency_policies()
-    olla = json.load(open("results/n6_uma_v3_olla.json"))["results"]
+    olla = json.load(open(f"results/n6_uma_v3{SUFFIX}_olla.json"))["results"]
     snr = sorted({float(k.split("_")[0][3:]) for k in olla})
     goodput = [olla[f"snr{x:g}_target0.1"]["ours"]["goodput_vs_ai_and_ran"] for x in snr]
-    pf16 = json.load(open("results/p2b_uma_u16_pf.json"))["all"]
-    rand = json.load(open("results/p2b_uma_u8_random.json"))["all"]
+    pf16 = json.load(open(f"results/p2b_uma_u16_pf{SUFFIX}.json"))["all"]
+    rand = json.load(open(f"results/p2b_uma_u8_random{SUFFIX}.json"))["all"]
 
     conv_retx, ours_retx = allstats["ai_and_ran"]["resends_per_100"], allstats["ours"]["resends_per_100"]
     added = lat["select_cb5"]["p99_unrecovered_ms"] - lat["harq_only"]["p99_unrecovered_ms"]
@@ -202,8 +202,8 @@ def main():
         "ThroughputGainLA": (float(np.mean(goodput)), 2),
         "PairingCutBestSixteen": (pf16["ai_and_ran"]["resends_per_100"] / rand["ours"]["resends_per_100"], 1),
     }
-    full = json.load(open("results/n3_uma_v3_all.json"))
-    meta = json.loads(str(np.load(sorted(glob.glob(f"results/{MACRO_SETS[0]}/c*.npz"))[0])["meta"]))
+    full = json.load(open(f"results/n3_uma_v3_all{SUFFIX}.json"))
+    meta = json.loads(str(np.load(sorted(glob.glob(f"results/{MACRO_SETS[0]}{SUFFIX}/c*.npz"))[0])["meta"]))
     points = sorted(float(k) for k in full["by_point"])
     setup = {"SetupLOneMs": f"{Timing.l1:.1f}", "SetupRecoveryRunMs": f"{Timing.run:.1f}",
              "SetupRecoveryDeadlineMs": f"{Timing.deadline:.1f}", "SetupLeadMs": f"{Timing.lead:.1f}",
