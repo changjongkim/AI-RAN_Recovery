@@ -63,10 +63,14 @@ def uplink_times(pattern: str, horizon: float) -> np.ndarray:
         k += 1
 
 
-def simulate(conv_ok, rec_ok, steps_ok, candidate, policy, pattern, a, l1_steps=None, wait_later=None):
+def simulate(conv_ok, rec_ok, steps_ok, candidate, policy, pattern, a, l1_steps=None, wait_later=None, rejected=None,
+             reject_at=None):
     """Delivery time (ms after the first samples arrive; inf if never) and transmissions used, per block.
     Recovery is always attempted here (no NeuralRx contention; that is the subject of the Antiphase paper), so its
-    outcome is known at L1 + run.  A retransmission in uplink slot s is decoded at s + SLOT + L1."""
+    outcome is known at L1 + run.  A retransmission in uplink slot s is decoded at s + SLOT + L1.
+    rejected (optional, one boolean array per transmission): the recovery of that transmission is rejected on a shared
+    GPU and does not run; the grant goes out at reject_at ms after the slot of the transmission (the latest start time
+    D - r of the scheduler) instead of at the recovery result."""
     total = len(steps_ok)
     times = uplink_times(pattern, 300.0)
     rec_time = a.l1 + a.run
@@ -78,13 +82,14 @@ def simulate(conv_ok, rec_ok, steps_ok, candidate, policy, pattern, a, l1_steps=
             continue
         tries = policy != "harq_only"
         waits = policy == "wait" or (policy.startswith("select") and candidate[i])   # select: others run in parallel
-        recovered = tries and rec_ok[i] and rec_time <= a.deadline
+        rej0 = rejected is not None and bool(rejected[0][i])
+        recovered = tries and rec_ok[i] and rec_time <= a.deadline and not rej0
         if recovered:
             done[i] = rec_time
             if waits:
                 continue
         # time at which the first retransmission grant is decided
-        decide = rec_time if waits else a.l1
+        decide = (max(a.l1, reject_at) if rej0 else rec_time) if waits else a.l1
         wl = (policy == "wait" or policy.startswith("select")) if wait_later is None else (bool(wait_later[i]) if hasattr(wait_later, "__len__") else bool(wait_later))
         for k in range(1, total):
             if recovered and rec_time <= decide:
@@ -101,12 +106,13 @@ def simulate(conv_ok, rec_ok, steps_ok, candidate, policy, pattern, a, l1_steps=
             if l1_steps[k][i]:                     # the L1 decodes the combined buffer
                 done[i] = min(done[i], result)
                 break
-            if steps_ok[k][i]:                     # the large NRx decodes it one recovery run later
+            rejk = rejected is not None and bool(rejected[k][i])
+            if steps_ok[k][i] and not rejk:        # the large NRx decodes it one recovery run later
                 done[i] = min(done[i], result + a.run)
                 if not wl and k + 1 < total:
                     tx[i] = k + 2                   # the next grant went out at the L1 result
                 break
-            decide = result + a.run if wl else result
+            decide = (max(result, slot + reject_at) if rejk else result + a.run) if wl else result
     return done, tx
 
 
