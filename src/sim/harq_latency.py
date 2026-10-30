@@ -70,7 +70,7 @@ def simulate(conv_ok, rec_ok, steps_ok, candidate, policy, pattern, a, l1_steps=
     outcome is known at L1 + run.  A retransmission in uplink slot s is decoded at s + SLOT + L1.
     rejected (optional, one boolean array per transmission): the recovery of that transmission is rejected on a shared
     GPU and does not run; the grant goes out at reject_at ms after the slot of the transmission (the latest start time
-    D - r of the scheduler) instead of at the recovery result.
+    D - r of the scheduler) instead of at the recovery result; reject_at is one time or one array per transmission.
     rec_at (optional, one array per transmission): the time (ms after the slot of the transmission) at which the
     recovery of that transmission ends on a shared GPU, from the queue and the run, instead of L1 + run."""
     total = len(steps_ok)
@@ -92,7 +92,8 @@ def simulate(conv_ok, rec_ok, steps_ok, candidate, policy, pattern, a, l1_steps=
             if waits:
                 continue
         # time at which the first retransmission grant is decided
-        decide = (max(a.l1, reject_at) if rej0 else rt0) if waits else a.l1
+        ra = (lambda k: float(reject_at[k][i])) if hasattr(reject_at, "__len__") else (lambda k: reject_at)
+        decide = (max(a.l1, ra(0)) if rej0 else rt0) if waits else a.l1
         wl = (policy == "wait" or policy.startswith("select")) if wait_later is None else (bool(wait_later[i]) if hasattr(wait_later, "__len__") else bool(wait_later))
         for k in range(1, total):
             if recovered and rt0 <= decide:
@@ -116,7 +117,7 @@ def simulate(conv_ok, rec_ok, steps_ok, candidate, policy, pattern, a, l1_steps=
                 if not wl and k + 1 < total:
                     tx[i] = k + 2                   # the next grant went out at the L1 result
                 break
-            decide = (max(result, slot + reject_at) if rejk else rk) if wl else result
+            decide = (max(result, slot + ra(k)) if rejk else rk) if wl else result
     return done, tx
 
 

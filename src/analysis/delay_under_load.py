@@ -13,7 +13,11 @@ scheduler serves waiting slots first, and the recoveries of the TBs granted at o
 rule and of the conventional receiver over every delay, and the retransmission reduction.  The *_measured variants let
 each on-time recovery end at a time drawn from the real-time runs (done - release of the on-time recoveries of the run
 whose number of cells is closest to the load-matched one), since a queue on a shared GPU delays the recovery result
-beyond L1 + run.
+beyond L1 + run.  The *_cut variants reject at the L1 result with the median run as the prediction
+(admission_replay.py, the replay of the real-time queue) and let a slot wait only for a recovery predicted to end by CUT_MS,
+the decode time of the first retransmission (U_s + slot + L1): every other slot receives its grant at the L1 result,
+and its recovery is not counted (a lower bound); a slot admitted but rejected at its latest start still receives its
+grant at the latest start.
 usage: RESULT_SUFFIX=_f35 N16_SUFFIX=d110_f35 delay_under_load.py [OUT.json]       (from the repository root)"""
 import glob
 import json
@@ -23,9 +27,10 @@ import sys
 import numpy as np
 
 sys.path[:0] = ["src", "src/sim", "src/analysis"]
+import admission_replay as ar  # noqa: E402
 import paper_numbers as pn  # noqa: E402
 import server_effect as se  # noqa: E402
-from harq_latency import simulate  # noqa: E402
+from harq_latency import SLOT, simulate, uplink_times  # noqa: E402
 
 
 def completion_times(tag, cells):
@@ -64,6 +69,27 @@ def main():
     loads = {"latency_neutral": 0.082, "full_wait": 0.200}
     reject_times = {"at_latest_start": pn.Timing.deadline - pn.BOUND_MS, "at_arrival": pn.Timing.l1}
 
+    ul = uplink_times("DDDSU", 300.0)
+    cut_ms = float(ul[np.searchsorted(ul, pn.Timing.l1 + pn.Timing.lead)]) + SLOT + pn.Timing.l1   # first retransmission decoded
+
+    def run_cut(policy, share, candidate, w):
+        wait_p, late_p = share * w["wait_share_of_on_time"], w["late_per_failed"]
+        g = np.random.default_rng(13)
+        rej, at, rec_at = [], [], []
+        for t in range(total):
+            u = draws[t]
+            waiting = u < wait_p
+            late = ~waiting & (u < wait_p + late_p)
+            rej.append(np.where(candidate, ~waiting, True) if t == 0 else ~waiting)
+            at.append(np.where(late, pn.Timing.deadline - pn.BOUND_MS, pn.Timing.l1))
+            rec_at.append(g.choice(w["wait_end_ms"], n))
+        d, tx = simulate(conv, rec, steps, candidate, policy, "DDDSU", pn.Timing, l1_steps=conv_steps,
+                         rejected=rej, reject_at=at, rec_at=rec_at)
+        at_ = np.unique(np.concatenate([[0.0], d0[fail & np.isfinite(d0)], d[fail & np.isfinite(d)]]))
+        diff = pn.delivered_share(d, fail, at_) - pn.delivered_share(d0, fail, at_)
+        return {"min_diff_pp": float(diff.min()), "retx_cut": float((tx0 - 1).sum() / max(1, (tx - 1).sum())),
+                "wait_share": float(wait_p)}
+
     def run(policy, share, candidate, reject_at, times=None):
         rej = [np.where(candidate, draws[0] >= share, True)] + [draws[t] >= share for t in range(1, total)]
         rec_at = None
@@ -90,17 +116,19 @@ def main():
                 x = c * runs_per_tb / f14
                 near = min(measured, key=lambda m: abs(m - x))
                 if (gpus, near) not in cache:
-                    cache[(gpus, near)] = completion_times(tags[gpus], near)
-                times = cache[(gpus, near)]
+                    cache[(gpus, near)] = (completion_times(tags[gpus], near), ar.wait_split(tags[gpus], near, cut_ms))
+                times, split = cache[(gpus, near)]
                 row[rule] = {"share": share, "times_from_cells": near, "end_p50_ms": float(np.median(times)),
                              **{k: run(pol, share, candidate, t) for k, t in reject_times.items()},
-                             **{k + "_measured": run(pol, share, candidate, t, times) for k, t in reject_times.items()}}
+                             **{k + "_measured": run(pol, share, candidate, t, times) for k, t in reject_times.items()},
+                             "at_arrival_cut": run_cut(pol, share, candidate, split)}
             out[f"{gpus}_{c}"] = row
             print(f"{gpus:4s} {c:2d} cells | " + " | ".join(
                 f"{rule} share {v['share']:.2f}: latest {v['at_latest_start']['min_diff_pp']:+.2f} pp, "
                 f"arrival {v['at_arrival']['min_diff_pp']:+.2f} pp, measured times: latest "
-                f"{v['at_latest_start_measured']['min_diff_pp']:+.2f} / arrival {v['at_arrival_measured']['min_diff_pp']:+.2f} pp, "
-                f"cut {v['at_arrival']['retx_cut']:.2f}x"
+                f"{v['at_latest_start_measured']['min_diff_pp']:+.2f} / arrival {v['at_arrival_measured']['min_diff_pp']:+.2f} / "
+                f"arrival+wait only if predicted by {cut_ms:.1f} ms {v['at_arrival_cut']['min_diff_pp']:+.2f} pp, "
+                f"cut {v['at_arrival']['retx_cut']:.2f}x / {v['at_arrival_cut']['retx_cut']:.2f}x"
                 for rule, v in row.items()))
     path = sys.argv[1] if len(sys.argv) > 1 else f"results/delay_under_load{pn.SUFFIX}.json"
     json.dump(out, open(path, "w"), indent=1, sort_keys=True)

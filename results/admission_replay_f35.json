@@ -1,0 +1,254 @@
+{
+ "four_12": {
+  "arrival_bound": {
+   "on_time": 0.5591818318544142,
+   "rejected_at_arrival": 0.44025417355993385,
+   "rejected_at_latest_start": 0.0002255978342607911
+  },
+  "arrival_p50": {
+   "on_time": 0.5692209354790194,
+   "rejected_at_arrival": 0.42371033238080913,
+   "rejected_at_latest_start": 0.006655136110693337
+  },
+  "cells": 12,
+  "failed_slots": 26596,
+  "gpus": "four",
+  "lazy": {
+   "on_time": 0.5700481275379756,
+   "rejected_at_arrival": 0.0,
+   "rejected_at_latest_start": 0.4295382764325463
+  },
+  "measured_on_time_per_failed": 0.5635433899834562
+ },
+ "four_16": {
+  "arrival_bound": {
+   "on_time": 0.4243705771236855,
+   "rejected_at_arrival": 0.5752629056359074,
+   "rejected_at_latest_start": 0.00022554907101976374
+  },
+  "arrival_p50": {
+   "on_time": 0.4285432349375511,
+   "rejected_at_arrival": 0.563788096647777,
+   "rejected_at_latest_start": 0.007443119343652204
+  },
+  "cells": 16,
+  "failed_slots": 35469,
+  "gpus": "four",
+  "lazy": {
+   "on_time": 0.4288251712763258,
+   "rejected_at_arrival": 0.0,
+   "rejected_at_latest_start": 0.5708928923848995
+  },
+  "measured_on_time_per_failed": 0.42504722433674474
+ },
+ "four_20": {
+  "arrival_bound": {
+   "on_time": 0.3365045968073915,
+   "rejected_at_arrival": 0.6625806156520149,
+   "rejected_at_latest_start": 0.0006632209669304304
+  },
+  "arrival_p50": {
+   "on_time": 0.33863147783927183,
+   "rejected_at_arrival": 0.6505054201161781,
+   "rejected_at_latest_start": 0.010497187028312675
+  },
+  "cells": 20,
+  "failed_slots": 43726,
+  "gpus": "four",
+  "lazy": {
+   "on_time": 0.33886017472442026,
+   "rejected_at_arrival": 0.0,
+   "rejected_at_latest_start": 0.6606595618167681
+  },
+  "measured_on_time_per_failed": 0.3358185061519462
+ },
+ "four_24": {
+  "arrival_bound": {
+   "on_time": 0.2679247415108198,
+   "rejected_at_arrival": 0.728308567339021,
+   "rejected_at_latest_start": 0.00250484961485583
+  },
+  "arrival_p50": {
+   "on_time": 0.26860274591784844,
+   "rejected_at_arrival": 0.7227150309810347,
+   "rejected_at_latest_start": 0.0073262142870595326
+  },
+  "cells": 24,
+  "failed_slots": 53097,
+  "gpus": "four",
+  "lazy": {
+   "on_time": 0.2682825771700849,
+   "rejected_at_arrival": 0.0,
+   "rejected_at_latest_start": 0.729419741228318
+  },
+  "measured_on_time_per_failed": 0.26560822645347193
+ },
+ "four_4": {
+  "arrival_bound": {
+   "on_time": 0.9673237625883866,
+   "rejected_at_arrival": 0.03214056138847225,
+   "rejected_at_latest_start": 0.0
+  },
+  "arrival_p50": {
+   "on_time": 0.9719305763874009,
+   "rejected_at_arrival": 0.027533747589457896,
+   "rejected_at_latest_start": 0.0
+  },
+  "cells": 4,
+  "failed_slots": 9334,
+  "gpus": "four",
+  "lazy": {
+   "on_time": 0.9798585815298907,
+   "rejected_at_arrival": 0.0,
+   "rejected_at_latest_start": 0.019605742446968073
+  },
+  "measured_on_time_per_failed": 0.9720377115920291
+ },
+ "four_8": {
+  "arrival_bound": {
+   "on_time": 0.7863768280885449,
+   "rejected_at_arrival": 0.21294030615148238,
+   "rejected_at_latest_start": 0.00034143287998634266
+  },
+  "arrival_p50": {
+   "on_time": 0.8147726626074091,
+   "rejected_at_arrival": 0.18243896887270245,
+   "rejected_at_latest_start": 0.0023900301599043988
+  },
+  "cells": 8,
+  "failed_slots": 17573,
+  "gpus": "four",
+  "lazy": {
+   "on_time": 0.8161952996073522,
+   "rejected_at_arrival": 0.0,
+   "rejected_at_latest_start": 0.18340636203266375
+  },
+  "measured_on_time_per_failed": 0.8073180447277073
+ },
+ "one_1": {
+  "arrival_bound": {
+   "on_time": 0.7645079899074853,
+   "rejected_at_arrival": 0.23549201009251472,
+   "rejected_at_latest_start": 0.0
+  },
+  "arrival_p50": {
+   "on_time": 0.8999158957106812,
+   "rejected_at_arrival": 0.09671993271656855,
+   "rejected_at_latest_start": 0.00336417157275021
+  },
+  "cells": 1,
+  "failed_slots": 2378,
+  "gpus": "one",
+  "lazy": {
+   "on_time": 0.8999158957106812,
+   "rejected_at_arrival": 0.0,
+   "rejected_at_latest_start": 0.10008410428931876
+  },
+  "measured_on_time_per_failed": 0.8839360807401178
+ },
+ "one_2": {
+  "arrival_bound": {
+   "on_time": 0.5687473639814424,
+   "rejected_at_arrival": 0.43125263601855757,
+   "rejected_at_latest_start": 0.0
+  },
+  "arrival_p50": {
+   "on_time": 0.5847743568114719,
+   "rejected_at_arrival": 0.41522564318852806,
+   "rejected_at_latest_start": 0.0
+  },
+  "cells": 2,
+  "failed_slots": 4742,
+  "gpus": "one",
+  "lazy": {
+   "on_time": 0.5849852382960776,
+   "rejected_at_arrival": 0.0,
+   "rejected_at_latest_start": 0.4150147617039224
+  },
+  "measured_on_time_per_failed": 0.5843525938422607
+ },
+ "one_3": {
+  "arrival_bound": {
+   "on_time": 0.457715657207398,
+   "rejected_at_arrival": 0.542284342792602,
+   "rejected_at_latest_start": 0.0
+  },
+  "arrival_p50": {
+   "on_time": 0.46364534801637725,
+   "rejected_at_arrival": 0.5355075532966257,
+   "rejected_at_latest_start": 0.0008470986869970351
+  },
+  "cells": 3,
+  "failed_slots": 7083,
+  "gpus": "one",
+  "lazy": {
+   "on_time": 0.4642100804743753,
+   "rejected_at_arrival": 0.0,
+   "rejected_at_latest_start": 0.5357899195256247
+  },
+  "measured_on_time_per_failed": 0.45955103769589156
+ },
+ "one_4": {
+  "arrival_bound": {
+   "on_time": 0.35946872322193657,
+   "rejected_at_arrival": 0.6403170522707797,
+   "rejected_at_latest_start": 0.00021422450728363326
+  },
+  "arrival_p50": {
+   "on_time": 0.3718937446443873,
+   "rejected_at_arrival": 0.6258568980291346,
+   "rejected_at_latest_start": 0.002249357326478149
+  },
+  "cells": 4,
+  "failed_slots": 9336,
+  "gpus": "one",
+  "lazy": {
+   "on_time": 0.37264353041988,
+   "rejected_at_arrival": 0.0,
+   "rejected_at_latest_start": 0.6273564695801199
+  },
+  "measured_on_time_per_failed": 0.36868037703513284
+ },
+ "one_6": {
+  "arrival_bound": {
+   "on_time": 0.2558018446890806,
+   "rejected_at_arrival": 0.7405534067241892,
+   "rejected_at_latest_start": 0.0032728354656352274
+  },
+  "arrival_p50": {
+   "on_time": 0.25617375781017554,
+   "rejected_at_arrival": 0.7370574233858971,
+   "rejected_at_latest_start": 0.006173757810175543
+  },
+  "cells": 6,
+  "failed_slots": 13444,
+  "gpus": "one",
+  "lazy": {
+   "on_time": 0.25662005355548945,
+   "rejected_at_arrival": 0.0,
+   "rejected_at_latest_start": 0.7427105028265397
+  },
+  "measured_on_time_per_failed": 0.25349598333829215
+ },
+ "one_8": {
+  "arrival_bound": {
+   "on_time": 0.17351468244935125,
+   "rejected_at_arrival": 0.7885841110858184,
+   "rejected_at_latest_start": 0.025495105850216252
+  },
+  "arrival_p50": {
+   "on_time": 0.1743114045071705,
+   "rejected_at_arrival": 0.8036080127475529,
+   "rejected_at_latest_start": 0.010755747780559982
+  },
+  "cells": 8,
+  "failed_slots": 17572,
+  "gpus": "one",
+  "lazy": {
+   "on_time": 0.17311632142044162,
+   "rejected_at_arrival": 0.0,
+   "rejected_at_latest_start": 0.8136239471887093
+  },
+  "measured_on_time_per_failed": 0.1732870475756886
+ }
+}
