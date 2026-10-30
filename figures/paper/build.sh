@@ -20,3 +20,5 @@ done
 [ $# -gt 0 ] && exit 0
 PY=${PY:-/global/common/software/nersc/pe/conda-envs/26.8.1/python-3.13/nersc-python/bin/python3}
 "$PY" "$here/make_paper_figures.py"
+# the Evaluation panels: 3.5 GHz slots, GPU runs at the 11.0 ms deadline (the scheduler variants exist only there)
+RESULT_SUFFIX=_f35 N16_SUFFIX=d110_f35 "$PY" "$here/make_eval_figures.py"
