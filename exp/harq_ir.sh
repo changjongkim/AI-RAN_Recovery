@@ -8,6 +8,7 @@
 #                SEED0 (default 1000; chunk k uses seed SEED0 + k), IRC=1 adds the MMSE-IRC conventional receiver,
 #                NRX_ENGINE=/rec/engines/X.trt replaces the large neural receiver, SMALL_ENGINE the small one,
 #                REC_NUM_PRBS (default 273) with --prbs: a pair on fewer PRBs (N21, engines of that size)
+#                DECODE_OPTS: more options of decode_harq.py (e.g. "--whiten --cb-mix" with IRC=1)
 # results: results/<NAME>/c<k>.json/.npz per chunk, results/<NAME>.json and .txt merged
 set -uo pipefail
 source /pscratch/sd/s/sgkim/kcj/airan_recovery/env.sh
@@ -30,7 +31,7 @@ chunk() {   # K GPU
     [ "${KEEP:-0}" = 1 ] || rm -f $d/s_m${mcs}_t$t.npz
   done
   GPU=$g rx python3 /rec/decode_harq.py --root $d --set s --mcs $mcs --engine ${NRX_ENGINE:-$ENGINE_LARGE} --small-engine ${SMALL_ENGINE:-$ENGINE_SMALL} \
-      ${IRC:+--irc} --output $out/c$k.json > $d/decode.log 2>&1 || { echo "chunk $k: decode failed"; tail -8 $d/decode.log; return 1; }
+      ${IRC:+--irc} ${DECODE_OPTS:-} --output $out/c$k.json > $d/decode.log 2>&1 || { echo "chunk $k: decode failed"; tail -8 $d/decode.log; return 1; }
   [ "${KEEP:-0}" = 1 ] || rm -rf $d/rt_s_m${mcs}_t*
   echo "chunk $k (GPU $g) $(date +%T)"; tail -6 $d/decode.log
 }

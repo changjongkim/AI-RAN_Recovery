@@ -23,6 +23,12 @@ the conventional receiver's failed code blocks per user (cbfail_t0), and the sum
   ours_conv_harq   as ours, but HARQ with the conventional receiver only
 With retransmissions sent alone (gen_harq.py --retx-alone, read from the generator's metadata) the retransmissions
 are received as one-user slots and only user 0's blocks are counted.
+Recovery receivers on top of the MMSE-IRC L1 (both off by default):
+  --whiten   with --irc: the large neural receiver on the slot whitened with the IRC estimate of the noise-plus-
+             interference covariance, per PRB as the IRC equalizer does (nrxw) and averaged over the band (nrxwb)
+  --cb-mix   a TB decoded from code blocks of two receivers: every block whose CRC failed in the first and passed
+             in the second is taken from the second; conventional and neural (mixsep), with --irc IRC and neural
+             (mixirc), with --whiten IRC and whitened neural (mixw)
 usage: decode_harq.py --root DIR --set NAME --mcs 14 --engine LARGE --small-engine SMALL [--count N] --output OUT
 """
 
@@ -66,6 +72,23 @@ def nrx_llrs(nrx, rx_slot, slot: int) -> cp.ndarray:
         llrs = cp.take(outputs["output_1"][0, ...], nrx.data_symbols, axis=3).astype(cp.float32)
     nrx.stream.synchronize()
     return llrs
+
+
+def whitened(view: cp.ndarray, lw_inv: cp.ndarray, wideband: bool) -> cp.ndarray:
+    """The slot whitened with the IRC estimate of the noise-plus-interference covariance R = L L^H (cuPHY returns L^-1
+    per PRB, (antenna, antenna, PRB), and its MMSE-IRC equalizer applies it as L^-1 y), scaled so that the whitened
+    noise plus interference keeps the average per-antenna power of the original: interference becomes white noise."""
+    w = cp.transpose(lw_inv, (2, 0, 1))                                   # (PRB, antenna, antenna)
+    prbs, ant = w.shape[0], w.shape[1]
+    assert view.shape[0] == 12 * prbs, "the whitening needs the allocation over the whole band"
+    inv = cp.linalg.inv(w)
+    cov = inv @ cp.conj(cp.transpose(inv, (0, 2, 1)))                     # R per PRB
+    scale = cp.sqrt(cp.trace(cov, axis1=1, axis2=2).real.mean() / ant)
+    if wideband:
+        out = cp.einsum("ij,ktj->kti", cp.linalg.inv(cp.linalg.cholesky(cov.mean(axis=0))), view)
+    else:
+        out = cp.einsum("pij,pktj->pkti", w, view.reshape(prbs, 12, view.shape[1], ant)).reshape(view.shape)
+    return cp.asfortranarray((out * scale).astype(cp.complex64))
 
 
 class Combiner:
@@ -131,6 +154,32 @@ class Combiner:
             payloads = n.crc.crc_checker.check_crc(pycuphy.CudaArrayHalf(n.crc_input), c["tb"], c["rate"])
             crcs = n.crc.crc_checker.get_tb_crcs()
         n.stream.synchronize()
+        return self._masks(payloads, crcs, reference, tb_bytes)
+
+    def snapshot(self):
+        """The code blocks of the last decode and their block CRCs (0 = passed), for mixed()."""
+        n = self.nrx
+        with n.stream:
+            blocks = n.crc_input.copy(order="F")
+            cbs = cp.concatenate([cp.asarray(x).reshape(-1).copy() for x in n.crc.crc_checker.get_cb_crcs()])
+        n.stream.synchronize()
+        return blocks, cbs
+
+    def mixed(self, a, b, reference, tb_bytes: int) -> int:
+        """CRC of the blocks of snapshot a, with every block whose CRC failed in a and passed in b taken from b."""
+        n = self.nrx
+        c = n.chain
+        with n.stream:
+            n.crc_input[...] = a[0]
+            take = cp.nonzero((a[1] != 0) & (b[1] == 0))[0]
+            n.crc_input[:, take] = b[0][:, take]
+            payloads = n.crc.crc_checker.check_crc(pycuphy.CudaArrayHalf(n.crc_input), c["tb"], c["rate"])
+            crcs = n.crc.crc_checker.get_tb_crcs()
+        n.stream.synchronize()
+        return self._masks(payloads, crcs, reference, tb_bytes)
+
+    def _masks(self, payloads, crcs, reference, tb_bytes: int) -> int:
+        n = self.nrx
         mask, out = 0, []
         for u in range(self.users):
             out.append(cp.asnumpy(cp.asarray(payloads[u])))
@@ -150,6 +199,10 @@ def main() -> None:
     parser.add_argument("--iterations", type=int, default=20)
     parser.add_argument("--irc", action="store_true",
                         help="also receive with the conventional front end using MMSE-IRC (interference rejection combining)")
+    parser.add_argument("--whiten", action="store_true",
+                        help="with --irc: also the large neural receiver on the IRC-whitened slot (nrxw, nrxwb)")
+    parser.add_argument("--cb-mix", action="store_true",
+                        help="also TBs decoded from the code blocks of two receivers (mixsep, mixirc, mixw)")
     parser.add_argument("--count", type=int, default=0)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
@@ -191,6 +244,9 @@ def main() -> None:
         irc.equalizer = ChannelEqualizer(num_rx_ant=NUM_RX_ANT, enable_pusch_tdi=prof.enable_pusch_tdi, eq_coeff_algo=2,
                                          cuda_stream=int(stream.ptr))
         comb["irc"] = Combiner(big, sep, args.iterations)
+        if args.whiten:
+            comb["nrxw"] = Combiner(big, sep, args.iterations)
+            comb["nrxwb"] = Combiner(big, sep, args.iterations)
 
     # Retransmissions sent alone (gen_harq.py --retx-alone): the conventional front end is configured for user 0 only
     # (same DMRS port, scrambling and CDM groups as in the two-user slot), the neural receivers get user 1 masked out
@@ -209,8 +265,18 @@ def main() -> None:
                 a[...] = cp.asarray([ports], dtype=a.dtype)
         stream.synchronize()
 
+    # code-block mixes (first receiver, second receiver), decoded after combining transmissions 0..t
+    mixes = {}
+    if args.cb_mix and not alone:
+        mixes["mixsep"] = ("sep", "nrx")
+        if irc is not None:
+            mixes["mixirc"] = ("irc", "nrx")
+        if "nrxw" in comb:
+            mixes["mixw"] = ("irc", "nrxw")
+    parts = {r for pair in mixes.values() for r in pair}
+
     names = ["conv_t0"] + [f"{r}_c{t}" for r in comb for t in range(total)] + \
-            [f"{r}_s{t}" for r in comb for t in range(1, total)]
+            [f"{r}_s{t}" for r in comb for t in range(1, total)] + [f"{m}_c{t}" for m in mixes for t in range(total)]
     good = {k: np.zeros((count, users), dtype=bool) for k in names}
 
     def mark(name, mask, i):
@@ -242,11 +308,20 @@ def main() -> None:
             }
             if irc is not None:
                 buffers["irc"] = comb["irc"].derate_sep(on(stream, lambda: [cp.array(x, copy=True) for x in irc.llrs(view, slot)]), rv)
+                if "nrxw" in comb:      # irc.llrs left this slot's IRC estimate in irc.noise.lw_inv
+                    for r, wide in (("nrxw", False), ("nrxwb", True)):
+                        white = on(stream, lambda: whitened(view, irc.noise.lw_inv[0], wide))
+                        buffers[r] = comb[r].derate_nrx(nrx_llrs(big, white, slot), rv)
+            snaps = {}
             for r, buf in buffers.items():
                 sums[r] = buf if t == 0 else [a + b for a, b in zip(sums[r], buf)]
                 mark(f"{r}_c{t}", comb[r].decode(sums[r], rv if t == 0 else 3, ref, tb), i)
+                if r in parts:
+                    snaps[r] = comb[r].snapshot()
                 if t >= 1:
                     mark(f"{r}_s{t}", comb[r].decode(buf, rv, ref, tb), i)
+            for m, (a, b) in mixes.items():
+                mark(f"{m}_c{t}", comb[b].mixed(snaps[a], snaps[b], ref, tb), i)
 
     if alone:
         good = {k: v[:, :1] for k, v in good.items()}

@@ -7,6 +7,10 @@ retransmission t):
   ai_for_ran       small neural receiver inside L1 (small_c0); nothing; HARQ with it (small_c<t>)
   ours             conventional receiver; recovery by the large neural receiver (nrx_c0); sep_c<t> or nrx_c<t>
   ours_conv_harq   conventional receiver; recovery; HARQ with the conventional receiver only
+With decode_harq.py --irc the same with the MMSE-IRC receiver as L1 (ai_and_ran_irc, ours_irc), and recovery receivers
+on top of it when their outcomes are present: ours_irc_w / ours_irc_wb (the large neural receiver on the IRC-whitened
+slot, per PRB / over the band; --whiten), ours_mix / ours_irc_mix / ours_irc_wmix (code blocks taken from either
+receiver: conventional and neural, IRC and neural, IRC and whitened neural; --cb-mix).
 usage: harq_stats.py --inputs A.npz [B.npz ...] --output REPORT.json   (npz files written by decode_harq.py)
 """
 
@@ -43,7 +47,15 @@ def plans(flat, total):
         "ai_and_ran_irc": (flat["irc_c0"], nothing, step("irc")),
         "ours_irc": (flat["irc_c0"], flat["nrx_c0"] & ~flat["irc_c0"],
                      [None] + [flat[f"irc_c{t}"] | flat[f"nrx_c{t}"] for t in range(1, total)]),
-    } if "irc_c0" in flat else {})
+    } if "irc_c0" in flat else {}) | {
+        name: (flat[l1], flat[f"{rec}_c0"] & ~flat[l1],
+               [None] + [flat[f"{a}_c{t}"] | flat[f"{b}_c{t}"] | flat[f"{rec}_c{t}"] for t in range(1, total)])
+        for name, l1, rec, a, b in (    # structure, L1, recovery receiver, the receivers whose HARQ buffers decode
+            ("ours_irc_w", "irc_c0", "nrxw", "irc", "nrxw"), ("ours_irc_wb", "irc_c0", "nrxwb", "irc", "nrxwb"),
+            ("ours_mix", "conv_t0", "mixsep", "sep", "nrx"), ("ours_irc_mix", "irc_c0", "mixirc", "irc", "nrx"),
+            ("ours_irc_wmix", "irc_c0", "mixw", "irc", "nrxw"))
+        if f"{rec}_c0" in flat
+    }
 
 
 def stats(n_tx, first_ok, recovered, sel, total):
@@ -108,7 +120,7 @@ def load(paths):
         total = int(d["total"]) if total is None else total
         meta = json.loads(str(d["meta"])) if meta is None else meta
         for k in d.files:
-            if k.startswith(("conv_", "sep_", "nrx_", "small_", "irc_")):
+            if k.startswith(("conv_", "sep_", "nrx_", "small_", "irc_", "nrxw_", "nrxwb_", "mixsep_", "mixirc_", "mixw_")):
                 good.setdefault(k, []).append(d[k])
         point.append(d["point"]); corr.append(d["corr"]); change.append(d["change"]); gain.append(d["gain"])
     good = {k: np.concatenate(v) for k, v in good.items()}
