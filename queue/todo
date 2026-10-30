@@ -343,7 +343,6 @@ L|n16_summary_small|0|/global/common/software/nersc/pe/conda-envs/26.8.1/python-
 N|u1_uma_r16_u4_b1_f35|150|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; CARRIER_GHZ=3.5 bash exp/classical.sh u1_uma_r16_u4_b1_f35 --base-config nrx_large_16rx_mu4.cfg --num-rx 16 --users 4 --channel UMa --systems baseline_lslin_lmmse,baseline_lmmse_kbest,baseline_perf_csi_kbest --ebno=0,2,4,6,8,10 --slots 48 --batch 1
 N|n19_uma_mix_f35|67|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; IRC=1 CARRIER_GHZ=3.5 bash exp/harq_ir.sh n19_uma_mix_f35 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --inr-mix 0.25:0:10
 N|n19_umi_mix_iciaware_f35|67|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt CARRIER_GHZ=3.5 bash exp/harq_ir.sh n19_umi_mix_iciaware_f35 20 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --interferers 2 --inr-mix 0.25:0:10
-N|i3v2_uma_l50_iciaware_f35|180|for w in $(seq 120); do grep -qP "^smoke_f35\t0\t" queue/done queue_b/done && break; sleep 60; done; grep -qP "^smoke_f35\t0\t" queue/done queue_b/done || exit 1; IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt OLLA_OPTS="--sir-bins -10,-5,0,5,10,15,30" CARRIER_GHZ=3.5 bash exp/harq_mcs.sh i3v2_uma_l50_iciaware_f35 24 --channel UMa --speed 0.83 --snr-db 10,15,20 --slots 16 --batch 8 --interferers 4 --layout hex:0.5:0.8
 # 2026-10-29 06:55 user approved: N16 without the rejection at the latest start (admit=0) and with TBs of fewer failed code blocks first (rank=value), 3.5 GHz slots, deadline 11.0 ms
 # 2026-10-29 07:55 small-cell antenna runs at 3.5 GHz (the 2.14 GHz ones were side-pool items p1_ant{2,4,8}_v3); they also give the small-cell estimate/true-channel failure rates of Section 3.2, which no 3.5 GHz N5 small-cell run provides
 # 2026-10-30 user approved (weak data, structure kept): N28 AI share of the GPU in the AI co-run (MPS 70% and 80%
@@ -358,10 +357,10 @@ N|n28_all_g4_r4_m80|30|PERIODS=24000 RT_GPUS=4 AI_RATE=4 AI_PCT=80 bash exp/n22_
 N|n28_off_g4_r4_m80|30|PERIODS=24000 RT_GPUS=4 AI_RATE=4 AI_PCT=80 bash exp/n22_runtime_ai.sh off "8 16 24" 1
 N|n28_all_g4_r8_m80|30|PERIODS=24000 RT_GPUS=4 AI_RATE=8 AI_PCT=80 bash exp/n22_runtime_ai.sh all "8 16 24" 1
 N|n28_off_g4_r8_m80|30|PERIODS=24000 RT_GPUS=4 AI_RATE=8 AI_PCT=80 bash exp/n22_runtime_ai.sh off "8 16 24" 1
-N|n27_train1|150|bash exp/n27_train.sh 1 40000
-N|n27_train2|150|grep -qP "^n27_train1\t0\t" queue/done || exit 1; bash exp/n27_train.sh 2 40000
-N|n27_train3|150|grep -qP "^n27_train2\t0\t" queue/done || exit 1; bash exp/n27_train.sh 3 40000
-N|n27_train4|150|grep -qP "^n27_train3\t0\t" queue/done || exit 1; bash exp/n27_train.sh 4 40000
+N|n27_train1|100|bash exp/n27_train.sh 1 40000
+N|n27_train2|100|grep -qP "^n27_train1\t0\t" queue/done || exit 1; bash exp/n27_train.sh 2 40000
+N|n27_train3|100|grep -qP "^n27_train2\t0\t" queue/done || exit 1; bash exp/n27_train.sh 3 40000
+N|n27_train4|100|grep -qP "^n27_train3\t0\t" queue/done || exit 1; bash exp/n27_train.sh 4 40000
 N|n27_export|40|grep -qP "^n27_train4\t0\t" queue/done || exit 1; LABELS=nrx_large_f35 bash exp/n15_export.sh
 N|n1_umi_v3_cb_f35t|100|grep -qP "^n27_export\t0\t" queue/done || exit 1; CARRIER_GHZ=3.5 NRX_ENGINE=/rec/engines/nrx_large_f35_273prb_2ue.trt bash exp/harq_ir.sh n1_umi_v3_cb_f35t 40 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
 N|n3_uma_v3_cb_f35t|60|grep -qP "^n27_export\t0\t" queue/done || exit 1; CARRIER_GHZ=3.5 NRX_ENGINE=/rec/engines/nrx_large_f35_273prb_2ue.trt bash exp/harq_ir.sh n3_uma_v3_cb_f35t 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
