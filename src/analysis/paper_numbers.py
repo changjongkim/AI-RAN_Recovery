@@ -9,10 +9,11 @@ scripts/update_numbers.sh; a rerun must reproduce the file byte for byte.
 Macros (value, source):
   \\RetxCutFullWait     retransmissions per 100 TBs, conventional receiver only / Reverb waiting for every recovery,
                        macro cell, the 20,480 TBs of n3_uma_v3_cb + n3_uma_v3_more (results/n3_uma_v3_all.json)
-  \\RetxCutNoDelay      the same with the latency-neutral rule (wait only when at most 5 of 10 code blocks failed),
-                       from the latency simulation (src/sim/harq_latency.py, DDDSU, L1 1.4 ms, recovery path measured,
-                       recovery deadline 11.0 ms, lead 4.0 ms) on the same traces; checked: no added p99 delay for
-                       the TBs recovery does not decode
+  \\RetxCutNoDelay      the same with the latency-neutral rule (at the first transmission wait only when at most 5 of
+                       10 code blocks failed, wait at every retransmission), from the latency simulation
+                       (src/sim/harq_latency.py, DDDSU, L1 1.4 ms, recovery path measured, recovery deadline 11.0 ms,
+                       lead 4.0 ms) on the same traces; checked: within every delay the share of the failed TBs
+                       delivered is at least that of the conventional receiver (a lost TB is never delivered)
   \\LostCutFullWait     TBs never received after four transmissions, conventional / Reverb waiting for every recovery
   \\ThroughputGainLA    goodput under outer-loop link adaptation (target 10%), Reverb / conventional, mean over the
                        SNR points 6-16 dB, macro cell (results/n6_uma_v3_olla.json)
@@ -26,7 +27,13 @@ Setup macros (text, Evaluation Setup): \\SetupLOneMs, \\SetupRecoveryRunMs, \\Se
   \\SetupRecoveryRunMs is the 99th percentile and \\SetupRecoveryPathMs the median of the recovery path measured in the slot
   runtime (src/analysis/recovery_path.py); \\SetupRecoveryBoundMs, \\SetupBoundLowMs and \\SetupBoundHighMs are settings of
   the real-time runs.  NeutralLaterPct / FullWaitLaterPct: failed TBs delivered later than without recovery (Latency-Neutral,
-  Full Wait), NeutralEarlierPct: delivered earlier, WaitAddedDelayMs: the largest added delay (latency simulation)
+  Full Wait), NeutralEarlierPct: delivered earlier, WaitAddedDelayMs: the delay one wait adds to the next retransmission
+  (the same at every transmission, checked), FullWaitMaxAddedMs: the largest added delay of a TB under Full Wait,
+  FullWaitBehindMaxPp / FullWaitAheadFromMs: the largest shortfall of the delivered share of Full Wait against the
+  conventional receiver and the delay from which Full Wait delivers more; MotPNinetyNine*: 99th-percentile delivery
+  time of the failed TBs the first recovery does not decode, among those delivered with and without waiting;
+  MotLaterRec* / MotLaterNext*: after the L1 fails a retransmission, the share of these TBs that the NRx of the combined
+  buffer decodes / that the next retransmission decodes (range over the retransmissions, conventional order of events)
 """
 import glob
 import json
@@ -36,7 +43,7 @@ import sys
 import numpy as np
 
 sys.path.insert(0, "src/sim")
-from harq_latency import simulate  # noqa: E402
+from harq_latency import simulate, uplink_times  # noqa: E402
 
 OUT = os.environ.get("PAPER_NUMBERS_OUT", "results/paper")   # another folder to compare without replacing
 MACRO_SETS = ["n3_uma_v3_cb", "n3_uma_v3_more"]
@@ -130,9 +137,11 @@ def motivation(lat):
     v["MotRecoveryResultMs"] = (Timing.l1 + Timing.run, 1)
     v["MotFirstRetxMs"] = (lat["first_retx_ms"], 1)
     v["MotWaitDelayMs"] = (lat["wait_delay_ms"], 1)
-    v["MotPNinetyNineNoWait"] = (lat["harq_only"]["p99_unrecovered_ms"], 1)
-    v["MotPNinetyNineWait"] = (lat["wait"]["p99_unrecovered_ms"], 1)
+    v["MotPNinetyNineNoWait"] = (lat["wait"]["p99_paired_conventional_ms"], 1)
+    v["MotPNinetyNineWait"] = (lat["wait"]["p99_paired_ms"], 1)
     v["MotRetxWait"] = (lat["wait"]["retx_per_100"], 1)
+    v["MotLaterRecLow"] = (min(lat["later_recovery_pct"]), 0); v["MotLaterRecHigh"] = (max(lat["later_recovery_pct"]), 0)
+    v["MotLaterNextLow"] = (min(lat["later_next_retx_pct"]), 0); v["MotLaterNextHigh"] = (max(lat["later_next_retx_pct"]), 0)
     rows = {}
     for line in open("results/n16_summary.txt"):
         f = line.split()
@@ -172,30 +181,57 @@ def load_traces(sets):
     return conv, rec, steps, conv_steps, (cbfail >= 0) & (cbfail <= 5)
 
 
+def delivered_share(done, fail, at):
+    """Share (%) of the failed TBs delivered within each delay of at; a TB lost after the last transmission is never
+    delivered.  The shares change only at delivery times, so evaluating them there compares two policies exactly."""
+    d = np.sort(done[fail])
+    return 100.0 * np.searchsorted(d, at, side="right") / fail.sum()
+
+
 def latency_policies():
     conv, rec, steps, conv_steps, cand = load_traces(MACRO_SETS)
-    out = {}
-    dones = {}
-    for pol in ("harq_only", "wait", "select_cb5"):
-        done, tx = simulate(conv, rec, conv_steps if pol == "harq_only" else steps, cand, pol, "DDDSU", Timing)
-        unrec = ~conv & ~(rec & (Timing.l1 + Timing.run <= Timing.deadline)) & np.isfinite(done)
-        dones[pol] = (done, unrec)
-        out[pol] = {"retx_per_100": float(100.0 * (tx - 1).sum() / len(tx)),
-                    "p99_unrecovered_ms": float(np.percentile(done[unrec], 99)),
-                    "tbs": int(len(tx))}
-    (d0, u0), (d1, u1) = dones["harq_only"], dones["wait"]
-    d_base = dones["harq_only"][0]
     fail = ~conv
+    first_rec = rec & (Timing.l1 + Timing.run <= Timing.deadline)
+    out, dones = {}, {}
+    for pol in ("harq_only", "wait", "select_cb5"):
+        done, tx = simulate(conv, rec, conv_steps if pol == "harq_only" else steps, cand, pol, "DDDSU", Timing, l1_steps=conv_steps)
+        dones[pol] = done
+        out[pol] = {"retx_per_100": float(100.0 * (tx - 1).sum() / len(tx)),
+                    "lost_pct": float(100.0 * (~np.isfinite(done)).mean()), "tbs": int(len(tx))}
+    d0 = dones["harq_only"]
     for pol in ("select_cb5", "wait"):
-        d = dones[pol][0]
-        base = np.where(np.isfinite(d_base), d_base, np.inf)
-        new = np.where(np.isfinite(d), d, np.inf)
-        later = fail & np.isfinite(base) & (new > base + 1e-9)
+        d = dones[pol]
+        later = fail & np.isfinite(d0) & (d > d0 + 1e-9)
         out[pol]["later_pct_of_failed"] = float(100.0 * later.sum() / fail.sum())
-        out[pol]["earlier_pct_of_failed"] = float(100.0 * (fail & (new < base - 1e-9)).sum() / fail.sum())
-        out[pol]["added_delay_ms_max"] = float((new[later] - base[later]).max()) if later.any() else 0.0
-    out["first_retx_ms"] = float(d0[u0].min())                      # the first retransmission is decoded
-    out["wait_delay_ms"] = float(d1[u1].min() - d0[u0].min())      # waiting moves it by this much
+        out[pol]["earlier_pct_of_failed"] = float(100.0 * (fail & (d < d0 - 1e-9)).sum() / fail.sum())
+        out[pol]["added_delay_ms_max"] = float((d[later] - d0[later]).max()) if later.any() else 0.0
+        at = np.unique(np.concatenate([[0.0], d0[fail & np.isfinite(d0)], d[fail & np.isfinite(d)]]))
+        diff = delivered_share(d, fail, at) - delivered_share(d0, fail, at)
+        out[pol]["share_min_diff_pp"] = float(diff.min())
+        behind = np.flatnonzero(diff < -1e-9)
+        if len(behind):
+            out[pol]["behind_from_ms"] = float(at[behind[0]])
+            out[pol]["ahead_from_ms"] = float(at[behind[-1] + 1])   # from here on the share is at least the conventional one
+            assert (diff[behind[-1] + 1:] >= -1e-9).all()
+        pair = fail & ~first_rec & np.isfinite(d0) & np.isfinite(d)   # the same TBs under both policies
+        out[pol]["p99_paired_ms"] = float(np.percentile(d[pair], 99))
+        out[pol]["p99_paired_conventional_ms"] = float(np.percentile(d0[pair], 99))
+    # after the L1 fails retransmission k (and every transmission before it): the share the NRx of the combined buffer
+    # decodes, and the share the next retransmission decodes with the L1 alone
+    alive, later_rec, later_next = fail.copy(), [], []
+    for k in range(1, len(steps)):
+        alive = alive & ~conv_steps[k]
+        later_rec.append(float(100.0 * (steps[k] & ~conv_steps[k])[alive].mean()))
+        if k + 1 < len(steps):
+            later_next.append(float(100.0 * conv_steps[k + 1][alive].mean()))
+    out["later_recovery_pct"], out["later_next_retx_pct"] = later_rec, later_next
+    out["first_retx_ms"] = float(d0[fail & np.isfinite(d0)].min())   # the first retransmission is decoded
+    # one wait moves the next retransmission by this much, at the first transmission and at every retransmission
+    ul = uplink_times("DDDSU", 300.0)
+    nxt = lambda t: ul[np.searchsorted(ul, t)]
+    shifts = {round(float(nxt(s + r + Timing.run + Timing.lead) - nxt(s + r + Timing.lead)), 9)
+              for s, r in [(0.0, Timing.l1)] + [(u, 0.5 + Timing.l1) for u in ul[1:9]]}
+    out["wait_delay_ms"] = shifts.pop() if len(shifts) == 1 else float("nan")
     return out
 
 
@@ -209,11 +245,12 @@ def main():
     rand = json.load(open(f"results/p2b_uma_u8_random{SUFFIX}.json"))["all"]
 
     conv_retx, ours_retx = allstats["ai_and_ran"]["resends_per_100"], allstats["ours"]["resends_per_100"]
-    added = lat["select_cb5"]["p99_unrecovered_ms"] - lat["harq_only"]["p99_unrecovered_ms"]
     checks = {
         "latency_sim_full_wait_equals_harq_stats": abs(lat["wait"]["retx_per_100"] - ours_retx) < 1e-9,
         "latency_sim_conventional_equals_harq_stats": abs(lat["harq_only"]["retx_per_100"] - conv_retx) < 1e-9,
-        "no_added_delay_latency_neutral": added <= 0.05,
+        "latency_neutral_delivers_at_least_conventional_within_every_delay": lat["select_cb5"]["share_min_diff_pp"] >= 0.0,
+        "every_wait_adds_the_same_delay": bool(np.isfinite(lat["wait_delay_ms"])),
+        "latency_sim_lost_equal_for_both_rules": abs(lat["wait"]["lost_pct"] - lat["select_cb5"]["lost_pct"]) < 1e-9,
     }
     values = {**motivation(lat),
         "RetxCutFullWait": (conv_retx / ours_retx, 1),
@@ -224,7 +261,11 @@ def main():
         "NeutralLaterPct": (lat["select_cb5"]["later_pct_of_failed"], 1),
         "NeutralEarlierPct": (lat["select_cb5"]["earlier_pct_of_failed"], 1),
         "FullWaitLaterPct": (lat["wait"]["later_pct_of_failed"], 1),
-        "WaitAddedDelayMs": (lat["wait"]["added_delay_ms_max"], 1),
+        "WaitAddedDelayMs": (lat["wait_delay_ms"], 1),
+        "FullWaitMaxAddedMs": (lat["wait"]["added_delay_ms_max"], 1),
+        "NeutralMaxAddedMs": (lat["select_cb5"]["added_delay_ms_max"], 1),
+        "FullWaitBehindMaxPp": (-lat["wait"]["share_min_diff_pp"], 1),
+        "FullWaitAheadFromMs": (lat["wait"]["ahead_from_ms"], 1),
     }
     full = json.load(open(f"results/n3_uma_v3_all{SUFFIX}.json"))
     meta = json.loads(str(np.load(sorted(glob.glob(f"results/{MACRO_SETS[0]}{SUFFIX}/c*.npz"))[0])["meta"]))
@@ -247,7 +288,7 @@ def main():
                          "goodput_vs_conventional_by_snr": dict(zip([f"{x:g}" for x in snr], goodput)),
                          "pairing_retx_per_100": {"conventional_best_of_16_sum_rate": pf16["ai_and_ran"]["resends_per_100"],
                                                   "reverb_random_partner": rand["ours"]["resends_per_100"]},
-                         "added_p99_delay_latency_neutral_ms": added,
+
                          "recovery_path": PATH},
               "checks": checks}
     json.dump(report, open(f"{OUT}/numbers.json", "w"), indent=1, sort_keys=True)

@@ -139,7 +139,7 @@ def delay():
     res = {}
     for label, pol in (("Conventional", "harq_only"), ("Reverb, Latency-Neutral", "select_cb5"),
                        ("Reverb, Full Wait", "wait")):
-        done, tx = simulate(conv, rec, conv_steps if pol == "harq_only" else steps, cand, pol, "DDDSU", pn.Timing)
+        done, tx = simulate(conv, rec, conv_steps if pol == "harq_only" else steps, cand, pol, "DDDSU", pn.Timing, l1_steps=conv_steps)
         res[label] = (done[~conv], 100.0 * (tx - 1).sum() / len(tx))
     fig, ax = plt.subplots(figsize=PANEL4)
     for label in ("Conventional", "Reverb, Latency-Neutral", "Reverb, Full Wait"):

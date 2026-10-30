@@ -24,6 +24,13 @@ Policies:
   select_cbK    wait only when the conventional receiver failed at most K code blocks of the TB (known when L1
                 finishes; needs cbfail_t0 in the trace, decode_harq.py from 2026-10-15 06:30)
 TDD patterns: DDDSU (one uplink slot every 2.5 ms) and DDDSUUDDDD (two uplink slots every 5 ms), 0.5 ms slots.
+Retransmissions (with l1_steps, 2026-10-30): the L1 result of retransmission k is known L1 after its slot, and the large
+NRx result of the combined buffer one recovery run later.  wait (Full Wait) waits for that result before the next
+grant, as before the first retransmission, so the NRx decode avoids the next retransmission and every round adds at
+most one wait.  select_* (Latency-Neutral) decides with its candidates only at the first transmission and waits at every
+retransmission like wait; parallel sends the next grant at the L1 result, and an NRx decode then delivers the block
+but the next retransmission is already scheduled (wait_later overrides the retransmission rule per block).  Without l1_steps every decode of a retransmission is known at the
+L1 time (the model before 2026-10-30).
 usage: harq_latency.py --inputs C0.npz [...] --output OUT.json [--lead 2.0 --l1 1.4 --run 6.3 --deadline 11.0]
 """
 
@@ -56,7 +63,7 @@ def uplink_times(pattern: str, horizon: float) -> np.ndarray:
         k += 1
 
 
-def simulate(conv_ok, rec_ok, steps_ok, candidate, policy, pattern, a):
+def simulate(conv_ok, rec_ok, steps_ok, candidate, policy, pattern, a, l1_steps=None, wait_later=None):
     """Delivery time (ms after the first samples arrive; inf if never) and transmissions used, per block.
     Recovery is always attempted here (no NeuralRx contention; that is the subject of the Antiphase paper), so its
     outcome is known at L1 + run.  A retransmission in uplink slot s is decoded at s + SLOT + L1."""
@@ -78,16 +85,28 @@ def simulate(conv_ok, rec_ok, steps_ok, candidate, policy, pattern, a):
                 continue
         # time at which the first retransmission grant is decided
         decide = rec_time if waits else a.l1
+        wl = (policy == "wait" or policy.startswith("select")) if wait_later is None else (bool(wait_later[i]) if hasattr(wait_later, "__len__") else bool(wait_later))
         for k in range(1, total):
             if recovered and rec_time <= decide:
                 break                               # parallel: recovery ended the block before this grant
             slot = times[np.searchsorted(times, decide + a.lead)]
             result = slot + SLOT + a.l1
             tx[i] = k + 1
-            if steps_ok[k][i]:
+            if l1_steps is None:
+                if steps_ok[k][i]:
+                    done[i] = min(done[i], result)
+                    break
+                decide = result
+                continue
+            if l1_steps[k][i]:                     # the L1 decodes the combined buffer
                 done[i] = min(done[i], result)
                 break
-            decide = result
+            if steps_ok[k][i]:                     # the large NRx decodes it one recovery run later
+                done[i] = min(done[i], result + a.run)
+                if not wl and k + 1 < total:
+                    tx[i] = k + 2                   # the next grant went out at the L1 result
+                break
+            decide = result + a.run if wl else result
     return done, tx
 
 

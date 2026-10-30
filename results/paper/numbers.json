@@ -1,11 +1,12 @@
 {
  "checks": {
+  "every_wait_adds_the_same_delay": true,
+  "latency_neutral_delivers_at_least_conventional_within_every_delay": true,
   "latency_sim_conventional_equals_harq_stats": true,
   "latency_sim_full_wait_equals_harq_stats": true,
-  "no_added_delay_latency_neutral": true
+  "latency_sim_lost_equal_for_both_rules": true
  },
  "inputs": {
-  "added_p99_delay_latency_neutral_ms": 0.0,
   "goodput_vs_conventional_by_snr": {
    "10": 1.3553948692375417,
    "12": 1.4213678837854498,
@@ -33,24 +34,41 @@
    "latency_policies": {
     "first_retx_ms": 9.4,
     "harq_only": {
-     "p99_unrecovered_ms": 24.4,
+     "lost_pct": 2.197265625,
      "retx_per_100": 20.9619140625,
      "tbs": 20480
     },
+    "later_next_retx_pct": [
+     39.36279547790339,
+     23.728813559322035
+    ],
+    "later_recovery_pct": [
+     56.62898252826311,
+     56.949152542372886,
+     58.22222222222222
+    ],
     "select_cb5": {
-     "added_delay_ms_max": 5.0,
-     "earlier_pct_of_failed": 75.2014652014652,
-     "later_pct_of_failed": 0.43956043956043955,
-     "p99_unrecovered_ms": 24.4,
+     "added_delay_ms_max": 10.0,
+     "earlier_pct_of_failed": 73.2967032967033,
+     "later_pct_of_failed": 4.5787545787545785,
+     "lost_pct": 0.91796875,
+     "p99_paired_conventional_ms": 24.4,
+     "p99_paired_ms": 27.799999999999997,
      "retx_per_100": 15.0390625,
+     "share_min_diff_pp": 0.0,
      "tbs": 20480
     },
     "wait": {
-     "added_delay_ms_max": 5.0,
-     "earlier_pct_of_failed": 75.2014652014652,
-     "later_pct_of_failed": 17.912087912087912,
-     "p99_unrecovered_ms": 29.4,
+     "added_delay_ms_max": 15.0,
+     "ahead_from_ms": 20.3,
+     "behind_from_ms": 9.4,
+     "earlier_pct_of_failed": 66.44688644688645,
+     "later_pct_of_failed": 26.666666666666668,
+     "lost_pct": 0.91796875,
+     "p99_paired_conventional_ms": 24.4,
+     "p99_paired_ms": 32.8,
      "retx_per_100": 9.0283203125,
+     "share_min_diff_pp": -7.326007326007328,
      "tbs": 20480
     },
     "wait_delay_ms": 5.0
@@ -77,7 +95,10 @@
   "SetupTransmissions": "4"
  },
  "values": {
-  "FullWaitLaterPct": 17.912087912087912,
+  "FullWaitAheadFromMs": 20.3,
+  "FullWaitBehindMaxPp": 7.326007326007328,
+  "FullWaitLaterPct": 26.666666666666668,
+  "FullWaitMaxAddedMs": 15.0,
   "LostCutFullWait": 2.393617021276596,
   "MotAllCbMacro": 48.811126065500225,
   "MotAllCbShare": 81.64835164835165,
@@ -112,6 +133,10 @@
   "MotIciTrainedNoneSmall": 1.2092391304347827,
   "MotIciTrainedTen": 2.6812447434819178,
   "MotIciTrainedTenSmall": 2.378610460577674,
+  "MotLaterNextHigh": 39.36279547790339,
+  "MotLaterNextLow": 23.728813559322035,
+  "MotLaterRecHigh": 58.22222222222222,
+  "MotLaterRecLow": 56.62898252826311,
   "MotLostBlockedMacro": 1.044921875,
   "MotLostBlockedSmall": 0.2392578125,
   "MotLostDirectMacro": 4.2724609375,
@@ -119,7 +144,7 @@
   "MotLostMacro": 2.197265625,
   "MotLostSmall": 2.20703125,
   "MotPNinetyNineNoWait": 24.4,
-  "MotPNinetyNineWait": 29.4,
+  "MotPNinetyNineWait": 32.8,
   "MotRecoveredMacro": 57.032967032967036,
   "MotRecoveredSmall": 22.701421800947866,
   "MotRecoveryResultMs": 7.300000000000001,
@@ -145,8 +170,9 @@
   "MotTrueFailMacro": 3.50341796875,
   "MotTrueFailSmall": 8.821614583333332,
   "MotWaitDelayMs": 5.0,
-  "NeutralEarlierPct": 75.2014652014652,
-  "NeutralLaterPct": 0.43956043956043955,
+  "NeutralEarlierPct": 73.2967032967033,
+  "NeutralLaterPct": 4.5787545787545785,
+  "NeutralMaxAddedMs": 10.0,
   "PairingCutBestSixteen": 1.6455424274973147,
   "RetxCutFullWait": 2.3217955651703623,
   "RetxCutNoDelay": 1.3938311688311689,

@@ -80,7 +80,7 @@ def effect(avail):
     rng = np.random.default_rng(7)
     draw = rng.random(len(conv))
     T = pn.Timing
-    d0, tx0 = simulate(conv, rec, conv_steps, cand, "harq_only", "DDDSU", T)
+    d0, tx0 = simulate(conv, rec, conv_steps, cand, "harq_only", "DDDSU", T, l1_steps=conv_steps)
     root = Path(f"results/n6_uma_v3{SUFFIX}")
     tab = olla.per_mcs(root)
     ladder = sorted(tab)
@@ -102,7 +102,7 @@ def effect(avail):
         keep = draw < a
         r = rec & keep
         st = [None] + [conv_steps[t] | (steps[t] & ~conv_steps[t] & (draws[t] < a)) for t in range(1, n_steps)]
-        d, tx = simulate(conv, r, st, cand, "wait", "DDDSU", T)
+        d, tx = simulate(conv, r, st, cand, "wait", "DDDSU", T, l1_steps=conv_steps)
         unrec = ~conv & ~(r & (T.l1 + T.run <= T.deadline)) & np.isfinite(d)
         lost = 100.0 * (~np.isfinite(d)).mean()
         for mcs in ladder:

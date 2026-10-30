@@ -345,7 +345,7 @@ def motivation_delay():
     both = [None] + [g[f"sep_c{t}"] | g[f"nrx_c{t}"] for t in range(1, total)]
     fig, ax = plt.subplots(figsize=PANEL)
     for label, pol, steps in (("Retransmission Only", "harq_only", sep), ("Wait for Recovery", "wait", both)):
-        done, _ = simulate(conv, rec, steps, None, pol, "DDDSU", Timing)
+        done, _ = simulate(conv, rec, steps, None, pol, "DDDSU", Timing, l1_steps=sep)
         d = np.sort(done[~conv])
         x = np.concatenate([[0], np.repeat(d[np.isfinite(d)], 2), [45]])
         y = np.concatenate([[0, 0], np.repeat(np.arange(1, np.isfinite(d).sum() + 1) / d.size * 100, 2)])[:x.size]

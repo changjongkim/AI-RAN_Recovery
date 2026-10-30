@@ -8,7 +8,7 @@
   "every_recovery": {
    "goodput_gain_la": 1.3088563714451864,
    "lost_pct": 0.9033203125,
-   "p99_unrecovered_ms": 29.4,
+   "p99_unrecovered_ms": 45.3,
    "retx_per_100": 9.1064453125
   },
   "four_12": {
@@ -17,7 +17,7 @@
    "goodput_gain_la": 1.1819374105886424,
    "gpus": "four",
    "lost_pct": 1.1083984375,
-   "p99_unrecovered_ms": 29.4,
+   "p99_unrecovered_ms": 45.3,
    "recoverable_share": 0.5381375760411792,
    "retx_per_100": 13.4375
   },
@@ -27,7 +27,7 @@
    "goodput_gain_la": 1.1394853296131076,
    "gpus": "four",
    "lost_pct": 1.2451171875,
-   "p99_unrecovered_ms": 29.4,
+   "p99_unrecovered_ms": 45.3,
    "recoverable_share": 0.5411381356918422,
    "retx_per_100": 15.0048828125
   },
@@ -37,7 +37,7 @@
    "goodput_gain_la": 1.0987384012030732,
    "gpus": "four",
    "lost_pct": 1.3330078125,
-   "p99_unrecovered_ms": 29.4,
+   "p99_unrecovered_ms": 45.3,
    "recoverable_share": 0.5441668658857279,
    "retx_per_100": 16.30859375
   },
@@ -47,7 +47,7 @@
    "goodput_gain_la": 1.0746336721992806,
    "gpus": "four",
    "lost_pct": 1.4892578125,
-   "p99_unrecovered_ms": 29.4,
+   "p99_unrecovered_ms": 45.3,
    "recoverable_share": 0.5433232028778763,
    "retx_per_100": 17.28515625
   },
@@ -57,7 +57,7 @@
    "goodput_gain_la": 1.3017919562646052,
    "gpus": "four",
    "lost_pct": 0.9033203125,
-   "p99_unrecovered_ms": 29.4,
+   "p99_unrecovered_ms": 45.3,
    "recoverable_share": 0.5255157437567861,
    "retx_per_100": 9.4580078125
   },
@@ -67,7 +67,7 @@
    "goodput_gain_la": 1.2508951098604912,
    "gpus": "four",
    "lost_pct": 0.9521484375,
-   "p99_unrecovered_ms": 29.4,
+   "p99_unrecovered_ms": 45.3,
    "recoverable_share": 0.5466978807294234,
    "retx_per_100": 11.0693359375
   },
@@ -77,7 +77,7 @@
    "goodput_gain_la": 1.2764843154979546,
    "gpus": "one",
    "lost_pct": 0.9130859375,
-   "p99_unrecovered_ms": 29.4,
+   "p99_unrecovered_ms": 45.3,
    "recoverable_share": 0.4980711530218603,
    "retx_per_100": 10.263671875
   },
@@ -87,7 +87,7 @@
    "goodput_gain_la": 1.1913436758715203,
    "gpus": "one",
    "lost_pct": 1.07421875,
-   "p99_unrecovered_ms": 29.4,
+   "p99_unrecovered_ms": 45.3,
    "recoverable_share": 0.512853470437018,
    "retx_per_100": 13.212890625
   },
@@ -97,7 +97,7 @@
    "goodput_gain_la": 1.1489279321128028,
    "gpus": "one",
    "lost_pct": 1.19140625,
-   "p99_unrecovered_ms": 29.4,
+   "p99_unrecovered_ms": 45.3,
    "recoverable_share": 0.486784140969163,
    "retx_per_100": 14.6240234375
   },
@@ -107,7 +107,7 @@
    "goodput_gain_la": 1.1149863360671388,
    "gpus": "one",
    "lost_pct": 1.298828125,
-   "p99_unrecovered_ms": 29.4,
+   "p99_unrecovered_ms": 45.3,
    "recoverable_share": 0.5295774647887324,
    "retx_per_100": 15.7421875
   },
@@ -117,7 +117,7 @@
    "goodput_gain_la": 1.0726896366989231,
    "gpus": "one",
    "lost_pct": 1.552734375,
-   "p99_unrecovered_ms": 29.4,
+   "p99_unrecovered_ms": 45.3,
    "recoverable_share": 0.5196182396606575,
    "retx_per_100": 17.5537109375
   },
@@ -127,7 +127,7 @@
    "goodput_gain_la": 1.0494580426338007,
    "gpus": "one",
    "lost_pct": 1.7041015625,
-   "p99_unrecovered_ms": 29.4,
+   "p99_unrecovered_ms": 45.3,
    "recoverable_share": 0.5223599137931034,
    "retx_per_100": 18.45703125
   }
