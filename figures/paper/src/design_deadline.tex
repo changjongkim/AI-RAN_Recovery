@@ -30,7 +30,9 @@
     \draw[black, line width=1.1pt] (0, -0.16) rectangle (0.5, 0.16);
     \node[txt, anchor=south east] at (0.5, 0.19) {Failed TB};
     \draw[black!65, line width=0.5pt, densely dashed] (\tl, -1.72) -- (\tl, 0.19);
-    \node[txt, anchor=south west] at (\tl - 0.15, 0.19) {\tL: CRC fails};
+    \node[txt, anchor=south] at (\tl, 0.19) {\tL};
+    \draw[black!65, line width=0.5pt, densely dashed] (\us - 4.0, -1.72) -- (\us - 4.0, 0.19);
+    \node[txt, anchor=south] at (\us - 4.0, 0.19) {\Dz};
     \draw[black!65, line width=0.5pt, densely dashed] (\dd, -1.72) -- (\dd, 0.19);
     \node[txt, anchor=south] at (\dd, 0.19) {\vD};
     \node[txt, anchor=south] at (\us + 0.25, 0.19) {\Us};
@@ -39,8 +41,6 @@
     \draw[garr] (\tl, -0.48) -- (\us - 0.02, -0.48) node[pos=0.5, stxt, above=0.5pt] {Grant at the L1 result};
     \rtx{\us}{-0.48}
     % D_0 = U_s - L: the last grant that still schedules U_s
-    \draw[dred, line width=1.0pt] (\us - 4.0, -0.38) -- (\us - 4.0, -0.58);
-    \node[stxt, text=dred, anchor=west] at (\us - 3.95, -0.62) {\Dz};
     % the recovery fails: grant at its result, retransmission in the next uplink slot after the grant lead
     \node[cl, fill=nrxc, minimum height=0.28cm, minimum width={0.63*6.3cm}, anchor=west] at (\tl, -0.96) {Recovery of this TB};
     \draw[oarr] (\tr, -0.96) -- (12.48, -0.96) node[pos=0.5, stxt, above=0.5pt] {Grant at the result};
