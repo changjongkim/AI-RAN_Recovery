@@ -5,22 +5,42 @@
     "min_diff_pp": -2.882159795695003,
     "retx_cut": 1.3269409217445098
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -14.775629332360452,
+    "retx_cut": 1.3269409217445098
+   },
    "at_latest_start": {
     "min_diff_pp": -42.90404961692813,
     "retx_cut": 1.3269409217445098
    },
-   "share": 0.37519811372096445
+   "at_latest_start_measured": {
+    "min_diff_pp": -54.797519153593576,
+    "retx_cut": 1.3269409217445098
+   },
+   "end_p50_ms": 9.410714500000001,
+   "share": 0.37519811372096445,
+   "times_from_cells": 20
   },
   "latency_neutral": {
    "at_arrival": {
     "min_diff_pp": -0.4742794600510791,
     "retx_cut": 1.3095238095238095
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -0.9850419554906935,
+    "retx_cut": 1.3095238095238095
+   },
    "at_latest_start": {
     "min_diff_pp": -2.444363371032466,
     "retx_cut": 1.3095238095238095
    },
-   "share": 0.8297039554097222
+   "at_latest_start_measured": {
+    "min_diff_pp": -2.9551258664720876,
+    "retx_cut": 1.3095238095238095
+   },
+   "end_p50_ms": 8.117241,
+   "share": 0.8297039554097222,
+   "times_from_cells": 8
   }
  },
  "four_16": {
@@ -29,22 +49,42 @@
     "min_diff_pp": -2.334914264866832,
     "retx_cut": 1.2023542600896862
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -11.41919007661437,
+    "retx_cut": 1.2023542600896862
+   },
    "at_latest_start": {
     "min_diff_pp": -50.01824151769427,
     "retx_cut": 1.2023542600896862
    },
-   "share": 0.26195336795913854
+   "at_latest_start_measured": {
+    "min_diff_pp": -59.10251732944181,
+    "retx_cut": 1.2023542600896862
+   },
+   "end_p50_ms": 9.532486,
+   "share": 0.26195336795913854,
+   "times_from_cells": 24
   },
   "latency_neutral": {
    "at_arrival": {
     "min_diff_pp": -0.32834731849689547,
     "retx_cut": 1.2540192926045015
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -2.699744618752291,
+    "retx_cut": 1.2540192926045015
+   },
    "at_latest_start": {
     "min_diff_pp": -4.377964246625318,
     "retx_cut": 1.2540192926045015
    },
-   "share": 0.6888581287845896
+   "at_latest_start_measured": {
+    "min_diff_pp": -6.749361546880706,
+    "retx_cut": 1.2540192926045015
+   },
+   "end_p50_ms": 8.8715405,
+   "share": 0.6888581287845896,
+   "times_from_cells": 12
   }
  },
  "four_20": {
@@ -53,22 +93,42 @@
     "min_diff_pp": -1.86063480481576,
     "retx_cut": 1.1635475996745321
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -9.157241882524623,
+    "retx_cut": 1.1635475996745321
+   },
    "at_latest_start": {
     "min_diff_pp": -52.64502006566946,
     "retx_cut": 1.1635475996745321
    },
-   "share": 0.20956269436731087
+   "at_latest_start_measured": {
+    "min_diff_pp": -59.94162714337833,
+    "retx_cut": 1.1635475996745321
+   },
+   "end_p50_ms": 9.532486,
+   "share": 0.20956269436731087,
+   "times_from_cells": 24
   },
   "latency_neutral": {
    "at_arrival": {
     "min_diff_pp": -0.2918642831083531,
     "retx_cut": 1.2020173718128326
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -2.334914264866839,
+    "retx_cut": 1.2020173718128326
+   },
    "at_latest_start": {
     "min_diff_pp": -6.0197008391098095,
     "retx_cut": 1.2020173718128326
    },
-   "share": 0.5510447358446264
+   "at_latest_start_measured": {
+    "min_diff_pp": -8.062750820868303,
+    "retx_cut": 1.2020173718128326
+   },
+   "end_p50_ms": 8.8715405,
+   "share": 0.5510447358446264,
+   "times_from_cells": 12
   }
  },
  "four_24": {
@@ -77,22 +137,42 @@
     "min_diff_pp": -1.3863553447646808,
     "retx_cut": 1.1343204653622423
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -7.406056183874497,
+    "retx_cut": 1.1343204653622423
+   },
    "at_latest_start": {
     "min_diff_pp": -54.761036118205034,
     "retx_cut": 1.1343204653622423
    },
-   "share": 0.1746355786394257
+   "at_latest_start_measured": {
+    "min_diff_pp": -60.78073695731484,
+    "retx_cut": 1.1343204653622423
+   },
+   "end_p50_ms": 9.532486,
+   "share": 0.1746355786394257,
+   "times_from_cells": 24
   },
   "latency_neutral": {
    "at_arrival": {
     "min_diff_pp": -0.2918642831083531,
     "retx_cut": 1.170532060027285
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -2.6632615833637345,
+    "retx_cut": 1.170532060027285
+   },
    "at_latest_start": {
     "min_diff_pp": -6.712878511492157,
     "retx_cut": 1.170532060027285
    },
-   "share": 0.46283557382415685
+   "at_latest_start_measured": {
+    "min_diff_pp": -9.084275811747546,
+    "retx_cut": 1.170532060027285
+   },
+   "end_p50_ms": 8.99274,
+   "share": 0.46283557382415685,
+   "times_from_cells": 16
   }
  },
  "four_4": {
@@ -101,14 +181,28 @@
     "min_diff_pp": -7.880335643925569,
     "retx_cut": 2.0457796852646637
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -11.601605253557096,
+    "retx_cut": 2.0457796852646637
+   },
    "at_latest_start": {
     "min_diff_pp": -14.556731120029184,
     "retx_cut": 2.0457796852646637
    },
-   "share": 0.8859640276142133
+   "at_latest_start_measured": {
+    "min_diff_pp": -18.278000729660704,
+    "retx_cut": 2.0457796852646637
+   },
+   "end_p50_ms": 8.117241,
+   "share": 0.8859640276142133,
+   "times_from_cells": 8
   },
   "latency_neutral": {
    "at_arrival": {
+    "min_diff_pp": -0.4742794600510791,
+    "retx_cut": 1.368421052631579
+   },
+   "at_arrival_measured": {
     "min_diff_pp": -0.4742794600510791,
     "retx_cut": 1.368421052631579
    },
@@ -116,7 +210,13 @@
     "min_diff_pp": -0.8026267785479746,
     "retx_cut": 1.368421052631579
    },
-   "share": 0.970323873835264
+   "at_latest_start_measured": {
+    "min_diff_pp": -0.8026267785479746,
+    "retx_cut": 1.368421052631579
+   },
+   "end_p50_ms": 6.901337,
+   "share": 0.970323873835264,
+   "times_from_cells": 4
   }
  },
  "four_8": {
@@ -125,14 +225,28 @@
     "min_diff_pp": -4.487413352790952,
     "retx_cut": 1.5256045519203414
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -13.717621306092667,
+    "retx_cut": 1.5256045519203414
+   },
    "at_latest_start": {
     "min_diff_pp": -33.49142648668369,
     "retx_cut": 1.5256045519203414
    },
-   "share": 0.5618019507251715
+   "at_latest_start_measured": {
+    "min_diff_pp": -42.72163443998541,
+    "retx_cut": 1.5256045519203414
+   },
+   "end_p50_ms": 8.8715405,
+   "share": 0.5618019507251715,
+   "times_from_cells": 12
   },
   "latency_neutral": {
    "at_arrival": {
+    "min_diff_pp": -0.4742794600510791,
+    "retx_cut": 1.352032776552159
+   },
+   "at_arrival_measured": {
     "min_diff_pp": -0.4742794600510791,
     "retx_cut": 1.352032776552159
    },
@@ -140,7 +254,13 @@
     "min_diff_pp": -1.2404232032105043,
     "retx_cut": 1.352032776552159
    },
-   "share": 0.9299936493394674
+   "at_latest_start_measured": {
+    "min_diff_pp": -1.2404232032105043,
+    "retx_cut": 1.352032776552159
+   },
+   "end_p50_ms": 6.901337,
+   "share": 0.9299936493394674,
+   "times_from_cells": 4
   }
  },
  "one_1": {
@@ -149,22 +269,42 @@
     "min_diff_pp": -7.00474279460051,
     "retx_cut": 1.8017639647207055
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -14.666180226194818,
+    "retx_cut": 1.8017639647207055
+   },
    "at_latest_start": {
     "min_diff_pp": -21.92630426851514,
     "retx_cut": 1.8017639647207055
    },
-   "share": 0.7474049233511142
+   "at_latest_start_measured": {
+    "min_diff_pp": -29.587741700109447,
+    "retx_cut": 1.8017639647207055
+   },
+   "end_p50_ms": 6.6728335,
+   "share": 0.7474049233511142,
+   "times_from_cells": 1
   },
   "latency_neutral": {
    "at_arrival": {
     "min_diff_pp": -0.4742794600510791,
     "retx_cut": 1.3335405657444825
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -2.334914264866832,
+    "retx_cut": 1.3335405657444825
+   },
    "at_latest_start": {
     "min_diff_pp": -1.8241517694272176,
     "retx_cut": 1.3335405657444825
    },
-   "share": 0.8933951332560833
+   "at_latest_start_measured": {
+    "min_diff_pp": -3.6847865742429775,
+    "retx_cut": 1.3335405657444825
+   },
+   "end_p50_ms": 6.6728335,
+   "share": 0.8933951332560833,
+   "times_from_cells": 1
   }
  },
  "one_2": {
@@ -173,22 +313,42 @@
     "min_diff_pp": -3.465888361911709,
     "retx_cut": 1.4195896757114495
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -5.253557095950384,
+    "retx_cut": 1.4195896757114495
+   },
    "at_latest_start": {
     "min_diff_pp": -38.08828894564027,
     "retx_cut": 1.4195896757114495
    },
-   "share": 0.4658498161699264
+   "at_latest_start_measured": {
+    "min_diff_pp": -39.87595767967895,
+    "retx_cut": 1.4195896757114495
+   },
+   "end_p50_ms": 8.001015,
+   "share": 0.4658498161699264,
+   "times_from_cells": 3
   },
   "latency_neutral": {
    "at_arrival": {
     "min_diff_pp": -0.43779642466253677,
     "retx_cut": 1.3091241989624656
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -2.2619481940897472,
+    "retx_cut": 1.3091241989624656
+   },
    "at_latest_start": {
     "min_diff_pp": -2.4808464064210156,
     "retx_cut": 1.3091241989624656
    },
-   "share": 0.8274616154893284
+   "at_latest_start_measured": {
+    "min_diff_pp": -4.304998175848226,
+    "retx_cut": 1.3091241989624656
+   },
+   "end_p50_ms": 6.6728335,
+   "share": 0.8274616154893284,
+   "times_from_cells": 1
   }
  },
  "one_3": {
@@ -197,22 +357,42 @@
     "min_diff_pp": -2.8456767603064534,
     "retx_cut": 1.2906137184115523
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -7.479022254651582,
+    "retx_cut": 1.2906137184115523
+   },
    "at_latest_start": {
     "min_diff_pp": -44.728201386355344,
     "retx_cut": 1.2906137184115523
    },
-   "share": 0.3442079910532935
+   "at_latest_start_measured": {
+    "min_diff_pp": -49.36154688070047,
+    "retx_cut": 1.2906137184115523
+   },
+   "end_p50_ms": 8.5309305,
+   "share": 0.3442079910532935,
+   "times_from_cells": 4
   },
   "latency_neutral": {
    "at_arrival": {
     "min_diff_pp": -0.2918642831083531,
     "retx_cut": 1.2391681109185442
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -0.5837285662167062,
+    "retx_cut": 1.2391681109185442
+   },
    "at_latest_start": {
     "min_diff_pp": -4.815760671287848,
     "retx_cut": 1.2391681109185442
    },
-   "share": 0.6451102611745071
+   "at_latest_start_measured": {
+    "min_diff_pp": -5.107624954396201,
+    "retx_cut": 1.2391681109185442
+   },
+   "end_p50_ms": 6.950881,
+   "share": 0.6451102611745071,
+   "times_from_cells": 2
   }
  },
  "one_4": {
@@ -221,22 +401,42 @@
     "min_diff_pp": -2.225465158701205,
     "retx_cut": 1.1919977771603223
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -8.537030280919367,
+    "retx_cut": 1.1919977771603223
+   },
    "at_latest_start": {
     "min_diff_pp": -50.67493615468807,
     "retx_cut": 1.1919977771603223
    },
-   "share": 0.24895966753114837
+   "at_latest_start_measured": {
+    "min_diff_pp": -56.98650127690624,
+    "retx_cut": 1.1919977771603223
+   },
+   "end_p50_ms": 9.198916,
+   "share": 0.24895966753114837,
+   "times_from_cells": 6
   },
   "latency_neutral": {
    "at_arrival": {
     "min_diff_pp": -0.2918642831083531,
     "retx_cut": 1.1959855032060218
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -0.5837285662167062,
+    "retx_cut": 1.1959855032060218
+   },
    "at_latest_start": {
     "min_diff_pp": -6.092666909886901,
     "retx_cut": 1.1959855032060218
    },
-   "share": 0.5364668164367173
+   "at_latest_start_measured": {
+    "min_diff_pp": -6.384531192995254,
+    "retx_cut": 1.1959855032060218
+   },
+   "end_p50_ms": 6.950881,
+   "share": 0.5364668164367173,
+   "times_from_cells": 2
   }
  },
  "one_6": {
@@ -245,22 +445,42 @@
     "min_diff_pp": -1.313389273987596,
     "retx_cut": 1.1189358372456963
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -8.245165997811014,
+    "retx_cut": 1.1189358372456963
+   },
    "at_latest_start": {
     "min_diff_pp": -55.81904414447282,
     "retx_cut": 1.1189358372456963
    },
-   "share": 0.1551097943294414
+   "at_latest_start_measured": {
+    "min_diff_pp": -62.75082086829624,
+    "retx_cut": 1.1189358372456963
+   },
+   "end_p50_ms": 9.776023,
+   "share": 0.1551097943294414,
+   "times_from_cells": 8
   },
   "latency_neutral": {
    "at_arrival": {
     "min_diff_pp": -0.21889821233126838,
     "retx_cut": 1.147979662831148
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -1.13097409704487,
+    "retx_cut": 1.147979662831148
+   },
    "at_latest_start": {
     "min_diff_pp": -7.551988325428674,
     "retx_cut": 1.147979662831148
    },
-   "share": 0.40404119712547143
+   "at_latest_start_measured": {
+    "min_diff_pp": -8.464064210142283,
+    "retx_cut": 1.147979662831148
+   },
+   "end_p50_ms": 8.5309305,
+   "share": 0.40404119712547143,
+   "times_from_cells": 4
   }
  },
  "one_8": {
@@ -269,22 +489,42 @@
     "min_diff_pp": -1.0944910616563277,
     "retx_cut": 1.0902160101651843
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -6.749361546880699,
+    "retx_cut": 1.0902160101651843
+   },
    "at_latest_start": {
     "min_diff_pp": -57.64319591390004,
     "retx_cut": 1.0902160101651843
    },
-   "share": 0.11633234574708107
+   "at_latest_start_measured": {
+    "min_diff_pp": -63.29806639912441,
+    "retx_cut": 1.0902160101651843
+   },
+   "end_p50_ms": 9.776023,
+   "share": 0.11633234574708107,
+   "times_from_cells": 8
   },
   "latency_neutral": {
    "at_arrival": {
     "min_diff_pp": -0.10944910616562709,
     "retx_cut": 1.11284046692607
    },
+   "at_arrival_measured": {
+    "min_diff_pp": -0.839109813936517,
+    "retx_cut": 1.11284046692607
+   },
    "at_latest_start": {
     "min_diff_pp": -8.500547245530825,
     "retx_cut": 1.11284046692607
    },
-   "share": 0.3175384604670929
+   "at_latest_start_measured": {
+    "min_diff_pp": -9.230207953301715,
+    "retx_cut": 1.11284046692607
+   },
+   "end_p50_ms": 8.5309305,
+   "share": 0.3175384604670929,
+   "times_from_cells": 4
   }
  }
 }
