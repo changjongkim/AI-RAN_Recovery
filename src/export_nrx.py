@@ -71,7 +71,7 @@ inputs, _, _, _ = generator(1, 10.0)
 receiver(inputs)
 try:
     load_weights(receiver, f"../weights/{label}_weights")
-    weights = "published"
+    weights = f"{label}_weights"     # the file of the label: the published weights or a fine-tuned one (N27)
 except ValueError as err:
     raise SystemExit(f"weights of {label} do not load: {str(err).splitlines()[0][:200]}")
 receiver._cgnn.num_it = params.num_nrx_iter_eval

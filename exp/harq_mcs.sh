@@ -4,7 +4,8 @@
 # usage: bash exp/harq_mcs.sh NAME CHUNKS --channel UMi --speed 0.83 --snr-db 4,6,8,10,12,14 --slots 16 --batch 8
 #   environment: MCS_LIST (default 10,11,12,13,14,15,16), GPUS (default "0 1 2 3"), as in harq_ir.sh: IRC=1 adds the
 #                MMSE-IRC conventional receiver, NRX_ENGINE / SMALL_ENGINE replace the large / small neural receiver,
-#                OLLA_OPTS extra options of olla.py (e.g. --sir-bins -5,0,5,10,15,25 for link adaptation per SIR group)
+#                OLLA_OPTS extra options of olla.py (e.g. --sir-bins=-5,0,5,10,15,25 for link adaptation per SIR group; with a space, argparse reads a value
+#                that starts with - as an option and olla.py stops)
 # results: results/<NAME>/m<mcs>_c<k>.npz/.json, results/<NAME>_olla.json and .txt
 set -uo pipefail
 source /pscratch/sd/s/sgkim/kcj/airan_recovery/env.sh
