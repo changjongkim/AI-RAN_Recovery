@@ -1,4 +1,4 @@
-% Figure (Section 4.1, b): the recovery deadline bounds the cost of waiting.  A failed TB arrives in an uplink slot and
+% Figure (Section 4.1, b): the recovery deadline bounds the cost of waiting; D_0 = U_s - L marks the last grant without delay.  A failed TB arrives in an uplink slot and
 % its L1 result (CRC fail) is known at t_L1.  Conventional: the grant follows at t_L1 and the retransmission uses the
 % first uplink slot U_s at least the grant lead L later.  With Reverb the TB waits for its recovery.  If the recovery
 % fails, the grant follows the recovery result.  In the latest case the GPU still runs the recovery of an earlier failed
@@ -11,6 +11,7 @@
 \newcommand{\tL}{\textit{t}\textsubscript{L1}}
 \newcommand{\Us}{\textit{U}\textsubscript{s}}
 \newcommand{\Ur}{\textit{U}\textsubscript{r}}
+\newcommand{\Dz}{\textit{D}\textsubscript{0}}
 \newcommand{\rtx}[2]{\draw[dred, line width=1.1pt, fill=ulc] (#1+0.04, #2-0.14) rectangle (#1+0.46, #2+0.14);}
 \begin{document}
 \begin{tikzpicture}[x=1cm, y=1cm]
@@ -37,6 +38,9 @@
     % conventional: grant at the L1 result, retransmission in U_s
     \draw[garr] (\tl, -0.48) -- (\us - 0.02, -0.48) node[pos=0.5, stxt, above=0.5pt] {Grant at the L1 result};
     \rtx{\us}{-0.48}
+    % D_0 = U_s - L: the last grant that still schedules U_s
+    \draw[dred, line width=1.0pt] (\us - 4.0, -0.38) -- (\us - 4.0, -0.58);
+    \node[stxt, text=dred, anchor=west] at (\us - 3.95, -0.62) {\Dz};
     % the recovery fails: grant at its result, retransmission in the next uplink slot after the grant lead
     \node[cl, fill=nrxc, minimum height=0.28cm, minimum width={0.63*6.3cm}, anchor=west] at (\tl, -0.96) {Recovery of this TB};
     \draw[oarr] (\tr, -0.96) -- (12.48, -0.96) node[pos=0.5, stxt, above=0.5pt] {Grant at the result};
@@ -55,6 +59,6 @@
   \end{scope}
   \node[stxt, anchor=north west] at (0, -2.08) {\lgdrtx\,Retransmission of the TB\enspace \lgd{nrxc}\,Recovery of the TB (run time \vr)\enspace
     \tikz[baseline=-0.6ex]{\draw[black!65, line width=0.35pt, pattern=north east lines, pattern color=black!35] (0,-0.09) rectangle (0.24,0.09);}\,GPU busy with the recovery of an earlier TB};
-  \node[key, anchor=west] at (0, -1.88) {Recovery deadline \vD\,=\,\Ur\,−\,\vL};
+  \node[key, anchor=west] at (0, -1.88) {\Dz\,=\,\Us\,−\,\vL,\enspace recovery deadline \vD\,=\,\Ur\,−\,\vL};
 \end{tikzpicture}
 \end{document}

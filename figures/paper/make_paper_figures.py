@@ -314,8 +314,14 @@ def motivation_redecode():
     legend("mot_time_legend", list(WAIT.items()) + list(CELL.items()), width=9.4)
 
 
+import sys as _sys  # noqa: E402
+_sys.path.insert(0, os.path.join(ROOT, "src", "analysis"))
+import recovery_path  # noqa: E402
+
+
 class Timing:          # the timing of src/analysis/paper_numbers.py (Evaluation Setup)
-    l1, run, deadline, lead = 1.4, 6.3, 11.0, 4.0
+    l1, deadline, lead = 1.4, 11.0, 4.0
+    run = recovery_path.stats(N16)["timeline_run_ms"]   # measured recovery path, 99th percentile
 
 
 def motivation_delay():

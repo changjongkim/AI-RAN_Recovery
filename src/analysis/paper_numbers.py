@@ -10,7 +10,7 @@ Macros (value, source):
   \\RetxCutFullWait     retransmissions per 100 TBs, conventional receiver only / Reverb waiting for every recovery,
                        macro cell, the 20,480 TBs of n3_uma_v3_cb + n3_uma_v3_more (results/n3_uma_v3_all.json)
   \\RetxCutNoDelay      the same with the latency-neutral rule (wait only when at most 5 of 10 code blocks failed),
-                       from the latency simulation (src/sim/harq_latency.py, DDDSU, L1 1.4 ms, recovery 6.3 ms,
+                       from the latency simulation (src/sim/harq_latency.py, DDDSU, L1 1.4 ms, recovery path measured,
                        recovery deadline 11.0 ms, lead 4.0 ms) on the same traces; checked: no added p99 delay for
                        the TBs recovery does not decode
   \\LostCutFullWait     TBs never received after four transmissions, conventional / Reverb waiting for every recovery
@@ -23,6 +23,10 @@ Setup macros (text, Evaluation Setup): \\SetupLOneMs, \\SetupRecoveryRunMs, \\Se
   timing of the latency simulation, class Timing), \\SetupSlots and \\SetupTBs (slots and TBs of the macro traces),
   \\SetupTbBytes (TB size), \\SetupTransmissions, \\SetupRetxGapMs (channel time between transmissions), \\SetupEbNoLow
   and \\SetupEbNoHigh (Eb/No points), all read from the macro traces of results/n3_uma_v3_all.json and its chunks
+  \\SetupRecoveryRunMs is the 99th percentile and \\SetupRecoveryPathMs the median of the recovery path measured in the slot
+  runtime (src/analysis/recovery_path.py); \\SetupRecoveryBoundMs, \\SetupBoundLowMs and \\SetupBoundHighMs are settings of
+  the real-time runs.  NeutralLaterPct / FullWaitLaterPct: failed TBs delivered later than without recovery (Latency-Neutral,
+  Full Wait), NeutralEarlierPct: delivered earlier, WaitAddedDelayMs: the largest added delay (latency simulation)
 """
 import glob
 import json
@@ -44,6 +48,11 @@ class Timing:
 
 SUFFIX = os.environ.get("RESULT_SUFFIX", "")   # "_f35": the 3.5 GHz runs (every macro since 2026-10-29 19:30)
 N16 = os.environ.get("N16_SUFFIX", "")         # "d110_f35": GPU runtime at the 11.0 ms deadline on the 3.5 GHz slots
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import recovery_path  # noqa: E402
+PATH = recovery_path.stats(N16)   # recovery path in the slot runtime, one cell on one GPU
+Timing.run = PATH["timeline_run_ms"]   # 99th percentile, rounded up to 0.1 ms (was a typed 6.3 ms before 2026-10-30)
+BOUND_MS, BOUND_LOW_MS, BOUND_HIGH_MS = 6.8, 6.3, 7.3   # settings of the real-time runs: latest start D - BOUND, swept range
 
 
 def stats(names, structure="ai_and_ran"):
@@ -174,6 +183,16 @@ def latency_policies():
                     "p99_unrecovered_ms": float(np.percentile(done[unrec], 99)),
                     "tbs": int(len(tx))}
     (d0, u0), (d1, u1) = dones["harq_only"], dones["wait"]
+    d_base = dones["harq_only"][0]
+    fail = ~conv
+    for pol in ("select_cb5", "wait"):
+        d = dones[pol][0]
+        base = np.where(np.isfinite(d_base), d_base, np.inf)
+        new = np.where(np.isfinite(d), d, np.inf)
+        later = fail & np.isfinite(base) & (new > base + 1e-9)
+        out[pol]["later_pct_of_failed"] = float(100.0 * later.sum() / fail.sum())
+        out[pol]["earlier_pct_of_failed"] = float(100.0 * (fail & (new < base - 1e-9)).sum() / fail.sum())
+        out[pol]["added_delay_ms_max"] = float((new[later] - base[later]).max()) if later.any() else 0.0
     out["first_retx_ms"] = float(d0[u0].min())                      # the first retransmission is decoded
     out["wait_delay_ms"] = float(d1[u1].min() - d0[u0].min())      # waiting moves it by this much
     return out
@@ -201,11 +220,17 @@ def main():
         "LostCutFullWait": (allstats["ai_and_ran"]["residual_after_all_pct"] / allstats["ours"]["residual_after_all_pct"], 1),
         "ThroughputGainLA": (float(np.mean(goodput)), 2),
         "PairingCutBestSixteen": (pf16["ai_and_ran"]["resends_per_100"] / rand["ours"]["resends_per_100"], 1),
+        "NeutralLaterPct": (lat["select_cb5"]["later_pct_of_failed"], 1),
+        "NeutralEarlierPct": (lat["select_cb5"]["earlier_pct_of_failed"], 1),
+        "FullWaitLaterPct": (lat["wait"]["later_pct_of_failed"], 1),
+        "WaitAddedDelayMs": (lat["wait"]["added_delay_ms_max"], 1),
     }
     full = json.load(open(f"results/n3_uma_v3_all{SUFFIX}.json"))
     meta = json.loads(str(np.load(sorted(glob.glob(f"results/{MACRO_SETS[0]}{SUFFIX}/c*.npz"))[0])["meta"]))
     points = sorted(float(k) for k in full["by_point"])
     setup = {"SetupLOneMs": f"{Timing.l1:.1f}", "SetupRecoveryRunMs": f"{Timing.run:.1f}",
+             "SetupRecoveryPathMs": f"{PATH['p50_ms']:.1f}", "SetupRecoveryBoundMs": f"{BOUND_MS:.1f}",
+             "SetupBoundLowMs": f"{BOUND_LOW_MS:.1f}", "SetupBoundHighMs": f"{BOUND_HIGH_MS:.1f}",
              "SetupRecoveryDeadlineMs": f"{Timing.deadline:.1f}", "SetupLeadMs": f"{Timing.lead:.1f}",
              "SetupSlots": f"{full['slots']:,}", "SetupTBs": f"{full['slots'] * full['users']:,}",
              "SetupTbBytes": f"{meta['tb_bytes']:,}", "SetupTransmissions": f"{full['transmissions']}",
@@ -220,7 +245,8 @@ def main():
                          "goodput_vs_conventional_by_snr": dict(zip([f"{x:g}" for x in snr], goodput)),
                          "pairing_retx_per_100": {"conventional_best_of_16_sum_rate": pf16["ai_and_ran"]["resends_per_100"],
                                                   "reverb_random_partner": rand["ours"]["resends_per_100"]},
-                         "added_p99_delay_latency_neutral_ms": added},
+                         "added_p99_delay_latency_neutral_ms": added,
+                         "recovery_path": PATH},
               "checks": checks}
     json.dump(report, open(f"{OUT}/numbers.json", "w"), indent=1, sort_keys=True)
     lines = ["% Generated by airan_recovery/src/analysis/paper_numbers.py from the stored results.  Do not edit.",

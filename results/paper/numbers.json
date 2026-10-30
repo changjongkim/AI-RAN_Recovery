@@ -22,6 +22,12 @@
    "conventional_best_of_16_sum_rate": 14.9609375,
    "reverb_random_partner": 9.091796875
   },
+  "recovery_path": {
+   "p50_ms": 5.7271825,
+   "p99_ms": 5.88383414,
+   "runs": 1082,
+   "timeline_run_ms": 5.9
+  },
   "retx_per_100": {
    "conventional": 20.9619140625,
    "latency_policies": {
@@ -32,11 +38,17 @@
      "tbs": 20480
     },
     "select_cb5": {
+     "added_delay_ms_max": 5.0,
+     "earlier_pct_of_failed": 75.2014652014652,
+     "later_pct_of_failed": 0.43956043956043955,
      "p99_unrecovered_ms": 24.4,
      "retx_per_100": 15.0390625,
      "tbs": 20480
     },
     "wait": {
+     "added_delay_ms_max": 5.0,
+     "earlier_pct_of_failed": 75.2014652014652,
+     "later_pct_of_failed": 17.912087912087912,
      "p99_unrecovered_ms": 29.4,
      "retx_per_100": 9.0283203125,
      "tbs": 20480
@@ -47,12 +59,16 @@
   }
  },
  "setup": {
+  "SetupBoundHighMs": "7.3",
+  "SetupBoundLowMs": "6.3",
   "SetupEbNoHigh": "12",
   "SetupEbNoLow": "6",
   "SetupLOneMs": "1.4",
   "SetupLeadMs": "4.0",
+  "SetupRecoveryBoundMs": "6.8",
   "SetupRecoveryDeadlineMs": "11.0",
-  "SetupRecoveryRunMs": "6.3",
+  "SetupRecoveryPathMs": "5.7",
+  "SetupRecoveryRunMs": "5.9",
   "SetupRetxGapMs": "7.5",
   "SetupSlots": "10,240",
   "SetupTBs": "20,480",
@@ -60,6 +76,7 @@
   "SetupTransmissions": "4"
  },
  "values": {
+  "FullWaitLaterPct": 17.912087912087912,
   "LostCutFullWait": 2.393617021276596,
   "MotAllCbMacro": 48.811126065500225,
   "MotAllCbShare": 81.64835164835165,
@@ -104,7 +121,7 @@
   "MotPNinetyNineWait": 29.4,
   "MotRecoveredMacro": 57.032967032967036,
   "MotRecoveredSmall": 22.701421800947866,
-  "MotRecoveryResultMs": 7.699999999999999,
+  "MotRecoveryResultMs": 7.300000000000001,
   "MotRetxBlockedMacro": 15.927734375,
   "MotRetxBlockedSmall": 5.576171875,
   "MotRetxDirectMacro": 31.8212890625,
@@ -127,9 +144,12 @@
   "MotTrueFailMacro": 3.50341796875,
   "MotTrueFailSmall": 8.821614583333332,
   "MotWaitDelayMs": 5.0,
+  "NeutralEarlierPct": 75.2014652014652,
+  "NeutralLaterPct": 0.43956043956043955,
   "PairingCutBestSixteen": 1.6455424274973147,
   "RetxCutFullWait": 2.3217955651703623,
   "RetxCutNoDelay": 1.3938311688311689,
-  "ThroughputGainLA": 1.3087811915553558
+  "ThroughputGainLA": 1.3087811915553558,
+  "WaitAddedDelayMs": 5.0
  }
 }
