@@ -23,7 +23,13 @@ the number above a baseline bar is its multiple of Reverb.  Every value is read 
                          with only the recoveries that finish on time (results/server_effect<suffix>.json)
   eval_pair_macro, eval_pair_small   retransmissions per 100 TBs with a random partner and with the best partner among
                          4-32 candidates by MMSE sum rate, macro and small cell (N20, U2); dashed: Reverb, random partner
-  eval_effect_legend, eval_delay_legend, eval_gpu_legend   legend strips
+  eval_rx_retx           retransmissions per 100 TBs of a macro cell with each receiver in the L1 and in the recovery path
+                         (paper_numbers.discussion: Reverb, Reverb with the real-time NRx as the L1, the real-time NRx
+                         as the recovery receiver, AI-for-RAN, the conventional receiver)
+  eval_rx_runs           recovery runs per 100 TBs of Reverb with the conventional L1 and with the real-time NRx as the L1
+  eval_rx_bound          failed TBs of the LMMSE receiver that K-best detection, the large NRx and K-best detection with the
+                         true channel decode, four (n5) and eight (n4b_eval_s30_uma) receive antennas, macro cell
+  eval_effect_legend, eval_delay_legend, eval_gpu_legend, eval_rx_legend, eval_rx_bound_legend   legend strips (two rows of Figure 13)
 """
 import json
 import os
@@ -333,6 +339,68 @@ def pairing():
         save(fig, name)
     base.legend("eval_pair_legend", list(SCHEME.items()), width=6.4)
 
+PLACE = {"Reverb": REVERB, "Reverb on AI-for-RAN": "#5b8c5a", "Real-Time NRx as Recovery": "#c99a2e",
+         "AI-for-RAN": RX["Real-Time NRx"], "Conventional": CONV}
+
+
+def receivers():
+    """Section 5.3: the receivers in the L1 and in the recovery path (macro traces, every recovery on time), the recovery
+    runs of each L1, and the share of the failed TBs that the large NRx decodes against the bound with four and eight
+    receive antennas."""
+    import paper_numbers as pn
+    v, raw = pn.discussion()
+    vals = {"Reverb": raw["large_recovery_retx_per_100"], "Reverb on AI-for-RAN": raw["combo_retx_per_100"],
+            "Real-Time NRx as Recovery": raw["small_recovery_retx_per_100"], "AI-for-RAN": raw["ai_for_ran_retx_per_100"],
+            "Conventional": raw["conventional_retx_per_100"]}
+    fig, ax = plt.subplots(figsize=PANEL)
+    bs = ax.bar(range(len(vals)), list(vals.values()), width=0.72, color=[PLACE[k] for k in vals], zorder=3)
+    for i, (k, b) in enumerate(zip(vals, bs)):
+        txt = f"{b.get_height():.1f}" if i == 0 else f"{b.get_height() / vals['Reverb']:.1f}×"
+        ax.text(b.get_x() + b.get_width() / 2, b.get_height() + 0.5, txt, ha="center", va="bottom", fontsize=VALUE - 2.5)
+    ax.set_xticks([])
+    ax.set_ylim(0, 26)
+    ax.set_ylabel("Per 100 TBs")
+    style(ax)
+    save(fig, "eval_rx_retx")
+
+    fig, ax = plt.subplots(figsize=PANEL)
+    runs_ = {"Reverb": raw["recovery_runs_per_100_conv_l1"], "Reverb on AI-for-RAN": raw["recovery_runs_per_100_small_l1"]}
+    xs = [0, 1.4]
+    bs = ax.bar(xs, list(runs_.values()), width=0.62, color=[PLACE[k] for k in runs_], zorder=3)
+    for b in bs:
+        ax.text(b.get_x() + b.get_width() / 2, b.get_height() + 0.4, f"{b.get_height():.1f}", ha="center", va="bottom", fontsize=VALUE - 1)
+    ax.set_xticks(xs)
+    ax.set_xticklabels(["Conventional", "Real-Time\nNRx"], fontsize=10)
+    ax.set_xlabel("L1 Receiver", fontsize=12)
+    ax.set_xlim(-0.6, 2.0)
+    ax.set_ylim(0, 25)
+    ax.set_ylabel("Per 100 TBs")
+    style(ax)
+    save(fig, "eval_rx_runs")
+
+    four = [json.load(open(os.path.join(RES, f"{n}.json"))) for n in runs("n5_uma_v3", "n5_uma_more1", "n5_uma_more2", "n5_uma_more3")]
+    w = np.array([r["fail_pct"]["baseline_lslin_lmmse"] * r["slots"] for r in four])
+    eight = json.load(open(os.path.join(RES, f"n4b_eval_s30_uma{base.SUFFIX}.json")))["recovers_pct_of_conventional_failures"]
+    keys = {"K-Best": "baseline_lmmse_kbest", "Large NRx": "nrx", "True Channel": "baseline_perf_csi_kbest"}
+    series = {k: [float(np.dot(w, [r["recovers_pct_of_conventional_failures"][s] for r in four]) / w.sum()), eight[s]]
+              for k, s in keys.items()}
+    fig, ax = plt.subplots(figsize=PANEL)
+    colors = {"K-Best": RX["K-Best"], "Large NRx": RX["Large NRx"], "True Channel": "white"}
+    out = grouped(ax, ["4 RX", "8 RX"], series, colors, width=0.27)
+    for b in out["True Channel"]:
+        b.set_hatch("////"); b.set_edgecolor(base.BOUND); b.set_linewidth(0.8)
+    for label, bs in out.items():
+        for b in bs:
+            ax.text(b.get_x() + b.get_width() / 2, b.get_height() + 1.5, f"{b.get_height():.0f}", ha="center", va="bottom", fontsize=VALUE - 3)
+    ax.set_ylim(0, 100)
+    ax.set_yticks([0, 50, 100])
+    ax.set_ylabel("Decoded (%)", fontsize=13)
+    style(ax)
+    save(fig, "eval_rx_bound")
+    items = list(PLACE.items())
+    base.legend("eval_rx_legend", items[:3], width=8.4)
+    base.legend("eval_rx_bound_legend", items[3:] + [("K-Best", RX["K-Best"]), ("Large NRx", RX["Large NRx"])], width=8.2)
+
 
 AI_RATES = {"No AI": "#c4561d", "AI 4 Requests/s per GPU": "#e8955a", "AI 8 Requests/s per GPU": "#f3c9a4"}
 
@@ -488,3 +556,4 @@ if __name__ == "__main__":
     ai()
     interference()
     sensitivity()
+    receivers()

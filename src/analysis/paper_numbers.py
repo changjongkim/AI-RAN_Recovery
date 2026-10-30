@@ -123,7 +123,12 @@ def motivation(lat):
         est = float(np.dot(wt, [r["fail_pct"]["baseline_lslin_lmmse"] for r in rs]) / wt.sum())
         true = float(np.dot(wt, [r["fail_pct"]["baseline_perf_csi_kbest"] for r in rs]) / wt.sum())
         v[f"MotEstFail{tag}"] = (est, 1); v[f"MotTrueFail{tag}"] = (true, 1)
-        v[f"MotEstShare{tag}"] = (100 * (est - true) / est, 0)
+        if all("baseline_lmmse_kbest" in r["fail_pct"] for r in rs):
+            # the share of the channel estimate with the detector fixed: K-best detection with the LMMSE estimate
+            # against K-best detection with the true channel (the small-cell run has no K-best with the estimate)
+            kbest = float(np.dot(wt, [r["fail_pct"]["baseline_lmmse_kbest"] for r in rs]) / wt.sum())
+            v[f"MotKbestFail{tag}"] = (kbest, 1)
+            v[f"MotEstShare{tag}"] = (100 * (kbest - true) / kbest, 0)
     # median delay spread of the 3GPP TR 38.901 models without a direct path at 3.5 GHz (Table 7.5-6: lgDS =
     # a log10(b + fc) + c; UMa uses fc = 6 GHz below 6 GHz), the parameters of the channel generator (Sionna)
     v["MotDelaySpreadMacro"] = (1e9 * 10 ** (-0.204 * np.log10(6.0) - 6.28), 0)
@@ -528,6 +533,7 @@ def discussion():
         return float(100.0 * (tx - 1).sum() / n), float(runs.mean())
 
     conv, small, large = g["conv_t0"], g["small_c0"], g["nrx_c0"]
+    conventional, _ = run(conv, None, "sep_c", None)
     ai, _ = run(small, None, "small_c", None)
     small_rec, _ = run(conv, small, "sep_c", "small_c")
     large_rec, runs_conv = run(conv, large, "sep_c", "nrx_c")
@@ -536,8 +542,21 @@ def discussion():
          "DiscLargeOfSmallFailPct": (float(100.0 * (large & ~small).sum() / (~small).sum()), 0),
          "DiscSmallOnlyPct": (float(100.0 * (small & ~large & ~conv).sum() / (~conv).sum()), 2),
          "DiscRunsConv": (runs_conv, 3), "DiscRunsSmall": (runs_small, 3), "DiscRunsFewer": (runs_conv / runs_small, 1)}
-    raw = {"ai_for_ran_retx_per_100": ai, "large_recovery_retx_per_100": large_rec, "combo_retx_per_100": combo}
+    raw = {"ai_for_ran_retx_per_100": ai, "large_recovery_retx_per_100": large_rec, "combo_retx_per_100": combo,
+           "conventional_retx_per_100": conventional, "small_recovery_retx_per_100": small_rec,
+           "recovery_runs_per_100_conv_l1": 100.0 * runs_conv, "recovery_runs_per_100_small_l1": 100.0 * runs_small}
     return v, raw
+
+
+def receivers(disc):
+    """Macros of Section 5.3: recovery runs per 100 TBs with the conventional L1 and with the real-time NRx as the L1
+    (from discussion()), and the failed TBs of the LMMSE receiver that each receiver decodes with four receive antennas
+    (n5, as Figure 5(a)) and eight (n4b_eval_s30_uma: the large NRx fine-tuned for eight antennas, macro cell), with
+    their share of the bound (K-best detection with the true channel)."""
+    v = {"EvalRxRunsConv": (100.0 * disc["DiscRunsConv"][0], 1), "EvalRxRunsSmall": (100.0 * disc["DiscRunsSmall"][0], 1)}
+    e = json.load(open(f"results/n4b_eval_s30_uma{SUFFIX}.json"))["recovers_pct_of_conventional_failures"]
+    v["EvalEightRxNrx"], v["EvalEightRxKbest"], v["EvalEightRxBound"] = (e["nrx"], 0), (e["baseline_lmmse_kbest"], 0), (e["baseline_perf_csi_kbest"], 0)
+    return v
 
 
 def main():
@@ -560,9 +579,14 @@ def main():
     disc, disc_raw = discussion()
     checks["discussion_ai_for_ran_equals_harq_stats"] = bool(abs(disc_raw["ai_for_ran_retx_per_100"] - allstats["ai_for_ran"]["resends_per_100"]) < 1e-9)
     checks["discussion_large_recovery_equals_full_wait"] = bool(abs(disc_raw["large_recovery_retx_per_100"] - ours_retx) < 1e-9)
+    mot = motivation(lat)
+    four = mot["MotRxLargeNrx"][0] / mot["MotRxBound"][0]
+    e8 = json.load(open(f"results/n4b_eval_s30_uma{SUFFIX}.json"))["recovers_pct_of_conventional_failures"]
+    eight = e8["nrx"] / e8["baseline_perf_csi_kbest"]
+    disc["EvalBoundShareFour"], disc["EvalBoundShareEight"] = (100.0 * four, 0), (100.0 * eight, 0)
     checks["discussion_combination_as_on_the_conventional_l1"] = bool(abs(disc_raw["combo_retx_per_100"] - ours_retx) < 0.05)
     checks["discussion_large_decodes_every_first_tx_tb_the_real_time_nrx_decodes"] = bool(disc["DiscSmallOnlyPct"][0] == 0.0)
-    values = {**motivation(lat), **evaluation(lat), **evaluation_more(), **disc,
+    values = {**motivation(lat), **evaluation(lat), **evaluation_more(), **disc, **receivers(disc),
         "RetxCutFullWait": (conv_retx / ours_retx, 1),
         "RetxCutNoDelay": (lat["harq_only"]["retx_per_100"] / lat["select_cb5"]["retx_per_100"], 1),
         "LostCutFullWait": (allstats["ai_and_ran"]["residual_after_all_pct"] / allstats["ours"]["residual_after_all_pct"], 1),
