@@ -5,7 +5,7 @@
 % code blocks and wait for their recovery, B failed all ten and gets its grant at once; (3) Receiver Selector: cell 2 has
 % interference above theta and uses the NRx trained with interference, cell 1 the NRx trained without it (published);
 % (4) Recovery Scheduler: one recovery per GPU, rejection after D - r; (5) each GPU decodes its TB again from the stored
-% samples between the L1 slots; (6) the result goes to the L2 scheduler, which holds the grants of A and C, schedules the
+% samples between the L1 slots; (6) the result goes to the L2 scheduler, which waits with the grants of A and C, schedules the
 % retransmission of B in the next uplink slot, and delivers A and C once decoded.  No measured value appears.
 \documentclass[border=1pt]{standalone}
 \input{reverb_style}

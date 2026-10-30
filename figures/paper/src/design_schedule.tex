@@ -2,7 +2,7 @@
 % TB 3 from slot 1 and TB 4 from slot 2.  Each TB can start its recovery from its L1 result until its latest start time
 % D - r and must finish by its deadline D (11.0 ms after its slot; the run time is drawn as the 4.3 ms of the network
 % alone to keep the example short).  In arrival order without rejection, TB 3 starts after its latest start, runs past
-% its deadline and holds the GPU, so TB 4 also ends past its deadline: 2 of 4 TBs are recovered in time.  Reverb rejects
+% its deadline and occupies the GPU, so TB 4 also ends past its deadline: 2 of 4 TBs are recovered in time.  Reverb rejects
 % TB 3 at its latest start (its grant goes out at once) and recovers TB 4: 3 of 4 in time.  With the same deadline rule
 % in every cell, the deadline order equals the arrival order; the difference is the rejection.  No value is printed.
 \documentclass[border=1pt]{standalone}
@@ -27,7 +27,7 @@
     \newcommand{\job}[3]{% start, lane y, label
       \node[cl, fill=nrxc, minimum width={0.585*\r cm - 0.04cm}, minimum height=0.3cm, anchor=west] at (#1 + 0.035, #2) {#3};}
     % arrival order without rejection
-    \node[key, font=\tabsize\itshape, anchor=west] at (10.4, -0.88) {TB 3 starts after its latest start and holds the GPU};
+    \node[key, font=\tabsize\itshape, anchor=west] at (10.0, -0.88) {TB 3 starts after its latest start and occupies the GPU};
     \job{1.9}{-1.2}{1} \job{6.2}{-1.2}{2} \job{10.5}{-1.2}{3} \job{14.8}{-1.2}{}
     \fill[pattern=north east lines, pattern color=dred] (13.5, -1.35) rectangle (14.8, -1.05);
     \fill[pattern=north east lines, pattern color=dred] (16.0, -1.35) rectangle (19.1, -1.05);
