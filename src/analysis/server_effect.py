@@ -228,6 +228,8 @@ def effect(avail):
     pts_la = tab[ladder[0]]["point"]
     strat = {}
     for g, c in (("four", 8), ("four", 16), ("one", 2)):
+        if f"{g}_{c}" not in rows:
+            continue
         rw = rows[f"{g}_{c}"]
         by = {float(e): x for e, x in avail[(g, c)]["availability_by_esno"].items()}
         scale = lambda a_m: (lambda pv: np.array([min(1.0, a_m * by.get(float(q), rw["availability"]) / rw["availability"]) for q in pv]))

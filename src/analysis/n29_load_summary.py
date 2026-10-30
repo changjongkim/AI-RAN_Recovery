@@ -20,12 +20,25 @@ import server_effect as se  # noqa: E402
 N16 = pn.N16
 
 
-def late_l1(tag, cells):
+def late_l1(tag, cells, steady=True):
+    """Slots whose L1 result comes later than pn.L1_DEADLINE_MS after the slot, in percent.  steady: over the periods
+    after the first and before the last skip_periods (the end of a run can delay the L1 of every cell at once; one
+    48-cell run had 64 of its 75 late slots in its last 12 periods); else the late TBs that the runtime counts."""
     late = tbs = 0
-    for f in glob.glob(f"{se.RAW}/rec16{tag}s*_c{cells}_*_j*.json"):
-        a = json.load(open(f))["all"]
-        late += a.get("late_tbs", 0)
-        tbs += a["tbs"]
+    for f in glob.glob(f"{se.RAW}/rec16{tag}s*_c{cells}_*_none_j*.json"):
+        d = json.load(open(f))
+        if not steady:
+            late += d["all"].get("late_tbs", 0)
+            tbs += d["all"]["tbs"]
+            continue
+        skip, periods = int(d["config"]["skip_periods"]), int(d["config"]["periods"])
+        for cf in glob.glob(f"{f[:-5]}_work/conv*.json"):
+            c = json.load(open(cf))
+            col = {k: i for i, k in enumerate(c["columns"])}
+            for r in c["records"]:
+                if skip <= int(r[col["period"]]) < periods - skip:
+                    tbs += 1
+                    late += int(r[col["done_ns"]]) - int(r[col["release_ns"]]) > pn.L1_DEADLINE_MS * 1e6
     return 100.0 * late / max(1, tbs)
 
 

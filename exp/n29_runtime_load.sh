@@ -32,7 +32,8 @@ deadline=${DEADLINE:-11.5}; data=${N16_DATA:-n16_uma}
 [ -z "${NRX_FLAGS:-}" ] || tagpol=${tagpol}$(echo "$NRX_FLAGS" | tr -cd 'a-z0-9')
 lanes=${LANES:-1}; [ "$lanes" = 1 ] || tagpol=${tagpol}l$lanes
 act=${ACT:?ACT}; mode=${ACT_MODE:-bernoulli}
-tagpol=${tagpol}a$(python3 -c "print(round(100*$act))")${mode:0:1}
+case $mode in bernoulli) m=b ;; bursty) m=u ;; *) m=${mode:0:1} ;; esac   # bursty and bernoulli share the first letter
+tagpol=${tagpol}a$(python3 -c "print(round(100*$act))")$m
 [ -s $REC/data/$data/nv_mu2_meta.json ] || { echo "no dataset (exp/n16_data.sh)"; exit 1; }
 matrix=""; for c in $cells; do matrix="$matrix c$c:$nrx:none"; done
 cd /pscratch/sd/s/sgkim/kcj/airan_cloudlab || exit 1
