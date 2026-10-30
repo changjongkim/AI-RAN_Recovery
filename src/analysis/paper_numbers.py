@@ -367,6 +367,71 @@ def evaluation(lat):
     return v
 
 
+
+def evaluation_more():
+    """Macros of Sections 5.7-5.9: AI inference on the same GPUs (results/n22_summary.json against the runs without AI),
+    inter-cell interference (the runs of figures/paper/make_eval_figures.py ICI_RUNS that have finished), and the
+    sensitivity to resource blocks (N21) and to antennas and users (N5, U1)."""
+    v = {}
+    n22 = json.load(open("results/n22_summary.json"))
+    rows = n22["rows"]
+    v["EvalAiSeconds"] = (60 if n22["runs"] == "60 s" else 6, 0)
+    rec, _ = runtime_rows()
+    keep = []
+    for g, cells in ((4, (8, 16, 24)), (1, (1, 2, 4))):
+        base = rec[f"allb68{'g4' if g == 4 else ''}{N16}"]
+        for r in (4, 8):
+            keep += [rows[f"all_g{g}_r{r}_c{c}"]["recovered_pct"] / base[c] for c in cells]
+    v["EvalAiKeepLow"], v["EvalAiKeepHigh"] = (100.0 * min(keep), 0), (100.0 * max(keep), 0)
+    v["EvalAiRecFourMid"] = (rows["all_g4_r4_c16"]["recovered_pct"], 1)
+    v["EvalAiRecFourMidEight"] = (rows["all_g4_r8_c16"]["recovered_pct"], 1)
+    v["EvalAiRecFourMidNone"] = (rec[f"allb68g4{N16}"][16], 1)
+    allrec = [r for r in rows.values() if r["policy"] == "all"]
+    v["EvalAiLateMax"] = (max(r["late_l1_pct"] for r in allrec), 2)
+    v["EvalAiLateOffMax"] = (max(r["late_l1_pct"] for r in rows.values() if r["policy"] == "off"), 2)
+    v["EvalAiSloLow"] = (min(r["ai_within_slo_pct"] for r in allrec), 1)
+    v["EvalAiSloLowFour"] = (min(rows[f"all_g4_r4_c{c}"]["ai_within_slo_pct"] for c in (8, 16, 24)), 1)
+    v["EvalAiSloOffLow"] = (min(r["ai_within_slo_pct"] for r in rows.values() if r["policy"] == "off"), 1)
+    v["EvalAiRejectMax"] = (max(r["ai_rejected_pct"] for r in allrec), 1)
+    v["EvalAiTtftOffMax"] = (max(r["ai_ttft_p99_ms"] for r in rows.values() if r["policy"] == "off"), 0)
+    v["EvalAiTtftMax"] = (max(r["ai_ttft_p99_ms"] for r in allrec), 0)
+    # inter-cell interference: macro and small cells, 10 dB (two users of neighbor cells) and 20 dB with two users
+    def load(n):
+        f = f"results/{n}{SUFFIX}.json"
+        return json.load(open(f))["all"] if os.path.exists(f) else None
+    for cell, pre10, pre20 in (("Macro", "ici_uma_inr10", "i1_uma_k2_inr20"), ("Small", "ici_umi_inr10", "i1_umi_k2_inr20")):
+        for cond, pre in (("Ten", pre10), ("Twenty", pre20)):
+            t, p = load(pre + "_iciaware"), load(pre)
+            if t is None:
+                continue
+            r = lambda d, k: d[k]["resends_per_100"]
+            v[f"EvalIci{cell}{cond}Conv"] = (r(t, "ai_and_ran"), 1)
+            v[f"EvalIci{cell}{cond}Trained"] = (r(t, "ours"), 1)
+            v[f"EvalIci{cell}{cond}Irc"] = (r(t, "ai_and_ran_irc"), 1)
+            v[f"EvalIci{cell}{cond}OursIrc"] = (r(t, "ours_irc"), 1)
+            v[f"EvalIci{cell}{cond}Cut"] = (r(t, "ai_and_ran") / r(t, "ours"), 1)
+            v[f"EvalIci{cell}{cond}CutIrc"] = (r(t, "ai_and_ran_irc") / r(t, "ours_irc"), 1)
+            v[f"EvalIci{cell}{cond}Ai"] = (r(t, "ai_for_ran"), 1)
+            if p is not None:
+                v[f"EvalIci{cell}{cond}Pub"] = (r(p, "ours"), 1)
+                v[f"EvalIci{cell}{cond}CutPub"] = (r(p, "ai_and_ran") / r(p, "ours"), 1)
+    # resource blocks: 273 (macro traces), 106 and 52 PRBs, users at 3 km/h
+    for name, n in (("Full", ["n3_uma_v3_cb", "n3_uma_v3_more"]), ("Half", ["n21_uma_p106_v3"]), ("Fifth", ["n21_uma_p52_v3"])):
+        c, o, a = stats(n), stats(n, "ours"), stats(n, "ai_for_ran")
+        v[f"EvalPrb{name}Conv"] = (c["resends_per_100"], 1)
+        v[f"EvalPrb{name}Reverb"] = (o["resends_per_100"], 1)
+        v[f"EvalPrb{name}Cut"] = (c["resends_per_100"] / o["resends_per_100"], 1)
+        v[f"EvalPrb{name}CutAi"] = (a["resends_per_100"] / o["resends_per_100"], 1)
+    # antennas and users: failed TBs of the LMMSE receiver decoded by K-best with the LMMSE estimate and the true channel
+    for name, sets in (("FourTwo", ["n5_uma_v3", "n5_uma_more1", "n5_uma_more2", "n5_uma_more3"]), ("FourFour", ["u1_uma_r4_u4"]),
+                       ("EightFour", ["u1_uma_r8_u4_b1"]), ("SixteenTwo", ["u1_uma_r16_u2_b1"])):
+        rs = [json.load(open(f"results/{n}{SUFFIX}.json")) for n in sets]
+        w = np.array([r["fail_pct"]["baseline_lslin_lmmse"] * r["slots"] for r in rs])
+        for lab, key in (("Kbest", "baseline_lmmse_kbest"), ("True", "baseline_perf_csi_kbest")):
+            v[f"EvalUsers{name}{lab}"] = (float(np.dot(w, [r["recovers_pct_of_conventional_failures"][key] for r in rs]) / w.sum()), 0)
+        v[f"EvalUsers{name}Fail"] = (float(np.dot(np.array([r["slots"] for r in rs], float), [r["fail_pct"]["baseline_lslin_lmmse"] for r in rs]) / sum(r["slots"] for r in rs)), 1)
+    return v
+
 def main():
     allstats = json.load(open(f"results/n3_uma_v3_all{SUFFIX}.json"))["all"]
     lat = latency_policies()
@@ -384,7 +449,7 @@ def main():
         "every_wait_adds_the_same_delay": bool(np.isfinite(lat["wait_delay_ms"])),
         "latency_sim_lost_equal_for_both_rules": abs(lat["wait"]["lost_pct"] - lat["select_cb5"]["lost_pct"]) < 1e-9,
     }
-    values = {**motivation(lat), **evaluation(lat),
+    values = {**motivation(lat), **evaluation(lat), **evaluation_more(),
         "RetxCutFullWait": (conv_retx / ours_retx, 1),
         "RetxCutNoDelay": (lat["harq_only"]["retx_per_100"] / lat["select_cb5"]["retx_per_100"], 1),
         "LostCutFullWait": (allstats["ai_and_ran"]["residual_after_all_pct"] / allstats["ours"]["residual_after_all_pct"], 1),

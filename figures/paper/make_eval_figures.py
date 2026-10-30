@@ -334,9 +334,157 @@ def pairing():
     base.legend("eval_pair_legend", list(SCHEME.items()), width=6.4)
 
 
+AI_RATES = {"No AI": "#c4561d", "AI 4 Requests/s per GPU": "#e8955a", "AI 8 Requests/s per GPU": "#f3c9a4"}
+
+
+def ai():
+    """N22: failed TBs recovered with AI inference on the same GPUs (static MPS share 60%) against the runs without AI,
+    four GPUs and one GPU, and the AI requests within the SLO with and without recovery (results/n22_summary.json)."""
+    n22 = json.load(open(os.path.join(RES, "n22_summary.json")))["rows"]
+    rec, _ = runtime_rows()
+    for name, g, cells in (("eval_ai_four", 4, [8, 16, 24]), ("eval_ai_one", 1, [1, 2, 4])):
+        fig, ax = plt.subplots(figsize=PANEL4)
+        base_tag = f"allb68{'g4' if g == 4 else ''}{N16}"
+        ax.plot(cells, [rec[base_tag][c] for c in cells], color=AI_RATES["No AI"], linewidth=2.6, marker="o", markersize=5)
+        for label, rate in (("AI 4 Requests/s per GPU", 4), ("AI 8 Requests/s per GPU", 8)):
+            ax.plot(cells, [n22[f"all_g{g}_r{rate}_c{c}"]["recovered_pct"] for c in cells], color=AI_RATES[label],
+                    linewidth=2.2, marker="o", markersize=5)
+        ax.set_xticks(cells)
+        ax.set_xlim(cells[0] - 0.08 * (cells[-1] - cells[0]), cells[-1] + 0.08 * (cells[-1] - cells[0]))
+        ax.set_ylim(0, 50)
+        ax.set_yticks([0, 25, 50])
+        ax.set_xlabel("Cells per Server")
+        ax.set_ylabel("Recovered (%)", fontsize=13)
+        style(ax, grid="both")
+        save(fig, name)
+    fig, ax = plt.subplots(figsize=PANEL4)
+    cells = [8, 16, 24]
+    for label, rate in (("AI 4 Requests/s per GPU", 4), ("AI 8 Requests/s per GPU", 8)):
+        for pol, ls in (("all", "-"), ("off", (0, (4, 3)))):
+            ax.plot(cells, [n22[f"{pol}_g4_r{rate}_c{c}"]["ai_within_slo_pct"] for c in cells], color=AI_RATES[label],
+                    linewidth=2.2, linestyle=ls, marker="o" if pol == "all" else None, markersize=5)
+    ax.set_xticks(cells)
+    ax.set_xlim(6.7, 25.3)
+    ax.set_ylim(80, 101)
+    ax.set_yticks([80, 90, 100])
+    ax.set_xlabel("Cells per Server")
+    ax.set_ylabel("Within SLO (%)", fontsize=13)
+    style(ax, grid="both")
+    save(fig, "eval_ai_slo")
+    base.legend("eval_ai_legend", list(AI_RATES.items()), width=9.6)
+
+
+ICI = {   # bar label: (color, run structure)
+    "Reverb, NRx Trained with Interference": REVERB,
+    "Reverb, NRx Trained without Interference": "#f0a46b",
+    "Conventional": CONV,
+    "Reverb on MMSE-IRC": "#7a2f0c",
+    "MMSE-IRC": "#9fa8b3",
+}
+ICI_RUNS = {"Macro Cell": [("10 dB", "ici_uma_inr10"), ("20 dB,\n2 Users", "i1_uma_k2_inr20"), ("20 dB,\n4 Users", "i1_uma_k4_inr20")],
+            "Small Cell": [("10 dB", "ici_umi_inr10"), ("20 dB,\n2 Users", "i1_umi_k2_inr20"), ("20 dB,\n4 Users", "i1_umi_k4_inr20")]}
+
+
+def ici_values(run):
+    """Retransmissions per 100 TBs of the five bars of a condition, None for a run that has not finished; the runs of the
+    NRx trained with interference carry the same conventional and MMSE-IRC receivers."""
+    trained, published = (os.path.join(RES, f"{run}{x}{base.SUFFIX}.json") for x in ("_iciaware", ""))
+    t = json.load(open(trained))["all"] if os.path.exists(trained) else None
+    p = json.load(open(published))["all"] if os.path.exists(published) else None
+    ref = t or p
+    if ref is None:
+        return None
+    val = lambda d, k: d[k]["resends_per_100"] if d and k in d else None
+    return {"Reverb, NRx Trained with Interference": val(t, "ours"), "Reverb, NRx Trained without Interference": val(p, "ours"),
+            "Conventional": val(ref, "ai_and_ran"), "Reverb on MMSE-IRC": val(t, "ours_irc"), "MMSE-IRC": val(ref, "ai_and_ran_irc")}
+
+
+def interference():
+    for (cell, conds), name in zip(ICI_RUNS.items(), ("eval_ici_macro", "eval_ici_small")):
+        groups = [(g, ici_values(r)) for g, r in conds if ici_values(r) and ici_values(r)["Reverb, NRx Trained with Interference"]]
+        fig, ax = plt.subplots(figsize=PANEL)
+        n, width = len(ICI), 0.16
+        top = 36
+        for gi, (g, v) in enumerate(groups):
+            for i, label in enumerate(ICI):
+                if v[label] is None:
+                    continue
+                x = gi + (i - (n - 1) / 2) * width
+                ax.bar(x, v[label], width=width * 0.92, color=ICI[label], zorder=3)
+                ref = {"Conventional": "Reverb, NRx Trained with Interference", "MMSE-IRC": "Reverb on MMSE-IRC"}.get(label)
+                if ref and v[ref]:
+                    ax.text(x, v[label] + 0.6, f"{v[label] / v[ref]:.1f}×", ha="center", va="bottom", fontsize=VALUE - 3.5)
+        ax.set_xticks(range(len(groups)))
+        ax.set_xticklabels([g for g, _ in groups])
+        ax.set_xlim(-0.6, len(groups) - 0.4)
+        ax.set_ylim(0, top)
+        ax.set_ylabel("Per 100 TBs")
+        ax.tick_params(axis="x", labelsize=10.5)
+        style(ax)
+        save(fig, name)
+    fig = plt.figure(figsize=(10.4, 0.75))     # two rows: the five labels do not fit in one
+    handles = [plt.Rectangle((0, 0), 1, 1, color=c) for c in ICI.values()]
+    fig.legend(handles, list(ICI), loc="center", ncol=3, fontsize=LEGEND, borderpad=0.15, columnspacing=1.6,
+               handlelength=1.3, frameon=False)
+    for ext, kw in (("pdf", {"metadata": {"CreationDate": None, "ModDate": None}}),
+                    ("png", {"dpi": 220, "metadata": {"Software": None}})):
+        fig.savefig(os.path.join(base.OUT, f"eval_ici_legend.{ext}"), **kw)
+    plt.close(fig)
+    print("wrote eval_ici_legend")
+
+
+SENS_RX = {"K-Best, LMMSE Estimate": "#a39f8f", "K-Best, True Channel": "#8c897b"}
+
+
+def sensitivity():
+    """Retransmissions per 100 TBs with 273, 106 and 52 resource blocks (N3, N21), and the failed TBs of the LMMSE
+    receiver that K-best detection decodes with the LMMSE estimate and with the true channel, by receive antennas and
+    users (N5 with four seeds for 4 antennas and 2 users, U1 for the others)."""
+    groups = [("273\nPRBs", ("n3_uma_v3_cb", "n3_uma_v3_more")), ("106\nPRBs", ("n21_uma_p106_v3",)), ("52\nPRBs", ("n21_uma_p52_v3",))]
+    st = {g: {s: merged(existing(runs(*n)), k) for s, k in (("Reverb", "ours"), ("AI-for-RAN", "ai_for_ran"),
+                                                         ("Conventional", "ai_and_ran"))} for g, n in groups}
+    fig, ax = plt.subplots(figsize=PANEL)
+    series = {s: [st[g][s]["resends_per_100"] for g, _ in groups] for s in SCHEME}
+    bs = grouped(ax, [g for g, _ in groups], series, SCHEME)
+    multiples(ax, bs, series["Reverb"], 36)
+    ax.set_ylim(0, 36)
+    ax.set_ylabel("Per 100 TBs")
+    ax.tick_params(axis="x", labelsize=10.5)
+    style(ax)
+    save(fig, "eval_prb")
+    conf = [("4 RX,\n2 Users", ("n5_uma_v3", "n5_uma_more1", "n5_uma_more2", "n5_uma_more3")), ("4 RX,\n4 Users", ("u1_uma_r4_u4",)),
+            ("8 RX,\n4 Users", ("u1_uma_r8_u4_b1",)), ("16 RX,\n2 Users", ("u1_uma_r16_u2_b1",))]
+    vals = {k: [] for k in SENS_RX}
+    shown = []
+    for g, names in conf:
+        rs = [json.load(open(os.path.join(RES, f"{n}.json"))) for n in existing(runs(*names))]
+        if not rs:
+            continue
+        w = np.array([r["fail_pct"]["baseline_lslin_lmmse"] * r["slots"] for r in rs])
+        for label, key in zip(SENS_RX, ("baseline_lmmse_kbest", "baseline_perf_csi_kbest")):
+            vals[label].append(float(np.dot(w, [r["recovers_pct_of_conventional_failures"][key] for r in rs]) / w.sum()))
+        shown.append(g)
+    fig, ax = plt.subplots(figsize=PANEL)
+    bs = grouped(ax, shown, vals, SENS_RX, width=0.36)
+    for label, bars in bs.items():
+        for b in bars:
+            ax.text(b.get_x() + b.get_width() / 2, b.get_height() + 1.0, f"{b.get_height():.0f}", ha="center", va="bottom",
+                    fontsize=VALUE - 3)
+    ax.set_ylim(0, 110)
+    ax.set_yticks([0, 50, 100])
+    ax.set_ylabel("Decoded (%)", fontsize=13)
+    ax.tick_params(axis="x", labelsize=10.5)
+    style(ax)
+    save(fig, "eval_users")
+    base.legend("eval_sens_legend", list(SCHEME.items()) + list(SENS_RX.items()), width=10.4)
+
+
 if __name__ == "__main__":
     os.chdir(base.ROOT)      # paper_numbers.py reads results/ and src/sim relative to the repository root
     effect()
     delay()
     pairing()
     gpu()
+    ai()
+    interference()
+    sensitivity()
