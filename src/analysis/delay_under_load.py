@@ -17,7 +17,8 @@ beyond L1 + run.  The *_cut variants reject at the L1 result with the median run
 (admission_replay.py, the replay of the real-time queue) and let a slot wait only for a recovery predicted to end by CUT_MS,
 the decode time of the first retransmission (U_s + slot + L1): every other slot receives its grant at the L1 result,
 and its recovery is not counted (a lower bound); a slot admitted but rejected at its latest start still receives its
-grant at the latest start.
+grant at the latest start.  at_arrival_cut_runtime takes the same split from the slot runtime with the rejection at
+the L1 result (N30, n30_summary.py: the predicted end the controller recorded and the measured end), when those runs exist.
 usage: RESULT_SUFFIX=_f35 N16_SUFFIX=d110_f35 delay_under_load.py [OUT.json]       (from the repository root)"""
 import glob
 import json
@@ -28,6 +29,7 @@ import numpy as np
 
 sys.path[:0] = ["src", "src/sim", "src/analysis"]
 import admission_replay as ar  # noqa: E402
+import n30_summary  # noqa: E402
 import paper_numbers as pn  # noqa: E402
 import server_effect as se  # noqa: E402
 from harq_latency import SLOT, simulate, uplink_times  # noqa: E402
@@ -73,7 +75,7 @@ def main():
     cut_ms = float(ul[np.searchsorted(ul, pn.Timing.l1 + pn.Timing.lead)]) + SLOT + pn.Timing.l1   # first retransmission decoded
 
     def run_cut(policy, share, candidate, w):
-        wait_p, late_p = share * w["wait_share_of_on_time"], w["late_per_failed"]
+        wait_p, late_p = share * w.get("share_scale", 1.0) * w["wait_share_of_on_time"], w["late_per_failed"]
         g = np.random.default_rng(13)
         rej, at, rec_at = [], [], []
         for t in range(total):
@@ -116,19 +118,24 @@ def main():
                 x = c * runs_per_tb / f14
                 near = min(measured, key=lambda m: abs(m - x))
                 if (gpus, near) not in cache:
-                    cache[(gpus, near)] = (completion_times(tags[gpus], near), ar.wait_split(tags[gpus], near, cut_ms))
-                times, split = cache[(gpus, near)]
+                    cache[(gpus, near)] = (completion_times(tags[gpus], near), ar.wait_split(tags[gpus], near, cut_ms),
+                                           n30_summary.wait_split(gpus, near, cut_ms))
+                times, split, split_rt = cache[(gpus, near)]
                 row[rule] = {"share": share, "times_from_cells": near, "end_p50_ms": float(np.median(times)),
                              **{k: run(pol, share, candidate, t) for k, t in reject_times.items()},
                              **{k + "_measured": run(pol, share, candidate, t, times) for k, t in reject_times.items()},
                              "at_arrival_cut": run_cut(pol, share, candidate, split)}
+                if split_rt is not None and len(split_rt["wait_end_ms"]):
+                    row[rule]["at_arrival_cut_runtime"] = run_cut(pol, share, candidate, split_rt)
             out[f"{gpus}_{c}"] = row
             print(f"{gpus:4s} {c:2d} cells | " + " | ".join(
                 f"{rule} share {v['share']:.2f}: latest {v['at_latest_start']['min_diff_pp']:+.2f} pp, "
                 f"arrival {v['at_arrival']['min_diff_pp']:+.2f} pp, measured times: latest "
                 f"{v['at_latest_start_measured']['min_diff_pp']:+.2f} / arrival {v['at_arrival_measured']['min_diff_pp']:+.2f} / "
-                f"arrival+wait only if predicted by {cut_ms:.1f} ms {v['at_arrival_cut']['min_diff_pp']:+.2f} pp, "
-                f"cut {v['at_arrival']['retx_cut']:.2f}x / {v['at_arrival_cut']['retx_cut']:.2f}x"
+                f"arrival+wait only if predicted by {cut_ms:.1f} ms {v['at_arrival_cut']['min_diff_pp']:+.2f} pp"
+                + (f" (runtime {v['at_arrival_cut_runtime']['min_diff_pp']:+.2f} pp, cut "
+                   f"{v['at_arrival_cut_runtime']['retx_cut']:.2f}x)" if "at_arrival_cut_runtime" in v else "")
+                + f", cut {v['at_arrival']['retx_cut']:.2f}x / {v['at_arrival_cut']['retx_cut']:.2f}x"
                 for rule, v in row.items()))
     path = sys.argv[1] if len(sys.argv) > 1 else f"results/delay_under_load{pn.SUFFIX}.json"
     json.dump(out, open(path, "w"), indent=1, sort_keys=True)
