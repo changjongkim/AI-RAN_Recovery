@@ -21,6 +21,8 @@ the number above a baseline bar is its multiple of Reverb.  Every value is read 
   eval_gpu_deadline      failed TBs recovered by the recovery deadline, one GPU with 4 cells and four GPUs with 16 cells
   eval_gpu_effect, eval_gpu_goodput   retransmission reduction and throughput under link adaptation by cells per server
                          with only the recoveries that finish on time (results/server_effect<suffix>.json)
+  eval_pair_macro, eval_pair_small   retransmissions per 100 TBs with a random partner and with the best partner among
+                         4-32 candidates by MMSE sum rate, macro and small cell (N20, U2); dashed: Reverb, random partner
   eval_effect_legend, eval_delay_legend, eval_gpu_legend   legend strips
 """
 import json
@@ -299,8 +301,37 @@ def gpu():
     print("wrote eval_gpu_legend")
 
 
+PAIR = {"Macro Cell": "p2b_uma_u", "Small Cell": "p2b_u"}   # random partner (8 users) and the best partner by sum rate
+PAIR_CANDIDATES = [4, 8, 16, 32]
+
+
+def pairing():
+    """Retransmissions per 100 TBs with a random partner and with the best partner among 4-32 candidates by MMSE sum rate
+    (N20/U2): Reverb, AI-for-RAN and the conventional receiver; the dashed line is Reverb with a random partner."""
+    for (cell, pre), name in zip(PAIR.items(), ("eval_pair_macro", "eval_pair_small")):
+        groups, sets = ["Random"], [f"{pre}8_random"]
+        for k in PAIR_CANDIDATES:
+            if existing(runs(f"{pre}{k}_pf")):
+                groups.append(f"Best\nof {k}")
+                sets.append(f"{pre}{k}_pf")
+        series = {s: [merged(runs(n), k)["resends_per_100"] for n in sets]
+                  for s, k in (("Reverb", "ours"), ("AI-for-RAN", "ai_for_ran"), ("Conventional", "ai_and_ran"))}
+        fig, ax = plt.subplots(figsize=PANEL)
+        bs = grouped(ax, groups, series, SCHEME, width=0.27)
+        top = 24 if cell == "Macro Cell" else 20
+        multiples(ax, bs, series["Reverb"], top)
+        ax.axhline(series["Reverb"][0], color=REVERB, linewidth=1.4, linestyle=(0, (4, 3)), zorder=2)
+        ax.set_ylim(0, top)
+        ax.set_ylabel("Per 100 TBs")
+        ax.tick_params(axis="x", labelsize=10.5)
+        style(ax)
+        save(fig, name)
+    base.legend("eval_pair_legend", list(SCHEME.items()), width=6.4)
+
+
 if __name__ == "__main__":
     os.chdir(base.ROOT)      # paper_numbers.py reads results/ and src/sim relative to the repository root
     effect()
     delay()
+    pairing()
     gpu()

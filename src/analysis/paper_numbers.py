@@ -278,6 +278,22 @@ def evaluation(lat):
     fast = max(EVAL_SPEED)
     v["EvalSpeedMacroFast"], v["EvalSpeedSmallFast"] = (cut(EVAL_SPEED[fast][0]), 1), (cut(EVAL_SPEED[fast][1]), 1)
     v["EvalSpeedMax"] = (fast, 0)
+    # pairing: a random partner against the best partner by sum rate among the most candidates with a finished run
+    for cell, pre in (("Macro", "p2b_uma_u"), ("Small", "p2b_u")):
+        ks = [k for k in (4, 8, 16, 32) if os.path.exists(f"results/{pre}{k}_pf{SUFFIX}.json")]
+        rnd = {k: stats([f"{pre}8_random"], k)["resends_per_100"] for k in ("ours", "ai_for_ran", "ai_and_ran")}
+        best = {k: stats([f"{pre}{ks[-1]}_pf"], k)["resends_per_100"] for k in ("ours", "ai_for_ran", "ai_and_ran")}
+        ours_pf = [stats([f"{pre}{k}_pf"], "ours")["resends_per_100"] for k in ks]
+        v[f"EvalPairCand{cell}"] = (ks[-1], 0)
+        v[f"EvalPairRandomReverb{cell}"] = (rnd["ours"], 1)
+        v[f"EvalPairRandomConv{cell}"] = (rnd["ai_and_ran"], 1)
+        v[f"EvalPairBestConv{cell}"] = (best["ai_and_ran"], 1)
+        v[f"EvalPairBestAi{cell}"] = (best["ai_for_ran"], 1)
+        v[f"EvalPairCutConv{cell}"] = (best["ai_and_ran"] / rnd["ours"], 1)
+        v[f"EvalPairCutAi{cell}"] = (best["ai_for_ran"] / rnd["ours"], 1)
+        v[f"EvalPairBestReverbLow{cell}"], v[f"EvalPairBestReverbHigh{cell}"] = (min(ours_pf), 1), (max(ours_pf), 1)
+        v[f"EvalPairFewConv{cell}"] = (stats([f"{pre}{ks[0]}_pf"])["resends_per_100"], 1)
+        v[f"EvalPairFewCand{cell}"] = (ks[0], 0)
     # delay (Figure 13 a, b): the latency simulation of latency_policies
     v["EvalDelayRecoveredPct"] = (lat["delivered_at_recovery_pct"], 1)
     v["EvalDelayConvFinalPct"] = (lat["delivered_final_pct"]["harq_only"], 1)
