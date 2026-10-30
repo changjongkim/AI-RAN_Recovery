@@ -134,6 +134,72 @@
    "8": 0.2663888888888889
   }
  },
+ "per_task_check": {
+  "four_16": {
+   "cells_run": 24,
+   "independent_lost_pct": 1.513671875,
+   "independent_retx_per_100": 17.4658203125,
+   "lag6": {
+    "lost_pct": 1.435546875,
+    "retx_per_100": 16.962890625,
+    "share_later": 0.3116861979166667
+   },
+   "lag8": {
+    "lost_pct": 1.474609375,
+    "retx_per_100": 16.845703125,
+    "share_later": 0.30418294270833335
+   },
+   "on_time_share": 0.2662382450414683
+  },
+  "four_8": {
+   "cells_run": 12,
+   "independent_lost_pct": 1.1474609375,
+   "independent_retx_per_100": 13.8623046875,
+   "lag6": {
+    "lost_pct": 1.0546875,
+    "retx_per_100": 13.359375,
+    "share_later": 0.638134765625
+   },
+   "lag8": {
+    "lost_pct": 1.0888671875,
+    "retx_per_100": 13.4375,
+    "share_later": 0.6425618489583333
+   },
+   "on_time_share": 0.569373003866196
+  },
+  "one_2": {
+   "cells_run": 3,
+   "independent_lost_pct": 1.2353515625,
+   "independent_retx_per_100": 15.0146484375,
+   "lag6": {
+    "lost_pct": 1.0693359375,
+    "retx_per_100": 14.2919921875,
+    "share_later": 0.6046061197916667
+   },
+   "lag8": {
+    "lost_pct": 1.11328125,
+    "retx_per_100": 14.5458984375,
+    "share_later": 0.61572265625
+   },
+   "on_time_share": 0.46285567143041073
+  },
+  "one_4": {
+   "cells_run": 6,
+   "independent_lost_pct": 1.5576171875,
+   "independent_retx_per_100": 17.763671875,
+   "lag6": {
+    "lost_pct": 1.435546875,
+    "retx_per_100": 17.4169921875,
+    "share_later": 0.34816080729166665
+   },
+   "lag8": {
+    "lost_pct": 1.2939453125,
+    "retx_per_100": 16.93359375,
+    "share_later": 0.3881022135416667
+   },
+   "on_time_share": 0.24581264481959617
+  }
+ },
  "rows": {
   "every_recovery": {
    "goodput_gain_la": 1.3088563714451864,
@@ -176,6 +242,13 @@
    "availability_fixed": 0.26133508192762833,
    "availability_la": 0.21967066621128842,
    "cells": 16,
+   "declining": {
+    "availability_fixed": 0.25969119318564693,
+    "availability_la": 0.2049402969969809,
+    "goodput_gain_la": 1.0622448958426274,
+    "lost_pct": 1.513671875,
+    "retx_per_100": 17.3779296875
+   },
    "failed_per_tb": 0.13061974789915967,
    "goodput_gain_la": 1.0651098539482007,
    "gpus": "four",
@@ -201,6 +274,13 @@
    "availability_fixed": 0.20678571814384447,
    "availability_la": 0.17381805815193815,
    "cells": 20,
+   "declining": {
+    "availability_fixed": 0.18800828338517575,
+    "availability_la": 0.14468572866392443,
+    "goodput_gain_la": 1.0416531387168386,
+    "lost_pct": 1.6748046874999998,
+    "retx_per_100": 18.2568359375
+   },
    "failed_per_tb": 0.1291938025210084,
    "goodput_gain_la": 1.0496572458251967,
    "gpus": "four",
@@ -226,6 +306,13 @@
    "availability_fixed": 0.1735082571038736,
    "availability_la": 0.1458459926238397,
    "cells": 24,
+   "declining": {
+    "availability_fixed": 0.14427862143032721,
+    "availability_la": 0.10792784715807958,
+    "goodput_gain_la": 1.0302351864011954,
+    "lost_pct": 1.7626953125,
+    "retx_per_100": 18.8232421875
+   },
    "failed_per_tb": 0.13008359593837535,
    "goodput_gain_la": 1.0416966471800637,
    "gpus": "four",
@@ -401,6 +488,13 @@
    "availability_fixed": 0.15276339105894454,
    "availability_la": 0.12840846180730942,
    "cells": 6,
+   "declining": {
+    "availability_fixed": 0.1474060929544548,
+    "availability_la": 0.11665946496373242,
+    "goodput_gain_la": 1.0313026446632045,
+    "lost_pct": 1.7626953125,
+    "retx_per_100": 18.779296875
+   },
    "failed_per_tb": 0.1322216386554622,
    "goodput_gain_la": 1.0350330935211478,
    "gpus": "one",
@@ -426,6 +520,13 @@
    "availability_fixed": 0.11299105535797259,
    "availability_la": 0.09497699361035673,
    "cells": 8,
+   "declining": {
+    "availability_fixed": 0.09719591999582013,
+    "availability_la": 0.07445425446137147,
+    "goodput_gain_la": 1.0221973694185444,
+    "lost_pct": 1.8603515625,
+    "retx_per_100": 19.453125
+   },
    "failed_per_tb": 0.1303965336134454,
    "goodput_gain_la": 1.0265457385722103,
    "gpus": "one",

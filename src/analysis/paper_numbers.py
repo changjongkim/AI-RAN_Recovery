@@ -397,6 +397,15 @@ def evaluation(lat):
         v["EvalLoadCheckLoadHigh"] = (max(c["load"] for c in chk.values()), 1)
         v["EvalLoadCheckMaxPp"] = (max(100.0 * abs(c["measured"] - c["predicted"]) for c in chk.values()), 0)
         v["EvalLoadCheckFailPct"] = (100.0 * float(np.mean([c["failed_per_tb"] for c in chk.values()])), 1)
+    tasks = eff.get("per_task_check", {})
+    if tasks:   # retransmissions with the recorded outcome of each recovery request, % fewer than with one share
+        less = [100.0 * (1 - r[f"lag{lag}"]["retx_per_100"] / r["independent_retx_per_100"]) for r in tasks.values() for lag in (6, 8)]
+        v["EvalTaskLessMin"], v["EvalTaskLessMax"] = (min(less), 0), (max(less), 0)
+    dec = row("four", 24).get("declining")
+    if dec:     # beyond the measured cells, the on-time recoveries falling further at the rate between 20 and 24 cells
+        v["EvalDeclineCutFourMax"] = (conv / dec["retx_per_100"], 2)
+        v["EvalDeclineGoodFourMax"] = (dec["goodput_gain_la"], 2)
+        v["EvalServerFourMaxTwo"] = (conv / row("four", 24)["retx_per_100"], 2)
     v["EvalServerGoodEvery"] = (eff["rows"]["every_recovery"]["goodput_gain_la"], 2)
     for name, g, c in (("FourFew", "four", 4), ("FourEight", "four", 8), ("FourMid", "four", 16), ("FourMax", "four", 24),
                        ("OneFew", "one", 1), ("OneTwo", "one", 2), ("OneMax", "one", 8)):
@@ -433,6 +442,7 @@ def evaluation_more():
     v["EvalAiSloLowFour"] = (min(rows[f"all_g4_r4_c{c}"]["ai_within_slo_pct"] for c in (8, 16, 24)), 1)
     v["EvalAiSloOffLow"] = (min(r["ai_within_slo_pct"] for r in rows.values() if r["policy"] == "off"), 1)
     v["EvalAiRejectMax"] = (max(r["ai_rejected_pct"] for r in allrec), 1)
+    v["EvalAiRejectOffMax"] = (max(r["ai_rejected_pct"] for r in rows.values() if r["policy"] == "off"), 1)
     v["EvalAiTtftOffMax"] = (max(r["ai_ttft_p99_ms"] for r in rows.values() if r["policy"] == "off"), 0)
     v["EvalAiTtftMax"] = (max(r["ai_ttft_p99_ms"] for r in allrec), 0)
     v["EvalAiRequestsLow"] = (min(r["ai_requests"] for r in rows.values()), 0)

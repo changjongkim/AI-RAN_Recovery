@@ -22,6 +22,12 @@
    lost TBs, and goodput.  The rows also keep the effect with the measured share (no load matching) for comparison.
 4. Check of the load matching (N23, when its runs exist): the runs on MCS 16 slots fail more TBs; the share predicted from
    the MCS 14 runs at c x (failures at MCS 16 / failures at MCS 14) against the measured share.
+5. Check of the extrapolation: beyond the largest measured number of cells, the on-time recoveries per second fall further
+   at the rate between the last two measured numbers of cells (instead of the fluid limit), for the rows that extrapolate.
+6. Check with the records of each task: at the cell count c' = c x load (fixed MCS), each TB takes the on-time outcome of a
+   recorded recovery request of the c' runs (the first transmission from a random request, transmission t from a random
+   request of the period t x lag later, lag 6 and 8 uplink periods: the retransmission slot without and with a wait),
+   against one draw per TB and transmission at the on-time share of the same runs.
 usage: RESULT_SUFFIX=_f35 N16_SUFFIX=d110_f35 server_effect.py [OUT.json]       (from the repository root)"""
 import glob
 import json
@@ -116,15 +122,21 @@ def availability(tags=None):
     return out
 
 
-def matched(avail, gpus, cells, load):
-    """On-time share at `cells` cells with `load` times the recovery load of the real-time runs."""
+def matched(avail, gpus, cells, load, decline=False):
+    """On-time share at `cells` cells with `load` times the recovery load of the real-time runs.  Beyond the measured
+    cells: the fluid limit (the on-time recoveries of the largest number of cells), or with `decline` these recoveries
+    falling further at the rate between the last two measured numbers of cells."""
     pts = sorted((r["cells"], r["availability"]) for r in avail.values() if r["gpus"] == gpus)
     c = np.array([p[0] for p in pts], float)
     a = np.array([p[1] for p in pts], float)
     x = cells * load
     if x <= c[-1]:
         return float(np.interp(x, c, a))
-    return float(a[-1] * c[-1] / x)
+    n_last = a[-1] * c[-1]
+    if decline:
+        slope = min(0.0, (a[-1] * c[-1] - a[-2] * c[-2]) / (c[-1] - c[-2]))
+        n_last = max(0.0, n_last + slope * (x - c[-1]))
+    return float(n_last / x)
 
 
 def recovery_runs(first_ok, recovered, l1_steps, steps, total):
@@ -206,6 +218,9 @@ def effect(avail):
         a_fix, a_la = matched(avail, g, c, lf), matched(avail, g, c, ll)
         rows[f"{g}_{c}"] = {**v, "load_fixed": lf, "load_la": ll, "availability_fixed": a_fix, "availability_la": a_la,
                             **run(a_fix, a_la), "unmatched": run(v["availability"], v["availability"])}
+        d_fix, d_la = matched(avail, g, c, lf, True), matched(avail, g, c, ll, True)
+        if (d_fix, d_la) != (a_fix, a_la):
+            rows[f"{g}_{c}"]["declining"] = {"availability_fixed": d_fix, "availability_la": d_la, **run(d_fix, d_la)}
     # check of a single share for all TBs: the share of each Eb/No point of the real-time runs (scaled to the load-matched
     # share) applied to the TBs of that point, against one share for every TB
     pts = np.concatenate([np.repeat(np.load(f)["point"], np.load(f)["conv_t0"].shape[1]) for s_ in pn.MACRO_SETS
@@ -238,12 +253,79 @@ def check_load_matching(avail):
     return out
 
 
+def requests(f):
+    """On-time outcome of every failed TB of one run (1 if its slot finished by the recovery deadline), per period."""
+    d = json.load(open(f))
+    cfg, work = d["config"], f[:-5] + "_work"
+    skip, deadline_ns = int(cfg["skip_periods"]), float(cfg["rescue_deadline_ms"]) * 1e6
+    rel = {}
+    for cf in glob.glob(f"{work}/conv*.json"):
+        cell = int(re.search(r"conv(\d+)\.json$", cf).group(1))
+        c = json.load(open(cf))
+        col = {k: i for i, k in enumerate(c["columns"])}
+        for r in c["records"]:
+            n = bin(~int(r[col["ue_crc_mask"]]) & 0b11).count("1")
+            if int(r[col["period"]]) >= skip and n:
+                rel[(cell, int(r[col["period"]]))] = (n, int(r[col["release_ns"]]))
+    ok = dict.fromkeys(rel, 0)
+    for lf in glob.glob(f"{work}/lane*.json"):
+        l = json.load(open(lf))
+        col = {k: i for i, k in enumerate(l["columns"])}
+        for r in l["records"]:
+            key = (int(r[col["cell"]]), int(r[col["period"]]))
+            if key in rel and int(r[col["done_ns"]]) - rel[key][1] <= deadline_ns:
+                ok[key] = 1
+    per = {}
+    for (cell, p), (n, _) in rel.items():
+        per.setdefault(p, []).extend([ok[(cell, p)]] * n)
+    return per
+
+
+def per_task_check(rows):
+    """Check 6: the retransmissions with the recorded outcome of each recovery request against one on-time share."""
+    conv, rec, steps, conv_steps, cand = pn.load_traces(pn.MACRO_SETS)
+    n, total = len(conv), len(steps)
+
+    def replay(flags):
+        st = [None] + [conv_steps[t] | (steps[t] & ~conv_steps[t] & flags[t]) for t in range(1, total)]
+        d, tx = simulate(conv, rec & flags[0], st, cand, "wait", "DDDSU", pn.Timing, l1_steps=conv_steps)
+        return float(100.0 * (tx - 1).sum() / len(tx)), float(100.0 * (~np.isfinite(d)).mean())
+
+    tags = {"one": f"allb68{N16}", "four": f"allb68g4{N16}"}
+    out = {}
+    for g, c in (("four", 8), ("four", 16), ("one", 2), ("one", 4)):
+        cp = int(round(c * rows[f"{g}_{c}"]["load_fixed"]))
+        runs = [requests(f) for f in sorted(glob.glob(f"{RAW}/rec16{tags[g]}s*_c{cp}_*_none_j*.json"))]
+        if not runs:
+            continue
+        flat = [(i, p) for i, per in enumerate(runs) for p, v in per.items() for _ in v]
+        on = sum(sum(v) for per in runs for v in per.values()) / len(flat)
+        rng = np.random.default_rng(3)
+        ind = replay(rng.random((total, n)) < on)
+        res = {"cells_run": cp, "on_time_share": on, "independent_retx_per_100": ind[0], "independent_lost_pct": ind[1]}
+        for lag in (6, 8):
+            pick, flags = rng.integers(0, len(flat), n), np.zeros((total, n), bool)
+            for j, k in enumerate(pick):
+                i, p = flat[k]
+                per = runs[i]
+                for t in range(total):
+                    q = p + t * lag
+                    q = next((q + s for d_ in range(60) for s in (d_, -d_) if q + s in per), q)
+                    v = per.get(q, [0])
+                    flags[t, j] = v[rng.integers(0, len(v))]
+            r = replay(flags)
+            res[f"lag{lag}"] = {"retx_per_100": r[0], "lost_pct": r[1], "share_later": float(flags[1:].mean())}
+        out[f"{g}_{c}"] = res
+    return out
+
+
 if __name__ == "__main__":
     av = availability()
     base, rows, loads = effect(av)
     check = check_load_matching(av)
+    tasks = per_task_check(rows)
     out = sys.argv[1] if len(sys.argv) > 1 else f"results/server_effect{SUFFIX}.json"
-    json.dump({"conventional": base, "rows": rows, "loads": loads, "load_matching_check": check},
+    json.dump({"conventional": base, "rows": rows, "loads": loads, "load_matching_check": check, "per_task_check": tasks},
               open(out, "w"), indent=1, sort_keys=True)
     print(f"conventional: retx {base['retx_per_100']:.1f}, lost {base['lost_pct']:.2f}%")
     print("loads (recovery runs per TB):", {k: (round(v, 3) if isinstance(v, float) else v) for k, v in loads.items()})
@@ -259,3 +341,7 @@ if __name__ == "__main__":
     print("on-time share by Eb/No:", {k: r["availability_by_esno"] for k, r in av.items() if k[1] in (8, 16, 24, 4)})
     if check:
         print("load matching check (MCS 16):", {k: (round(v["measured"], 2), round(v["predicted"], 2), round(v["load"], 2)) for k, v in check.items()})
+    print("declining beyond the measured cells:", {k: (round(base["retx_per_100"] / r["retx_per_100"], 3),
+          round(base["retx_per_100"] / r["declining"]["retx_per_100"], 3), round(r["goodput_gain_la"], 3),
+          round(r["declining"]["goodput_gain_la"], 3)) for k, r in rows.items() if "declining" in r})
+    print("per-task check:", json.dumps(tasks, indent=1))
