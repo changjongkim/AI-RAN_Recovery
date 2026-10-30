@@ -49,7 +49,11 @@ def run_records(f):
     d = json.load(open(f))
     cfg, work = d["config"], f[:-5] + "_work"
     skip, deadline_ns = int(cfg["skip_periods"]), float(cfg["rescue_deadline_ms"]) * 1e6
-    esno = json.load(open(os.path.join(cfg["dataset"], "nv_mu2_meta.json")))["esno_db"]
+    metas = sorted(glob.glob(os.path.join(cfg["dataset"], "*_meta.json")))   # the meta of the profile the run used
+    text = json.dumps(cfg)
+    meta = next((m for m in metas if not m.endswith("/nv_mu2_meta.json") and f'"{os.path.basename(m)[:-10]}"' in text),
+                os.path.join(cfg["dataset"], "nv_mu2_meta.json"))
+    esno = json.load(open(meta))["esno_db"]
     conv = {}
     for cf in glob.glob(f"{work}/conv*.json"):
         cell = int(re.search(r"conv(\d+)\.json$", cf).group(1))
