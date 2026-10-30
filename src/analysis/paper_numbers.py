@@ -493,6 +493,53 @@ def evaluation_more():
         v[f"EvalUsers{name}Fail"] = (float(np.dot(np.array([r["slots"] for r in rs], float), [r["fail_pct"]["baseline_lslin_lmmse"] for r in rs]) / sum(r["slots"] for r in rs)), 1)
     return v
 
+def discussion():
+    """Macros of the Discussion (receivers inside and outside the L1), from the macro traces: the real-time NRx
+    (small_c*) and the large NRx (nrx_c*) on the same slots and transmissions.  Disc*: retransmissions per 100 TBs
+    with the real-time NRx as the recovery receiver (Full Wait, conventional L1) and with the real-time NRx as the L1
+    and the large NRx as the recovery receiver; the share of the TBs the real-time NRx fails at the first transmission
+    that the large NRx decodes; the share of the failed TBs of the conventional receiver that only the real-time NRx
+    decodes; recovery runs per TB under Full Wait with either L1 (one for a failed first transmission, one for each
+    failed retransmission of a TB not yet delivered)."""
+    g, total = {}, None
+    for s_ in MACRO_SETS:
+        for f in sorted(glob.glob(f"results/{s_}{SUFFIX}/c*.npz")):
+            d = np.load(f)
+            total = int(d["total"])
+            for k in d.files:
+                if k.startswith(("conv_", "sep_", "nrx_", "small_")) or k == "cbfail_t0":
+                    g.setdefault(k, []).append(d[k].reshape(-1))
+    g = {k: np.concatenate(v) for k, v in g.items()}
+    n = len(g["conv_t0"])
+    cand = (g["cbfail_t0"] >= 0) & (g["cbfail_t0"] <= 5)
+
+    def run(l1, rec, l1_key, rec_key):
+        l1_steps = [None] + [g[f"{l1_key}{t}"] for t in range(1, total)]
+        if rec_key is None:
+            _, tx = simulate(l1, np.zeros(n, bool), l1_steps, cand, "harq_only", "DDDSU", Timing, l1_steps=l1_steps)
+            return float(100.0 * (tx - 1).sum() / n), None
+        steps = [None] + [g[f"{l1_key}{t}"] | g[f"{rec_key}{t}"] for t in range(1, total)]
+        _, tx = simulate(l1, rec & ~l1, steps, cand, "wait", "DDDSU", Timing, l1_steps=l1_steps)
+        runs = (~l1).astype(float)
+        alive = ~l1 & ~rec
+        for t in range(1, total):
+            runs += alive & ~l1_steps[t]
+            alive = alive & ~steps[t]
+        return float(100.0 * (tx - 1).sum() / n), float(runs.mean())
+
+    conv, small, large = g["conv_t0"], g["small_c0"], g["nrx_c0"]
+    ai, _ = run(small, None, "small_c", None)
+    small_rec, _ = run(conv, small, "sep_c", "small_c")
+    large_rec, runs_conv = run(conv, large, "sep_c", "nrx_c")
+    combo, runs_small = run(small, large, "small_c", "nrx_c")
+    v = {"DiscSmallRecRetx": (small_rec, 1), "DiscComboRetx": (combo, 1),
+         "DiscLargeOfSmallFailPct": (float(100.0 * (large & ~small).sum() / (~small).sum()), 0),
+         "DiscSmallOnlyPct": (float(100.0 * (small & ~large & ~conv).sum() / (~conv).sum()), 2),
+         "DiscRunsConv": (runs_conv, 3), "DiscRunsSmall": (runs_small, 3), "DiscRunsFewer": (runs_conv / runs_small, 1)}
+    raw = {"ai_for_ran_retx_per_100": ai, "large_recovery_retx_per_100": large_rec, "combo_retx_per_100": combo}
+    return v, raw
+
+
 def main():
     allstats = json.load(open(f"results/n3_uma_v3_all{SUFFIX}.json"))["all"]
     lat = latency_policies()
@@ -510,7 +557,12 @@ def main():
         "every_wait_adds_the_same_delay": bool(np.isfinite(lat["wait_delay_ms"])),
         "latency_sim_lost_equal_for_both_rules": abs(lat["wait"]["lost_pct"] - lat["select_cb5"]["lost_pct"]) < 1e-9,
     }
-    values = {**motivation(lat), **evaluation(lat), **evaluation_more(),
+    disc, disc_raw = discussion()
+    checks["discussion_ai_for_ran_equals_harq_stats"] = bool(abs(disc_raw["ai_for_ran_retx_per_100"] - allstats["ai_for_ran"]["resends_per_100"]) < 1e-9)
+    checks["discussion_large_recovery_equals_full_wait"] = bool(abs(disc_raw["large_recovery_retx_per_100"] - ours_retx) < 1e-9)
+    checks["discussion_combination_as_on_the_conventional_l1"] = bool(abs(disc_raw["combo_retx_per_100"] - ours_retx) < 0.05)
+    checks["discussion_large_decodes_every_first_tx_tb_the_real_time_nrx_decodes"] = bool(disc["DiscSmallOnlyPct"][0] == 0.0)
+    values = {**motivation(lat), **evaluation(lat), **evaluation_more(), **disc,
         "RetxCutFullWait": (conv_retx / ours_retx, 1),
         "RetxCutNoDelay": (lat["harq_only"]["retx_per_100"] / lat["select_cb5"]["retx_per_100"], 1),
         "LostCutFullWait": (allstats["ai_and_ran"]["residual_after_all_pct"] / allstats["ours"]["residual_after_all_pct"], 1),

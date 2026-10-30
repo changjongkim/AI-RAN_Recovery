@@ -1,5 +1,9 @@
 {
  "checks": {
+  "discussion_ai_for_ran_equals_harq_stats": true,
+  "discussion_combination_as_on_the_conventional_l1": true,
+  "discussion_large_decodes_every_first_tx_tb_the_real_time_nrx_decodes": true,
+  "discussion_large_recovery_equals_full_wait": true,
   "every_wait_adds_the_same_delay": true,
   "latency_neutral_delivers_at_least_conventional_within_every_delay": true,
   "latency_sim_conventional_equals_harq_stats": true,
@@ -170,6 +174,13 @@
   "AblSelTenBest": 11.42578125,
   "AblSelTenPub": 18.017578125,
   "AblSelTenTrained": 11.42578125,
+  "DiscComboRetx": 9.1162109375,
+  "DiscLargeOfSmallFailPct": 24.443029917250158,
+  "DiscRunsConv": 0.199853515625,
+  "DiscRunsFewer": 1.5103321033210333,
+  "DiscRunsSmall": 0.13232421875,
+  "DiscSmallOnlyPct": 0.0,
+  "DiscSmallRecRetx": 11.69921875,
   "EvalAiCompletedLateMax": 0.4123711340206153,
   "EvalAiKeepHigh": 97.23436981632837,
   "EvalAiKeepLow": 63.503922301083335,
