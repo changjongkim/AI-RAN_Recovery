@@ -6,7 +6,7 @@
    "full_load_share_same_transmitting_cells": 0.970323873835264,
    "goodput_gain_la": 1.2499908469111236,
    "gpus": "four",
-   "late_l1_pct": 0.032037590773173856,
+   "late_l1_pct": 0.033163829316825114,
    "retx_cut": 2.0065481758652948,
    "share": 0.9645279388881973,
    "share_load_matched": 0.8726091616026399
@@ -17,7 +17,7 @@
    "full_load_share_same_transmitting_cells": 0.890199292153417,
    "goodput_gain_la": 1.1976512968951203,
    "gpus": "four",
-   "late_l1_pct": 0.028285542552063076,
+   "late_l1_pct": 0.029272933513849755,
    "retx_cut": 1.71875,
    "share": 0.8879368656468831,
    "share_load_matched": 0.7020450912126746
@@ -28,7 +28,7 @@
    "full_load_share_same_transmitting_cells": 0.8100747104715701,
    "goodput_gain_la": 1.1457325836223653,
    "gpus": "four",
-   "late_l1_pct": 0.05840191133528006,
+   "late_l1_pct": 0.06045284677951198,
    "retx_cut": 1.5207373271889402,
    "share": 0.775441789786335,
    "share_load_matched": 0.538999486471696
@@ -39,7 +39,7 @@
    "full_load_share_same_transmitting_cells": 0.5692521506669496,
    "goodput_gain_la": 1.0865216687479133,
    "gpus": "four",
-   "late_l1_pct": 0.05311426649197975,
+   "late_l1_pct": 0.05500953498606425,
    "retx_cut": 1.311124694376528,
    "share": 0.560802626103842,
    "share_load_matched": 0.360017545721648
@@ -50,7 +50,7 @@
    "full_load_share_same_transmitting_cells": 0.970323873835264,
    "goodput_gain_la": 1.3011380142902755,
    "gpus": "four",
-   "late_l1_pct": 0.06431557508843391,
+   "late_l1_pct": 0.0664819944598338,
    "retx_cut": 2.2390396659707723,
    "share": 0.9983263598326361,
    "share_load_matched": 0.9789460942497176
@@ -61,7 +61,7 @@
    "full_load_share_same_transmitting_cells": 0.4628556714304107,
    "goodput_gain_la": 1.0736785351101938,
    "gpus": "one",
-   "late_l1_pct": 0.07855459544383346,
+   "late_l1_pct": 0.0813368825791186,
    "retx_cut": 1.2565905096660808,
    "share": 0.4776694956274807,
    "share_load_matched": 0.30381741788539324
@@ -83,7 +83,7 @@
    "full_load_share_same_transmitting_cells": 0.8933951332560833,
    "goodput_gain_la": 1.2016003547722607,
    "gpus": "one",
-   "late_l1_pct": 0.10654165778819519,
+   "late_l1_pct": 0.11018069634200088,
    "retx_cut": 1.689641591177629,
    "share": 0.7678275290215589,
    "share_load_matched": 0.6769616191265171
@@ -94,7 +94,7 @@
    "full_load_share_same_transmitting_cells": 0.5946259423931954,
    "goodput_gain_la": 1.1177340092829673,
    "gpus": "one",
-   "late_l1_pct": 0.032157787544216956,
+   "late_l1_pct": 0.0332409972299169,
    "retx_cut": 1.426671100764882,
    "share": 0.6080402010050251,
    "share_load_matched": 0.4550027196491467
@@ -107,7 +107,7 @@
    "full_load_share_same_transmitting_cells": 0.8100747104715701,
    "goodput_gain_la": 1.151395827126371,
    "gpus": "four",
-   "late_l1_pct": 0.021292451825827743,
+   "late_l1_pct": 0.022036139268400177,
    "retx_cut": 1.5315958586219207,
    "share": 0.7820044741676828,
    "share_load_matched": 0.5494249048301476
@@ -118,7 +118,7 @@
    "full_load_share_same_transmitting_cells": 0.5692521506669496,
    "goodput_gain_la": 1.0864057462282863,
    "gpus": "four",
-   "late_l1_pct": 0.05292778885340767,
+   "late_l1_pct": 0.05477751200540471,
    "retx_cut": 1.330232558139535,
    "share": 0.5591960187055461,
    "share_load_matched": 0.3726349964499197
@@ -129,7 +129,7 @@
    "full_load_share_same_transmitting_cells": 0.42830601890694114,
    "goodput_gain_la": 1.0631979426411606,
    "gpus": "four",
-   "late_l1_pct": 0.04637174238509745,
+   "late_l1_pct": 0.04661493323096328,
    "retx_cut": 1.1976549413735342,
    "share": 0.4227429957603531,
    "share_load_matched": 0.25175638873920153
@@ -140,7 +140,7 @@
    "full_load_share_same_transmitting_cells": 0.2665688546048706,
    "goodput_gain_la": 1.0379494426818494,
    "gpus": "four",
-   "late_l1_pct": 0.058334290840632484,
+   "late_l1_pct": 0.06038868352669912,
    "retx_cut": 1.1325237592397044,
    "share": 0.26091155958743745,
    "share_load_matched": 0.16888952700250262
@@ -151,7 +151,7 @@
    "full_load_share_same_transmitting_cells": 0.970323873835264,
    "goodput_gain_la": 1.2559277008077085,
    "gpus": "four",
-   "late_l1_pct": 0.06930745854880845,
+   "late_l1_pct": 0.049597707483742974,
    "retx_cut": 2.0065481758652948,
    "share": 0.9721081790144993,
    "share_load_matched": 0.871553177510531
@@ -162,7 +162,7 @@
    "full_load_share_same_transmitting_cells": 0.24605194231858285,
    "goodput_gain_la": 1.037178560078828,
    "gpus": "one",
-   "late_l1_pct": 0.06742609744845453,
+   "late_l1_pct": 0.06973244760891108,
    "retx_cut": 1.1289473684210527,
    "share": 0.2535310961415652,
    "share_load_matched": 0.164164259956308
@@ -173,7 +173,7 @@
    "full_load_share_same_transmitting_cells": 0.8933951332560833,
    "goodput_gain_la": 1.2007342587033687,
    "gpus": "one",
-   "late_l1_pct": 0.04258037044922291,
+   "late_l1_pct": 0.044033465433729636,
    "retx_cut": 1.6916403785488958,
    "share": 0.7730829420970265,
    "share_load_matched": 0.6804489491166584
@@ -184,7 +184,7 @@
    "full_load_share_same_transmitting_cells": 0.5946259423931954,
    "goodput_gain_la": 1.1373683159145325,
    "gpus": "one",
-   "late_l1_pct": 0.0644122383252818,
+   "late_l1_pct": 0.06662965019433648,
    "retx_cut": 1.4478569017887277,
    "share": 0.5802128498226252,
    "share_load_matched": 0.4820444158050159
@@ -195,7 +195,7 @@
    "full_load_share_same_transmitting_cells": 0.37401894875229824,
    "goodput_gain_la": 1.0630687764743394,
    "gpus": "one",
-   "late_l1_pct": 0.026656714826464787,
+   "late_l1_pct": 0.027554281935412765,
    "retx_cut": 1.1969866071428572,
    "share": 0.3751716634268996,
    "share_load_matched": 0.24873089787418207
@@ -208,7 +208,7 @@
    "full_load_share_same_transmitting_cells": 0.8100747104715701,
    "goodput_gain_la": 1.1526094358172123,
    "gpus": "four",
-   "late_l1_pct": 0.08983301627562883,
+   "late_l1_pct": 0.09278716262314766,
    "retx_cut": 1.5387374461979915,
    "share": 0.7669702483275567,
    "share_load_matched": 0.5537876728072175
@@ -219,7 +219,7 @@
    "full_load_share_same_transmitting_cells": 0.5692521506669496,
    "goodput_gain_la": 1.0863794030642775,
    "gpus": "four",
-   "late_l1_pct": 0.09061672678168477,
+   "late_l1_pct": 0.09368111682586333,
    "retx_cut": 1.330232558139535,
    "share": 0.5612361176536432,
    "share_load_matched": 0.37239402270841426
@@ -230,7 +230,7 @@
    "full_load_share_same_transmitting_cells": 0.42830601890694114,
    "goodput_gain_la": 1.0631979426411606,
    "gpus": "four",
-   "late_l1_pct": 0.034703683929524824,
+   "late_l1_pct": 0.03591507466191483,
    "retx_cut": 1.1976549413735342,
    "share": 0.42333141345403397,
    "share_load_matched": 0.2500022340076836
@@ -241,7 +241,7 @@
    "full_load_share_same_transmitting_cells": 0.2665688546048706,
    "goodput_gain_la": 1.0377950047892037,
    "gpus": "four",
-   "late_l1_pct": 0.22626241115872975,
+   "late_l1_pct": 0.09269882061401497,
    "retx_cut": 1.1313291139240507,
    "share": 0.25789489094141754,
    "share_load_matched": 0.16719099509916635
@@ -252,7 +252,7 @@
    "full_load_share_same_transmitting_cells": 0.970323873835264,
    "goodput_gain_la": 1.249876404215671,
    "gpus": "four",
-   "late_l1_pct": 0.04264619649235034,
+   "late_l1_pct": 0.04409657149156653,
    "retx_cut": 1.989795918367347,
    "share": 0.962515114873035,
    "share_load_matched": 0.860428857984491
@@ -265,7 +265,7 @@
    "full_load_share_same_transmitting_cells": 0.5692521506669496,
    "goodput_gain_la": 1.0865216687479133,
    "gpus": "four",
-   "late_l1_pct": 0.03532133585292196,
+   "late_l1_pct": 0.036534351423926345,
    "retx_cut": 1.3175675675675675,
    "share": 0.5614263909387336,
    "share_load_matched": 0.36503482204039933
@@ -276,7 +276,7 @@
    "full_load_share_same_transmitting_cells": 0.38246704999941783,
    "goodput_gain_la": 1.0517255145810342,
    "gpus": "four",
-   "late_l1_pct": 0.051739749062217046,
+   "late_l1_pct": 0.05352212044909925,
    "retx_cut": 1.183448275862069,
    "share": 0.36938714432009057,
    "share_load_matched": 0.22918130674131323
@@ -287,7 +287,7 @@
    "full_load_share_same_transmitting_cells": 0.2665688546048706,
    "goodput_gain_la": 1.0332266024092984,
    "gpus": "four",
-   "late_l1_pct": 0.04679126680733475,
+   "late_l1_pct": 0.048408457779604515,
    "retx_cut": 1.1111111111111112,
    "share": 0.26481042899181184,
    "share_load_matched": 0.14218951298249857
@@ -298,7 +298,7 @@
    "full_load_share_same_transmitting_cells": 0.17771256973658042,
    "goodput_gain_la": 1.0223661133660564,
    "gpus": "four",
-   "late_l1_pct": 0.1012294671916474,
+   "late_l1_pct": 0.10475604631191722,
    "retx_cut": 1.0749185667752443,
    "share": 0.14644931448680967,
    "share_load_matched": 0.0950742006300072
@@ -309,7 +309,7 @@
    "full_load_share_same_transmitting_cells": 0.890199292153417,
    "goodput_gain_la": 1.201194910474078,
    "gpus": "four",
-   "late_l1_pct": 0.07422592959140394,
+   "late_l1_pct": 0.07677122175915771,
    "retx_cut": 1.7581967213114753,
    "share": 0.9133967320917891,
    "share_load_matched": 0.7296298035052384
