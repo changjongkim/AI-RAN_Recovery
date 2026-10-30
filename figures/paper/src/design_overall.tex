@@ -1,5 +1,5 @@
 % Figure (Section 4.1, a): the architecture of Reverb in an AI-RAN server and the procedure for a failed TB.  Gray: what
-% exists without Reverb (L1, L2 scheduler, the GPUs of the server, AI inference); orange: what Reverb adds (its three
+% exists without Reverb (L1, L2 scheduler, the GPUs of the server); orange: what Reverb adds (its three
 % components and the paths they open).  Running example: failed TBs A and B of cell 1 and C of cell 2.
 % (1) the received samples of a slot with a failed TB stay in GPU memory; (2) Recovery Gate: A and C failed at most K
 % code blocks and wait for their recovery, B failed all ten and gets its grant at once; (3) Receiver Selector: cell 2 has
@@ -79,7 +79,7 @@
   % ------------------------------------------------------------------ AI-RAN server (existing)
   \draw[existing] (0, -2.7) rectangle (13.9, -4.35);
   \node[ptitle, anchor=north west] at (0.06, -2.74) {AI-RAN Server};
-  \node[gtxt, font=\tabsize, anchor=north east] at (13.82, -2.79) {\lgd{l1c}\,L1\enspace \lgd{aic}\,AI inference\enspace
+  \node[gtxt, font=\tabsize, anchor=north east] at (13.82, -2.79) {\lgd{l1c}\,L1\enspace
     \lgd{nrxc}\,NRx trained without interference\enspace \lgd{nrxt}\,NRx trained with interference};
   \draw[draw=exline, fill=white, line width=0.5pt] (0.1, -3.08) rectangle (1.85, -4.25);
   \node[ctitle] at (0.975, -3.25) {GPU Memory};
@@ -89,7 +89,7 @@
   \node[gtxt, font=\tabsize] at (0.975, -3.99) {Samples of\\[-1pt]failed TBs};
   \foreach \g/\y/\rc/\tc/\t/\rs in {1/-3.3/nrxc/black/A/7.95, 2/-3.74/nrxt/white/C/9.5} {
     \node[exrow, minimum width=0.8cm, minimum height=0.32cm] at (2.45, \y) {GPU \g};
-    \draw[black!55, line width=0.35pt, fill=aic] (2.95, \y-0.16) rectangle (13.8, \y+0.16);
+    \draw[black!55, line width=0.35pt, fill=white] (2.95, \y-0.16) rectangle (13.8, \y+0.16);
     % to scale: an uplink slot every 1.55 cm, a recovery about two and a half slot periods long, interrupted by the L1
     \draw[black!55, line width=0.35pt, fill=\rc] (\rs, \y-0.16) rectangle (\rs+3.9, \y+0.16);
     \node[txt, text=\tc] at (\rs+0.6, \y) {\t};
