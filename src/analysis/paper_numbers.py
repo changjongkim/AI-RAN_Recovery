@@ -26,7 +26,9 @@ Setup macros (text, Evaluation Setup): \\SetupLOneMs, \\SetupRecoveryRunMs, \\Se
   and \\SetupEbNoHigh (Eb/No points), all read from the macro traces of results/n3_uma_v3_all.json and its chunks
   \\SetupRecoveryRunMs is the 99th percentile and \\SetupRecoveryPathMs the median of the recovery path measured in the slot
   runtime (src/analysis/recovery_path.py); \\SetupRecoveryBoundMs, \\SetupBoundLowMs and \\SetupBoundHighMs are settings of
-  the real-time runs.  NeutralLaterPct / FullWaitLaterPct: failed TBs delivered later than without recovery (Latency-Neutral,
+  the real-time runs; \\SetupCarrierGhz the carrier frequency of the channels (generator metadata, 2.14 GHz before
+  the field existed).  Eval*: the values of Figures 12-14 (function evaluation, the same runs as the panels).
+  NeutralLaterPct / FullWaitLaterPct: failed TBs delivered later than without recovery (Latency-Neutral,
   Full Wait), NeutralEarlierPct: delivered earlier, WaitAddedDelayMs: the delay one wait adds to the next retransmission
   (the same at every transmission, checked), FullWaitMaxAddedMs: the largest added delay of a TB under Full Wait,
   FullWaitBehindMaxPp / FullWaitAheadFromMs: the largest shortfall of the delivered share of Full Wait against the
@@ -225,6 +227,10 @@ def latency_policies():
         if k + 1 < len(steps):
             later_next.append(float(100.0 * conv_steps[k + 1][alive].mean()))
     out["later_recovery_pct"], out["later_next_retx_pct"] = later_rec, later_next
+    out["delivered_at_recovery_pct"] = float(100.0 * (fail & (dones["wait"] <= Timing.l1 + Timing.run + 1e-9)).sum() / fail.sum())
+    out["delivered_final_pct"] = {p: float(100.0 * (fail & np.isfinite(dones[p])).sum() / fail.sum()) for p in dones}
+    out["neutral_waits_pct_of_failed"] = float(100.0 * cand[fail].mean())
+    out["neutral_waiting_recovered_pct"] = float(100.0 * rec[fail & cand].mean())
     out["first_retx_ms"] = float(d0[fail & np.isfinite(d0)].min())   # the first retransmission is decoded
     # one wait moves the next retransmission by this much, at the first transmission and at every retransmission
     ul = uplink_times("DDDSU", 300.0)
@@ -233,6 +239,104 @@ def latency_policies():
               for s, r in [(0.0, Timing.l1)] + [(u, 0.5 + Timing.l1) for u in ul[1:9]]}
     out["wait_delay_ms"] = shifts.pop() if len(shifts) == 1 else float("nan")
     return out
+
+
+EVAL_EFFECT = {   # condition: runs (different seeds), as figures/paper/make_eval_figures.py
+    "Macro": ["n3_uma_v3_cb", "n3_uma_v3_more"], "Blocked": ["n3_uma_nlos_v3", "n3_uma_nlos_more"],
+    "Direct": ["n3_uma_los_v3", "n3_uma_los_more"], "Small": ["n1_umi_v3_cb"]}
+EVAL_SPEED = {3: (["n3_uma_v3_cb", "n3_uma_v3_more"], ["n1_umi_v3_cb"]), 30: (["n3_uma_v30", "n3_uma_v30_more"], ["n1_umi_v30"]),
+              120: (["n3_uma_v120", "n3_uma_v120_more"], ["n3_umi_v120"])}
+
+
+def runtime_rows():
+    """Recovered share of failed TBs and L1 blocks past the L1 deadline per (policy tag, cells), mean over seeds, from
+    results/n16_summary.txt, as figures/paper/make_eval_figures.py."""
+    rec, late = {}, {}
+    for line in open("results/n16_summary.txt"):
+        f = line.split()
+        if len(f) < 11 or not f[1].isdigit():
+            continue
+        rec.setdefault(f[0], {}).setdefault(int(f[2]), []).append(float(f[9]))
+        late.setdefault(f[0], {}).setdefault(int(f[2]), []).append(float(f[3]))
+    mean = lambda d: {t: {c: float(np.mean(v)) for c, v in cs.items()} for t, cs in d.items()}
+    return mean(rec), mean(late)
+
+
+def evaluation(lat):
+    """Macros of the Evaluation (Figures 12-14), from the same results as figures/paper/make_eval_figures.py."""
+    v = {}
+    st = {g: {k: stats(n, k) for k in ("ours", "ai_for_ran", "ai_and_ran")} for g, n in EVAL_EFFECT.items()}
+    for g, x in st.items():
+        v[f"EvalRetxReverb{g}"] = (x["ours"]["resends_per_100"], 1)
+        v[f"EvalRetxAi{g}"] = (x["ai_for_ran"]["resends_per_100"], 1)
+        v[f"EvalRetxConv{g}"] = (x["ai_and_ran"]["resends_per_100"], 1)
+        v[f"EvalRetxCut{g}"] = (x["ai_and_ran"]["resends_per_100"] / x["ours"]["resends_per_100"], 1)
+        v[f"EvalRetxCutAi{g}"] = (x["ai_for_ran"]["resends_per_100"] / x["ours"]["resends_per_100"], 1)
+        v[f"EvalLostCut{g}"] = (x["ai_and_ran"]["residual_after_all_pct"] / x["ours"]["residual_after_all_pct"], 1)
+        v[f"EvalLostCutAi{g}"] = (x["ai_for_ran"]["residual_after_all_pct"] / x["ours"]["residual_after_all_pct"], 1)
+    cut = lambda n: stats(n)["resends_per_100"] / stats(n, "ours")["resends_per_100"]
+    fast = max(EVAL_SPEED)
+    v["EvalSpeedMacroFast"], v["EvalSpeedSmallFast"] = (cut(EVAL_SPEED[fast][0]), 1), (cut(EVAL_SPEED[fast][1]), 1)
+    v["EvalSpeedMax"] = (fast, 0)
+    # delay (Figure 13 a, b): the latency simulation of latency_policies
+    v["EvalDelayRecoveredPct"] = (lat["delivered_at_recovery_pct"], 1)
+    v["EvalDelayConvFinalPct"] = (lat["delivered_final_pct"]["harq_only"], 1)
+    v["EvalDelayReverbFinalPct"] = (lat["delivered_final_pct"]["wait"], 1)
+    v["EvalRetxFullWait"] = (lat["wait"]["retx_per_100"], 1)
+    v["EvalRetxNeutral"] = (lat["select_cb5"]["retx_per_100"], 1)
+    v["EvalNeutralWaitPct"] = (lat["neutral_waits_pct_of_failed"], 0)
+    v["EvalNeutralWaitRecPct"] = (lat["neutral_waiting_recovered_pct"], 0)
+    # link adaptation (Figure 13 c, d)
+    for cell, run in (("Macro", "n6_uma_v3"), ("Small", "n6_umi_v3")):
+        o = json.load(open(f"results/{run}{SUFFIX}_olla.json"))["results"]
+        snr = sorted({float(k.split("_")[0][3:]) for k in o})
+        g = [o[f"snr{x:g}_target0.1"]["ours"]["goodput_vs_ai_and_ran"] for x in snr]
+        a = [o[f"snr{x:g}_target0.1"]["ai_for_ran"]["goodput_vs_ai_and_ran"] for x in snr]
+        v[f"EvalLa{cell}Low"], v[f"EvalLa{cell}High"] = (min(g), 2), (max(g), 2)
+        v[f"EvalLaAi{cell}Low"], v[f"EvalLaAi{cell}High"] = (min(a), 2), (max(a), 2)
+        if cell == "Macro":
+            best = snr[int(np.argmax(g))]
+            v["EvalLaBestSnr"] = (best, 0)
+            v["EvalLaMcsConv"] = (o[f"snr{best:g}_target0.1"]["ai_and_ran"]["mean_mcs"], 1)
+            v["EvalLaMcsReverb"] = (o[f"snr{best:g}_target0.1"]["ours"]["mean_mcs"], 1)
+            v["EvalLaRetxConv"] = (o[f"snr{best:g}_target0.1"]["ai_and_ran"]["resends_per_100"], 1)
+            v["EvalLaRetxReverb"] = (o[f"snr{best:g}_target0.1"]["ours"]["resends_per_100"], 1)
+    # GPU (Figure 14): the real-time runs, policy tags of make_eval_figures.py
+    rec, late = runtime_rows()
+    tag = lambda p, g, x="": f"{p}{'g4' if g == 4 else ''}{N16}{x}"
+    r4, r1 = rec[tag("allb68", 4)], rec[tag("allb68", 1)]
+    v["EvalGpuFourFew"], v["EvalGpuFourMid"], v["EvalGpuFourMax"] = (r4[4], 1), (r4[16], 1), (r4[24], 1)
+    v["EvalGpuOneFew"], v["EvalGpuOneMid"], v["EvalGpuOneMax"] = (r1[1], 1), (r1[4], 1), (r1[8], 1)
+    for name, p, x in (("Before", "parab68", ""), ("NoReject", "allb68", "admit0")):
+        b4, b1 = rec[tag(p, 4, x)], rec[tag(p, 1, x)]
+        v[f"EvalGpuVs{name}FourMid"], v[f"EvalGpuVs{name}FourMax"] = (r4[16] / b4[16], 1), (r4[24] / b4[24], 1)
+        v[f"EvalGpuVs{name}OneMid"], v[f"EvalGpuVs{name}OneMax"] = (r1[4] / b1[4], 1), (r1[8] / b1[8], 1)
+    v["EvalGpuBeforeNoRejectFourMax"] = (max(rec[tag("parb68", 4)].values()), 1)
+    v["EvalGpuTwoFourMid"] = (rec[tag("allb68", 4, "l2")][16], 1)
+    l4 = {k: late[tag(p, 4, x)] for k, p, x in (("reverb", "allb68", ""), ("none", "offb68", ""), ("two", "allb68", "l2"),
+                                                 ("four", "allb68", "l4"))}
+    v["EvalLateReverbMax"] = (max(l4["reverb"].values()), 2)
+    v["EvalLateNoneMax"] = (max(l4["none"].values()), 2)
+    v["EvalLateDiffMax"] = (max(l4["reverb"][c] - l4["none"][c] for c in l4["reverb"]), 2)
+    v["EvalLateTwoMid"], v["EvalLateTwoMax"] = (l4["two"][16], 1), (l4["two"][24], 1)
+    v["EvalLateFourMid"], v["EvalLateFourMax"] = (l4["four"][16], 1), (l4["four"][24], 1)
+    carrier = N16[N16.index("_"):] if "_" in N16 else ""
+    d1 = {d: rec[f"allb68d{d}{carrier}"][4] for d in (90, 100, 110, 120, 130)}
+    d4 = {d: rec[f"allb68g4d{d}{carrier}"][16] for d in (90, 100, 110, 120, 130)}
+    v["EvalDeadlineSpread"] = (max(max(d[k] for k in (100, 110, 120, 130)) - min(d[k] for k in (100, 110, 120, 130)) for d in (d1, d4)), 1)
+    v["EvalDeadlineNineOne"], v["EvalDeadlineElevenOne"] = (d1[90], 1), (d1[110], 1)
+    v["EvalDeadlineNineFour"], v["EvalDeadlineElevenFour"] = (d4[90], 1), (d4[110], 1)
+    eff = json.load(open(f"results/server_effect{SUFFIX}.json"))
+    conv = eff["conventional"]["retx_per_100"]
+    row = lambda g, c: eff["rows"][f"{g}_{c}"]
+    v["EvalServerEvery"] = (conv / eff["rows"]["every_recovery"]["retx_per_100"], 1)
+    v["EvalServerGoodEvery"] = (eff["rows"]["every_recovery"]["goodput_gain_la"], 2)
+    for name, g, c in (("FourFew", "four", 4), ("FourEight", "four", 8), ("FourMid", "four", 16), ("FourMax", "four", 24),
+                       ("OneFew", "one", 1), ("OneTwo", "one", 2), ("OneMax", "one", 8)):
+        v[f"EvalServer{name}"] = (conv / row(g, c)["retx_per_100"], 1)
+        v[f"EvalServerGood{name}"] = (row(g, c)["goodput_gain_la"], 2)
+        v[f"EvalAvail{name}"] = (100.0 * row(g, c)["availability"], 0)
+    return v
 
 
 def main():
@@ -252,7 +356,7 @@ def main():
         "every_wait_adds_the_same_delay": bool(np.isfinite(lat["wait_delay_ms"])),
         "latency_sim_lost_equal_for_both_rules": abs(lat["wait"]["lost_pct"] - lat["select_cb5"]["lost_pct"]) < 1e-9,
     }
-    values = {**motivation(lat),
+    values = {**motivation(lat), **evaluation(lat),
         "RetxCutFullWait": (conv_retx / ours_retx, 1),
         "RetxCutNoDelay": (lat["harq_only"]["retx_per_100"] / lat["select_cb5"]["retx_per_100"], 1),
         "LostCutFullWait": (allstats["ai_and_ran"]["residual_after_all_pct"] / allstats["ours"]["residual_after_all_pct"], 1),
@@ -278,7 +382,8 @@ def main():
              "SetupSlots": f"{full['slots']:,}", "SetupTBs": f"{full['slots'] * full['users']:,}",
              "SetupTbBytes": f"{meta['tb_bytes']:,}", "SetupTransmissions": f"{full['transmissions']}",
              "SetupRetxGapMs": f"{meta['generator']['gap_ms']:.1f}",
-             "SetupEbNoLow": f"{points[0]:g}", "SetupEbNoHigh": f"{points[-1]:g}"}
+             "SetupEbNoLow": f"{points[0]:g}", "SetupEbNoHigh": f"{points[-1]:g}",
+             "SetupCarrierGhz": f"{meta['generator'].get('carrier_ghz', 2.14):g}"}
     os.makedirs(OUT, exist_ok=True)
     report = {"values": {k: v for k, (v, _) in values.items()}, "setup": setup,
               "inputs": {"retx_per_100": {"conventional": conv_retx, "reverb_full_wait": ours_retx,
