@@ -53,6 +53,7 @@ import recovery_path  # noqa: E402
 PATH = recovery_path.stats(N16)   # recovery path in the slot runtime, one cell on one GPU
 Timing.run = PATH["timeline_run_ms"]   # 99th percentile, rounded up to 0.1 ms (was a typed 6.3 ms before 2026-10-30)
 BOUND_MS, BOUND_LOW_MS, BOUND_HIGH_MS = 6.8, 6.3, 7.3   # settings of the real-time runs: latest start D - BOUND, swept range
+L1_DEADLINE_MS = 4.0   # the slot runtime counts an L1 result later than 4.0 ms after the slot as late (late_tbs)
 
 
 def stats(names, structure="ai_and_ran"):
@@ -125,7 +126,7 @@ def motivation(lat):
     v["MotTimeLargeFour"] = (large[4]["latency_ms_mean"], 1)
     v["MotRunsMin"] = (min(r["runs_per_s"] for r in large.values()), 0)
     v["MotRunsMax"] = (max(r["runs_per_s"] for r in large.values()), 0)
-    v["MotGpuTimePerSlot"] = (v["MotSlotsWithFailure"][0] / 100 * large[1]["latency_ms_mean"], 1)
+    v["MotGpuTimePerSlot"] = (v["MotSlotsWithFailure"][0] / 100 * PATH["p50_ms"], 1)   # the whole recovery path occupies the GPU
     v["MotRecoveryResultMs"] = (Timing.l1 + Timing.run, 1)
     v["MotFirstRetxMs"] = (lat["first_retx_ms"], 1)
     v["MotWaitDelayMs"] = (lat["wait_delay_ms"], 1)
@@ -231,6 +232,7 @@ def main():
     setup = {"SetupLOneMs": f"{Timing.l1:.1f}", "SetupRecoveryRunMs": f"{Timing.run:.1f}",
              "SetupRecoveryPathMs": f"{PATH['p50_ms']:.1f}", "SetupRecoveryBoundMs": f"{BOUND_MS:.1f}",
              "SetupBoundLowMs": f"{BOUND_LOW_MS:.1f}", "SetupBoundHighMs": f"{BOUND_HIGH_MS:.1f}",
+             "SetupLOneDeadlineMs": f"{L1_DEADLINE_MS:.1f}",
              "SetupRecoveryDeadlineMs": f"{Timing.deadline:.1f}", "SetupLeadMs": f"{Timing.lead:.1f}",
              "SetupSlots": f"{full['slots']:,}", "SetupTBs": f"{full['slots'] * full['users']:,}",
              "SetupTbBytes": f"{meta['tb_bytes']:,}", "SetupTransmissions": f"{full['transmissions']}",

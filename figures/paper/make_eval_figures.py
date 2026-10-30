@@ -19,8 +19,11 @@ the number above a baseline bar is its multiple of Reverb.  Every value is read 
   eval_gpu_l1            L1 blocks past their deadline with four GPUs: no recovery, Reverb, two and four recoveries at
                          once per GPU
   eval_gpu_deadline      failed TBs recovered by the recovery deadline, one GPU with 4 cells and four GPUs with 16 cells
+  eval_gpu_effect, eval_gpu_goodput   retransmission reduction and throughput under link adaptation by cells per server
+                         with only the recoveries that finish on time (results/server_effect<suffix>.json)
   eval_effect_legend, eval_delay_legend, eval_gpu_legend   legend strips
 """
+import json
 import os
 import sys
 
@@ -258,6 +261,31 @@ def gpu():
     ax.set_ylabel("Recovered (%)", fontsize=13)
     style(ax, grid="both")
     save(fig, "eval_gpu_deadline")
+
+    # server level: the trace-driven gains with only the recoveries that finish on time (src/analysis/server_effect.py)
+    eff = json.load(open(os.path.join(RES, f"server_effect{base.SUFFIX}.json")))
+    conv = eff["conventional"]["retx_per_100"]
+    every = eff["rows"]["every_recovery"]
+    for name, key, ylab, ref in (("eval_gpu_effect", "retx", "Reduction (×)", conv / every["retx_per_100"]),
+                                 ("eval_gpu_goodput", "goodput", "Throughput (×)", every["goodput_gain_la"])):
+        fig, ax = plt.subplots(figsize=PANEL4)
+        for label, gpus in (("One GPU", "one"), ("Four GPUs", "four")):
+            rows = sorted((r for k, r in eff["rows"].items() if r.get("gpus") == gpus), key=lambda r: r["cells"])
+            y = [conv / r["retx_per_100"] if key == "retx" else r["goodput_gain_la"] for r in rows]
+            ax.plot([r["cells"] for r in rows], y, color=GPUS[label], linewidth=2.4, marker="o", markersize=5)
+            ax.text(rows[-1]["cells"] + 0.6, y[-1], label, ha="left" if gpus == "one" else "right", va="bottom",
+                    fontsize=VALUE - 2, color=base.INK) if gpus == "one" else ax.text(rows[-1]["cells"], y[[r["cells"] for r in rows].index(16)] + (0.3 if key == "retx" else 0.09),
+                    label, ha="right", va="bottom", fontsize=VALUE - 2, color=base.INK)
+        ax.axhline(ref, color=REVERB, linewidth=1.6, linestyle=(0, (4, 3)), zorder=2)
+        ax.axhline(1, color=CONV, linewidth=1.2, linestyle=(0, (2, 2)), zorder=2)
+        ax.set_xticks([1, 4, 8, 12, 16, 20, 24])
+        ax.set_xlim(0, 25)
+        ax.set_ylim(0.9, 2.5 if key == "retx" else 1.4)
+        ax.set_yticks([1.0, 1.5, 2.0, 2.5] if key == "retx" else [1.0, 1.1, 1.2, 1.3, 1.4])
+        ax.set_xlabel("Cells per Server")
+        ax.set_ylabel(ylab, fontsize=13)
+        style(ax, grid="both")
+        save(fig, name)
 
     entries = [(k, SCHED[k]) for k in shown + ["Four Recoveries per GPU", "No Recovery"]]
     fig = plt.figure(figsize=(10.5, 1.0))

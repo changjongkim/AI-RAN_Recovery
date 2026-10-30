@@ -284,8 +284,9 @@ def motivation_redecode():
     # (d) GPU time per uplink slot of a macro cell: the L1, the large NRx for every slot, and only for the slots with a
     # failed TB (MotGpuTimePerSlot)
     share = slot_fail_share(runs("n3_uma_v3_cb", "n3_uma_v3_more"))
-    t = {"L1": (L1_MEDIAN_MS, CONV), "Every\nSlot": (one["large"], "#f6c9a6"),
-         "Failed\nSlots": (share * one["large"], RX["Large NRx"])}
+    path = Timing.path       # the whole recovery path occupies the GPU, not only the NRx inference
+    t = {"L1": (L1_MEDIAN_MS, CONV), "Every\nSlot": (path, "#f6c9a6"),
+         "Failed\nSlots": (share * path, RX["Large NRx"])}
     fig, ax = plt.subplots(figsize=PANEL4)
     bs = ax.bar(range(len(t)), [v for v, _ in t.values()], width=0.55, color=[c for _, c in t.values()], zorder=3)
     for b, (v, _) in zip(bs, t.values()):
@@ -322,6 +323,7 @@ import recovery_path  # noqa: E402
 class Timing:          # the timing of src/analysis/paper_numbers.py (Evaluation Setup)
     l1, deadline, lead = 1.4, 11.0, 4.0
     run = recovery_path.stats(N16)["timeline_run_ms"]   # measured recovery path, 99th percentile
+    path = recovery_path.stats(N16)["p50_ms"]           # measured recovery path, median (GPU time of one recovery)
 
 
 def motivation_delay():
@@ -383,7 +385,7 @@ def motivation_server():
     share = slot_fail_share(runs("n3_uma_v3_cb", "n3_uma_v3_more"))
     cells = np.arange(1, 25)
     fig, ax = plt.subplots(figsize=PANEL4)
-    ax.plot(cells, cells * share * lanes[0]["latency_ms_mean"] / 2.5, color=RX["Large NRx"], linewidth=2.4)
+    ax.plot(cells, cells * share * Timing.path / 2.5, color=RX["Large NRx"], linewidth=2.4)
     for label, cap in (("One GPU", 1), ("Four GPUs", 4)):
         ax.axhline(cap, color=GPUS[label], linestyle=(0, (4, 3)), linewidth=1.6, zorder=2)
         ax.text(24.5, cap + 0.25, label, ha="right", va="bottom", fontsize=VALUE - 1, color=GPUS[label])

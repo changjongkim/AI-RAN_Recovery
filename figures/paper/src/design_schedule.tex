@@ -1,15 +1,15 @@
-% Figure (Section 4.3): admission by the latest start time on one GPU.  Failed TBs 1 and 2 come from uplink slot 0,
-% TB 3 from slot 1 and TB 4 from slot 2.  Each TB can start its recovery from its L1 result until its latest start time
+% Figure (Section 4.3): rejection after the latest start time on one GPU.  A recovery decodes one slot of one cell (all
+% failed TBs of that slot): recoveries 1 and 2 are slot 0 of cells 1 and 2, recovery 3 slot 1 and recovery 4 slot 2 of cell 1.  Each TB can start its recovery from its L1 result until its latest start time
 % D - r and must finish by its deadline D (11.0 ms after its slot; the run time is drawn as the 4.3 ms of the network
-% alone to keep the example short).  In arrival order without rejection, TB 3 starts after its latest start, runs past
-% its deadline and occupies the GPU, so TB 4 also ends past its deadline: 2 of 4 TBs are recovered in time.  Reverb rejects
-% TB 3 at its latest start (its grant goes out at once) and recovers TB 4: 3 of 4 in time.  With the same deadline rule
+% alone to keep the example short).  In arrival order without rejection, recovery 3 starts after its latest start, runs past
+% its deadline and occupies the GPU, so recovery 4 also ends past its deadline: 2 of 4 in time.  Reverb rejects
+% recovery 3 at its latest start (the grants go out at once) and runs recovery 4: 3 of 4 in time.  With the same deadline rule
 % in every cell, the deadline order equals the arrival order; the difference is the rejection.  No value is printed.
 \documentclass[border=1pt]{standalone}
 \input{reverb_style}
 \begin{document}
 \begin{tikzpicture}[x=1cm, y=1cm]
-  \foreach \y/\t in {0/{TB 1, 2 (slot 0)}, -0.3/{TB 3 (slot 1)}, -0.6/{TB 4 (slot 2)}} {
+  \foreach \y/\t in {0/{Cells 1, 2: slot 0}, -0.3/{Cell 1: slot 1}, -0.6/{Cell 1: slot 2}} {
     \node[ctxrow, minimum width=2.3cm, minimum height=0.24cm] at (1.15, \y) {\t};
   }
   \node[exrow, minimum width=2.3cm, minimum height=0.44cm] at (1.15, -1.2) {Arrival order\\[-1pt]2 of 4 in time};
@@ -27,17 +27,17 @@
     \newcommand{\job}[3]{% start, lane y, label
       \node[cl, fill=nrxc, minimum width={0.585*\r cm - 0.04cm}, minimum height=0.3cm, anchor=west] at (#1 + 0.035, #2) {#3};}
     % arrival order without rejection
-    \node[key, font=\tabsize\itshape, anchor=west] at (10.0, -0.88) {TB 3 starts after its latest start and occupies the GPU};
+    \node[key, font=\tabsize\itshape, anchor=west] at (10.0, -0.88) {Recovery 3 starts after the latest start and occupies the GPU};
     \job{1.9}{-1.2}{1} \job{6.2}{-1.2}{2} \job{10.5}{-1.2}{3} \job{14.8}{-1.2}{}
     \fill[pattern=north east lines, pattern color=dred] (13.5, -1.35) rectangle (14.8, -1.05);
     \fill[pattern=north east lines, pattern color=dred] (16.0, -1.35) rectangle (19.1, -1.05);
     \draw[dred, line width=1.1pt] (13.5, -1.38) -- (13.5, -1.02) (16.0, -1.38) -- (16.0, -1.02);
     \node[txt] at (15.4, -1.2) {4};
-    % Reverb: TB 3 rejected at its latest start, TB 4 in time
+    % Reverb: recovery 3 rejected at its latest start, recovery 4 in time
     \job{1.9}{-1.7}{1} \job{6.2}{-1.7}{2} \job{10.5}{-1.7}{4}
-    \node[stxt, text=dgreen, anchor=west] at (14.95, -1.7) {✓ TB 4 ends before its \vD};
+    \node[stxt, text=dgreen, anchor=west] at (14.95, -1.7) {✓ Recovery 4 ends before \vD};
     \draw[dred, line width=0.9pt, densely dashed] (9.2, -0.4) -- (9.2, -1.9);
-    \node[key, font=\tabsize\itshape, anchor=west] at (9.1, -2.02) {✗ TB 3 rejected at its latest start: grant at once};
+    \node[key, font=\tabsize\itshape, anchor=west] at (9.1, -2.02) {✗ Recovery 3 rejected at the latest start: grants at once};
   \end{scope}
   \node[stxt, anchor=north west] at (0, -2.2) {\tikz[baseline=-0.6ex]{\fill[black] (0,0) circle (0.045);}\,L1 result\enspace
     \tikz[baseline=-0.6ex]{\fill[black!18] (0,-0.065) rectangle (0.3,0.065);}\,Can start\enspace
