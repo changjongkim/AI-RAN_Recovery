@@ -206,9 +206,23 @@ def effect(avail):
         a_fix, a_la = matched(avail, g, c, lf), matched(avail, g, c, ll)
         rows[f"{g}_{c}"] = {**v, "load_fixed": lf, "load_la": ll, "availability_fixed": a_fix, "availability_la": a_la,
                             **run(a_fix, a_la), "unmatched": run(v["availability"], v["availability"])}
+    # check of a single share for all TBs: the share of each Eb/No point of the real-time runs (scaled to the load-matched
+    # share) applied to the TBs of that point, against one share for every TB
+    pts = np.concatenate([np.repeat(np.load(f)["point"], np.load(f)["conv_t0"].shape[1]) for s_ in pn.MACRO_SETS
+                          for f in sorted(glob.glob(f"results/{s_}{SUFFIX}/c*.npz"))])
+    pts_la = tab[ladder[0]]["point"]
+    strat = {}
+    for g, c in (("four", 8), ("four", 16), ("one", 2)):
+        rw = rows[f"{g}_{c}"]
+        by = {float(e): x for e, x in avail[(g, c)]["availability_by_esno"].items()}
+        scale = lambda a_m: (lambda pv: np.array([min(1.0, a_m * by.get(float(q), rw["availability"]) / rw["availability"]) for q in pv]))
+        r_s = run(scale(rw["availability_fixed"])(pts), scale(rw["availability_la"])(pts_la))
+        strat[f"{g}_{c}"] = {"retx_per_100": r_s["retx_per_100"], "goodput_gain_la": r_s["goodput_gain_la"],
+                             "single_retx_per_100": rw["retx_per_100"], "single_goodput_gain_la": rw["goodput_gain_la"]}
     loads = {"recovery_runs_per_tb_fixed_mcs14": load_fixed, "recovery_runs_per_tb_la": load_la,
              "recovery_runs_per_tb_la_by_snr": dict(zip([f"{q:g}" for q in points], la_runs)),
              "first_failures_per_tb_fixed_mcs14": float((~conv).mean())}
+    loads["by_esno_check"] = strat
     return base, rows, loads
 
 

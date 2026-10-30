@@ -38,11 +38,61 @@
      "select_cb5": 93.2506384531193,
      "wait": 93.2506384531193
     },
+    "first_only": {
+     "lost_pct": 1.9287109375,
+     "retx_per_100": 11.8408203125
+    },
     "first_retx_ms": 9.4,
     "harq_only": {
      "lost_pct": 2.1826171875,
      "retx_per_100": 20.947265625,
      "tbs": 20480
+    },
+    "k_sweep": {
+     "0": {
+      "retx_per_100": 16.708984375,
+      "share_min_diff_pp": 0.0
+     },
+     "1": {
+      "retx_per_100": 16.2109375,
+      "share_min_diff_pp": 0.0
+     },
+     "2": {
+      "retx_per_100": 15.8740234375,
+      "share_min_diff_pp": 0.0
+     },
+     "3": {
+      "retx_per_100": 15.6103515625,
+      "share_min_diff_pp": 0.0
+     },
+     "4": {
+      "retx_per_100": 15.3759765625,
+      "share_min_diff_pp": 0.0
+     },
+     "5": {
+      "retx_per_100": 15.15625,
+      "share_min_diff_pp": 0.0
+     },
+     "6": {
+      "retx_per_100": 15.009765625,
+      "share_min_diff_pp": 0.0
+     },
+     "7": {
+      "retx_per_100": 14.8193359375,
+      "share_min_diff_pp": 0.0
+     },
+     "8": {
+      "retx_per_100": 14.62890625,
+      "share_min_diff_pp": 0.0
+     },
+     "9": {
+      "retx_per_100": 14.4189453125,
+      "share_min_diff_pp": 0.0
+     },
+     "10": {
+      "retx_per_100": 9.1064453125,
+      "share_min_diff_pp": -8.13571689164538
+     }
     },
     "later_next_retx_pct": [
      38.81373569198751,
@@ -55,6 +105,10 @@
     ],
     "neutral_waiting_recovered_pct": 96.07250755287009,
     "neutral_waits_pct_of_failed": 12.075884713608172,
+    "parallel": {
+     "lost_pct": 0.9033203125,
+     "retx_per_100": 19.912109375
+    },
     "select_cb5": {
      "added_delay_ms_max": 10.0,
      "earlier_pct_of_failed": 72.52827435242612,
@@ -104,6 +158,19 @@
   "SetupTransmissions": "4"
  },
  "values": {
+  "AblConvLost": 2.1826171875,
+  "AblFirstOnlyLost": 1.9287109375,
+  "AblFirstOnlyRetx": 11.8408203125,
+  "AblFullWaitLost": 0.9033203125,
+  "AblParallelCut": 1.0519862677783227,
+  "AblParallelRetx": 19.912109375,
+  "AblSelNoneBest": 9.35546875,
+  "AblSelNonePub": 9.35546875,
+  "AblSelNoneTrained": 10.830078125,
+  "AblSelTenBest": 11.42578125,
+  "AblSelTenPub": 18.017578125,
+  "AblSelTenTrained": 11.42578125,
+  "EvalAiCompletedLateMax": 0.5249343832020994,
   "EvalAiKeepHigh": 93.32764262341729,
   "EvalAiKeepLow": 63.896947597305285,
   "EvalAiLateMax": 0.13655462184873948,
@@ -112,6 +179,8 @@
   "EvalAiRecFourMidEight": 16.355796229442436,
   "EvalAiRecFourMidNone": 23.2,
   "EvalAiRejectMax": 8.661417322834646,
+  "EvalAiRequestsHigh": 381,
+  "EvalAiRequestsLow": 63,
   "EvalAiSeconds": 6,
   "EvalAiSloLow": 90.81364829396325,
   "EvalAiSloLowFour": 95.2153110047847,
@@ -140,10 +209,12 @@
   "EvalDelayConvFinalPct": 83.69208318132068,
   "EvalDelayRecoveredPct": 56.80408609996352,
   "EvalDelayReverbFinalPct": 93.2506384531193,
+  "EvalGpuBeforeFourMidAbs": 12.8,
   "EvalGpuBeforeNoRejectFourMax": 6.35,
   "EvalGpuFourFew": 50.974999999999994,
   "EvalGpuFourMax": 14.499999999999998,
   "EvalGpuFourMid": 23.2,
+  "EvalGpuNoRejectFourMidAbs": 7.1,
   "EvalGpuOneFew": 44.375,
   "EvalGpuOneMax": 9.075,
   "EvalGpuOneMid": 19.825,
@@ -190,6 +261,11 @@
   "EvalIciSmallTwentyIrc": 6.0546875,
   "EvalIciSmallTwentyOursIrc": 5.859375,
   "EvalIciSmallTwentyTrained": 9.977213541666666,
+  "EvalKCutHigh": 1.4527599051811717,
+  "EvalKCutLow": 1.2536528345996494,
+  "EvalKMax": 9,
+  "EvalKRetxHigh": 16.708984375,
+  "EvalKRetxLow": 14.4189453125,
   "EvalLaAiMacroHigh": 1.3098401897984566,
   "EvalLaAiMacroLow": 1.0729031246298455,
   "EvalLaAiSmallHigh": 1.0276806515685815,
@@ -203,13 +279,22 @@
   "EvalLaRetxReverb": 13.005555555555556,
   "EvalLaSmallHigh": 1.1841786634066434,
   "EvalLaSmallLow": 1.0277267327665116,
+  "EvalLateBeforeMid": 0.08249999999999999,
   "EvalLateDiffMax": 0.08124999999999999,
   "EvalLateFourMax": 74.97200000000001,
   "EvalLateFourMid": 59.1675,
+  "EvalLateNoRejectMid": 0.0775,
   "EvalLateNoneMax": 0.042,
+  "EvalLateNoneMid": 0.025,
   "EvalLateReverbMax": 0.11574999999999999,
+  "EvalLateReverbMid": 0.06375,
   "EvalLateTwoMax": 45.613,
   "EvalLateTwoMid": 8.7865,
+  "EvalLoadCheckFailPct": 17.29377844887955,
+  "EvalLoadCheckLoadHigh": 1.3690160115974135,
+  "EvalLoadCheckLoadLow": 1.2491977912791359,
+  "EvalLoadCheckMaxPp": 6.540619135983217,
+  "EvalLoadCheckMinPp": 0.9307395726381118,
   "EvalLoadFixed": 1.4932506384531192,
   "EvalLoadLa": 1.7764719553555743,
   "EvalLoadRetxPct": 49.325063845311924,
@@ -231,7 +316,7 @@
   "EvalPairBestReverbHighMacro": 8.193359375,
   "EvalPairBestReverbHighSmall": 11.46484375,
   "EvalPairBestReverbLowMacro": 7.724609375,
-  "EvalPairBestReverbLowSmall": 11.435546875,
+  "EvalPairBestReverbLowSmall": 11.083984375,
   "EvalPairCandMacro": 16,
   "EvalPairCandSmall": 32,
   "EvalPairCutAiMacro": 1.104144527098831,
@@ -299,6 +384,7 @@
   "EvalSpeedMacroFast": 2.2362493452069145,
   "EvalSpeedMax": 120,
   "EvalSpeedSmallFast": 1.3014705882352942,
+  "EvalStratDiffPct": 0.07209805335255948,
   "EvalUsersEightFourFail": 19.140625,
   "EvalUsersEightFourKbest": 44.5578231292517,
   "EvalUsersEightFourTrue": 89.68253968253968,

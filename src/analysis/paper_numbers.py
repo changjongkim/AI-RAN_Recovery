@@ -231,6 +231,21 @@ def latency_policies():
     out["delivered_final_pct"] = {p: float(100.0 * (fail & np.isfinite(dones[p])).sum() / fail.sum()) for p in dones}
     out["neutral_waits_pct_of_failed"] = float(100.0 * cand[fail].mean())
     out["neutral_waiting_recovered_pct"] = float(100.0 * rec[fail & cand].mean())
+    # Recovery Gate with K = 0..10 failed code blocks at the first transmission (waits at every retransmission)
+    cb = np.concatenate([np.load(f)["cbfail_t0"].reshape(-1) for s_ in MACRO_SETS for f in sorted(glob.glob(f"results/{s_}{SUFFIX}/c*.npz"))])
+    ksweep = {}
+    for k in range(0, 11):
+        dk, txk = simulate(conv, rec, steps, (cb >= 0) & (cb <= k), "select_cb5", "DDDSU", Timing, l1_steps=conv_steps)
+        at = np.unique(np.concatenate([[0.0], d0[fail & np.isfinite(d0)], dk[fail & np.isfinite(dk)]]))
+        ksweep[k] = {"retx_per_100": float(100.0 * (txk - 1).sum() / len(txk)),
+                     "share_min_diff_pp": float((delivered_share(dk, fail, at) - delivered_share(d0, fail, at)).min())}
+    out["k_sweep"] = ksweep
+    # the same recoveries without the decision: every failed TB receives the grant at the L1 result (parallel)
+    dp, txp = simulate(conv, rec, steps, cand, "parallel", "DDDSU", Timing, l1_steps=conv_steps)
+    out["parallel"] = {"retx_per_100": float(100.0 * (txp - 1).sum() / len(txp)), "lost_pct": float(100.0 * (~np.isfinite(dp)).mean())}
+    # Full Wait with the first recovery only (no NRx decode of a retransmission)
+    df, txf = simulate(conv, rec, conv_steps, cand, "wait", "DDDSU", Timing, l1_steps=conv_steps)
+    out["first_only"] = {"retx_per_100": float(100.0 * (txf - 1).sum() / len(txf)), "lost_pct": float(100.0 * (~np.isfinite(df)).mean())}
     out["first_retx_ms"] = float(d0[fail & np.isfinite(d0)].min())   # the first retransmission is decoded
     # one wait moves the next retransmission by this much, at the first transmission and at every retransmission
     ul = uplink_times("DDDSU", 300.0)
@@ -301,6 +316,19 @@ def evaluation(lat):
     v["EvalRetxFullWait"] = (lat["wait"]["retx_per_100"], 1)
     v["EvalRetxNeutral"] = (lat["select_cb5"]["retx_per_100"], 1)
     v["EvalNeutralWaitPct"] = (lat["neutral_waits_pct_of_failed"], 0)
+    conv100 = lat["harq_only"]["retx_per_100"]
+    keep_k = [k for k, x in lat["k_sweep"].items() if x["share_min_diff_pp"] >= 0.0]
+    cuts = [conv100 / lat["k_sweep"][k]["retx_per_100"] for k in keep_k]
+    v["EvalKMax"] = (max(keep_k), 0)
+    v["EvalKCutLow"], v["EvalKCutHigh"] = (min(cuts), 2), (max(cuts), 2)
+    v["EvalKRetxLow"] = (min(lat["k_sweep"][k]["retx_per_100"] for k in keep_k), 1)
+    v["EvalKRetxHigh"] = (max(lat["k_sweep"][k]["retx_per_100"] for k in keep_k), 1)
+    v["AblParallelRetx"] = (lat["parallel"]["retx_per_100"], 1)
+    v["AblParallelCut"] = (conv100 / lat["parallel"]["retx_per_100"], 2)
+    v["AblFirstOnlyRetx"] = (lat["first_only"]["retx_per_100"], 1)
+    v["AblFirstOnlyLost"] = (lat["first_only"]["lost_pct"], 2)
+    v["AblFullWaitLost"] = (lat["wait"]["lost_pct"], 2)
+    v["AblConvLost"] = (lat["harq_only"]["lost_pct"], 2)
     v["EvalNeutralWaitRecPct"] = (lat["neutral_waiting_recovered_pct"], 0)
     # link adaptation (Figure 13 c, d)
     for cell, run in (("Macro", "n6_uma_v3"), ("Small", "n6_umi_v3")):
@@ -329,12 +357,17 @@ def evaluation(lat):
         v[f"EvalGpuVs{name}OneMid"], v[f"EvalGpuVs{name}OneMax"] = (r1[4] / b1[4], 1), (r1[8] / b1[8], 1)
     v["EvalGpuBeforeNoRejectFourMax"] = (max(rec[tag("parb68", 4)].values()), 1)
     v["EvalGpuTwoFourMid"] = (rec[tag("allb68", 4, "l2")][16], 1)
+    v["EvalGpuNoRejectFourMidAbs"] = (rec[tag("allb68", 4, "admit0")][16], 1)
+    v["EvalGpuBeforeFourMidAbs"] = (rec[tag("parab68", 4)][16], 1)
     l4 = {k: late[tag(p, 4, x)] for k, p, x in (("reverb", "allb68", ""), ("none", "offb68", ""), ("two", "allb68", "l2"),
                                                  ("four", "allb68", "l4"))}
     v["EvalLateReverbMax"] = (max(l4["reverb"].values()), 2)
     v["EvalLateNoneMax"] = (max(l4["none"].values()), 2)
     v["EvalLateDiffMax"] = (max(l4["reverb"][c] - l4["none"][c] for c in l4["reverb"]), 2)
     v["EvalLateTwoMid"], v["EvalLateTwoMax"] = (l4["two"][16], 1), (l4["two"][24], 1)
+    v["EvalLateReverbMid"], v["EvalLateNoneMid"] = (l4["reverb"][16], 2), (l4["none"][16], 2)
+    v["EvalLateNoRejectMid"] = (late[tag("allb68", 4, "admit0")][16], 2)
+    v["EvalLateBeforeMid"] = (late[tag("parab68", 4)][16], 2)
     v["EvalLateFourMid"], v["EvalLateFourMax"] = (l4["four"][16], 1), (l4["four"][24], 1)
     carrier = N16[N16.index("_"):] if "_" in N16 else ""
     d1 = {d: rec[f"allb68d{d}{carrier}"][4] for d in (90, 100, 110, 120, 130)}
@@ -353,8 +386,15 @@ def evaluation(lat):
     spread = [100.0 * (max(r["availability_by_esno"].values()) - min(r["availability_by_esno"].values()))
               for k, r in eff["rows"].items() if k.startswith("four_")]
     v["EvalOnTimeEsnoSpread"] = (max(spread), 0)
+    st = ld.get("by_esno_check", {})
+    if st:
+        v["EvalStratDiffPct"] = (max(100.0 * abs(x["retx_per_100"] - x["single_retx_per_100"]) / x["single_retx_per_100"]
+                                     for x in st.values()), 1)
     chk = eff.get("load_matching_check", {})
     if chk:
+        v["EvalLoadCheckMinPp"] = (min(100.0 * (c["measured"] - c["predicted"]) for c in chk.values()), 0)
+        v["EvalLoadCheckLoadLow"] = (min(c["load"] for c in chk.values()), 1)
+        v["EvalLoadCheckLoadHigh"] = (max(c["load"] for c in chk.values()), 1)
         v["EvalLoadCheckMaxPp"] = (max(100.0 * abs(c["measured"] - c["predicted"]) for c in chk.values()), 0)
         v["EvalLoadCheckFailPct"] = (100.0 * float(np.mean([c["failed_per_tb"] for c in chk.values()])), 1)
     v["EvalServerGoodEvery"] = (eff["rows"]["every_recovery"]["goodput_gain_la"], 2)
@@ -395,6 +435,17 @@ def evaluation_more():
     v["EvalAiRejectMax"] = (max(r["ai_rejected_pct"] for r in allrec), 1)
     v["EvalAiTtftOffMax"] = (max(r["ai_ttft_p99_ms"] for r in rows.values() if r["policy"] == "off"), 0)
     v["EvalAiTtftMax"] = (max(r["ai_ttft_p99_ms"] for r in allrec), 0)
+    v["EvalAiRequestsLow"] = (min(r["ai_requests"] for r in rows.values()), 0)
+    v["EvalAiRequestsHigh"] = (max(r["ai_requests"] for r in rows.values()), 0)
+    v["EvalAiCompletedLateMax"] = (max(100.0 - r["ai_within_slo_pct"] - r["ai_rejected_pct"] for r in allrec), 1)
+    # Receiver Selector at fixed levels: no interference (irc_uma_v3 for the NRx trained without interference, the
+    # same slots as ici_uma_v3_iciaware for the NRx trained with it) and 10 dB
+    none_pub = stats(["irc_uma_v3"], "ours")["resends_per_100"]
+    none_trained = stats(["ici_uma_v3_iciaware"], "ours")["resends_per_100"]
+    ten_pub, ten_trained = stats(["ici_uma_inr10"], "ours")["resends_per_100"], stats(["ici_uma_inr10_iciaware"], "ours")["resends_per_100"]
+    v["AblSelNonePub"], v["AblSelNoneTrained"] = (none_pub, 1), (none_trained, 1)
+    v["AblSelTenPub"], v["AblSelTenTrained"] = (ten_pub, 1), (ten_trained, 1)
+    v["AblSelNoneBest"], v["AblSelTenBest"] = (min(none_pub, none_trained), 1), (min(ten_pub, ten_trained), 1)
     # inter-cell interference: macro and small cells, 10 dB (two users of neighbor cells) and 20 dB with two users
     def load(n):
         f = f"results/{n}{SUFFIX}.json"
