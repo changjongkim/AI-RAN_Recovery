@@ -18,7 +18,8 @@ beyond L1 + run.  The *_cut variants reject at the L1 result with the median run
 the decode time of the first retransmission (U_s + slot + L1): every other slot receives its grant at the L1 result,
 and its recovery is not counted (a lower bound); a slot admitted but rejected at its latest start still receives its
 grant at the latest start.  at_arrival_cut_runtime takes the same split from the slot runtime with the rejection at
-the L1 result (N30, n30_summary.py: the predicted end the controller recorded and the measured end), when those runs exist.
+the L1 result (N30, n30_summary.py: the predicted end the controller recorded and the measured end), when those runs exist;
+at_arrival_runtime is the rejection at the L1 result alone (every admitted slot waits, no CUT_MS), from the same runs.
 usage: RESULT_SUFFIX=_f35 N16_SUFFIX=d110_f35 delay_under_load.py [OUT.json]       (from the repository root)"""
 import glob
 import json
@@ -119,14 +120,15 @@ def main():
                 near = min(measured, key=lambda m: abs(m - x))
                 if (gpus, near) not in cache:
                     cache[(gpus, near)] = (completion_times(tags[gpus], near), ar.wait_split(tags[gpus], near, cut_ms),
-                                           n30_summary.wait_split(gpus, near, cut_ms))
-                times, split, split_rt = cache[(gpus, near)]
+                                           n30_summary.wait_split(gpus, near, cut_ms), n30_summary.wait_split(gpus, near, np.inf))
+                times, split, split_rt, split_all = cache[(gpus, near)]
                 row[rule] = {"share": share, "times_from_cells": near, "end_p50_ms": float(np.median(times)),
                              **{k: run(pol, share, candidate, t) for k, t in reject_times.items()},
                              **{k + "_measured": run(pol, share, candidate, t, times) for k, t in reject_times.items()},
                              "at_arrival_cut": run_cut(pol, share, candidate, split)}
                 if split_rt is not None and len(split_rt["wait_end_ms"]):
                     row[rule]["at_arrival_cut_runtime"] = run_cut(pol, share, candidate, split_rt)
+                    row[rule]["at_arrival_runtime"] = run_cut(pol, share, candidate, split_all)
             out[f"{gpus}_{c}"] = row
             print(f"{gpus:4s} {c:2d} cells | " + " | ".join(
                 f"{rule} share {v['share']:.2f}: latest {v['at_latest_start']['min_diff_pp']:+.2f} pp, "

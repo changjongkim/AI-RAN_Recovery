@@ -19,6 +19,11 @@
     "min_diff_pp": -14.775629332360452,
     "retx_cut": 1.3269409217445098
    },
+   "at_arrival_runtime": {
+    "min_diff_pp": -19.518423932871215,
+    "retx_cut": 1.3265306122448979,
+    "wait_share": 0.3745828019332923
+   },
    "at_latest_start": {
     "min_diff_pp": -42.90404961692813,
     "retx_cut": 1.3269409217445098
@@ -49,6 +54,11 @@
    "at_arrival_measured": {
     "min_diff_pp": -0.9850419554906935,
     "retx_cut": 1.3095238095238095
+   },
+   "at_arrival_runtime": {
+    "min_diff_pp": -1.5687705217074068,
+    "retx_cut": 1.3047445255474452,
+    "wait_share": 0.8188879469409004
    },
    "at_latest_start": {
     "min_diff_pp": -2.444363371032466,
@@ -83,6 +93,11 @@
     "min_diff_pp": -11.41919007661437,
     "retx_cut": 1.2023542600896862
    },
+   "at_arrival_runtime": {
+    "min_diff_pp": -17.913170375775266,
+    "retx_cut": 1.2023542600896862,
+    "wait_share": 0.26197455365919275
+   },
    "at_latest_start": {
     "min_diff_pp": -50.01824151769427,
     "retx_cut": 1.2023542600896862
@@ -113,6 +128,11 @@
    "at_arrival_measured": {
     "min_diff_pp": -2.699744618752291,
     "retx_cut": 1.2540192926045015
+   },
+   "at_arrival_runtime": {
+    "min_diff_pp": -3.0280919372491795,
+    "retx_cut": 1.2547528517110267,
+    "wait_share": 0.6900086042761895
    },
    "at_latest_start": {
     "min_diff_pp": -4.377964246625318,
@@ -147,6 +167,11 @@
     "min_diff_pp": -9.157241882524623,
     "retx_cut": 1.1635475996745321
    },
+   "at_arrival_runtime": {
+    "min_diff_pp": -14.958044509303171,
+    "retx_cut": 1.1635475996745321,
+    "wait_share": 0.20957964292735423
+   },
    "at_latest_start": {
     "min_diff_pp": -52.64502006566946,
     "retx_cut": 1.1635475996745321
@@ -177,6 +202,11 @@
    "at_arrival_measured": {
     "min_diff_pp": -2.334914264866839,
     "retx_cut": 1.2020173718128326
+   },
+   "at_arrival_runtime": {
+    "min_diff_pp": -2.6632615833637345,
+    "retx_cut": 1.2030286034772855,
+    "wait_share": 0.5519650464817135
    },
    "at_latest_start": {
     "min_diff_pp": -6.0197008391098095,
@@ -211,6 +241,11 @@
     "min_diff_pp": -7.406056183874497,
     "retx_cut": 1.1343204653622423
    },
+   "at_arrival_runtime": {
+    "min_diff_pp": -13.27982488143013,
+    "retx_cut": 1.1343204653622423,
+    "wait_share": 0.17464970243946182
+   },
    "at_latest_start": {
     "min_diff_pp": -54.761036118205034,
     "retx_cut": 1.1343204653622423
@@ -241,6 +276,11 @@
    "at_arrival_measured": {
     "min_diff_pp": -2.6632615833637345,
     "retx_cut": 1.170532060027285
+   },
+   "at_arrival_runtime": {
+    "min_diff_pp": -2.99160890186063,
+    "retx_cut": 1.169255928045789,
+    "wait_share": 0.4598816294818369
    },
    "at_latest_start": {
     "min_diff_pp": -6.712878511492157,
@@ -275,6 +315,11 @@
     "min_diff_pp": -11.601605253557096,
     "retx_cut": 2.0457796852646637
    },
+   "at_arrival_runtime": {
+    "min_diff_pp": -14.118934695366654,
+    "retx_cut": 2.0207253886010363,
+    "wait_share": 0.8744146136777512
+   },
    "at_latest_start": {
     "min_diff_pp": -14.556731120029184,
     "retx_cut": 2.0457796852646637
@@ -305,6 +350,11 @@
    "at_arrival_measured": {
     "min_diff_pp": -0.4742794600510791,
     "retx_cut": 1.368421052631579
+   },
+   "at_arrival_runtime": {
+    "min_diff_pp": -0.5107624954396215,
+    "retx_cut": 1.368421052631579,
+    "wait_share": 0.9702429654411344
    },
    "at_latest_start": {
     "min_diff_pp": -0.8026267785479746,
@@ -339,6 +389,11 @@
     "min_diff_pp": -13.717621306092667,
     "retx_cut": 1.5256045519203414
    },
+   "at_arrival_runtime": {
+    "min_diff_pp": -17.147026632615834,
+    "retx_cut": 1.5261472785485592,
+    "wait_share": 0.5627402271981263
+   },
    "at_latest_start": {
     "min_diff_pp": -33.49142648668369,
     "retx_cut": 1.5256045519203414
@@ -369,6 +424,11 @@
    "at_arrival_measured": {
     "min_diff_pp": -0.4742794600510791,
     "retx_cut": 1.352032776552159
+   },
+   "at_arrival_runtime": {
+    "min_diff_pp": -0.6202116016052486,
+    "retx_cut": 1.352032776552159,
+    "wait_share": 0.9299161037953995
    },
    "at_latest_start": {
     "min_diff_pp": -1.2404232032105043,
@@ -403,6 +463,11 @@
     "min_diff_pp": -14.666180226194818,
     "retx_cut": 1.8017639647207055
    },
+   "at_arrival_runtime": {
+    "min_diff_pp": -17.621306092666906,
+    "retx_cut": 1.808600337268128,
+    "wait_share": 0.7526251373681
+   },
    "at_latest_start": {
     "min_diff_pp": -21.92630426851514,
     "retx_cut": 1.8017639647207055
@@ -433,6 +498,11 @@
    "at_arrival_measured": {
     "min_diff_pp": -2.334914264866832,
     "retx_cut": 1.3335405657444825
+   },
+   "at_arrival_runtime": {
+    "min_diff_pp": -3.2469901495804407,
+    "retx_cut": 1.3360323886639676,
+    "wait_share": 0.8996350089267169
    },
    "at_latest_start": {
     "min_diff_pp": -1.8241517694272176,
@@ -467,6 +537,11 @@
     "min_diff_pp": -5.253557095950384,
     "retx_cut": 1.4195896757114495
    },
+   "at_arrival_runtime": {
+    "min_diff_pp": -6.0197008391098095,
+    "retx_cut": 1.420059582919563,
+    "wait_share": 0.46694010800157226
+   },
    "at_latest_start": {
     "min_diff_pp": -38.08828894564027,
     "retx_cut": 1.4195896757114495
@@ -497,6 +572,11 @@
    "at_arrival_measured": {
     "min_diff_pp": -2.2619481940897472,
     "retx_cut": 1.3091241989624656
+   },
+   "at_arrival_runtime": {
+    "min_diff_pp": -2.8456767603064534,
+    "retx_cut": 1.311124694376528,
+    "wait_share": 0.8332409816518201
    },
    "at_latest_start": {
     "min_diff_pp": -2.4808464064210156,
@@ -531,6 +611,11 @@
     "min_diff_pp": -7.479022254651582,
     "retx_cut": 1.2906137184115523
    },
+   "at_arrival_runtime": {
+    "min_diff_pp": -7.989784750091204,
+    "retx_cut": 1.2906137184115523,
+    "wait_share": 0.34354901499113666
+   },
    "at_latest_start": {
     "min_diff_pp": -44.728201386355344,
     "retx_cut": 1.2906137184115523
@@ -561,6 +646,11 @@
    "at_arrival_measured": {
     "min_diff_pp": -0.5837285662167062,
     "retx_cut": 1.2391681109185442
+   },
+   "at_arrival_runtime": {
+    "min_diff_pp": -0.5472455308281639,
+    "retx_cut": 1.2391681109185442,
+    "wait_share": 0.6458435663777833
    },
    "at_latest_start": {
     "min_diff_pp": -4.815760671287848,
@@ -595,6 +685,11 @@
     "min_diff_pp": -8.537030280919367,
     "retx_cut": 1.1919977771603223
    },
+   "at_arrival_runtime": {
+    "min_diff_pp": -9.740970448741336,
+    "retx_cut": 1.1896838602329451,
+    "wait_share": 0.24621096507596638
+   },
    "at_latest_start": {
     "min_diff_pp": -50.67493615468807,
     "retx_cut": 1.1919977771603223
@@ -625,6 +720,11 @@
    "at_arrival_measured": {
     "min_diff_pp": -0.5837285662167062,
     "retx_cut": 1.1959855032060218
+   },
+   "at_arrival_runtime": {
+    "min_diff_pp": -0.5107624954396215,
+    "retx_cut": 1.1959855032060218,
+    "wait_share": 0.5370766252268641
    },
    "at_latest_start": {
     "min_diff_pp": -6.092666909886901,
@@ -659,6 +759,11 @@
     "min_diff_pp": -8.245165997811014,
     "retx_cut": 1.1189358372456963
    },
+   "at_arrival_runtime": {
+    "min_diff_pp": -10.397665085735134,
+    "retx_cut": 1.11864406779661,
+    "wait_share": 0.1546867606961951
+   },
    "at_latest_start": {
     "min_diff_pp": -55.81904414447282,
     "retx_cut": 1.1189358372456963
@@ -689,6 +794,11 @@
    "at_arrival_measured": {
     "min_diff_pp": -1.13097409704487,
     "retx_cut": 1.147979662831148
+   },
+   "at_arrival_runtime": {
+    "min_diff_pp": -1.3498723093761384,
+    "retx_cut": 1.1473656057769457,
+    "wait_share": 0.40326767215234066
    },
    "at_latest_start": {
     "min_diff_pp": -7.551988325428674,
@@ -723,6 +833,11 @@
     "min_diff_pp": -6.749361546880699,
     "retx_cut": 1.0902160101651843
    },
+   "at_arrival_runtime": {
+    "min_diff_pp": -7.953301714702661,
+    "retx_cut": 1.0899390243902438,
+    "wait_share": 0.11601507052214634
+   },
    "at_latest_start": {
     "min_diff_pp": -57.64319591390004,
     "retx_cut": 1.0902160101651843
@@ -753,6 +868,11 @@
    "at_arrival_measured": {
     "min_diff_pp": -0.839109813936517,
     "retx_cut": 1.11284046692607
+   },
+   "at_arrival_runtime": {
+    "min_diff_pp": -1.13097409704487,
+    "retx_cut": 1.1122634171635986,
+    "wait_share": 0.31693054243584196
    },
    "at_latest_start": {
     "min_diff_pp": -8.500547245530825,

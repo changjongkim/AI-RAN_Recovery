@@ -49,6 +49,7 @@ SCHED = {"Reverb": REVERB, "All TBs Before CRC": "#7b5ea7", "All TBs Before CRC,
          "No Rejection": "#3d5a80", "Two Recoveries per GPU": "#b23a6f", "Four Recoveries per GPU": "#e8a3c4",
          "No Recovery": CONV}
 N16 = base.N16 or "d110_f35"
+ARRIVAL = "arrivalpred60arrivalmargin015"   # paper_numbers.ARRIVAL: the Reverb runs of Figure 14 (a)-(c)
 CARRIER = N16[N16.index("_"):] if "_" in N16 else ""
 
 
@@ -218,7 +219,8 @@ def gpu():
         p = {"Reverb": "allb68", "All TBs Before CRC": "parab68", "All TBs Before CRC, No Rejection": "parb68",
              "No Rejection": "allb68", "Two Recoveries per GPU": "allb68", "Four Recoveries per GPU": "allb68",
              "No Recovery": "offb68"}[policy]
-        x = {"No Rejection": "admit0", "Two Recoveries per GPU": "l2", "Four Recoveries per GPU": "l4"}.get(policy, "")
+        x = {"No Rejection": "admit0", "Two Recoveries per GPU": "l2", "Four Recoveries per GPU": "l4",
+             "Reverb": ARRIVAL}.get(policy, "")      # Reverb: the rejection at the L1 result of Section 4.3
         return f"{p}{'g4' if gpus == 4 else ''}{N16}{x}"
 
     shown = ["Reverb", "All TBs Before CRC", "All TBs Before CRC, No Rejection", "No Rejection", "Two Recoveries per GPU"]

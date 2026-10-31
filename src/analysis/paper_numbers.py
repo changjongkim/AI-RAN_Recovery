@@ -25,7 +25,8 @@ Setup macros (text, Evaluation Setup): \\SetupLOneMs, \\SetupRecoveryRunMs, \\Se
   \\SetupTbBytes (TB size), \\SetupTransmissions, \\SetupRetxGapMs (channel time between transmissions), \\SetupEbNoLow
   and \\SetupEbNoHigh (Eb/No points), all read from the macro traces of results/n3_uma_v3_all.json and its chunks
   \\SetupRecoveryRunMs is the 99th percentile and \\SetupRecoveryPathMs the median of the recovery path measured in the slot
-  runtime (src/analysis/recovery_path.py); \\SetupRecoveryBoundMs, \\SetupBoundLowMs and \\SetupBoundHighMs are settings of
+  runtime (src/analysis/recovery_path.py); \\SetupRecoveryBoundMs, \\SetupArrivalMarginMs (prediction error of the rejection at
+  the L1 result), \\SetupBoundLowMs and \\SetupBoundHighMs are settings of
   the real-time runs; \\SetupCarrierGhz the carrier frequency of the channels (generator metadata, 2.14 GHz before
   the field existed).  Eval*: the values of Figures 12-14 (function evaluation, the same runs as the panels).
   NeutralLaterPct / FullWaitLaterPct: failed TBs delivered later than without recovery (Latency-Neutral,
@@ -57,6 +58,9 @@ class Timing:
 
 SUFFIX = os.environ.get("RESULT_SUFFIX", "")   # "_f35": the 3.5 GHz runs (every macro since 2026-10-29 19:30)
 N16 = os.environ.get("N16_SUFFIX", "")         # "d110_f35": GPU runtime at the 11.0 ms deadline on the 3.5 GHz slots
+# the rejection of Section 4.3 (at the L1 result, prediction error 0.15 ms; src/runtime/controller_arrival.py, N30): the
+# tag of the Reverb runs of Figure 14 (a)-(c); the deadline sweep, the AI runs and the server replay reject at the latest start
+ARRIVAL, ARRIVAL_MARGIN_MS = "arrivalpred60arrivalmargin015", 0.15
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import recovery_path  # noqa: E402
 PATH = recovery_path.stats(N16)   # recovery path in the slot runtime, one cell on one GPU
@@ -353,7 +357,10 @@ def evaluation(lat):
     # GPU (Figure 14): the real-time runs, policy tags of make_eval_figures.py
     rec, late = runtime_rows()
     tag = lambda p, g, x="": f"{p}{'g4' if g == 4 else ''}{N16}{x}"
-    r4, r1 = rec[tag("allb68", 4)], rec[tag("allb68", 1)]
+    r4, r1 = rec[tag("allb68", 4, ARRIVAL)], rec[tag("allb68", 1, ARRIVAL)]
+    # the same runs rejecting at the latest start time: the largest difference of the recovered share
+    v["EvalArrivalDiffMax"] = (max(abs(rec[tag("allb68", g, ARRIVAL)][c] - rec[tag("allb68", g)][c])
+                                   for g in (1, 4) for c in rec[tag("allb68", g, ARRIVAL)]), 1)
     v["EvalGpuFourFew"], v["EvalGpuFourMid"], v["EvalGpuFourMax"] = (r4[4], 1), (r4[16], 1), (r4[24], 1)
     v["EvalGpuOneFew"], v["EvalGpuOneMid"], v["EvalGpuOneMax"] = (r1[1], 1), (r1[4], 1), (r1[8], 1)
     for name, p, x in (("Before", "parab68", ""), ("NoReject", "allb68", "admit0")):
@@ -364,7 +371,7 @@ def evaluation(lat):
     v["EvalGpuTwoFourMid"] = (rec[tag("allb68", 4, "l2")][16], 1)
     v["EvalGpuNoRejectFourMidAbs"] = (rec[tag("allb68", 4, "admit0")][16], 1)
     v["EvalGpuBeforeFourMidAbs"] = (rec[tag("parab68", 4)][16], 1)
-    l4 = {k: late[tag(p, 4, x)] for k, p, x in (("reverb", "allb68", ""), ("none", "offb68", ""), ("two", "allb68", "l2"),
+    l4 = {k: late[tag(p, 4, x)] for k, p, x in (("reverb", "allb68", ARRIVAL), ("none", "offb68", ""), ("two", "allb68", "l2"),
                                                  ("four", "allb68", "l4"))}
     v["EvalLateReverbMax"] = (max(l4["reverb"].values()), 2)
     v["EvalLateNoneMax"] = (max(l4["none"].values()), 2)
@@ -605,7 +612,7 @@ def main():
     meta = json.loads(str(np.load(sorted(glob.glob(f"results/{MACRO_SETS[0]}{SUFFIX}/c*.npz"))[0])["meta"]))
     points = sorted(float(k) for k in full["by_point"])
     setup = {"SetupLOneMs": f"{Timing.l1:.1f}", "SetupRecoveryRunMs": f"{Timing.run:.1f}",
-             "SetupRecoveryPathMs": f"{PATH['p50_ms']:.1f}", "SetupRecoveryBoundMs": f"{BOUND_MS:.1f}",
+             "SetupRecoveryPathMs": f"{PATH['p50_ms']:.1f}", "SetupRecoveryBoundMs": f"{BOUND_MS:.1f}", "SetupArrivalMarginMs": f"{ARRIVAL_MARGIN_MS:.2f}",
              "SetupBoundLowMs": f"{BOUND_LOW_MS:.1f}", "SetupBoundHighMs": f"{BOUND_HIGH_MS:.1f}",
              "SetupLOneDeadlineMs": f"{L1_DEADLINE_MS:.1f}",
              "SetupRecoveryDeadlineMs": f"{Timing.deadline:.1f}", "SetupLeadMs": f"{Timing.lead:.1f}",
