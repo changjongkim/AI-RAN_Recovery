@@ -59,7 +59,7 @@ class Timing:
 SUFFIX = os.environ.get("RESULT_SUFFIX", "")   # "_f35": the 3.5 GHz runs (every macro since 2026-10-29 19:30)
 N16 = os.environ.get("N16_SUFFIX", "")         # "d110_f35": GPU runtime at the 11.0 ms deadline on the 3.5 GHz slots
 # the rejection of Section 4.3 (at the L1 result, prediction error 0.15 ms; src/runtime/controller_arrival.py, N30): the
-# tag of the Reverb runs of Figure 14 (a)-(c); the deadline sweep, the AI runs and the server replay reject at the latest start
+# tag of every Reverb run of Figures 14-15 (recovered share, late L1, deadline sweep, AI, server replay)
 ARRIVAL, ARRIVAL_MARGIN_MS = "arrivalpred60arrivalmargin015", 0.15
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import recovery_path  # noqa: E402
@@ -302,6 +302,16 @@ def evaluation(lat):
     fast = max(EVAL_SPEED)
     v["EvalSpeedMacroFast"], v["EvalSpeedSmallFast"] = (cut(EVAL_SPEED[fast][0]), 1), (cut(EVAL_SPEED[fast][1]), 1)
     v["EvalSpeedMax"] = (fast, 0)
+    # the channel of a retransmission later than the gap of the traces (a wait can move the retransmission up to Ur):
+    # the macro traces at 3 and 30 km/h against the same seeds with the channel 12.5 and 15.0 ms later (gap runs)
+    for name, run in (("Slow", "n3_uma_v3_cb"), ("Fast", "n3_uma_v30")):
+        v[f"EvalGap{name}Base"] = (cut([run]), 2)
+        for g, label in (("125", "Twelve"), ("150", "Fifteen")):
+            if os.path.exists(f"results/{run}_gap{g}{SUFFIX}.json"):
+                v[f"EvalGap{name}{label}"] = (cut([f"{run}_gap{g}"]), 2)
+    gaps = [(v[f"EvalGap{n}{l}"][0], v[f"EvalGap{n}Base"][0]) for n in ("Slow", "Fast") for l in ("Twelve", "Fifteen")
+            if f"EvalGap{n}{l}" in v]
+    v["EvalGapChangePct"] = (100.0 * max(abs(a / b - 1.0) for a, b in gaps), 1)
     # pairing: a random partner against the best partner by sum rate among the most candidates with a finished run
     for cell, pre in (("Macro", "p2b_uma_u"), ("Small", "p2b_u")):
         ks = [k for k in (4, 8, 16, 32) if os.path.exists(f"results/{pre}{k}_pf{SUFFIX}.json")]
@@ -358,9 +368,6 @@ def evaluation(lat):
     rec, late = runtime_rows()
     tag = lambda p, g, x="": f"{p}{'g4' if g == 4 else ''}{N16}{x}"
     r4, r1 = rec[tag("allb68", 4, ARRIVAL)], rec[tag("allb68", 1, ARRIVAL)]
-    # the same runs rejecting at the latest start time: the largest difference of the recovered share
-    v["EvalArrivalDiffMax"] = (max(abs(rec[tag("allb68", g, ARRIVAL)][c] - rec[tag("allb68", g)][c])
-                                   for g in (1, 4) for c in rec[tag("allb68", g, ARRIVAL)]), 1)
     v["EvalGpuFourFew"], v["EvalGpuFourMid"], v["EvalGpuFourMax"] = (r4[4], 1), (r4[16], 1), (r4[24], 1)
     v["EvalGpuOneFew"], v["EvalGpuOneMid"], v["EvalGpuOneMax"] = (r1[1], 1), (r1[4], 1), (r1[8], 1)
     for name, p, x in (("Before", "parab68", ""), ("NoReject", "allb68", "admit0")):
@@ -382,8 +389,8 @@ def evaluation(lat):
     v["EvalLateBeforeMid"] = (late[tag("parab68", 4)][16], 2)
     v["EvalLateFourMid"], v["EvalLateFourMax"] = (l4["four"][16], 1), (l4["four"][24], 1)
     carrier = N16[N16.index("_"):] if "_" in N16 else ""
-    d1 = {d: rec[f"allb68d{d}{carrier}"][4] for d in (90, 100, 110, 120, 130)}
-    d4 = {d: rec[f"allb68g4d{d}{carrier}"][16] for d in (90, 100, 110, 120, 130)}
+    d1 = {d: rec[f"allb68d{d}{carrier}{ARRIVAL}"][4] for d in (90, 100, 110, 120, 130)}
+    d4 = {d: rec[f"allb68g4d{d}{carrier}{ARRIVAL}"][16] for d in (90, 100, 110, 120, 130)}
     v["EvalDeadlineSpread"] = (max(max(d[k] for k in (100, 110, 120, 130)) - min(d[k] for k in (100, 110, 120, 130)) for d in (d1, d4)), 1)
     v["EvalDeadlineNineOne"], v["EvalDeadlineElevenOne"] = (d1[90], 1), (d1[110], 1)
     v["EvalDeadlineNineFour"], v["EvalDeadlineElevenFour"] = (d4[90], 1), (d4[110], 1)
@@ -440,13 +447,13 @@ def evaluation_more():
     rec, _ = runtime_rows()
     keep = []
     for g, cells in ((4, (8, 16, 24)), (1, (1, 2, 4))):
-        base = rec[f"allb68{'g4' if g == 4 else ''}{N16}"]
+        base = rec[f"allb68{'g4' if g == 4 else ''}{N16}{ARRIVAL}"]
         for r in (4, 8):
             keep += [rows[f"all_g{g}_r{r}_c{c}"]["recovered_pct"] / base[c] for c in cells]
     v["EvalAiKeepLow"], v["EvalAiKeepHigh"] = (100.0 * min(keep), 0), (100.0 * max(keep), 0)
     v["EvalAiRecFourMid"] = (rows["all_g4_r4_c16"]["recovered_pct"], 1)
     v["EvalAiRecFourMidEight"] = (rows["all_g4_r8_c16"]["recovered_pct"], 1)
-    v["EvalAiRecFourMidNone"] = (rec[f"allb68g4{N16}"][16], 1)
+    v["EvalAiRecFourMidNone"] = (rec[f"allb68g4{N16}{ARRIVAL}"][16], 1)
     allrec = [r for r in rows.values() if r["policy"] == "all"]
     v["EvalAiLateMax"] = (max(r["late_l1_pct"] for r in allrec), 2)
     v["EvalAiLateOffMax"] = (max(r["late_l1_pct"] for r in rows.values() if r["policy"] == "off"), 2)
@@ -473,7 +480,7 @@ def evaluation_more():
         f = f"results/{n}{SUFFIX}.json"
         return json.load(open(f))["all"] if os.path.exists(f) else None
     for cell, pre10, pre20 in (("Macro", "ici_uma_inr10", "i1_uma_k2_inr20"), ("Small", "ici_umi_inr10", "i1_umi_k2_inr20")):
-        for cond, pre in (("Ten", pre10), ("Twenty", pre20)):
+        for cond, pre in (("Ten", pre10), ("Twenty", pre20), ("TwentyFour", pre20.replace("_k2_", "_k4_"))):   # four neighbor users
             t, p = load(pre + "_iciaware"), load(pre)
             if t is None:
                 continue

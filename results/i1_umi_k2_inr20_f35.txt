@@ -1,0 +1,9 @@
+i1_umi_k2_inr20_f35.json: 3072 slots, 6144 TBs, similarity median 0.46, separable vs cuPHY first [5115, 5088]
+| structure | first fail % | done at BS % | resends /100 | failed after one resend % | residual % | mean tx |
+|---|---|---|---|---|---|---|
+| ai_and_ran | 17.2 | 0.0 | 28.0 | 39 | 3.16 | 1.280 |
+| ai_for_ran | 17.1 | 0.0 | 28.0 | 39 | 3.32 | 1.280 |
+| ours | 17.2 | 3.4 | 22.3 | 31 | 2.56 | 1.223 |
+| ours_conv_harq | 17.2 | 3.4 | 24.4 | 38 | 3.11 | 1.244 |
+| ai_and_ran_irc | 4.0 | 0.0 | 6.0 | 31 | 0.60 | 1.060 |
+| ours_irc | 4.0 | 0.1 | 5.9 | 30 | 0.60 | 1.059 |

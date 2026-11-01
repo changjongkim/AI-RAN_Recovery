@@ -66,7 +66,7 @@ def completion_times(tag, cells):
 def main():
     conv, rec, steps, conv_steps, cand = pn.load_traces(pn.MACRO_SETS)
     total, n, fail = len(steps), len(conv), ~conv
-    avail = se.availability()
+    avail = se.availability(se.LATEST)   # the analysis of both rejection times starts from the runs at the latest start
     d0, tx0 = simulate(conv, rec, conv_steps, cand, "harq_only", "DDDSU", pn.Timing, l1_steps=conv_steps)
     draws = [np.random.default_rng(100 + t).random(n) for t in range(total)]
     loads = {"latency_neutral": 0.082, "full_wait": 0.200}

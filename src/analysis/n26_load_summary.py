@@ -37,7 +37,7 @@ def runs_per_tb(tag):
 
 
 def main():
-    avail = se.availability()
+    avail = se.availability(se.LATEST)   # the N26 runs reject at the latest start
     base = {g: runs_per_tb(t)[1] for g, t in (("one", f"allb68{pn.N16}"), ("four", f"allb68g4{pn.N16}"))}
     out = {}
     for data, inr in DATA.items():

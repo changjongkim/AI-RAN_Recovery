@@ -364,3 +364,12 @@ N|n27_train4|100|grep -qP "^n27_train3\t0\t" queue/done || exit 1; bash exp/n27_
 N|n27_export|40|grep -qP "^n27_train4\t0\t" queue/done || exit 1; LABELS=nrx_large_f35 bash exp/n15_export.sh
 N|n1_umi_v3_cb_f35t|100|grep -qP "^n27_export\t0\t" queue/done || exit 1; CARRIER_GHZ=3.5 NRX_ENGINE=/rec/engines/nrx_large_f35_273prb_2ue.trt bash exp/harq_ir.sh n1_umi_v3_cb_f35t 40 --channel UMi --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
 N|n3_uma_v3_cb_f35t|60|grep -qP "^n27_export\t0\t" queue/done || exit 1; CARRIER_GHZ=3.5 NRX_ENGINE=/rec/engines/nrx_large_f35_273prb_2ue.trt bash exp/harq_ir.sh n3_uma_v3_cb_f35t 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8
+# 2026-11-01 eighth review: the retransmission channel at the last uplink slot allowed (Ur - Us = 7.5 ms after Us,
+# 15.0 ms after the first transmission), the bound of the slot a wait can move a retransmission to; 12.5 ms gave the
+# same reduction as 7.5 ms (2.30x at 3 km/h, 2.27x vs 2.28x at 30 km/h)
+N|n3_uma_v3_cb_gap150_f35|60|CARRIER_GHZ=3.5 bash exp/harq_ir.sh n3_uma_v3_cb_gap150_f35 20 --channel UMa --speed 0.83 --ebno 6,8,10,12 --slots 64 --batch 8 --gap-ms 15.0
+N|n3_uma_v30_gap150_f35|60|CARRIER_GHZ=3.5 bash exp/harq_ir.sh n3_uma_v30_gap150_f35 20 --channel UMa --speed 8.33 --ebno 6,8,10,12 --slots 64 --batch 8 --gap-ms 15.0
+# 2026-11-01 eighth review: Figure 18 has four users of neighbor cells at 20 dB only in macro cells; the same in small
+# cells (settings of i1_umi_k2_inr20_f35 with four interferers), with the NRx trained with and without interference
+N|i1_umi_k4_inr20_iciaware_f35|60|IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt CARRIER_GHZ=3.5 bash exp/harq_ir.sh i1_umi_k4_inr20_iciaware_f35 12 --channel UMi --speed 0.83 --ebno 26,28,30,32 --slots 64 --batch 8 --interferers 4 --inr-db 20
+N|i1_umi_k4_inr20_f35|60|IRC=1 CARRIER_GHZ=3.5 bash exp/harq_ir.sh i1_umi_k4_inr20_f35 12 --channel UMi --speed 0.83 --ebno 26,28,30,32 --slots 64 --batch 8 --interferers 4 --inr-db 20

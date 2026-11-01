@@ -48,6 +48,10 @@ import olla  # noqa: E402
 
 RAW = "/pscratch/sd/s/sgkim/kcj/airan_cloudlab/results/backstop_slot/raw"
 SUFFIX, N16 = pn.SUFFIX, pn.N16
+# the Reverb runs of the paper reject at the L1 result (Section 4.3, paper_numbers.ARRIVAL); the checks of the replay on
+# runs that reject at the latest start (MCS 16 slots, N26, N29) compare with the runs of the same rule
+REVERB = {f"allb68{N16}{pn.ARRIVAL}": "one", f"allb68g4{N16}{pn.ARRIVAL}": "four"}
+LATEST = {f"allb68{N16}": "one", f"allb68g4{N16}": "four"}
 
 
 def run_records(f):
@@ -99,7 +103,7 @@ def share(t):
 
 def availability(tags=None):
     """On-time share per (GPUs, cells), with the failure rate per TB of the runs and the share per Eb/No."""
-    tags = tags or {f"allb68{N16}": "one", f"allb68g4{N16}": "four"}
+    tags = tags or REVERB
     rows = {}
     for f in glob.glob(f"{RAW}/rec16*_c*_*_none_j*.json"):
         m = re.match(r"rec16(\w+?)s(\d+)_c(\d+)_\w+_none_j(\d+)\.json", os.path.basename(f))
@@ -294,7 +298,7 @@ def per_task_check(rows):
         d, tx = simulate(conv, rec & flags[0], st, cand, "wait", "DDDSU", pn.Timing, l1_steps=conv_steps)
         return float(100.0 * (tx - 1).sum() / len(tx)), float(100.0 * (~np.isfinite(d)).mean())
 
-    tags = {"one": f"allb68{N16}", "four": f"allb68g4{N16}"}
+    tags = {g: t for t, g in REVERB.items()}
     out = {}
     for g, c in (("four", 8), ("four", 16), ("one", 2), ("one", 4)):
         cp = int(round(c * rows[f"{g}_{c}"]["load_fixed"]))
@@ -325,7 +329,7 @@ def per_task_check(rows):
 if __name__ == "__main__":
     av = availability()
     base, rows, loads = effect(av)
-    check = check_load_matching(av)
+    check = check_load_matching(availability(LATEST))
     tasks = per_task_check(rows)
     out = sys.argv[1] if len(sys.argv) > 1 else f"results/server_effect{SUFFIX}.json"
     json.dump({"conventional": base, "rows": rows, "loads": loads, "load_matching_check": check, "per_task_check": tasks},

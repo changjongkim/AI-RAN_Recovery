@@ -3,6 +3,8 @@
 runtime).  Per (policy, GPUs, AI rate, cells), over the runs: the failed TBs recovered before the deadline, the TBs the
 L1 decodes after the L1 deadline, and the AI requests (within the SLO, rejected by admission, the 99th percentile of the
 time to first token).  The 60 s runs (tag p24000) are used when every configuration has one, else the 6 s runs.
+Reverb (all) runs with the rejection at the L1 result of Section 4.3 (tag ARRIVAL) replace those with the rejection at
+the latest start when every configuration has one.
 usage: n22_summary.py [OUT.json]       (from the repository root)"""
 import glob
 import json
@@ -13,19 +15,20 @@ import sys
 import numpy as np
 
 RAW = "/pscratch/sd/s/sgkim/kcj/airan_cloudlab/results/backstop_slot/raw"
-PAT = re.compile(r"rec22(all|off)b68(g4)?d110_f35r(\d+)m60(p\d+)?s(\d)_c(\d+)_\w+_static_j(\d+)\.json")
+ARRIVAL = "arrivalpred60arrivalmargin015"
+PAT = re.compile(r"rec22(all|off)b68(g4)?d110_f35r(\d+)m60(p\d+)?(" + ARRIVAL + r")?s(\d)_c(\d+)_\w+_static_j(\d+)\.json")
 
 
-def rows(long):
+def rows(long, arrival=False):
     out = {}
     for f in glob.glob(f"{RAW}/rec22*_static_j*.json"):
         m = PAT.match(os.path.basename(f))
-        if not m or bool(m.group(4)) != long:
+        if not m or bool(m.group(4)) != long or bool(m.group(5)) != (arrival and m.group(1) == "all"):
             continue
         d = json.load(open(f))
         a, ai = d["all"], d.get("ai", {})
         failed = a["tbs"] * (1 - a["conv_crc_pass"])
-        key = (m.group(1), 4 if m.group(2) else 1, int(m.group(3)), int(m.group(6)))
+        key = (m.group(1), 4 if m.group(2) else 1, int(m.group(3)), int(m.group(7)))
         r = out.setdefault(key, {"failed": 0.0, "on_time": 0, "tbs": 0, "late": 0, "arrived": 0, "within": 0,
                                  "rejected": 0, "ttft_p99": []})
         r["failed"] += failed
@@ -44,6 +47,10 @@ def rows(long):
 def main():
     long, short = rows(True), rows(False)
     use = long if long and set(long) >= set(short) else short
+    long_used = use is long
+    arrival = rows(long_used, True)
+    at_l1 = bool(arrival) and set(arrival) >= set(use)
+    use = arrival if at_l1 else use
     res = {}
     for (pol, g, rate, c), r in sorted(use.items()):
         res[f"{pol}_g{g}_r{rate}_c{c}"] = {
@@ -55,8 +62,9 @@ def main():
             "ai_ttft_p99_ms": float(np.max(r["ttft_p99"])) if r["ttft_p99"] else None,
             "ai_requests": r["arrived"]}
     out = sys.argv[1] if len(sys.argv) > 1 else "results/n22_summary.json"
-    json.dump({"runs": "60 s" if use is long else "6 s", "rows": res}, open(out, "w"), indent=1, sort_keys=True)
-    print("runs:", "60 s" if use is long else "6 s")
+    json.dump({"runs": "60 s" if long_used else "6 s", "rejection": "L1 result" if at_l1 else "latest start",
+               "rows": res}, open(out, "w"), indent=1, sort_keys=True)
+    print("runs:", "60 s" if long_used else "6 s", "| rejection:", "L1 result" if at_l1 else "latest start")
     for k, v in res.items():
         print(f"{k:18s} recovered {v['recovered_pct']:5.1f}%  late L1 {v['late_l1_pct']:.3f}%  AI within SLO {v['ai_within_slo_pct']:5.1f}%"
               f"  rejected {v['ai_rejected_pct']:4.1f}%  TTFT p99 {v['ai_ttft_p99_ms']}  requests {v['ai_requests']}")

@@ -4,7 +4,8 @@
 % (1) the received samples of a slot with a failed TB stay in GPU memory; (2) Recovery Gate: A and C failed at most K
 % code blocks and wait for their recovery, B failed all ten and gets its grant at once; (3) Receiver Selector: cell 2 has
 % interference above theta and uses the NRx trained with interference, cell 1 the NRx trained without it (published);
-% (4) Recovery Scheduler: one recovery per GPU, rejection after D - r; (5) each GPU decodes its TB again from the stored
+% (4) Recovery Scheduler: one recovery per GPU, rejection when the start (predicted at the L1 result, checked when a GPU
+% frees) is after D - r; (5) each GPU decodes its TB again from the stored
 % samples between the L1 slots; (6) the result goes to the L2 scheduler, which waits with the grants of A and C, schedules the
 % retransmission of B in the next uplink slot, and delivers A and C once decoded.  No measured value appears.
 \documentclass[border=1pt]{standalone}
@@ -50,12 +51,12 @@
   \draw[arr] (7.2, -1.36) -- (7.45, -1.36);
   \node[cl, fill=nrxc, minimum width=0.45cm, minimum height=0.26cm] at (7.72, -1.0) {NRx};
   \node[cl, fill=nrxt, text=white, minimum width=0.45cm, minimum height=0.26cm] at (7.72, -1.36) {NRx};
-  % scheduler (x0 = 8.3): one recovery per free GPU, rejection after the latest start
+  % scheduler (x0 = 8.3): one recovery per free GPU, rejection when the start is after the latest start
   \tbc{8.6}{-1.0}{A} \tbc{8.92}{-1.0}{C} \tbc{9.24}{-1.0}{B}
   \draw[arr] (9.45, -1.0) -- (9.75, -1.0);
   \node[txt, anchor=west] at (9.78, -1.0) {Free GPU};
   \node[txt] at (9.775, -1.36) {One recovery per GPU};
-  \node[ann, font=\tabsize\itshape] at (9.775, -1.86) {Reject after \vD\,−\,\vr};
+  \node[ann, font=\tabsize\itshape] at (9.775, -1.86) {Reject if start > \vD\,−\,\vr};
   % ------------------------------------------------------------------ L2 (existing): hold, grant, deliver
   \draw[existing] (11.65, 0) rectangle (13.9, -2.25);
   \node[ctitle] at (12.775, -0.22) {L2 Scheduler};

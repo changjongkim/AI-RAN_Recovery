@@ -46,7 +46,7 @@ def late_l1(tag, cells, steady=True):
 
 
 def main():
-    full = se.availability()
+    full = se.availability(se.LATEST)   # the N29 runs reject at the latest start
     loads = sorted({m.group(1) for f in glob.glob(f"{se.RAW}/rec16allb68*{N16}a*s*_c*_*_none_j*.json")
                     if (m := re.search(rf"{N16}(a\d+[bu])s\d", f))})
     out = {}

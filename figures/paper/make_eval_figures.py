@@ -260,7 +260,7 @@ def gpu():
     fig, ax = plt.subplots(figsize=PANEL4)
     dl = [90, 100, 110, 120, 130]
     for label, gpus, cells, ytext in (("One GPU", 1, 4, 14.5), ("Four GPUs", 4, 16, 26.5)):
-        y = [rec[f"allb68{'g4' if gpus == 4 else ''}d{d}{CARRIER}"][cells] for d in dl]
+        y = [rec[f"allb68{'g4' if gpus == 4 else ''}d{d}{CARRIER}{ARRIVAL}"][cells] for d in dl]
         ax.plot([d / 10 for d in dl], y, color=GPUS[label], linewidth=2.4, marker="o", markersize=5)
         ax.text(13.1, ytext, f"{label}, {cells} Cells", ha="right", va="center", fontsize=VALUE - 1, color=base.INK)
     ax.set_xticks([9, 10, 11, 12, 13])
@@ -414,7 +414,7 @@ def ai():
     rec, _ = runtime_rows()
     for name, g, cells in (("eval_ai_four", 4, [8, 16, 24]), ("eval_ai_one", 1, [1, 2, 4])):
         fig, ax = plt.subplots(figsize=PANEL4)
-        base_tag = f"allb68{'g4' if g == 4 else ''}{N16}"
+        base_tag = f"allb68{'g4' if g == 4 else ''}{N16}{ARRIVAL}"
         ax.plot(cells, [rec[base_tag][c] for c in cells], color=AI_RATES["No AI"], linewidth=2.6, marker="o", markersize=5)
         for label, rate in (("AI 4 Requests/s per GPU", 4), ("AI 8 Requests/s per GPU", 8)):
             ax.plot(cells, [n22[f"all_g{g}_r{rate}_c{c}"]["recovered_pct"] for c in cells], color=AI_RATES[label],
