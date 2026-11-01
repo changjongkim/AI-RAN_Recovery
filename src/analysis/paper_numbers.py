@@ -475,6 +475,17 @@ def evaluation_more():
     v["AblSelNonePub"], v["AblSelNoneTrained"] = (none_pub, 1), (none_trained, 1)
     v["AblSelTenPub"], v["AblSelTenTrained"] = (ten_pub, 1), (ten_trained, 1)
     v["AblSelNoneBest"], v["AblSelTenBest"] = (min(none_pub, none_trained), 1), (min(ten_pub, ten_trained), 1)
+    # Receiver Selector on cells with mixed interference (N19, src/analysis/selector.py): the best threshold, one NRx for
+    # every slot, and the oracle that takes for each TB whichever NRx decodes it
+    for cell, c in (("Macro", "uma"), ("Small", "umi")):
+        f = f"results/n19_{c}_selector{SUFFIX}.json"
+        if os.path.exists(f):
+            d = json.load(open(f))
+            ch = d["choices"]
+            v[f"AblSelMix{cell}"] = (ch[d["best_theta"]]["retx_cut_x"], 2)
+            v[f"AblSelMix{cell}Trained"] = (ch["trained"]["retx_cut_x"], 2)
+            v[f"AblSelMix{cell}Pub"] = (ch["published"]["retx_cut_x"], 2)
+            v[f"AblSelMix{cell}Oracle"] = (ch["oracle"]["retx_cut_x"], 2)
     # inter-cell interference: macro and small cells, 10 dB (two users of neighbor cells) and 20 dB with two users
     def load(n):
         f = f"results/{n}{SUFFIX}.json"
@@ -573,6 +584,63 @@ def receivers(disc):
     v = {"EvalRxRunsConv": (100.0 * disc["DiscRunsConv"][0], 1), "EvalRxRunsSmall": (100.0 * disc["DiscRunsSmall"][0], 1)}
     e = json.load(open(f"results/n4b_eval_s30_uma{SUFFIX}.json"))["recovers_pct_of_conventional_failures"]
     v["EvalEightRxNrx"], v["EvalEightRxKbest"], v["EvalEightRxBound"] = (e["nrx"], 0), (e["baseline_lmmse_kbest"], 0), (e["baseline_perf_csi_kbest"], 0)
+    # small cells: the same receivers on the failed TBs of an LMMSE receiver (n5_umi sets, four antennas), weighted by
+    # the failed TBs of each set as the macro sets of motivation()
+    reps = [json.load(open(f)) for f in (f"results/{n}{SUFFIX}.json" for n in ("n5_umi_v3", "n5_umi_more1", "n5_umi_more2"))
+            if os.path.exists(f)]
+    if reps:
+        w = np.array([r["fail_pct"]["baseline_lslin_lmmse"] * r["slots"] for r in reps])
+        avg = lambda k: float(np.dot(w, [r["recovers_pct_of_conventional_failures"][k] for r in reps]) / w.sum())
+        v["EvalBoundSmallNrx"], v["EvalBoundSmallTrue"] = (avg("nrx"), 0), (avg("baseline_perf_csi_kbest"), 0)
+        v["EvalBoundShareSmall"] = (100.0 * avg("nrx") / avg("baseline_perf_csi_kbest"), 0)
+    return v
+
+
+def validation():
+    """Macros of the checks of the server results (Sections 5.4, 5.6, 5.7, 5.10), from the stored summaries:
+    N26 (n26_load_summary.py: real-time runs at loads above MCS 14 against the load-matched share), N29
+    (n29_load_summary.py: cells that transmit in a part of the uplink periods), N25 (n25_la_summary.py: closed-loop link
+    adaptation in the real-time runs), N28 (n22_summary.py ai_share: the MPS share of the AI process), the delay of
+    Latency-Neutral on a loaded server (delay_under_load.py) and the same runs with the rejection at the latest start."""
+    v = {}
+    f = f"results/n26_load_summary{SUFFIX}.json"
+    if os.path.exists(f):
+        pts = [p for d in json.load(open(f)).values() for p in d["points"].values()]
+        diff = [100.0 * (p["measured"] - p["predicted"]) for p in pts]
+        v["EvalLoadAllPoints"] = (len(pts), 0)
+        v["EvalLoadAllMax"] = (max(p["load"] for p in pts), 1)
+        v["EvalLoadAllMinPp"], v["EvalLoadAllMaxPp"] = (min(diff), 1), (max(diff), 1)
+    f = f"results/n29_load_summary{SUFFIX}.json"
+    if os.path.exists(f):
+        d = json.load(open(f))
+        if d.get("rejection") == "L1 result":
+            rows = [(load, r) for load, rs in d.items() if load != "rejection" for r in rs.values() if r["gpus"] == "four"]
+            v["EvalPartialDiffMax"] = (max(abs(100.0 * (r["share"] - r["full_load_share_same_transmitting_cells"])) for _, r in rows), 1)
+            r48 = d["a25b"]["four_48"]
+            v["EvalPartialCellsMax"] = (r48["cells"], 0)
+            v["EvalPartialRetx"], v["EvalPartialGood"] = (r48["retx_cut"], 2), (r48["goodput_gain_la"], 2)
+            v["EvalPartialLateMax"] = (max(r["late_l1_pct"] for _, r in rows), 2)
+    f = "results/n25_la_summary.json"
+    if os.path.exists(f):
+        sm = json.load(open(f))["summary"]
+        if "g4_c4" in sm and "g4_c24" in sm:
+            v["EvalLaRtFourFew"], v["EvalLaRtFourMax"] = (sm["g4_c4"]["gain_mean"], 2), (sm["g4_c24"]["gain_mean"], 2)
+    n22 = json.load(open("results/n22_summary.json"))
+    if "m80" in n22.get("ai_share", {}):
+        base, m80 = n22["rows"], n22["ai_share"]["m80"]
+        keys = [k for k in m80 if k.startswith("all_g4")]
+        v["EvalAiShareRejectMax"] = (max(m80[k]["ai_rejected_pct"] for k in keys), 1)
+        v["EvalAiShareRecDiffMax"] = (max(abs(m80[k]["recovered_pct"] - base[k]["recovered_pct"]) for k in keys), 1)
+        v["EvalAiShareLateMax"] = (max(m80[k]["late_l1_pct"] for k in keys), 2)
+    rec, _ = runtime_rows()
+    tag = lambda g, x="": f"allb68{'g4' if g == 4 else ''}{N16}{x}"
+    v["EvalArrivalDiffMax"] = (max(abs(rec[tag(g, ARRIVAL)][c] - rec[tag(g)][c]) for g in (1, 4) for c in rec[tag(g, ARRIVAL)]), 1)
+    f, fm = f"results/delay_under_load{SUFFIX}.json", f"results/delay_under_load{SUFFIX}_margin015.json"
+    if os.path.exists(f) and os.path.exists(fm):
+        a, b = json.load(open(f)), json.load(open(fm))
+        v["EvalDelayLatestPp"] = (-min(r["latency_neutral"]["at_latest_start_measured"]["min_diff_pp"] for r in a.values()), 1)
+        v["EvalDelayArrivalPp"] = (-min(r["latency_neutral"]["at_arrival_runtime"]["min_diff_pp"] for r in b.values()
+                                        if "at_arrival_runtime" in r["latency_neutral"]), 1)
     return v
 
 
@@ -603,7 +671,7 @@ def main():
     disc["EvalBoundShareFour"], disc["EvalBoundShareEight"] = (100.0 * four, 0), (100.0 * eight, 0)
     checks["discussion_combination_as_on_the_conventional_l1"] = bool(abs(disc_raw["combo_retx_per_100"] - ours_retx) < 0.05)
     checks["discussion_large_decodes_every_first_tx_tb_the_real_time_nrx_decodes"] = bool(disc["DiscSmallOnlyPct"][0] == 0.0)
-    values = {**motivation(lat), **evaluation(lat), **evaluation_more(), **disc, **receivers(disc),
+    values = {**motivation(lat), **evaluation(lat), **evaluation_more(), **validation(), **disc, **receivers(disc),
         "RetxCutFullWait": (conv_retx / ours_retx, 1),
         "RetxCutNoDelay": (lat["harq_only"]["retx_per_100"] / lat["select_cb5"]["retx_per_100"], 1),
         "LostCutFullWait": (allstats["ai_and_ran"]["residual_after_all_pct"] / allstats["ours"]["residual_after_all_pct"], 1),

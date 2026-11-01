@@ -38,7 +38,7 @@ tagpol=${tagpol}a$(python3 -c "print(round(100*$act))")$m
 matrix=""; for c in $cells; do matrix="$matrix c$c:$nrx:none"; done
 cd /pscratch/sd/s/sgkim/kcj/airan_cloudlab || exit 1
 out=$(SLOT_TAG=rec16${tagpol}s$seed SLOT_PERIODS=${PERIODS:-2400} SLOT_AI_RATE=4 \
-  SLOT_EXTRA="--gpus $gpus --weak-fraction 1.0 --weak-profile nv_mu2 --dataset $REC/data/$data --engine /softwall_runtime/engines/nv/nrx_large_273prb_2ue.trt --conv-ldpc-iterations 20 --nrx-ldpc-iterations 20 --lanes-per-gpu $lanes --nrx-max-cb-fail $cb --rescue-deadline-ms $deadline --nrx-bound-ms $bound --nrx-bound-corun-ms $bound --activity-prob $act --activity-mode $mode --ring 512 --seed $((83000 + 1000 * seed)) --ring-offset $((50 * (seed - 1)))${NRX_FLAGS:+ --nrx-flags $NRX_FLAGS}" \
+  SLOT_EXTRA="--gpus $gpus --weak-fraction 1.0 --weak-profile nv_mu2 --dataset $REC/data/$data --engine /softwall_runtime/engines/nv/nrx_large_273prb_2ue.trt --conv-ldpc-iterations 20 --nrx-ldpc-iterations 20 --lanes-per-gpu $lanes --nrx-max-cb-fail $cb --rescue-deadline-ms $deadline --nrx-bound-ms $bound --nrx-bound-corun-ms $bound --activity-prob $act --activity-mode $mode --ring 512 --seed $((83000 + 1000 * seed)) --ring-offset $((50 * (seed - 1)))${NRX_FLAGS:+ --nrx-flags $NRX_FLAGS}${CONTROLLER:+ --controller $CONTROLLER}" \
   SLOT_MATRIX="$matrix" bash scripts_for_node/backstop_slot/run_matrix.sh 2>&1)
 echo "$out"
 echo "$out" | grep -q "^FAILED" && exit 1

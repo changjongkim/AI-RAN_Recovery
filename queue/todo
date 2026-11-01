@@ -373,3 +373,10 @@ N|n3_uma_v30_gap150_f35|60|CARRIER_GHZ=3.5 bash exp/harq_ir.sh n3_uma_v30_gap150
 # cells (settings of i1_umi_k2_inr20_f35 with four interferers), with the NRx trained with and without interference
 N|i1_umi_k4_inr20_iciaware_f35|60|IRC=1 NRX_ENGINE=/rec/engines/nrx_large_ici_273prb_2ue.trt CARRIER_GHZ=3.5 bash exp/harq_ir.sh i1_umi_k4_inr20_iciaware_f35 12 --channel UMi --speed 0.83 --ebno 26,28,30,32 --slots 64 --batch 8 --interferers 4 --inr-db 20
 N|i1_umi_k4_inr20_f35|60|IRC=1 CARRIER_GHZ=3.5 bash exp/harq_ir.sh i1_umi_k4_inr20_f35 12 --channel UMi --speed 0.83 --ebno 26,28,30,32 --slots 64 --batch 8 --interferers 4 --inr-db 20
+# 2026-11-01 user: small-cell receivers on the same failed TBs at 3.5 GHz (as n5_uma_v3_f35): the share of the bound the
+# large NRx achieves in small cells (Section 5.3 reports 77% in macro cells)
+N|n5_umi_v3_f35|100|CARRIER_GHZ=3.5 bash exp/classical.sh n5_umi_v3_f35 --channel UMi --systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4
+# 2026-11-01 user: chain what the new claims need.  The small-cell share of the bound (86% from one set of 256 slots)
+# with two more sets, other seeds (SEED0 as the macro sets more1/more2), so that both cells rest on several sets
+N|n5_umi_more1_f35|100|SEED0=380 CARRIER_GHZ=3.5 bash exp/classical.sh n5_umi_more1_f35 --channel UMi --systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4
+N|n5_umi_more2_f35|100|SEED0=420 CARRIER_GHZ=3.5 bash exp/classical.sh n5_umi_more2_f35 --channel UMi --systems baseline_lslin_lmmse,baseline_lslin_lmmse@50,lslin_idd3,baseline_lmmse_kbest,baseline_perf_csi_kbest,nrx,nrx_rt --ebno 6,8,10,12 --slots 64 --batch 4

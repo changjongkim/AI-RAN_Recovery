@@ -46,19 +46,26 @@ def late_l1(tag, cells, steady=True):
 
 
 def main():
-    full = se.availability(se.LATEST)   # the N29 runs reject at the latest start
-    loads = sorted({m.group(1) for f in glob.glob(f"{se.RAW}/rec16allb68*{N16}a*s*_c*_*_none_j*.json")
-                    if (m := re.search(rf"{N16}(a\d+[bu])s\d", f))})
-    out = {}
+    # the runs with the rejection at the L1 result of Section 4.3 (N29 rerun, tag ARRIVAL before the load) when every load
+    # has them, compared with the full-load runs of the same rule; else the first runs (rejection at the latest start)
+    x = pn.ARRIVAL
+    found = lambda pre: sorted({m.group(1) for f in glob.glob(f"{se.RAW}/rec16allb68*{N16}{pre}a*s*_c*_*_none_j*.json")
+                                if (m := re.search(rf"{N16}{pre}(a\d+[bu])s\d", f))})
+    loads_x, loads_l = found(x), found("")
+    if loads_x and set(loads_x) >= set(loads_l):
+        pre, full, loads = x, se.availability(), loads_x
+    else:
+        pre, full, loads = "", se.availability(se.LATEST), loads_l
+    out = {"rejection": "L1 result" if pre else "latest start"}
     for load in loads:
         act = int(load[1:-1]) / 100.0
-        tags = {f"allb68{N16}{load}": "one", f"allb68g4{N16}{load}": "four"}
+        tags = {f"allb68{N16}{pre}{load}": "one", f"allb68g4{N16}{pre}{load}": "four"}
         avail = se.availability(tags)
         if not avail:
             continue
         rows = {}
         for (g, c), v in sorted(avail.items(), key=lambda x: (x[0][0], x[0][1])):
-            tag = f"allb68g4{N16}{load}" if g == "four" else f"allb68{N16}{load}"
+            tag = f"allb68g4{N16}{pre}{load}" if g == "four" else f"allb68{N16}{pre}{load}"
             rows[f"{g}_{c}"] = {"gpus": g, "cells": c, "share": v["availability"], "failed_per_tb": v["failed_per_tb"],
                                 "full_load_share_same_transmitting_cells": se.matched(full, g, c, act),
                                 "late_l1_pct": late_l1(tag, c)}

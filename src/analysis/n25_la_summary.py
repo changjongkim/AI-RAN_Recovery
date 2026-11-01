@@ -18,7 +18,8 @@ import sys
 import numpy as np
 
 RAW = "/pscratch/sd/s/sgkim/kcj/airan_cloudlab/results/backstop_slot/raw"
-PAT = re.compile(r"rec25(all|off)g(\d+)n(\d+)s(\d+)_c(\d+)_\w+_none_j\d+\.json")
+ARRIVAL = "arrivalpred60arrivalmargin015"   # Reverb runs with the rejection at the L1 result (Section 4.3), used when present
+PAT = re.compile(r"rec25(all|off)(" + ARRIVAL + r")?g(\d+)n(\d+)s(\d+)_c(\d+)_\w+_none_j\d+\.json")
 WARM = 800
 RETX_OK = 0.95
 
@@ -63,12 +64,14 @@ def run_stats(path):
 
 
 def main():
-    runs = {}
+    runs, runs_x = {}, {}
     for f in glob.glob(f"{RAW}/rec25*_c*_*_none_j*.json"):
         m = PAT.match(os.path.basename(f))
         if m:
-            pol, g, snr, seed, cells = m.group(1), int(m.group(2)), int(m.group(3)), int(m.group(4)), int(m.group(5))
-            runs[(pol, g, snr, seed, cells)] = run_stats(f)
+            pol, g, snr, seed, cells = m.group(1), int(m.group(3)), int(m.group(4)), int(m.group(5)), int(m.group(6))
+            (runs_x if m.group(2) else runs)[(pol, g, snr, seed, cells)] = run_stats(f)
+    if runs_x and all(k in runs_x for k in runs if k[0] == "all"):
+        runs.update(runs_x)                      # every Reverb run also exists with the rejection at the L1 result
     rows = {}
     for (pol, g, snr, seed, cells), r in sorted(runs.items()):
         if pol != "all" or ("off", g, snr, seed, cells) not in runs:
