@@ -495,6 +495,9 @@ def evaluation_more():
             if p is not None:
                 v[f"EvalIci{cell}{cond}Pub"] = (r(p, "ours"), 1)
                 v[f"EvalIci{cell}{cond}CutPub"] = (r(p, "ai_and_ran") / r(p, "ours"), 1)
+    # the range over every interference condition (two users at 10 and 20 dB, four at 20 dB, both cells)
+    cuts = [x[0] for k, x in v.items() if k.startswith("EvalIci") and k.endswith("Cut") and not k.endswith(("IrcCut", "PubCut"))]
+    v["EvalIciCutLow"], v["EvalIciCutHigh"] = (min(cuts), 1), (max(cuts), 1)
     # resource blocks: 273 (macro traces), 106 and 52 PRBs, users at 3 km/h
     for name, n in (("Full", ["n3_uma_v3_cb", "n3_uma_v3_more"]), ("Half", ["n21_uma_p106_v3"]), ("Fifth", ["n21_uma_p52_v3"])):
         c, o, a = stats(n), stats(n, "ours"), stats(n, "ai_for_ran")

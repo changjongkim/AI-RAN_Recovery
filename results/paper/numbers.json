@@ -254,6 +254,8 @@
   "EvalGpuVsNoRejectFourMid": 3.313380281690141,
   "EvalGpuVsNoRejectOneMax": 5.951612903225807,
   "EvalGpuVsNoRejectOneMid": 3.8333333333333335,
+  "EvalIciCutHigh": 2.97972972972973,
+  "EvalIciCutLow": 1.80715059588299,
   "EvalIciMacroTenAi": 23.18359375,
   "EvalIciMacroTenConv": 31.015625,
   "EvalIciMacroTenCut": 2.7145299145299147,
