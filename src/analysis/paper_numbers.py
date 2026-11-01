@@ -486,6 +486,7 @@ def evaluation_more():
             v[f"AblSelMix{cell}Trained"] = (ch["trained"]["retx_cut_x"], 2)
             v[f"AblSelMix{cell}Pub"] = (ch["published"]["retx_cut_x"], 2)
             v[f"AblSelMix{cell}Oracle"] = (ch["oracle"]["retx_cut_x"], 2)
+            v[f"AblSelMix{cell}ThetaFive"] = (ch["theta_5dB"]["retx_cut_x"], 2)
     # inter-cell interference: macro and small cells, 10 dB (two users of neighbor cells) and 20 dB with two users
     def load(n):
         f = f"results/{n}{SUFFIX}.json"

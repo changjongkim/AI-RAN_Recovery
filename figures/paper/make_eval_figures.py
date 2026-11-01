@@ -383,12 +383,16 @@ def receivers():
     four = [json.load(open(os.path.join(RES, f"{n}.json"))) for n in runs("n5_uma_v3", "n5_uma_more1", "n5_uma_more2", "n5_uma_more3")]
     w = np.array([r["fail_pct"]["baseline_lslin_lmmse"] * r["slots"] for r in four])
     eight = json.load(open(os.path.join(RES, f"n4b_eval_s30_uma{base.SUFFIX}.json")))["recovers_pct_of_conventional_failures"]
+    small = [json.load(open(os.path.join(RES, f"{n}.json"))) for n in existing(runs("n5_umi_v3", "n5_umi_more1", "n5_umi_more2"))]
+    ws = np.array([r["fail_pct"]["baseline_lslin_lmmse"] * r["slots"] for r in small])
     keys = {"K-Best": "baseline_lmmse_kbest", "Large NRx": "nrx", "True Channel": "baseline_perf_csi_kbest"}
-    series = {k: [float(np.dot(w, [r["recovers_pct_of_conventional_failures"][s] for r in four]) / w.sum()), eight[s]]
-              for k, s in keys.items()}
+    mean = lambda rs, wt, k: float(np.dot(wt, [r["recovers_pct_of_conventional_failures"][k] for r in rs]) / wt.sum())
+    groups = ["Macro,\n4 RX", "Small,\n4 RX", "Macro,\n8 RX"] if small else ["Macro,\n4 RX", "Macro,\n8 RX"]
+    series = {k: [mean(four, w, s)] + ([mean(small, ws, s)] if small else []) + [eight[s]] for k, s in keys.items()}
     fig, ax = plt.subplots(figsize=PANEL)
     colors = {"K-Best": RX["K-Best"], "Large NRx": RX["Large NRx"], "True Channel": "white"}
-    out = grouped(ax, ["4 RX", "8 RX"], series, colors, width=0.27)
+    out = grouped(ax, groups, series, colors, width=0.27)
+    ax.tick_params(axis="x", labelsize=10.5)
     for b in out["True Channel"]:
         b.set_hatch("////"); b.set_edgecolor(base.BOUND); b.set_linewidth(0.8)
     for label, bs in out.items():
@@ -441,6 +445,23 @@ def ai():
     ax.set_ylabel("Within SLO (%)", fontsize=13)
     style(ax, grid="both")
     save(fig, "eval_ai_slo")
+    # N28: the MPS share of the AI process against the rejected AI requests with recovery, four GPUs and 24 cells
+    full = json.load(open(os.path.join(RES, "n22_summary.json")))
+    if "m80" in full.get("ai_share", {}):
+        fig, ax = plt.subplots(figsize=PANEL4)
+        shares = [60, 70, 80]
+        for label, rate in (("AI 4 Requests/s per GPU", 4), ("AI 8 Requests/s per GPU", 8)):
+            k = f"all_g4_r{rate}_c24"
+            vals = [n22[k]["ai_rejected_pct"]] + [full["ai_share"][f"m{m}"][k]["ai_rejected_pct"] for m in (70, 80)]
+            ax.plot(shares, vals, color=AI_RATES[label], linewidth=2.2, marker="o", markersize=5)
+        ax.set_xticks(shares)
+        ax.set_xlim(57, 83)
+        ax.set_ylim(0, 10)
+        ax.set_yticks([0, 5, 10])
+        ax.set_xlabel("MPS Share of AI (%)")
+        ax.set_ylabel("Rejected (%)", fontsize=13)
+        style(ax, grid="both")
+        save(fig, "eval_ai_share")
     base.legend("eval_ai_legend", list(AI_RATES.items()), width=9.6)
 
 
@@ -492,6 +513,31 @@ def interference():
         ax.tick_params(axis="x", labelsize=10.5)
         style(ax)
         save(fig, name)
+    # N19: cells whose interference changes between slots, Receiver Selector against one NRx for every slot and the
+    # better NRx for each TB (src/analysis/selector.py), as multiples of the conventional retransmissions
+    sel = {cell: os.path.join(RES, f"n19_{c}_selector{base.SUFFIX}.json") for cell, c in (("Macro Cell", "uma"), ("Small Cell", "umi"))}
+    if all(os.path.exists(f) for f in sel.values()):
+        labels = ["Trained\nwithout", "Trained\nwith", "Receiver\nSelector", "Better\nper TB"]
+        series = {}
+        for cell, f in sel.items():
+            d = json.load(open(f))
+            ch = d["choices"]
+            series[cell] = [ch["published"]["retx_cut_x"], ch["trained"]["retx_cut_x"], ch[d["best_theta"]]["retx_cut_x"],
+                            ch["oracle"]["retx_cut_x"]]
+        fig, ax = plt.subplots(figsize=PANEL)
+        out = grouped(ax, labels, series, CELL, width=0.36)
+        for bs in out.values():
+            for b in bs:
+                ax.text(b.get_x() + b.get_width() / 2, b.get_height() + 0.05, f"{b.get_height():.1f}", ha="center", va="bottom",
+                        fontsize=VALUE - 3.5)
+        ax.set_ylim(0, 3.9)
+        ax.set_yticks([0, 1, 2, 3])
+        ax.set_ylabel("Reduction (×)", fontsize=13)
+        ax.tick_params(axis="x", labelsize=9.5)
+        ax.legend([plt.Rectangle((0, 0), 1, 1, color=c) for c in CELL.values()], list(CELL), loc="upper left", fontsize=10,
+                  frameon=False, ncol=2, handlelength=1.0, columnspacing=0.8, borderaxespad=0.1)
+        style(ax)
+        save(fig, "eval_ici_mixed")
     fig = plt.figure(figsize=(10.4, 0.75))     # two rows: the five labels do not fit in one
     handles = [plt.Rectangle((0, 0), 1, 1, color=c) for c in ICI.values()]
     fig.legend(handles, list(ICI), loc="center", ncol=3, fontsize=LEGEND, borderpad=0.15, columnspacing=1.6,
