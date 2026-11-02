@@ -489,6 +489,8 @@ def evaluation_more():
             v[f"AblSel{mix}{cell}Pub"] = (ch["published"]["retx_cut_x"], 2)
             v[f"AblSel{mix}{cell}Oracle"] = (ch["oracle"]["retx_cut_x"], 2)
             v[f"AblSel{mix}{cell}ThetaFive"] = (ch["theta_5dB"]["retx_cut_x"], 2)
+            if mix == "Mix" and cell == "Macro":
+                v["AblSelThetaDb"] = (float(d["best_theta"][6:-2]), 0)   # the threshold of Receiver Selector
             single = max(ch["trained"]["retx_cut_x"], ch["published"]["retx_cut_x"])
             v[f"AblSel{mix}{cell}Single"] = (single, 2)
             v[f"AblSel{mix}{cell}OverSinglePct"] = (100.0 * (ch[d["best_theta"]]["retx_cut_x"] / single - 1.0), 0)
@@ -619,6 +621,7 @@ def validation():
         v["EvalLoadAllPoints"] = (len(pts), 0)
         v["EvalLoadAllMax"] = (max(p["load"] for p in pts), 1)
         v["EvalLoadAllMinPp"], v["EvalLoadAllMaxPp"] = (min(diff), 1), (max(diff), 1)
+        v["EvalLoadAllRunMax"] = (max(p["run_load"] for p in pts), 1)   # recovery runs per TB against MCS 14
     f = f"results/n29_load_summary{SUFFIX}.json"
     if os.path.exists(f):
         d = json.load(open(f))

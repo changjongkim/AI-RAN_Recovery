@@ -383,3 +383,16 @@ N|n28x_g4_r4_m80_s2|30|PERIODS=24000 RT_GPUS=4 AI_RATE=4 AI_PCT=80 CONTROLLER=/p
 N|n28_off_g4_r4_m80_s2|30|PERIODS=24000 RT_GPUS=4 AI_RATE=4 AI_PCT=80 bash exp/n22_runtime_ai.sh off "8 16 24" 2
 N|n28x_g4_r8_m80_s2|30|PERIODS=24000 RT_GPUS=4 AI_RATE=8 AI_PCT=80 CONTROLLER=/pscratch/sd/s/sgkim/kcj/airan_recovery/src/runtime/controller_arrival.py NRX_FLAGS=arrival_pred=6.0,arrival_margin=0.15 bash exp/n22_runtime_ai.sh all "8 16 24" 2
 N|n28_off_g4_r8_m80_s2|30|PERIODS=24000 RT_GPUS=4 AI_RATE=8 AI_PCT=80 bash exp/n22_runtime_ai.sh off "8 16 24" 2
+# 2026-11-01: seed 2 at the MPS shares 60% and 70%, so that 60/70/80% (Figure 17, Section 5.7) rest on the same two seeds
+N|n30ai_g4_r4_s2|30|PERIODS=24000 RT_GPUS=4 AI_RATE=4 CONTROLLER=/pscratch/sd/s/sgkim/kcj/airan_recovery/src/runtime/controller_arrival.py NRX_FLAGS=arrival_pred=6.0,arrival_margin=0.15 bash exp/n22_runtime_ai.sh all "8 16 24" 2
+N|n30ai_off_g4_r4_s2|30|PERIODS=24000 RT_GPUS=4 AI_RATE=4 bash exp/n22_runtime_ai.sh off "8 16 24" 2
+N|n30ai_g4_r8_s2|30|PERIODS=24000 RT_GPUS=4 AI_RATE=8 CONTROLLER=/pscratch/sd/s/sgkim/kcj/airan_recovery/src/runtime/controller_arrival.py NRX_FLAGS=arrival_pred=6.0,arrival_margin=0.15 bash exp/n22_runtime_ai.sh all "8 16 24" 2
+N|n30ai_off_g4_r8_s2|30|PERIODS=24000 RT_GPUS=4 AI_RATE=8 bash exp/n22_runtime_ai.sh off "8 16 24" 2
+N|n30ai_g1_r4_s2|30|PERIODS=24000 RT_GPUS=1 AI_RATE=4 CONTROLLER=/pscratch/sd/s/sgkim/kcj/airan_recovery/src/runtime/controller_arrival.py NRX_FLAGS=arrival_pred=6.0,arrival_margin=0.15 bash exp/n22_runtime_ai.sh all "1 2 4" 2
+N|n30ai_off_g1_r4_s2|30|PERIODS=24000 RT_GPUS=1 AI_RATE=4 bash exp/n22_runtime_ai.sh off "1 2 4" 2
+N|n30ai_g1_r8_s2|30|PERIODS=24000 RT_GPUS=1 AI_RATE=8 CONTROLLER=/pscratch/sd/s/sgkim/kcj/airan_recovery/src/runtime/controller_arrival.py NRX_FLAGS=arrival_pred=6.0,arrival_margin=0.15 bash exp/n22_runtime_ai.sh all "1 2 4" 2
+N|n30ai_off_g1_r8_s2|30|PERIODS=24000 RT_GPUS=1 AI_RATE=8 bash exp/n22_runtime_ai.sh off "1 2 4" 2
+N|n28x_g4_r4_m70_s2|30|PERIODS=24000 RT_GPUS=4 AI_RATE=4 AI_PCT=70 CONTROLLER=/pscratch/sd/s/sgkim/kcj/airan_recovery/src/runtime/controller_arrival.py NRX_FLAGS=arrival_pred=6.0,arrival_margin=0.15 bash exp/n22_runtime_ai.sh all "8 16 24" 2
+N|n28_off_g4_r4_m70_s2|30|PERIODS=24000 RT_GPUS=4 AI_RATE=4 AI_PCT=70 bash exp/n22_runtime_ai.sh off "8 16 24" 2
+N|n28x_g4_r8_m70_s2|30|PERIODS=24000 RT_GPUS=4 AI_RATE=8 AI_PCT=70 CONTROLLER=/pscratch/sd/s/sgkim/kcj/airan_recovery/src/runtime/controller_arrival.py NRX_FLAGS=arrival_pred=6.0,arrival_margin=0.15 bash exp/n22_runtime_ai.sh all "8 16 24" 2
+N|n28_off_g4_r8_m70_s2|30|PERIODS=24000 RT_GPUS=4 AI_RATE=8 AI_PCT=70 bash exp/n22_runtime_ai.sh off "8 16 24" 2
