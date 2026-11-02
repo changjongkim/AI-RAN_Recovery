@@ -298,18 +298,21 @@ def motivation_redecode():
     style(ax)
     save(fig, "mot_gputime")
 
-    fig, ax = plt.subplots(figsize=PANEL)
+    fig, ax = plt.subplots(figsize=PANEL4)   # a panel of the four-panel Figure 6
     series = {}
     for label, names in (("Macro Cell", runs("n3_uma_v3_cb", "n3_uma_v3_more")), ("Small Cell", runs("n1_umi_v3_cb"))):
         _, conv, rec, cb = traces(names)
         f = ~conv
         groups = [(1, 3), (4, 6), (7, 9), (10, 10)]
         series[label] = [100 * (rec[f & (cb >= lo) & (cb <= hi)]).mean() for lo, hi in groups]
-    bars(ax, ["1-3", "4-6", "7-9", "All 10"], series, CELL, fmt="{:.0f}")
+    bars(ax, ["1-3", "4-6", "7-9", "10"], series, CELL, values=False, width=0.4)
+    for i, (label, vals) in enumerate(series.items()):
+        for g, v in enumerate(vals):
+            ax.text(g + (i - 0.5) * 0.4, v + 1.5, f"{v:.0f}", ha="center", va="bottom", fontsize=VALUE - 4)
     ax.set_ylim(0, 118)
     ax.set_yticks([0, 50, 100])
     ax.set_ylabel("Recovered (%)", fontsize=13)
-    ax.set_xlabel("Failed Code Blocks of a TB")
+    ax.set_xlabel("Failed Code Blocks")
     style(ax)
     save(fig, "mot_codeblocks")
     legend("mot_time_legend", list(WAIT.items()) + list(CELL.items()), width=9.4)
@@ -430,7 +433,7 @@ def motivation_server():
         pub = runs(f"irc_{cell}_v3", f"ici_{cell}_inr3", f"ici_{cell}_inr6", f"ici_{cell}_inr10")
         ici = runs(f"ici_{cell}_v3_iciaware", f"ici_{cell}_inr3_iciaware", f"ici_{cell}_inr6_iciaware",
                    f"ici_{cell}_inr10_iciaware")
-        fig, ax = plt.subplots(figsize=PANEL)
+        fig, ax = plt.subplots(figsize=PANEL4)   # a panel of the four-panel Figure 6
         for label, names in (("NRx Trained without Interference", pub), ("NRx Trained with Interference", ici)):
             y = [merged([n])["resends_per_100"] / merged([n], "ours")["resends_per_100"] for n in names]
             ax.plot(inr, y, color=NRX[label], linewidth=2.4, marker="o", markersize=6)
@@ -445,6 +448,8 @@ def motivation_server():
         save(fig, name)
     legend("mot_gpu_legend", list(GPUS.items()))
     legend("mot_interference_legend", list(NRX.items()), width=8.0)
+    # Figure 6 combines the code blocks, the concurrent runs and the interference panels: one strip for both legends
+    legend("mot_control_legend", list(CELL.items()) + list(NRX.items()), width=11.3)
 
 
 if __name__ == "__main__":
