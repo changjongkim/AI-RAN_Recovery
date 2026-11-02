@@ -298,21 +298,18 @@ def motivation_redecode():
     style(ax)
     save(fig, "mot_gputime")
 
-    fig, ax = plt.subplots(figsize=PANEL4)   # a panel of the four-panel Figure 6
+    fig, ax = plt.subplots(figsize=PANEL)
     series = {}
     for label, names in (("Macro Cell", runs("n3_uma_v3_cb", "n3_uma_v3_more")), ("Small Cell", runs("n1_umi_v3_cb"))):
         _, conv, rec, cb = traces(names)
         f = ~conv
         groups = [(1, 3), (4, 6), (7, 9), (10, 10)]
         series[label] = [100 * (rec[f & (cb >= lo) & (cb <= hi)]).mean() for lo, hi in groups]
-    bars(ax, ["1-3", "4-6", "7-9", "10"], series, CELL, values=False, width=0.4)
-    for i, (label, vals) in enumerate(series.items()):
-        for g, v in enumerate(vals):
-            ax.text(g + (i - 0.5) * 0.4, v + 1.5, f"{v:.0f}", ha="center", va="bottom", fontsize=VALUE - 4)
+    bars(ax, ["1-3", "4-6", "7-9", "All 10"], series, CELL, fmt="{:.0f}")
     ax.set_ylim(0, 118)
     ax.set_yticks([0, 50, 100])
     ax.set_ylabel("Recovered (%)", fontsize=13)
-    ax.set_xlabel("Failed Code Blocks")
+    ax.set_xlabel("Failed Code Blocks of a TB")
     style(ax)
     save(fig, "mot_codeblocks")
     legend("mot_time_legend", list(WAIT.items()) + list(CELL.items()), width=9.4)
@@ -346,16 +343,15 @@ def motivation_delay():
     conv, rec = g["conv_t0"], g["nrx_c0"]
     sep = [None] + [g[f"sep_c{t}"] for t in range(1, total)]
     both = [None] + [g[f"sep_c{t}"] | g[f"nrx_c{t}"] for t in range(1, total)]
-    fig, ax = plt.subplots(figsize=PANEL4)   # a panel of the four-panel Figure 4, with its own legend
+    fig, ax = plt.subplots(figsize=PANEL)
     for label, pol, steps in (("Retransmission Only", "harq_only", sep), ("Wait for Recovery", "wait", both)):
         done, _ = simulate(conv, rec, steps, None, pol, "DDDSU", Timing, l1_steps=sep)
         d = np.sort(done[~conv])
         x = np.concatenate([[0], np.repeat(d[np.isfinite(d)], 2), [45]])
         y = np.concatenate([[0, 0], np.repeat(np.arange(1, np.isfinite(d).sum() + 1) / d.size * 100, 2)])[:x.size]
-        ax.plot(x, y, color=WAIT[label], linewidth=2.4, label=label.replace(" Only", "\nOnly").replace(" for ", " for\n"))
-    ax.legend(loc="lower right", fontsize=8.5, frameon=False, handlelength=1.0, handletextpad=0.4, borderaxespad=0.1)
+        ax.plot(x, y, color=WAIT[label], linewidth=2.4)
     ax.set_xlim(0, 40)
-    ax.set_xticks([10, 20, 30, 40])
+    ax.set_xticks([0, 10, 20, 30, 40])
     ax.set_ylim(0, 100)
     ax.set_yticks([0, 50, 100])
     ax.set_xlabel("Delivery Time (ms)")
@@ -434,7 +430,7 @@ def motivation_server():
         pub = runs(f"irc_{cell}_v3", f"ici_{cell}_inr3", f"ici_{cell}_inr6", f"ici_{cell}_inr10")
         ici = runs(f"ici_{cell}_v3_iciaware", f"ici_{cell}_inr3_iciaware", f"ici_{cell}_inr6_iciaware",
                    f"ici_{cell}_inr10_iciaware")
-        fig, ax = plt.subplots(figsize=PANEL4)   # a panel of the four-panel Figure 6
+        fig, ax = plt.subplots(figsize=PANEL)
         for label, names in (("NRx Trained without Interference", pub), ("NRx Trained with Interference", ici)):
             y = [merged([n])["resends_per_100"] / merged([n], "ours")["resends_per_100"] for n in names]
             ax.plot(inr, y, color=NRX[label], linewidth=2.4, marker="o", markersize=6)
@@ -449,8 +445,6 @@ def motivation_server():
         save(fig, name)
     legend("mot_gpu_legend", list(GPUS.items()))
     legend("mot_interference_legend", list(NRX.items()), width=8.0)
-    # Figure 6 combines the code blocks, the concurrent runs and the interference panels: one strip for both legends
-    legend("mot_control_legend", list(CELL.items()) + list(NRX.items()), width=11.3)
 
 
 if __name__ == "__main__":
