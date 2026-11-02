@@ -346,15 +346,16 @@ def motivation_delay():
     conv, rec = g["conv_t0"], g["nrx_c0"]
     sep = [None] + [g[f"sep_c{t}"] for t in range(1, total)]
     both = [None] + [g[f"sep_c{t}"] | g[f"nrx_c{t}"] for t in range(1, total)]
-    fig, ax = plt.subplots(figsize=PANEL)
+    fig, ax = plt.subplots(figsize=PANEL4)   # a panel of the four-panel Figure 4, with its own legend
     for label, pol, steps in (("Retransmission Only", "harq_only", sep), ("Wait for Recovery", "wait", both)):
         done, _ = simulate(conv, rec, steps, None, pol, "DDDSU", Timing, l1_steps=sep)
         d = np.sort(done[~conv])
         x = np.concatenate([[0], np.repeat(d[np.isfinite(d)], 2), [45]])
         y = np.concatenate([[0, 0], np.repeat(np.arange(1, np.isfinite(d).sum() + 1) / d.size * 100, 2)])[:x.size]
-        ax.plot(x, y, color=WAIT[label], linewidth=2.4)
+        ax.plot(x, y, color=WAIT[label], linewidth=2.4, label=label.replace(" Only", "\nOnly").replace(" for ", " for\n"))
+    ax.legend(loc="lower right", fontsize=8.5, frameon=False, handlelength=1.0, handletextpad=0.4, borderaxespad=0.1)
     ax.set_xlim(0, 40)
-    ax.set_xticks([0, 10, 20, 30, 40])
+    ax.set_xticks([10, 20, 30, 40])
     ax.set_ylim(0, 100)
     ax.set_yticks([0, 50, 100])
     ax.set_xlabel("Delivery Time (ms)")

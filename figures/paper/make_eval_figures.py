@@ -140,6 +140,9 @@ def effect():
     base.legend("eval_effect_legend", entries, width=9.6)
 
 
+GRANT_AT_L1 = "#d9b38c"   # the same recoveries of Reverb with the grant at the L1 result (no Recovery Gate)
+
+
 def delay():
     sys.path.insert(0, os.path.join(base.ROOT, "src", "analysis"))
     import paper_numbers as pn   # its trace loader and timing: the panels show the numbers of numbers.tex
@@ -150,6 +153,9 @@ def delay():
                        ("Reverb, Full Wait", "wait")):
         done, tx = simulate(conv, rec, conv_steps if pol == "harq_only" else steps, cand, pol, "DDDSU", pn.Timing, l1_steps=conv_steps)
         res[label] = (done[~conv], 100.0 * (tx - 1).sum() / len(tx))
+    # the same recoveries without Recovery Gate: every failed TB receives the grant at the L1 result (Section 5.2)
+    done, tx = simulate(conv, rec, steps, cand, "parallel", "DDDSU", pn.Timing, l1_steps=conv_steps)
+    res["Grant at L1 Result"] = (done[~conv], 100.0 * (tx - 1).sum() / len(tx))
     fig, ax = plt.subplots(figsize=PANEL4)
     for label in ("Conventional", "Reverb, Latency-Neutral", "Reverb, Full Wait"):
         d = np.sort(res[label][0])
@@ -167,13 +173,14 @@ def delay():
     save(fig, "eval_delay_cdf")
 
     fig, ax = plt.subplots(figsize=PANEL4)
-    order = ["Reverb, Full Wait", "Reverb, Latency-Neutral", "Conventional"]
+    order = ["Reverb, Full Wait", "Reverb, Latency-Neutral", "Grant at L1 Result", "Conventional"]
+    colors = {**WAITS, "Grant at L1 Result": GRANT_AT_L1}
     vals = [res[k][1] for k in order]
-    bs = ax.bar(range(3), vals, width=0.55, color=[WAITS[k] for k in order], zorder=3)
+    bs = ax.bar(range(4), vals, width=0.62, color=[colors[k] for k in order], zorder=3)
     for b, v in zip(bs, vals):
-        ax.text(b.get_x() + b.get_width() / 2, v + 0.4, f"{v:.1f}", ha="center", va="bottom", fontsize=VALUE)
-    ax.set_xticks(range(3))
-    ax.set_xticklabels(["Full\nWait", "Latency-\nNeutral", "Conven-\ntional"], fontsize=10.5)
+        ax.text(b.get_x() + b.get_width() / 2, v + 0.4, f"{v:.1f}", ha="center", va="bottom", fontsize=VALUE - 2)
+    ax.set_xticks(range(4))
+    ax.set_xticklabels(["Full\nWait", "Latency-\nNeutral", "Grant\nat L1", "Conven-\ntional"], fontsize=8)
     ax.set_ylim(0, 25)
     ax.set_ylabel("Per 100 TBs")
     style(ax)
