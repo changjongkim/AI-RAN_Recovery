@@ -472,6 +472,12 @@ ICI = {   # bar label: (color, run structure)
     "Reverb on MMSE-IRC": "#7a2f0c",
     "MMSE-IRC": "#9fa8b3",
 }
+SEL = {   # bars of Figure 18(c): one NRx for every slot (the colors of (a) and (b)), Receiver Selector, and the bound
+    "Reverb, NRx Trained without Interference": ICI["Reverb, NRx Trained without Interference"],
+    "Reverb, NRx Trained with Interference": ICI["Reverb, NRx Trained with Interference"],
+    "Reverb, Receiver Selector": "#7e57c2",
+    "Better NRx per TB": "white",
+}
 ICI_RUNS = {"Macro Cell": [("10 dB", "ici_uma_inr10"), ("20 dB,\n2 Users", "i1_uma_k2_inr20"), ("20 dB,\n4 Users", "i1_uma_k4_inr20")],
             "Small Cell": [("10 dB", "ici_umi_inr10"), ("20 dB,\n2 Users", "i1_umi_k2_inr20"), ("20 dB,\n4 Users", "i1_umi_k4_inr20")]}
 
@@ -513,34 +519,38 @@ def interference():
         ax.tick_params(axis="x", labelsize=10.5)
         style(ax)
         save(fig, name)
-    # N19: cells whose interference changes between slots, Receiver Selector against one NRx for every slot and the
-    # better NRx for each TB (src/analysis/selector.py), as multiples of the conventional retransmissions
-    sel = {cell: os.path.join(RES, f"n19_{c}_selector{base.SUFFIX}.json") for cell, c in (("Macro Cell", "uma"), ("Small Cell", "umi"))}
-    if all(os.path.exists(f) for f in sel.values()):
-        labels = ["Trained\nwithout", "Trained\nwith", "Receiver\nSelector", "Better\nper TB"]
-        series = {}
-        for cell, f in sel.items():
+    # N19: cells whose interference changes between slots (interference in about three quarters of the slots, n19_*_mix,
+    # or in a quarter, n19_*_mix75): one NRx for every slot, Receiver Selector, and the better NRx for each TB (a bound),
+    # as multiples of the conventional retransmissions (src/analysis/selector.py)
+    sel = [(f"{cell},\n{share}", os.path.join(RES, f"n19_{c}_selector{tag}{base.SUFFIX}.json"))
+           for cell, c in (("Macro", "uma"), ("Small", "umi")) for share, tag in (("75%", ""), ("25%", "75"))]
+    if all(os.path.exists(f) for _, f in sel):
+        series = {k: [] for k in SEL}
+        for _, f in sel:
             d = json.load(open(f))
             ch = d["choices"]
-            series[cell] = [ch["published"]["retx_cut_x"], ch["trained"]["retx_cut_x"], ch[d["best_theta"]]["retx_cut_x"],
-                            ch["oracle"]["retx_cut_x"]]
+            for k, choice in zip(SEL, ("published", "trained", d["best_theta"], "oracle")):
+                series[k].append(ch[choice]["retx_cut_x"])
         fig, ax = plt.subplots(figsize=PANEL)
-        out = grouped(ax, labels, series, CELL, width=0.36)
-        for bs in out.values():
-            for b in bs:
-                ax.text(b.get_x() + b.get_width() / 2, b.get_height() + 0.05, f"{b.get_height():.1f}", ha="center", va="bottom",
-                        fontsize=VALUE - 3.5)
-        ax.set_ylim(0, 3.9)
+        out = grouped(ax, [g for g, _ in sel], series, SEL, width=0.2)
+        for b in out["Better NRx per TB"]:
+            b.set_hatch("////"); b.set_edgecolor(base.BOUND); b.set_linewidth(0.8)
+        for b in out["Reverb, Receiver Selector"]:
+            ax.text(b.get_x() + b.get_width() / 2, b.get_height() + 0.05, f"{b.get_height():.1f}", ha="center", va="bottom",
+                    fontsize=VALUE - 3.5)
+        ax.set_ylim(0, 3)
         ax.set_yticks([0, 1, 2, 3])
         ax.set_ylabel("Reduction (×)", fontsize=13)
+        ax.set_xlabel("Slots with Interference", fontsize=11)
         ax.tick_params(axis="x", labelsize=9.5)
-        ax.legend([plt.Rectangle((0, 0), 1, 1, color=c) for c in CELL.values()], list(CELL), loc="upper left", fontsize=10,
-                  frameon=False, ncol=2, handlelength=1.0, columnspacing=0.8, borderaxespad=0.1)
         style(ax)
         save(fig, "eval_ici_mixed")
-    fig = plt.figure(figsize=(10.4, 0.75))     # two rows: the five labels do not fit in one
+    fig = plt.figure(figsize=(11.4, 1.05))     # three rows: the labels of (a), (b) and (c) do not fit in two
+    labels = list(ICI) + ["Reverb, Receiver Selector", "Better NRx per TB"]
     handles = [plt.Rectangle((0, 0), 1, 1, color=c) for c in ICI.values()]
-    fig.legend(handles, list(ICI), loc="center", ncol=3, fontsize=LEGEND, borderpad=0.15, columnspacing=1.6,
+    handles += [plt.Rectangle((0, 0), 1, 1, color=SEL["Reverb, Receiver Selector"]),
+                plt.Rectangle((0, 0), 1, 1, facecolor="white", edgecolor=base.BOUND, hatch="////", linewidth=0.8)]
+    fig.legend(handles, labels, loc="center", ncol=3, fontsize=LEGEND, borderpad=0.15, columnspacing=1.6,
                handlelength=1.3, frameon=False)
     for ext, kw in (("pdf", {"metadata": {"CreationDate": None, "ModDate": None}}),
                     ("png", {"dpi": 220, "metadata": {"Software": None}})):

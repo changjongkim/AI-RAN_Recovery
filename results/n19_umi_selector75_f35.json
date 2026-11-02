@@ -1,0 +1,144 @@
+{
+  "pub": "n19_umi_mix75_f35",
+  "trained": "n19_umi_mix75_iciaware_f35",
+  "chunks": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "slots": 5120,
+  "same_l1_outcome": 1.0,
+  "slots_without_interference": 0.7546875,
+  "best_theta": "theta_0dB",
+  "choices": {
+    "published": {
+      "resends_per_100": 14.51171875,
+      "recovered_pct_of_failures": 20.887728459530027,
+      "residual_after_all_pct": 1.54296875,
+      "conventional_resends_per_100": 18.76953125,
+      "retx_cut_x": 1.2934051144010767,
+      "trained_share_of_slots": 0.0
+    },
+    "trained": {
+      "resends_per_100": 13.4375,
+      "recovered_pct_of_failures": 25.935596170583114,
+      "residual_after_all_pct": 1.416015625,
+      "conventional_resends_per_100": 18.76953125,
+      "retx_cut_x": 1.3968023255813953,
+      "trained_share_of_slots": 1.0
+    },
+    "theta_0dB": {
+      "resends_per_100": 12.40234375,
+      "recovered_pct_of_failures": 31.070496083550914,
+      "residual_after_all_pct": 1.23046875,
+      "conventional_resends_per_100": 18.76953125,
+      "retx_cut_x": 1.5133858267716536,
+      "trained_share_of_slots": 0.2453125
+    },
+    "theta_1dB": {
+      "resends_per_100": 12.509765625,
+      "recovered_pct_of_failures": 30.80939947780679,
+      "residual_after_all_pct": 1.25,
+      "conventional_resends_per_100": 18.76953125,
+      "retx_cut_x": 1.500390320062451,
+      "trained_share_of_slots": 0.21875
+    },
+    "theta_2dB": {
+      "resends_per_100": 12.6171875,
+      "recovered_pct_of_failures": 30.20017406440383,
+      "residual_after_all_pct": 1.259765625,
+      "conventional_resends_per_100": 18.76953125,
+      "retx_cut_x": 1.4876160990712075,
+      "trained_share_of_slots": 0.190625
+    },
+    "theta_3dB": {
+      "resends_per_100": 12.890625,
+      "recovered_pct_of_failures": 28.54656222802437,
+      "residual_after_all_pct": 1.26953125,
+      "conventional_resends_per_100": 18.76953125,
+      "retx_cut_x": 1.456060606060606,
+      "trained_share_of_slots": 0.1546875
+    },
+    "theta_4dB": {
+      "resends_per_100": 13.017578125,
+      "recovered_pct_of_failures": 27.93733681462141,
+      "residual_after_all_pct": 1.2890625,
+      "conventional_resends_per_100": 18.76953125,
+      "retx_cut_x": 1.441860465116279,
+      "trained_share_of_slots": 0.1375
+    },
+    "theta_5dB": {
+      "resends_per_100": 13.18359375,
+      "recovered_pct_of_failures": 27.32811140121845,
+      "residual_after_all_pct": 1.328125,
+      "conventional_resends_per_100": 18.76953125,
+      "retx_cut_x": 1.4237037037037037,
+      "trained_share_of_slots": 0.115625
+    },
+    "theta_6dB": {
+      "resends_per_100": 13.37890625,
+      "recovered_pct_of_failures": 26.544821583986074,
+      "residual_after_all_pct": 1.3671875,
+      "conventional_resends_per_100": 18.76953125,
+      "retx_cut_x": 1.402919708029197,
+      "trained_share_of_slots": 0.0921875
+    },
+    "theta_7dB": {
+      "resends_per_100": 13.623046875,
+      "recovered_pct_of_failures": 25.15230635335074,
+      "residual_after_all_pct": 1.435546875,
+      "conventional_resends_per_100": 18.76953125,
+      "retx_cut_x": 1.3777777777777778,
+      "trained_share_of_slots": 0.0640625
+    },
+    "theta_8dB": {
+      "resends_per_100": 13.876953125,
+      "recovered_pct_of_failures": 24.107919930374237,
+      "residual_after_all_pct": 1.46484375,
+      "conventional_resends_per_100": 18.76953125,
+      "retx_cut_x": 1.3525686136523576,
+      "trained_share_of_slots": 0.04375
+    },
+    "theta_9dB": {
+      "resends_per_100": 14.384765625,
+      "recovered_pct_of_failures": 21.583986074847694,
+      "residual_after_all_pct": 1.533203125,
+      "conventional_resends_per_100": 18.76953125,
+      "retx_cut_x": 1.3048200950441275,
+      "trained_share_of_slots": 0.015625
+    },
+    "theta_10dB": {
+      "resends_per_100": 14.51171875,
+      "recovered_pct_of_failures": 20.887728459530027,
+      "residual_after_all_pct": 1.54296875,
+      "conventional_resends_per_100": 18.76953125,
+      "retx_cut_x": 1.2934051144010767,
+      "trained_share_of_slots": 0.0
+    },
+    "oracle": {
+      "resends_per_100": 12.40234375,
+      "recovered_pct_of_failures": 31.070496083550914,
+      "residual_after_all_pct": 1.23046875,
+      "conventional_resends_per_100": 18.76953125,
+      "retx_cut_x": 1.5133858267716536,
+      "trained_share_of_slots": null
+    }
+  }
+}

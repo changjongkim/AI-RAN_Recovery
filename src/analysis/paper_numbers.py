@@ -477,16 +477,24 @@ def evaluation_more():
     v["AblSelNoneBest"], v["AblSelTenBest"] = (min(none_pub, none_trained), 1), (min(ten_pub, ten_trained), 1)
     # Receiver Selector on cells with mixed interference (N19, src/analysis/selector.py): the best threshold, one NRx for
     # every slot, and the oracle that takes for each TB whichever NRx decodes it
-    for cell, c in (("Macro", "uma"), ("Small", "umi")):
-        f = f"results/n19_{c}_selector{SUFFIX}.json"
+    # Mix: interference in about three quarters of the slots (n19_*_mix); Rare: in a quarter (n19_*_mix75)
+    gaps = []
+    for cell, c, mix, tag in (("Macro", "uma", "Mix", ""), ("Small", "umi", "Mix", ""), ("Macro", "uma", "Rare", "75"), ("Small", "umi", "Rare", "75")):
+        f = f"results/n19_{c}_selector{tag}{SUFFIX}.json"
         if os.path.exists(f):
             d = json.load(open(f))
             ch = d["choices"]
-            v[f"AblSelMix{cell}"] = (ch[d["best_theta"]]["retx_cut_x"], 2)
-            v[f"AblSelMix{cell}Trained"] = (ch["trained"]["retx_cut_x"], 2)
-            v[f"AblSelMix{cell}Pub"] = (ch["published"]["retx_cut_x"], 2)
-            v[f"AblSelMix{cell}Oracle"] = (ch["oracle"]["retx_cut_x"], 2)
-            v[f"AblSelMix{cell}ThetaFive"] = (ch["theta_5dB"]["retx_cut_x"], 2)
+            v[f"AblSel{mix}{cell}"] = (ch[d["best_theta"]]["retx_cut_x"], 2)
+            v[f"AblSel{mix}{cell}Trained"] = (ch["trained"]["retx_cut_x"], 2)
+            v[f"AblSel{mix}{cell}Pub"] = (ch["published"]["retx_cut_x"], 2)
+            v[f"AblSel{mix}{cell}Oracle"] = (ch["oracle"]["retx_cut_x"], 2)
+            v[f"AblSel{mix}{cell}ThetaFive"] = (ch["theta_5dB"]["retx_cut_x"], 2)
+            single = max(ch["trained"]["retx_cut_x"], ch["published"]["retx_cut_x"])
+            v[f"AblSel{mix}{cell}Single"] = (single, 2)
+            v[f"AblSel{mix}{cell}OverSinglePct"] = (100.0 * (ch[d["best_theta"]]["retx_cut_x"] / single - 1.0), 0)
+            gaps.append(100.0 * (1.0 - ch[d["best_theta"]]["retx_cut_x"] / ch["oracle"]["retx_cut_x"]))
+    if gaps:
+        v["AblSelOracleGapPct"] = (max(gaps), 0)   # Receiver Selector against the better NRx for each TB, every mix and cell
     # inter-cell interference: macro and small cells, 10 dB (two users of neighbor cells) and 20 dB with two users
     def load(n):
         f = f"results/{n}{SUFFIX}.json"
