@@ -1,0 +1,86 @@
+{
+  "files": [
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/n5_umi_more2_f35/g0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/n5_umi_more2_f35/g1.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/n5_umi_more2_f35/g2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/n5_umi_more2_f35/g3.npz"
+  ],
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lslin_lmmse@50",
+    "lslin_idd3",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx",
+    "nrx_rt"
+  ],
+  "slots": 1024,
+  "num_rx": 4,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.1914213241433913,
+    "baseline_lslin_lmmse@50": 1.353256193753225,
+    "lslin_idd3": 6.462960734225305,
+    "baseline_lmmse_kbest": 1.6675021539219301,
+    "baseline_perf_csi_kbest": 1.4642202547142347,
+    "nrx": 1.206407248845096,
+    "nrx_rt": 1.1777536595132574
+  },
+  "fail_pct": {
+    "baseline_lslin_lmmse": 13.720703125,
+    "baseline_lslin_lmmse@50": 12.646484375,
+    "lslin_idd3": 10.7421875,
+    "baseline_lmmse_kbest": 8.349609375,
+    "baseline_perf_csi_kbest": 6.73828125,
+    "nrx": 7.373046875,
+    "nrx_rt": 9.375
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lslin_lmmse@50": 7.829181494661921,
+    "lslin_idd3": 21.708185053380785,
+    "baseline_lmmse_kbest": 39.145907473309606,
+    "baseline_perf_csi_kbest": 50.88967971530249,
+    "nrx": 46.263345195729535,
+    "nrx_rt": 31.672597864768683
+  },
+  "by_similarity": {
+    "0.0-0.4": {
+      "share_of_blocks": 0.3525390625,
+      "conventional_fail_pct": 13.296398891966758,
+      "share_of_failures": 0.3416370106761566,
+      "recovers_pct": {
+        "baseline_lslin_lmmse@50": 6.25,
+        "lslin_idd3": 9.375,
+        "baseline_lmmse_kbest": 29.166666666666668,
+        "baseline_perf_csi_kbest": 39.583333333333336,
+        "nrx": 34.375,
+        "nrx_rt": 20.833333333333332
+      }
+    },
+    "0.4-0.6": {
+      "share_of_blocks": 0.4580078125,
+      "conventional_fail_pct": 11.087420042643924,
+      "share_of_failures": 0.3701067615658363,
+      "recovers_pct": {
+        "baseline_lslin_lmmse@50": 8.653846153846153,
+        "lslin_idd3": 25.96153846153846,
+        "baseline_lmmse_kbest": 45.19230769230769,
+        "baseline_perf_csi_kbest": 54.80769230769231,
+        "nrx": 52.88461538461539,
+        "nrx_rt": 38.46153846153846
+      }
+    },
+    "0.6-1.0": {
+      "share_of_blocks": 0.189453125,
+      "conventional_fail_pct": 20.876288659793815,
+      "share_of_failures": 0.28825622775800713,
+      "recovers_pct": {
+        "baseline_lslin_lmmse@50": 8.641975308641975,
+        "lslin_idd3": 30.864197530864196,
+        "baseline_lmmse_kbest": 43.20987654320987,
+        "baseline_perf_csi_kbest": 59.25925925925926,
+        "nrx": 51.851851851851855,
+        "nrx_rt": 35.80246913580247
+      }
+    }
+  }
+}
