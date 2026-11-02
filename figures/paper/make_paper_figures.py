@@ -435,8 +435,9 @@ def motivation_server():
             y = [merged([n])["resends_per_100"] / merged([n], "ours")["resends_per_100"] for n in names]
             ax.plot(inr, y, color=NRX[label], linewidth=2.4, marker="o", markersize=6)
             ax.text(inr[-1] + 0.4, y[-1], f"{y[-1]:.1f}\u00d7", va="center", fontsize=VALUE, color=INK)
-        ax.set_xlim(-0.5, 12)
+        ax.set_xlim(-1.4, 12)
         ax.set_xticks(inr)
+        ax.set_xticklabels(["None"] + [str(x) for x in inr[1:]])   # the first point has no users of neighbor cells
         ax.set_ylim(1, 3)
         ax.set_yticks([1, 2, 3])
         ax.set_xlabel("Interference (dB)")
