@@ -698,6 +698,13 @@ def main():
         "FullWaitBehindMaxPp": (-lat["wait"]["share_min_diff_pp"], 1),
         "FullWaitAheadFromMs": (lat["wait"]["ahead_from_ms"], 1),
     }
+    # cost of recovery (Discussion, Table 3): A100 time of the recovery runs of a macro cell, every recovery on time, and
+    # the retransmissions it avoids; one run occupies the GPU for the whole recovery path (PATH, as MotGpuTimePerSlot)
+    runs = values["EvalRxRunsConv"][0]                        # recovery runs per 100 TBs with the conventional L1
+    avoided = values["EvalRetxConvMacro"][0] - values["EvalRetxReverbMacro"][0]
+    values["CostGpuPerHundred"] = (runs * PATH["p50_ms"], 0)
+    values["CostRetxAvoided"] = (avoided, 1)
+    values["CostGpuPerAvoided"] = (runs * PATH["p50_ms"] / avoided, 1)
     full = json.load(open(f"results/n3_uma_v3_all{SUFFIX}.json"))
     meta = json.loads(str(np.load(sorted(glob.glob(f"results/{MACRO_SETS[0]}{SUFFIX}/c*.npz"))[0])["meta"]))
     points = sorted(float(k) for k in full["by_point"])
