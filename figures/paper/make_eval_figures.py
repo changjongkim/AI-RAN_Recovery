@@ -156,6 +156,9 @@ def delay():
     # the same recoveries without Recovery Gate: every failed TB receives the grant at the L1 result (Section 5.2)
     done, tx = simulate(conv, rec, steps, cand, "parallel", "DDDSU", pn.Timing, l1_steps=conv_steps)
     res["Grant at L1 Result"] = (done[~conv], 100.0 * (tx - 1).sum() / len(tx))
+    # Full Wait without the recovery of retransmissions: only the first transmission is recovered (Section 5.4)
+    done, tx = simulate(conv, rec, conv_steps, cand, "wait", "DDDSU", pn.Timing, l1_steps=conv_steps)
+    res["First Transmission Only"] = (done[~conv], 100.0 * (tx - 1).sum() / len(tx))
     fig, ax = plt.subplots(figsize=PANEL4)
     for label in ("Conventional", "Reverb, Latency-Neutral", "Reverb, Full Wait"):
         d = np.sort(res[label][0])
@@ -173,17 +176,21 @@ def delay():
     save(fig, "eval_delay_cdf")
 
     fig, ax = plt.subplots(figsize=PANEL4)
-    order = ["Reverb, Full Wait", "Reverb, Latency-Neutral", "Grant at L1 Result", "Conventional"]
-    colors = {**WAITS, "Grant at L1 Result": GRANT_AT_L1}
+    order = ["Reverb, Full Wait", "First Transmission Only", "Reverb, Latency-Neutral", "Grant at L1 Result", "Conventional"]
+    names = ["Full Wait", "First Only", "Latency-Neutral", "Grant at L1", "Conventional"]
+    colors = {**WAITS, "Grant at L1 Result": GRANT_AT_L1, "First Transmission Only": "white"}
     vals = [res[k][1] for k in order]
-    bs = ax.bar(range(4), vals, width=0.62, color=[colors[k] for k in order], zorder=3)
+    y = np.arange(len(order))[::-1]          # horizontal bars: the names stay readable at the panel size
+    bs = ax.barh(y, vals, height=0.66, color=[colors[k] for k in order], zorder=3)
+    bs[1].set_hatch("////"); bs[1].set_edgecolor(WAITS["Reverb, Full Wait"]); bs[1].set_linewidth(0.9)
     for b, v in zip(bs, vals):
-        ax.text(b.get_x() + b.get_width() / 2, v + 0.4, f"{v:.1f}", ha="center", va="bottom", fontsize=VALUE - 2)
-    ax.set_xticks(range(4))
-    ax.set_xticklabels(["Full\nWait", "Latency-\nNeutral", "Grant\nat L1", "Conven-\ntional"], fontsize=8)
-    ax.set_ylim(0, 25)
-    ax.set_ylabel("Per 100 TBs")
-    style(ax)
+        ax.text(v + 0.5, b.get_y() + b.get_height() / 2, f"{v:.1f}", ha="left", va="center", fontsize=VALUE - 2)
+    ax.set_yticks(y)
+    ax.set_yticklabels(names, fontsize=11)
+    ax.set_xlim(0, 28)
+    ax.set_xticks([0, 10, 20])
+    ax.set_xlabel("Per 100 TBs")
+    style(ax, grid="x")
     save(fig, "eval_delay_retx")
 
     for name, run in (("eval_la", "n6_uma_v3"), ("eval_la_small", "n6_umi_v3")):
