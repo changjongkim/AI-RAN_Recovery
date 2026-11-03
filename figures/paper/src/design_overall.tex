@@ -3,7 +3,7 @@
 % components and the paths they open).  Running example: failed TBs A and B of cell 1 and C of cell 2.
 % (1) the received samples of a slot with a failed TB stay in GPU memory; (2) Recovery Gate: A and C failed at most K
 % code blocks and wait for their recovery, B failed all ten and gets its grant at once; (3) Receiver Selector: cell 2 has
-% interference above theta and uses the NRx trained with interference, cell 1 the NRx trained without it (published);
+% interference at least theta and uses the NRx trained with interference, cell 1 the NRx trained without it (published);
 % (4) Recovery Scheduler: one recovery per GPU, rejection when the start (predicted at the L1 result, checked when a GPU
 % frees) is after D - r; (5) each GPU decodes its TB again from the stored
 % samples between the L1 slots; (6) the result goes to the L2 scheduler, which waits with the grants of A and C, schedules the
@@ -46,7 +46,7 @@
   \draw[black!60, line width=0.35pt, fill=black!25] (5.98, -1.43) rectangle (7.1, -1.29);
   \draw[black, line width=0.7pt, densely dashed] (6.75, -0.86) -- (6.75, -1.5);
   \node[stxt, anchor=north] at (6.75, -1.5) {\vth};
-  \node[ann, font=\tabsize\itshape] at (6.725, -1.86) {Trained NRx above \vth};
+  \node[ann, font=\tabsize\itshape] at (6.725, -1.86) {Trained NRx if ≥ \vth};
   \draw[arr] (7.2, -1.0) -- (7.45, -1.0);
   \draw[arr] (7.2, -1.36) -- (7.45, -1.36);
   \node[cl, fill=nrxc, minimum width=0.45cm, minimum height=0.26cm] at (7.72, -1.0) {NRx};
