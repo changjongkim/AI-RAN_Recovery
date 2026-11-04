@@ -433,3 +433,12 @@ N|u3n_uma_r4_u4_t_f35|70|while [ $(date +%s) -lt $(date -d '2026-11-03 13:05' +%
 N|u3n_uma_r8_u2_f35|40|while [ $(date +%s) -lt $(date -d '2026-11-03 13:05' +%s) ]; do sleep 60; done; bash exp/u3n_side.sh "2026-11-03 13:00" u3n_uma_r8_u2_f35 300 nrx_large_8rx_mu8.cfg 8 2 -2,0,2,4,6 48 2 nrx_large_8rx_mu8_final
 N|u3n_uma_r8_u4_f35|90|while [ $(date +%s) -lt $(date -d '2026-11-03 13:05' +%s) ]; do sleep 60; done; bash exp/u3n_side.sh "2026-11-03 13:00" u3n_uma_r8_u4_f35 300 nrx_large_8rx_mu8.cfg 8 4 2,4,6,8,10 48 1 nrx_large_8rx_mu8_final
 N|u3n_uma_r16_u2_f35|40|while [ $(date +%s) -lt $(date -d '2026-11-03 13:05' +%s) ]; do sleep 60; done; bash exp/u3n_side.sh "2026-11-03 13:00" u3n_uma_r16_u2_f35 300 nrx_large_16rx_mu12.cfg 16 2 -6,-4,-2,0,2 32 1 nrx_large_16rx_mu12_final
+# (2026-11-03 19:10) U3n2: longer NRx training for 8 RX (A at 1e-4, B at 1e-3) and 16 RX (1e-3) until 2026-11-04 19:00, in chunks of 200 min, with a learning curve every two hours (results/u3n2/curve.tsv)
+N|u3n2_train_c1|210|bash exp/u3n2_train.sh 200 "2026-11-04 19:00"
+N|u3n2_train_c2|210|bash exp/u3n2_train.sh 200 "2026-11-04 19:00"
+N|u3n2_train_c3|210|bash exp/u3n2_train.sh 200 "2026-11-04 19:00"
+N|u3n2_train_c4|210|bash exp/u3n2_train.sh 200 "2026-11-04 19:00"
+N|u3n2_train_c5|210|bash exp/u3n2_train.sh 200 "2026-11-04 19:00"
+N|u3n2_train_c6|210|bash exp/u3n2_train.sh 200 "2026-11-04 19:00"
+N|u3n2_train_c7|210|bash exp/u3n2_train.sh 200 "2026-11-04 19:00"
+N|u3n2_train_c8|210|bash exp/u3n2_train.sh 200 "2026-11-04 19:00"
