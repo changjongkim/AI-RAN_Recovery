@@ -6,7 +6,8 @@
 #   GPU 1  nrx_large_8rx_mu8b    from the same weights at 1e-3, the rate of the NVlabs schedule (B)
 #   GPU 2  nrx_large_16rx_mu12   continues U3n at 1e-3                                        (C)
 #   GPU 3  snapshots of A, B, C on 8 RX with 2 and 8 users and on 16 RX with 4 and 8 users (seed 900, UMa 3.5 GHz,
-#          16 slots per Eb/No, LS + LMMSE and NRx), results/u3n2/curve.tsv
+#          16 slots per Eb/No, LS + LMMSE and NRx), and from 2026-11-03 22:40 also on the training channel (UMi at
+#          2.14 GHz; 8 RX with 2 users, 16 RX with 4 users, rows marked umi), results/u3n2/curve.tsv
 # One call runs for MINUTES or until END, whichever comes first, and exits 0; the next call continues from the saved
 # weights (the NVlabs script saves every 1000 iterations and loads the weights when it starts).
 # usage: bash exp/u3n2_train.sh MINUTES END_TIME
@@ -65,13 +66,15 @@ curve() {    # GPU 3: snapshots every two hours until 40 minutes before the stop
     t0=$(date +%s); stamp=$(date +%m%d_%H%M)
     for l in nrx_large_8rx_mu8 nrx_large_8rx_mu8b nrx_large_16rx_mu12; do
       w=$O/w_${l}_$stamp; cp $W/${l}_weights $w; loads $w || { sleep 30; cp $W/${l}_weights $w; }
-      if [[ $l == *16rx* ]]; then pts="16:4:2,4 16:8:4,6"; cfg=nrx_large_16rx_mu12.cfg; else pts="8:2:2,4 8:8:10,12"; cfg=nrx_large_8rx_mu8.cfg; fi
+      if [[ $l == *16rx* ]]; then pts="16:4:2,4:UMa 16:8:4,6:UMa 16:4:2,4:UMi"; cfg=nrx_large_16rx_mu12.cfg; else pts="8:2:2,4:UMa 8:8:10,12:UMa 8:2:2,4:UMi"; cfg=nrx_large_8rx_mu8.cfg; fi
       for point in $pts; do
-        IFS=: read rx u eb <<<"$point"
-        name=u3n2/c_${l}_${stamp}_r${rx}u${u}
-        GPUS=3 SEED0=900 CARRIER_GHZ=3.5 bash exp/classical.sh $name --base-config $cfg --num-rx $rx --users $u --channel UMa \
+        IFS=: read rx u eb ch <<<"$point"
+        # UMa at 3.5 GHz is the sweep; UMi at the configuration carrier (2.14 GHz) is the training channel
+        if [ $ch = UMi ]; then tag=umi; ghz=; else tag=; ghz=3.5; fi
+        name=u3n2/c_${l}_${stamp}_r${rx}u${u}${tag}
+        GPUS=3 SEED0=900 CARRIER_GHZ=$ghz bash exp/classical.sh $name --base-config $cfg --num-rx $rx --users $u --channel $ch \
             --systems baseline_lslin_lmmse,nrx --nrx-weights $w --ebno=$eb --slots 16 --batch 1 > /dev/null 2>&1
-        python3 - "$RESULTS/$name.json" "$l" "$stamp" "$rx" "$u" >> $O/curve.tsv <<'PY'
+        python3 - "$RESULTS/$name.json" "$l" "$stamp" "$rx" "$u$tag" >> $O/curve.tsv <<'PY'
 import json, sys
 f, l, stamp, rx, u = sys.argv[1:]
 try:

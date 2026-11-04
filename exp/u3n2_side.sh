@@ -2,10 +2,12 @@
 # U3n2, second interactive allocation (queue_b): three more training variants next to A, B, C of exp/u3n2_train.sh,
 # so that a working recipe for the two-symbol DMRS shows up sooner.
 #   GPU 0  nrx_large_8rx_mu8d    U3n weights of A, learning rate 1e-3 and batch 128 as the NVlabs schedule  (D)
-#   GPU 1  nrx_large_16rx_mu12e  U3n weights of C, learning rate 1e-4 (the control of C at 1e-3)           (E)
+#   GPU 1  nrx_large_16rx_mu12e  U3n weights of C, learning rate 1e-4 until 2026-11-03 22:40 (its evaluation loss
+#                                stayed flat), then 1e-3 and batch 128 as D                                (E)
 #   GPU 2  nrx_large_8rx_mu8f    the one-symbol 8-RX weights of N4b (before U3n), learning rate 1e-3      (F)
 #   GPU 3  snapshots of D, E, F on 8 RX with 2 and 8 users and on 16 RX with 4 and 8 users (seed 900, UMa 3.5 GHz,
-#          16 slots per Eb/No, LS + LMMSE and NRx), results/u3n2/curve.tsv
+#          16 slots per Eb/No, LS + LMMSE and NRx), and from 2026-11-03 22:40 also on the training channel (UMi at
+#          2.14 GHz; 8 RX with 2 users, 16 RX with 4 users, rows marked umi), results/u3n2/curve.tsv
 # One call runs for MINUTES or until END, whichever comes first, and exits 0; the next call continues from the saved
 # weights (the NVlabs script saves every 1000 iterations and loads the weights when it starts).
 # usage: bash exp/u3n2_side.sh MINUTES END_TIME
@@ -68,13 +70,15 @@ curve() {    # GPU 3: snapshots every two hours until 40 minutes before the stop
     t0=$(date +%s); stamp=$(date +%m%d_%H%M)
     for l in nrx_large_8rx_mu8d nrx_large_8rx_mu8f nrx_large_16rx_mu12e; do
       w=$O/w_${l}_$stamp; cp $W/${l}_weights $w; loads $w || { sleep 30; cp $W/${l}_weights $w; }
-      if [[ $l == *16rx* ]]; then pts="16:4:2,4 16:8:4,6"; cfg=nrx_large_16rx_mu12.cfg; else pts="8:2:2,4 8:8:10,12"; cfg=nrx_large_8rx_mu8.cfg; fi
+      if [[ $l == *16rx* ]]; then pts="16:4:2,4:UMa 16:8:4,6:UMa 16:4:2,4:UMi"; cfg=nrx_large_16rx_mu12.cfg; else pts="8:2:2,4:UMa 8:8:10,12:UMa 8:2:2,4:UMi"; cfg=nrx_large_8rx_mu8.cfg; fi
       for point in $pts; do
-        IFS=: read rx u eb <<<"$point"
-        name=u3n2/c_${l}_${stamp}_r${rx}u${u}
-        GPUS=3 SEED0=900 CARRIER_GHZ=3.5 bash exp/classical.sh $name --base-config $cfg --num-rx $rx --users $u --channel UMa \
+        IFS=: read rx u eb ch <<<"$point"
+        # UMa at 3.5 GHz is the sweep; UMi at the configuration carrier (2.14 GHz) is the training channel
+        if [ $ch = UMi ]; then tag=umi; ghz=; else tag=; ghz=3.5; fi
+        name=u3n2/c_${l}_${stamp}_r${rx}u${u}${tag}
+        GPUS=3 SEED0=900 CARRIER_GHZ=$ghz bash exp/classical.sh $name --base-config $cfg --num-rx $rx --users $u --channel $ch \
             --systems baseline_lslin_lmmse,nrx --nrx-weights $w --ebno=$eb --slots 16 --batch 1 > /dev/null 2>&1
-        python3 - "$RESULTS/$name.json" "$l" "$stamp" "$rx" "$u" >> $O/curve.tsv <<'PY'
+        python3 - "$RESULTS/$name.json" "$l" "$stamp" "$rx" "$u$tag" >> $O/curve.tsv <<'PY'
 import json, sys
 f, l, stamp, rx, u = sys.argv[1:]
 try:
@@ -92,7 +96,7 @@ PY
 
 #     GPU label                  lr      Eb/No min per users                    Eb/No max per users              batch
 train 0 nrx_large_8rx_mu8d   0.001  "-4,-2,0,2,3,4,5,6"                  "8,10,11,12,13,14,15,16"            128 &
-train 1 nrx_large_16rx_mu12e 0.0001 "-8,-7,-6,-5,-4,-3,-2,-1,0,1,1.5,2" "4,5,6,7,7.5,8,8.5,9,9.5,10,11,12" 64 &
+train 1 nrx_large_16rx_mu12e 0.001  "-8,-7,-6,-5,-4,-3,-2,-1,0,1,1.5,2" "4,5,6,7,7.5,8,8.5,9,9.5,10,11,12" 128 &
 train 2 nrx_large_8rx_mu8f   0.001  "-4,-2,0,2,3,4,5,6"                  "8,10,11,12,13,14,15,16"            64 &
 curve &
 wait
