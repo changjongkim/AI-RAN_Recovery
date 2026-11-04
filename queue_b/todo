@@ -396,3 +396,12 @@ N|n28x_g4_r4_m70_s2|30|PERIODS=24000 RT_GPUS=4 AI_RATE=4 AI_PCT=70 CONTROLLER=/p
 N|n28_off_g4_r4_m70_s2|30|PERIODS=24000 RT_GPUS=4 AI_RATE=4 AI_PCT=70 bash exp/n22_runtime_ai.sh off "8 16 24" 2
 N|n28x_g4_r8_m70_s2|30|PERIODS=24000 RT_GPUS=4 AI_RATE=8 AI_PCT=70 CONTROLLER=/pscratch/sd/s/sgkim/kcj/airan_recovery/src/runtime/controller_arrival.py NRX_FLAGS=arrival_pred=6.0,arrival_margin=0.15 bash exp/n22_runtime_ai.sh all "8 16 24" 2
 N|n28_off_g4_r8_m70_s2|30|PERIODS=24000 RT_GPUS=4 AI_RATE=8 AI_PCT=70 bash exp/n22_runtime_ai.sh off "8 16 24" 2
+# (2026-11-03 19:30) U3n2 on a second interactive allocation: training variants D, E, F (exp/u3n2_side.sh) until 2026-11-04 19:00 in chunks of 200 min
+N|u3n2_side_c1|210|bash exp/u3n2_side.sh 200 "2026-11-04 19:00"
+N|u3n2_side_c2|210|bash exp/u3n2_side.sh 200 "2026-11-04 19:00"
+N|u3n2_side_c3|210|bash exp/u3n2_side.sh 200 "2026-11-04 19:00"
+N|u3n2_side_c4|210|bash exp/u3n2_side.sh 200 "2026-11-04 19:00"
+N|u3n2_side_c5|210|bash exp/u3n2_side.sh 200 "2026-11-04 19:00"
+N|u3n2_side_c6|210|bash exp/u3n2_side.sh 200 "2026-11-04 19:00"
+N|u3n2_side_c7|210|bash exp/u3n2_side.sh 200 "2026-11-04 19:00"
+N|u3n2_side_c8|210|bash exp/u3n2_side.sh 200 "2026-11-04 19:00"
