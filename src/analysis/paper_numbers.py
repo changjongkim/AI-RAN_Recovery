@@ -717,6 +717,12 @@ def sensitivity():
     v["SensFhKmSame"], v["SensFhKmBreak"] = (max(same), 0), (first_change, 0)
     v["SensFhBreakCut"] = (rows[first_change]["retx_cut_wait"], 2)
     v["SensFhPerKmUs"] = (rp["params"]["us_per_km"], 0)
+    # the recovery path ends this long before the recovery deadline, and the distance limit is the distance whose round
+    # trip equals the margin: the last unchanged distance fits the margin, the first changed one does not
+    margin = Timing.deadline - (Timing.l1 + Timing.run)
+    v["SensRecoveryMarginMs"] = (margin, 1)
+    rtt = lambda km: 2.0 * km * rp["params"]["us_per_km"] / 1000.0
+    checks["e1a_limit_is_the_recovery_margin"] = bool(rtt(max(same)) <= margin + 1e-6 < rtt(first_change))
     rt = json.load(open("results/e1_fronthaul_realtime.json"))
     base_d = f"{Timing.deadline:g}"
     for d, lab in (("10", "Hundred"), ("9", "TwoHundred")):
@@ -745,6 +751,8 @@ def sensitivity():
     d0 = simulate(c_, r_, cs_, k_, "harq_only", "DDDSU", Timing, l1_steps=cs_)[0]
     d1 = simulate(c_, r_, s_, k_, "select_cb5", "DDDSU", Timing, l1_steps=cs_)[0]
     Timing.lead, Timing.deadline = saved
+    v["SensNeutralShortRetxMs"] = (float(d0[f_ & np.isfinite(d0)].min()), 1)   # first conventional retransmission decoded
+    checks["e3_short_lead_window_opens_at_the_first_retransmission"] = bool(v["SensNeutralShortRetxMs"][0] < Timing.l1 + Timing.run)
     at = np.unique(np.concatenate([[0.0], d0[f_ & np.isfinite(d0)], d1[f_ & np.isfinite(d1)]]))
     diff = delivered_share(d1, f_, at) - delivered_share(d0, f_, at)
     windows, i = [], 0                          # (from, to, largest shortfall) of each interval with a shortfall
@@ -797,6 +805,18 @@ def sensitivity():
     three_fail = field("0.03", "ai_and_ran", "first_fail_pct")
     v["SensLaThreeConvFailLow"], v["SensLaThreeConvFailHigh"] = (min(three_fail), 1), (max(three_fail), 1)
     v["SensLaHighMcsReverb"] = (min(field("0.1", "ours", "mean_mcs") + field("0.2", "ours", "mean_mcs")), 1)
+    v["SensLaHighMcsConv"] = (min(field("0.1", "ai_and_ran", "mean_mcs") + field("0.2", "ai_and_ran", "mean_mcs")), 1)
+    m3c, m3r = field("0.03", "ai_and_ran", "mean_mcs"), field("0.03", "ours", "mean_mcs")
+    v["SensLaThreeMcsConvLow"], v["SensLaThreeMcsConvHigh"] = (min(m3c), 1), (max(m3c), 1)
+    v["SensLaThreeMcsReverbLow"], v["SensLaThreeMcsReverbHigh"] = (min(m3r), 1), (max(m3r), 1)
+    checks["e5_reverb_higher_mcs_at_three_percent_every_snr"] = bool(all(r > c for r, c in zip(m3r, m3c)))
+    # at every SNR, the largest difference in mean MCS and the largest throughput gain are at a target of 3% or 5%
+    tg = ("0.01", "0.03", "0.05", "0.1", "0.2")
+    dm = {t: [r - c for r, c in zip(field(t, "ours", "mean_mcs"), field(t, "ai_and_ran", "mean_mcs"))] for t in tg}
+    gn = {t: gain(t) for t in tg}
+    checks["e5_largest_mcs_difference_and_gain_at_three_or_five_percent"] = bool(all(
+        max(tg, key=lambda t: dm[t][i]) in ("0.03", "0.05") and max(tg, key=lambda t: gn[t][i]) in ("0.03", "0.05")
+        for i in range(len(snr))))
     rx = lambda t, s: field(t, s, "resends_per_100")
     v["SensLaThreeRetxConvLow"], v["SensLaThreeRetxConvHigh"] = (min(rx("0.03", "ai_and_ran")), 1), (max(rx("0.03", "ai_and_ran")), 1)
     v["SensLaThreeRetxReverbLow"], v["SensLaThreeRetxReverbHigh"] = (min(rx("0.03", "ours")), 1), (max(rx("0.03", "ours")), 1)
