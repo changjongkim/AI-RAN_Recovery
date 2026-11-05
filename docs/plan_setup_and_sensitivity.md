@@ -179,3 +179,19 @@
    - E5c: 선택. 약 2시간.
 4. E7은 이미 돌고 있다(2026-11-04 20:43부터).
 5. 원고 반영은 결과가 모이면 plan_nrx_scale.md와 함께 한 번에 한다.
+
+## 진행 기록
+
+2026-11-04 21:15
+
+- 출처 확인: NVIDIA Aerial SDK 23-1 제품 설명(docs.nvidia.com/aerial/archive/aerial-sdk/23-1/text/product_brief/product_brief_intro.html)에 다음이 적혀 있다.
+  - "Fronthaul lengths up to 50km (normally 30km)"
+  - 4T4R @ 100 MHz
+  - "A100 with Aerial Devkit supports up to 4 peak cells of 4T4R @ 100MHz"
+  - 24-2.1 기능 목록에도 "Fronthaul Extension to 50km"이 있다.
+  - O-RAN WG9 단방향 100 µs 예산과 광섬유 약 4.9 µs/km는 2차 출처(Juniper JVD)이므로, 원문(WG9)을 확인한 뒤 인용한다.
+- E1a 완료(cb7041a, results/e1_fronthaul_replay.json):
+  - 0–370 km에서 재전송 감소(대기 2.30배, 지연 중립 1.38배)와 손실 TB(2.18% → 0.90%)가 같다. 지연 중립은 어느 시간에서도 기존 방식보다 뒤지지 않는다.
+  - p99 지연은 30 km에서 대기 39.5 / 기존 24.6 ms이고, 0 km에서는 39.4 / 24.4 ms이다.
+  - 400 km에서 처음 무너진다. 첫 복구가 마감을 넘어 1.25배가 된다.
+- E1b 거리를 Aerial 기준에 맞춤: 마감 10.7 ms(30 km), 10.5 ms(50 km), 10.2 ms(80 km) × 시드 1, 2. main queue 맨 앞에 두었고, 둘째 interactive 자리가 비면 시작한다.
