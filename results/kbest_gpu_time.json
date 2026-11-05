@@ -1,0 +1,212 @@
+{
+ "r4_u2": {
+  "num_rx": 4,
+  "users": 2,
+  "device": "NVIDIA A100-SXM4-80GB",
+  "lslin_est": {
+   "median_ms": 0.7263400038937107,
+   "p99_ms": 0.7694281358271837,
+   "mode": "xla"
+  },
+  "lmmse_det": {
+   "median_ms": 6.517881993204355,
+   "p99_ms": 6.803163998119999,
+   "mode": "graph"
+  },
+  "lmmse_est": {
+   "median_ms": 110.69212049187627,
+   "p99_ms": 112.78113893640693,
+   "mode": "graph"
+  },
+  "kbest_det": {
+   "median_ms": 157.92740251345094,
+   "p99_ms": 164.261100415315,
+   "mode": "graph"
+  },
+  "nrx": {
+   "median_ms": 10.612415993819013,
+   "p99_ms": 10.751687840092927,
+   "mode": "xla"
+  }
+ },
+ "r4_u3": {
+  "num_rx": 4,
+  "users": 3,
+  "device": "NVIDIA A100-SXM4-80GB",
+  "lslin_est": {
+   "median_ms": 0.724611003533937,
+   "p99_ms": 0.8325584526755847,
+   "mode": "xla"
+  },
+  "lmmse_det": {
+   "median_ms": 6.616562503040768,
+   "p99_ms": 6.947044006374199,
+   "mode": "graph"
+  },
+  "lmmse_est": {
+   "median_ms": 165.91582050023135,
+   "p99_ms": 169.5831056975294,
+   "mode": "graph"
+  },
+  "kbest_det": {
+   "median_ms": 324.3378415063489,
+   "p99_ms": 333.7200808041962,
+   "mode": "graph"
+  },
+  "nrx": {
+   "median_ms": 15.887360001215711,
+   "p99_ms": 15.929293837980367,
+   "mode": "xla"
+  }
+ },
+ "r4_u4": {
+  "num_rx": 4,
+  "users": 4,
+  "device": "NVIDIA A100-SXM4-80GB",
+  "lslin_est": {
+   "median_ms": 0.7078090129652992,
+   "p99_ms": 0.7438559902948327,
+   "mode": "xla"
+  },
+  "lmmse_det": {
+   "median_ms": 6.627516500884667,
+   "p99_ms": 6.958440960443113,
+   "mode": "graph"
+  },
+  "lmmse_est": {
+   "median_ms": 215.192328003468,
+   "p99_ms": 218.34730350063182,
+   "mode": "graph"
+  },
+  "kbest_det": {
+   "median_ms": 536.4539785077795,
+   "p99_ms": 552.4297948557069,
+   "mode": "graph"
+  },
+  "nrx": {
+   "median_ms": 19.937762001063675,
+   "p99_ms": 20.018790005415212,
+   "mode": "xla"
+  }
+ },
+ "r8_u1": {
+  "num_rx": 8,
+  "users": 1,
+  "device": "NVIDIA A100-SXM4-80GB",
+  "lslin_est": {
+   "median_ms": 0.726961501641199,
+   "p99_ms": 0.800812378001865,
+   "mode": "xla"
+  },
+  "lmmse_det": {
+   "median_ms": 8.027627016417682,
+   "p99_ms": 8.32527934195241,
+   "mode": "graph"
+  },
+  "lmmse_est": {
+   "median_ms": 112.84120249911211,
+   "p99_ms": 113.96752511180239,
+   "mode": "graph"
+  },
+  "kbest_det": {
+   "median_ms": 63.660132509539835,
+   "p99_ms": 64.52309195650741,
+   "mode": "graph"
+  },
+  "nrx": {
+   "median_ms": 5.606360995443538,
+   "p99_ms": 5.692547698272392,
+   "mode": "xla"
+  }
+ },
+ "r8_u2": {
+  "num_rx": 8,
+  "users": 2,
+  "device": "NVIDIA A100-SXM4-80GB",
+  "lslin_est": {
+   "median_ms": 0.7209695031633601,
+   "p99_ms": 0.7418264789157547,
+   "mode": "xla"
+  },
+  "lmmse_det": {
+   "median_ms": 8.796100999461487,
+   "p99_ms": 9.039561603567563,
+   "mode": "graph"
+  },
+  "lmmse_est": {
+   "median_ms": 212.83133700489998,
+   "p99_ms": 215.8124360011425,
+   "mode": "graph"
+  },
+  "kbest_det": {
+   "median_ms": 160.6204260024242,
+   "p99_ms": 180.58002600999316,
+   "mode": "graph"
+  },
+  "nrx": {
+   "median_ms": 10.690200520912185,
+   "p99_ms": 10.77484488603659,
+   "mode": "xla"
+  }
+ },
+ "r8_u3": {
+  "num_rx": 8,
+  "users": 3,
+  "device": "NVIDIA A100-SXM4-80GB",
+  "lslin_est": {
+   "median_ms": 0.7254329975694418,
+   "p99_ms": 0.8115236271987669,
+   "mode": "xla"
+  },
+  "lmmse_det": {
+   "median_ms": 8.78175649268087,
+   "p99_ms": 9.023518086469267,
+   "mode": "graph"
+  },
+  "lmmse_est": {
+   "median_ms": 310.73921800998505,
+   "p99_ms": 316.15706218464766,
+   "mode": "graph"
+  },
+  "kbest_det": {
+   "median_ms": 325.79841899860185,
+   "p99_ms": 347.33293340425007,
+   "mode": "graph"
+  },
+  "nrx": {
+   "median_ms": 15.933197995764203,
+   "p99_ms": 16.020648023404647,
+   "mode": "xla"
+  }
+ },
+ "r8_u4": {
+  "num_rx": 8,
+  "users": 4,
+  "device": "NVIDIA A100-SXM4-80GB",
+  "lslin_est": {
+   "median_ms": 0.7297565025510266,
+   "p99_ms": 0.8157291493262164,
+   "mode": "xla"
+  },
+  "lmmse_det": {
+   "median_ms": 8.91464100277517,
+   "p99_ms": 9.166274544550106,
+   "mode": "graph"
+  },
+  "lmmse_est": {
+   "median_ms": 407.60497249721084,
+   "p99_ms": 415.9511141659459,
+   "mode": "graph"
+  },
+  "kbest_det": {
+   "median_ms": 539.2209054989507,
+   "p99_ms": 551.4067083358532,
+   "mode": "graph"
+  },
+  "nrx": {
+   "median_ms": 20.036851507029496,
+   "p99_ms": 20.155258007289376,
+   "mode": "xla"
+  }
+ }
+}

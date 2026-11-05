@@ -1,0 +1,154 @@
+{
+ "config": {
+  "nrx_repo": "/pscratch/sd/s/sgkim/kcj/airan_recovery/third_party/neural_rx",
+  "base_config": "nrx_large_8rx_mu4.cfg",
+  "num_rx": 8,
+  "users": 4,
+  "channel": "UMa",
+  "carrier_ghz": 3.5,
+  "prbs": 273,
+  "mcs": 14,
+  "ebno": 4.0,
+  "reps": 50,
+  "warmup": 5,
+  "gpu": "0",
+  "output": "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/kbest_gpu_time/r8_u4.json"
+ },
+ "device": "NVIDIA A100-SXM4-80GB",
+ "tensorflow": "2.15.1",
+ "nrx_iterations": 8,
+ "stages": {
+  "lslin_est": {
+   "input_shapes": [
+    [
+     1,
+     1,
+     8,
+     14,
+     3276
+    ],
+    []
+   ],
+   "compile_s": 1.0120840159943327,
+   "mode": "xla",
+   "median_ms": 0.7297565025510266,
+   "p99_ms": 0.8157291493262164,
+   "min_ms": 0.7168010051827878,
+   "reps": 50
+  },
+  "lmmse_det": {
+   "input_shapes": [
+    [
+     1,
+     1,
+     8,
+     14,
+     3276
+    ],
+    [
+     1,
+     1,
+     8,
+     4,
+     1,
+     14,
+     3276
+    ],
+    [
+     1,
+     1,
+     1,
+     4,
+     1,
+     14,
+     3276
+    ],
+    []
+   ],
+   "xla_error": "InvalidArgumentError: Detected unsupported operations when trying to compile graph __inference_<lambda>_257610[_XlaMustCompile=true,config_proto=8589078909834744431,executor_type=11160318154034397263] on XLA_GPU_JIT: Matri",
+   "compile_s": 0.549693123990437,
+   "mode": "graph",
+   "median_ms": 8.91464100277517,
+   "p99_ms": 9.166274544550106,
+   "min_ms": 8.491534012136981,
+   "reps": 50
+  },
+  "lmmse_est": {
+   "input_shapes": [
+    [
+     1,
+     1,
+     8,
+     14,
+     3276
+    ],
+    []
+   ],
+   "xla_error": "InvalidArgumentError: Detected unsupported operations when trying to compile graph __inference_<lambda>_261380[_XlaMustCompile=true,config_proto=8589078909834744431,executor_type=11160318154034397263] on XLA_GPU_JIT: Matri",
+   "compile_s": 4.522121712012449,
+   "mode": "graph",
+   "median_ms": 407.60497249721084,
+   "p99_ms": 415.9511141659459,
+   "min_ms": 402.8643539932091,
+   "reps": 50
+  },
+  "kbest_det": {
+   "input_shapes": [
+    [
+     1,
+     1,
+     8,
+     14,
+     3276
+    ],
+    [
+     1,
+     1,
+     8,
+     4,
+     1,
+     14,
+     3276
+    ],
+    [
+     1,
+     1,
+     8,
+     4,
+     1,
+     14,
+     3276
+    ],
+    []
+   ],
+   "xla_error": "InvalidArgumentError: Detected unsupported operations when trying to compile graph __inference_<lambda>_267045[_XlaMustCompile=true,config_proto=8589078909834744431,executor_type=11160318154034397263] on XLA_GPU_JIT: Matri",
+   "compile_s": 2.8157921690144576,
+   "mode": "graph",
+   "median_ms": 539.2209054989507,
+   "p99_ms": 551.4067083358532,
+   "min_ms": 528.6240199930035,
+   "reps": 50
+  },
+  "nrx": {
+   "input_shapes": [
+    [
+     1,
+     1,
+     8,
+     14,
+     3276
+    ],
+    [
+     1,
+     4
+    ]
+   ],
+   "compile_s": 5.893969141005073,
+   "mode": "xla",
+   "median_ms": 20.036851507029496,
+   "p99_ms": 20.155258007289376,
+   "min_ms": 19.92295600939542,
+   "reps": 50
+  }
+ }
+}

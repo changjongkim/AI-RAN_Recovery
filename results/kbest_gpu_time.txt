@@ -1,0 +1,7 @@
+r4_u2 NVIDIA A100-SXM4-80GB lslin_est 0.73/0.77 ms (xla)  lmmse_det 6.52/6.80 ms (graph)  lmmse_est 110.69/112.78 ms (graph)  kbest_det 157.93/164.26 ms (graph)  nrx 10.61/10.75 ms (xla)
+r4_u3 NVIDIA A100-SXM4-80GB lslin_est 0.72/0.83 ms (xla)  lmmse_det 6.62/6.95 ms (graph)  lmmse_est 165.92/169.58 ms (graph)  kbest_det 324.34/333.72 ms (graph)  nrx 15.89/15.93 ms (xla)
+r4_u4 NVIDIA A100-SXM4-80GB lslin_est 0.71/0.74 ms (xla)  lmmse_det 6.63/6.96 ms (graph)  lmmse_est 215.19/218.35 ms (graph)  kbest_det 536.45/552.43 ms (graph)  nrx 19.94/20.02 ms (xla)
+r8_u1 NVIDIA A100-SXM4-80GB lslin_est 0.73/0.80 ms (xla)  lmmse_det 8.03/8.33 ms (graph)  lmmse_est 112.84/113.97 ms (graph)  kbest_det 63.66/64.52 ms (graph)  nrx 5.61/5.69 ms (xla)
+r8_u2 NVIDIA A100-SXM4-80GB lslin_est 0.72/0.74 ms (xla)  lmmse_det 8.80/9.04 ms (graph)  lmmse_est 212.83/215.81 ms (graph)  kbest_det 160.62/180.58 ms (graph)  nrx 10.69/10.77 ms (xla)
+r8_u3 NVIDIA A100-SXM4-80GB lslin_est 0.73/0.81 ms (xla)  lmmse_det 8.78/9.02 ms (graph)  lmmse_est 310.74/316.16 ms (graph)  kbest_det 325.80/347.33 ms (graph)  nrx 15.93/16.02 ms (xla)
+r8_u4 NVIDIA A100-SXM4-80GB lslin_est 0.73/0.82 ms (xla)  lmmse_det 8.91/9.17 ms (graph)  lmmse_est 407.60/415.95 ms (graph)  kbest_det 539.22/551.41 ms (graph)  nrx 20.04/20.16 ms (xla)

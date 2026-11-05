@@ -696,6 +696,24 @@ def users():
     return v
 
 
+def kbest_time():
+    """GPU time of K-best detection (src/bench_kbest.py, exp/bench_kbest.sh, results/kbest_gpu_time.json): one slot at
+    273 PRBs on one A100 in the framework of the receivers of Figure 12, median over 50 calls, for 4 RX with 2-4 users
+    and 8 RX with 1-4 users; K-best detection alone (without the LMMSE estimate it uses) against the large NRx up to the
+    LLRs (channel estimate and network)."""
+    v, checks = {}, {}
+    rows = json.load(open("results/kbest_gpu_time.json"))
+    kb = {k: r["kbest_det"]["median_ms"] for k, r in rows.items()}
+    ratio = {k: r["kbest_det"]["median_ms"] / r["nrx"]["median_ms"] for k, r in rows.items()}
+    v["EvalKbestMsLow"], v["EvalKbestMsHigh"] = (min(kb.values()), 0), (max(kb.values()), 0)
+    v["EvalKbestTwoMs"] = (kb["r4_u2"], 0)
+    v["EvalKbestOverNrxLow"], v["EvalKbestOverNrxHigh"] = (min(ratio.values()), 0), (max(ratio.values()), 0)
+    checks["kbest_time_seven_configurations"] = bool(len(rows) == 7)
+    checks["kbest_detection_after_the_recovery_deadline_every_configuration"] = bool(min(kb.values()) > Timing.deadline)
+    checks["kbest_slower_than_nrx_every_configuration"] = bool(min(ratio.values()) > 1.0)
+    return v, checks
+
+
 def sensitivity():
     """Macros of Section 5.9 (docs/plan_setup_and_sensitivity.md, E1-E6), from the stored outputs of
     E1a src/analysis/fronthaul_replay.py (results/e1_fronthaul_replay.json): distance to the radio units in the replay,
@@ -852,8 +870,10 @@ def main():
     checks["discussion_large_decodes_every_first_tx_tb_the_real_time_nrx_decodes"] = bool(disc["DiscSmallOnlyPct"][0] == 0.0)
     sens, sens_checks = sensitivity()
     checks.update(sens_checks)
+    kbt, kbt_checks = kbest_time()
+    checks.update(kbt_checks)
     values = {**motivation(lat), **evaluation(lat), **evaluation_more(), **validation(), **disc, **receivers(disc),
-        **users(), **sens,
+        **users(), **sens, **kbt,
         "RetxCutFullWait": (conv_retx / ours_retx, 1),
         "RetxCutNoDelay": (lat["harq_only"]["retx_per_100"] / lat["select_cb5"]["retx_per_100"], 1),
         "LostCutFullWait": (allstats["ai_and_ran"]["residual_after_all_pct"] / allstats["ours"]["residual_after_all_pct"], 1),
