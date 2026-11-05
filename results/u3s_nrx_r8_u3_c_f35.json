@@ -1,0 +1,51 @@
+{
+  "files": [
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/u3s_nrx_r8_u3_c_f35/g0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/u3s_nrx_r8_u3_c_f35/g1.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/u3s_nrx_r8_u3_c_f35/g2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/u3s_nrx_r8_u3_c_f35/g3.npz"
+  ],
+  "systems": [
+    "baseline_lslin_lmmse",
+    "nrx"
+  ],
+  "slots": 1152,
+  "num_rx": 8,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 6.153431280467531,
+    "nrx": 6.111474542684594
+  },
+  "fail_pct": {
+    "baseline_lslin_lmmse": 24.855324074074073,
+    "nrx": 14.265046296296296
+  },
+  "recovers_pct_of_conventional_failures": {
+    "nrx": 42.60768335273574
+  },
+  "by_similarity": {
+    "0.0-0.4": {
+      "share_of_blocks": 0.3836805555555556,
+      "conventional_fail_pct": 23.680241327300152,
+      "share_of_failures": 0.36554132712456344,
+      "recovers_pct": {
+        "nrx": 40.12738853503185
+      }
+    },
+    "0.4-0.6": {
+      "share_of_blocks": 0.5390625,
+      "conventional_fail_pct": 24.852388620504563,
+      "share_of_failures": 0.5389988358556461,
+      "recovers_pct": {
+        "nrx": 44.9244060475162
+      }
+    },
+    "0.6-1.0": {
+      "share_of_blocks": 0.07725694444444445,
+      "conventional_fail_pct": 30.711610486891384,
+      "share_of_failures": 0.09545983701979045,
+      "recovers_pct": {
+        "nrx": 39.02439024390244
+      }
+    }
+  }
+}

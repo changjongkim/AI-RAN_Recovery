@@ -656,6 +656,124 @@ def validation():
     return v
 
 
+# Section 5.3, antennas and users: the classical receivers (LMMSE receiver, K-best detection with the LMMSE estimate and
+# with the true channel) and the large NRx fine-tuned for one to four users (4 RX: nrx_large_mu4 trained to 2026-11-03
+# 13:00, U3n "_t"; 8 RX: variant c of U3s) run in separate runs of the same Eb/No points, slots and users.
+USERS = {
+    "Four": {"classical": {u: f"u3n_uma_r4_u{u}" for u in (2, 3, 4)}, "nrx": {u: f"u3n_uma_r4_u{u}_t" for u in (2, 3, 4)}},
+    "Eight": {"classical": {1: "u3s_uma_r8_u1", 2: "u3s_uma_r8_u2", 3: "u3s_uma_r8_u3", 4: "u1_uma_r8_u4_b1"},
+              "nrx": {u: f"u3s_nrx_r8_u{u}_c" for u in (1, 2, 3, 4)}},
+}
+
+
+def users_table():
+    """{antennas: {users: {conv_fail, nrx, kbest, true}}}: the failed TBs of the LMMSE receiver (%) that each receiver
+    decodes, each share of the LMMSE failures of its own run."""
+    out = {}
+    for ant, d in USERS.items():
+        out[ant] = {}
+        for u, name in d["classical"].items():
+            c = json.load(open(f"results/{name}{SUFFIX}.json"))
+            n = json.load(open(f"results/{d['nrx'][u]}{SUFFIX}.json"))
+            out[ant][u] = {"conv_fail": c["fail_pct"]["baseline_lslin_lmmse"], "nrx_conv_fail": n["fail_pct"]["baseline_lslin_lmmse"],
+                           "nrx": n["recovers_pct_of_conventional_failures"]["nrx"],
+                           "kbest": c["recovers_pct_of_conventional_failures"]["baseline_lmmse_kbest"],
+                           "true": c["recovers_pct_of_conventional_failures"]["baseline_perf_csi_kbest"]}
+    return out
+
+
+def users():
+    """Macros of the antennas and users of Section 5.3 (ranges over the user counts of each antenna count)."""
+    v, t = {}, users_table()
+    for ant, rows in t.items():
+        us = sorted(rows)
+        for key, lab in (("nrx", "Nrx"), ("kbest", "Kbest"), ("conv_fail", "Fail")):
+            xs = [rows[u][key] for u in us]
+            v[f"EvalUsers{ant}{lab}Low"], v[f"EvalUsers{ant}{lab}High"] = (min(xs), 0), (max(xs), 0)
+        v[f"EvalUsers{ant}TrueFew"], v[f"EvalUsers{ant}TrueMany"] = (rows[us[0]]["true"], 0), (rows[us[-1]]["true"], 0)
+        v[f"EvalUsers{ant}Min"], v[f"EvalUsers{ant}Max"] = (us[0], 0), (us[-1], 0)
+        v[f"EvalUsers{ant}SampleDiffMax"] = (max(abs(r["conv_fail"] - r["nrx_conv_fail"]) for r in rows.values()), 1)
+    return v
+
+
+def sensitivity():
+    """Macros of Section 5.9 (docs/plan_setup_and_sensitivity.md, E1-E6), from the stored outputs of
+    E1a src/analysis/fronthaul_replay.py (results/e1_fronthaul_replay.json): distance to the radio units in the replay,
+        one-way delay 5 us/km, L1 result 1.4 + t, lead 4.0 + t, recovery deadline 11.0 - t after the slot;
+    E1b src/analysis/fronthaul_realtime.py (results/e1_fronthaul_realtime.json): the real-time runs of Figure 14(d) read
+        as distances (recovery deadline 11.0 - 2t after the samples arrive), four GPUs;
+    E2, E3, E6 src/analysis/timing_sweeps.py (results/e2e3e6_timing_sweeps.json): TDD patterns, grant leads 1.5-6 ms,
+        and the reductions per Eb/No point of the macro traces;
+    E4 src/analysis/l1_deadline_recount.py (results/e4_l1_deadline_recount.json): late L1 results at thresholds 2.5-5.0 ms;
+    E5 exp/harq_mcs.sh + src/sim/olla.py (results/n6_uma_v3h_f35_olla.json): outer-loop link adaptation with targets
+        1-20% at SNR 14-24 dB, MCS 10-16."""
+    v, checks = {}, {}
+    rp = json.load(open("results/e1_fronthaul_replay.json"))
+    rows = {float(k): r for k, r in rp["rows"].items()}
+    w0, n0 = rows[0.0]["retx_cut_wait"], rows[0.0]["retx_cut_neutral"]
+    same = [k for k in sorted(rows) if abs(rows[k]["retx_cut_wait"] - w0) < 1e-9 and abs(rows[k]["retx_cut_neutral"] - n0) < 1e-9]
+    first_change = min(k for k in rows if k not in same)
+    checks["e1a_unchanged_up_to_the_limit"] = bool(all(k < first_change for k in same))
+    v["SensFhKmSame"], v["SensFhKmBreak"] = (max(same), 0), (first_change, 0)
+    v["SensFhBreakCut"] = (rows[first_change]["retx_cut_wait"], 2)
+    v["SensFhPerKmUs"] = (rp["params"]["us_per_km"], 0)
+    rt = json.load(open("results/e1_fronthaul_realtime.json"))
+    base_d = f"{Timing.deadline:g}"
+    for d, lab in (("10", "Hundred"), ("9", "TwoHundred")):
+        v[f"SensFhRt{lab}Km"] = (rt[d]["km"], 0)
+        v[f"SensFhRt{lab}DropPp"] = (max(rt[base_d]["cells"][c]["recovered_on_time_pct"] - rt[d]["cells"][c]["recovered_on_time_pct"]
+                                         for c in rt[d]["cells"]), 1)
+    v["SensFhRtLateMax"] = (max(r["l1_late_pct"] for d in ("9", "10", base_d) for r in rt[d]["cells"].values()), 2)
+    ts = json.load(open("results/e2e3e6_timing_sweeps.json"))
+    cuts = [(r["wait"]["cut"], r["select_cb5"]["cut"]) for r in list(ts["e2_pattern"].values()) + list(ts["e3_lead"].values())]
+    checks["e2e3_same_reductions_every_pattern_and_lead"] = bool(max(c[0] for c in cuts) - min(c[0] for c in cuts) < 1e-9
+                                                                and max(c[1] for c in cuts) - min(c[1] for c in cuts) < 1e-9)
+    checks["e2_latency_neutral_no_delay_every_pattern_at_the_reference_lead"] = bool(all(
+        r["select_cb5"]["share_min_diff_pp"] >= 0.0 for k, r in ts["e2_pattern"].items() if r["timing"]["lead"] == Timing.lead))
+    leads = sorted(r["timing"]["lead"] for r in ts["e3_lead"].values())
+    v["SensLeadLow"], v["SensLeadHigh"] = (leads[0], 1), (leads[-1], 0)
+    v["SensTimingCutWait"], v["SensTimingCutNeutral"] = (cuts[0][0], 1), (cuts[0][1], 1)
+    pts = ts["e6_point"]
+    fail = {p: r["first_fail_pct"] for p, r in pts.items()}
+    wait = {p: r["wait"]["cut"] for p, r in pts.items()}
+    neutral = [r["select_cb5"]["cut"] for r in pts.values()]
+    v["SensEbnoFailLow"], v["SensEbnoFailHigh"] = (min(fail.values()), 1), (max(fail.values()), 1)
+    v["SensEbnoWaitLow"], v["SensEbnoWaitHigh"] = (min(wait.values()), 1), (max(wait.values()), 1)
+    v["SensEbnoNeutralLow"], v["SensEbnoNeutralHigh"] = (min(neutral), 1), (max(neutral), 1)
+    p_max, p_min = max(wait, key=wait.get), min(wait, key=wait.get)
+    v["SensEbnoWaitHighFail"], v["SensEbnoWaitLowFail"] = (fail[p_max], 1), (fail[p_min], 1)
+    e4 = json.load(open("results/e4_l1_deadline_recount.json"))
+    late = lambda pol, t: max(r[f"late_pct_{t}"] for r in e4[pol].values())
+    v["SensLOneThreeReverb"], v["SensLOneThreeNone"], v["SensLOneThreeTwo"] = (late("reverb", "3"), 2), (late("none", "3"), 2), (late("two", "3"), 1)
+    v["SensLOneTwoHalfReverb"], v["SensLOneTwoHalfNone"] = (late("reverb", "2.5"), 2), (late("none", "2.5"), 2)
+    v["SensLOneTwoHalfTwo"] = (late("two", "2.5"), 1)
+    v["SensLOneCellsMax"] = (max(int(c) for c in e4["reverb"]), 0)
+    la = json.load(open(f"results/n6_uma_v3h{SUFFIX}_olla.json"))
+    res, ladder = la["results"], la["ladder"]
+    snr = sorted(la["points"])
+    gain = lambda t, s="ours": [res[f"snr{x:g}_target{t}"][s]["goodput_bits_per_tx"] / res[f"snr{x:g}_target{t}"]["ai_and_ran"]["goodput_bits_per_tx"]
+                                for x in snr]
+    field = lambda t, s, k: [res[f"snr{x:g}_target{t}"][s][k] for x in snr]
+    v["SensLaSnrLow"], v["SensLaSnrHigh"] = (snr[0], 0), (snr[-1], 0)
+    v["SensLaMcsLow"], v["SensLaMcsHigh"] = (ladder[0], 0), (ladder[-1], 0)
+    mid, high = gain("0.03") + gain("0.05"), gain("0.1") + gain("0.2")
+    v["SensLaMidLow"], v["SensLaMidHigh"] = (min(mid), 2), (max(mid), 2)
+    v["SensLaHighLow"], v["SensLaHighHigh"] = (min(high), 2), (max(high), 2)
+    ai_mid = gain("0.03", "ai_for_ran") + gain("0.05", "ai_for_ran")
+    v["SensLaAiMidLow"], v["SensLaAiMidHigh"] = (min(ai_mid), 2), (max(ai_mid), 2)
+    v["SensLaOneLow"], v["SensLaOneHigh"] = (min(gain("0.01")), 2), (max(gain("0.01")), 2)
+    one_fail = field("0.01", "ai_and_ran", "first_fail_pct")
+    v["SensLaOneConvFailLow"], v["SensLaOneConvFailHigh"] = (min(one_fail), 1), (max(one_fail), 1)
+    checks["e5_conventional_at_lowest_mcs_for_one_percent"] = bool(max(field("0.01", "ai_and_ran", "mean_mcs")) == ladder[0])
+    three_fail = field("0.03", "ai_and_ran", "first_fail_pct")
+    v["SensLaThreeConvFailLow"], v["SensLaThreeConvFailHigh"] = (min(three_fail), 1), (max(three_fail), 1)
+    v["SensLaHighMcsReverb"] = (min(field("0.1", "ours", "mean_mcs") + field("0.2", "ours", "mean_mcs")), 1)
+    rx = lambda t, s: field(t, s, "resends_per_100")
+    v["SensLaThreeRetxConvLow"], v["SensLaThreeRetxConvHigh"] = (min(rx("0.03", "ai_and_ran")), 1), (max(rx("0.03", "ai_and_ran")), 1)
+    v["SensLaThreeRetxReverbLow"], v["SensLaThreeRetxReverbHigh"] = (min(rx("0.03", "ours")), 1), (max(rx("0.03", "ours")), 1)
+    return v, checks
+
+
 def main():
     allstats = json.load(open(f"results/n3_uma_v3_all{SUFFIX}.json"))["all"]
     lat = latency_policies()
@@ -683,7 +801,10 @@ def main():
     disc["EvalBoundShareFour"], disc["EvalBoundShareEight"] = (100.0 * four, 0), (100.0 * eight, 0)
     checks["discussion_combination_as_on_the_conventional_l1"] = bool(abs(disc_raw["combo_retx_per_100"] - ours_retx) < 0.05)
     checks["discussion_large_decodes_every_first_tx_tb_the_real_time_nrx_decodes"] = bool(disc["DiscSmallOnlyPct"][0] == 0.0)
+    sens, sens_checks = sensitivity()
+    checks.update(sens_checks)
     values = {**motivation(lat), **evaluation(lat), **evaluation_more(), **validation(), **disc, **receivers(disc),
+        **users(), **sens,
         "RetxCutFullWait": (conv_retx / ours_retx, 1),
         "RetxCutNoDelay": (lat["harq_only"]["retx_per_100"] / lat["select_cb5"]["retx_per_100"], 1),
         "LostCutFullWait": (allstats["ai_and_ran"]["residual_after_all_pct"] / allstats["ours"]["residual_after_all_pct"], 1),
@@ -713,6 +834,7 @@ def main():
              "SetupBoundLowMs": f"{BOUND_LOW_MS:.1f}", "SetupBoundHighMs": f"{BOUND_HIGH_MS:.1f}",
              "SetupLOneDeadlineMs": f"{L1_DEADLINE_MS:.1f}",
              "SetupRecoveryDeadlineMs": f"{Timing.deadline:.1f}", "SetupLeadMs": f"{Timing.lead:.1f}",
+             "SetupRetxSlotMs": f"{Timing.deadline + Timing.lead:.1f}",
              "SetupSlots": f"{full['slots']:,}", "SetupTBs": f"{full['slots'] * full['users']:,}",
              "SetupTbBytes": f"{meta['tb_bytes']:,}", "SetupTransmissions": f"{full['transmissions']}",
              "SetupRetxGapMs": f"{meta['generator']['gap_ms']:.1f}",

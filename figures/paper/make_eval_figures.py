@@ -417,6 +417,27 @@ def receivers():
     ax.set_ylabel("Decoded (%)", fontsize=13)
     style(ax)
     save(fig, "eval_rx_bound")
+    # antennas and users (paper_numbers.USERS): the large NRx fine-tuned for one to four users against K-best detection
+    # with the LMMSE estimate and with the true channel, each as a share of the LMMSE failures of its run
+    table = pn.users_table()
+    for name, ant in (("eval_rx_users_four", "Four"), ("eval_rx_users_eight", "Eight")):
+        rows = table[ant]
+        us = sorted(rows)
+        series = {k: [rows[u][s] for u in us] for k, s in (("K-Best", "kbest"), ("Large NRx", "nrx"), ("True Channel", "true"))}
+        fig, ax = plt.subplots(figsize=PANEL)
+        out = grouped(ax, [str(u) for u in us], series, colors, width=0.27)
+        for b in out["True Channel"]:
+            b.set_hatch("////"); b.set_edgecolor(base.BOUND); b.set_linewidth(0.8)
+        for label, bs in out.items():
+            for b in bs:
+                ax.text(b.get_x() + b.get_width() / 2, b.get_height() + 1.5, f"{b.get_height():.0f}", ha="center", va="bottom", fontsize=VALUE - 3)
+        ax.set_xlim(-0.6, len(us) - 0.4)
+        ax.set_ylim(0, 110)
+        ax.set_yticks([0, 50, 100])
+        ax.set_xlabel("Users per Slot")
+        ax.set_ylabel("Decoded (%)", fontsize=13)
+        style(ax)
+        save(fig, name)
     items = list(PLACE.items())
     base.legend("eval_rx_legend", items[:3], width=8.4)
     base.legend("eval_rx_bound_legend", items[3:] + [("K-Best", RX["K-Best"]), ("Large NRx", RX["Large NRx"])], width=8.2)
@@ -619,6 +640,70 @@ def sensitivity():
     base.legend("eval_sens_legend", list(SCHEME.items()) + list(SENS_RX.items()), width=10.4)
 
 
+def network():
+    """Section 5.9, network settings (paper_numbers.sensitivity, docs/plan_setup_and_sensitivity.md): throughput under
+    outer-loop link adaptation for each target block error rate (E5, results/n6_uma_v3h_f35_olla.json, mean and range
+    over SNR 14-24 dB), the retransmission reduction of both rules at each Eb/No point of the macro traces against its
+    first-transmission failure (E6, results/e2e3e6_timing_sweeps.json), and the late L1 results at each L1 deadline,
+    the largest share over 4-24 cells of four GPUs (E4, results/e4_l1_deadline_recount.json)."""
+    la = json.load(open(os.path.join(RES, f"n6_uma_v3h{base.SUFFIX}_olla.json")))
+    res, snr = la["results"], sorted(la["points"])
+    targets = ["0.01", "0.03", "0.05", "0.1", "0.2"]
+    fig, ax = plt.subplots(figsize=PANEL4)
+    xs = np.arange(len(targets))
+    for label, key, dx in (("Reverb", "ours", -0.08), ("AI-for-RAN", "ai_for_ran", 0.08)):
+        g = np.array([[res[f"snr{x:g}_target{t}"][key]["goodput_bits_per_tx"] / res[f"snr{x:g}_target{t}"]["ai_and_ran"]["goodput_bits_per_tx"]
+                       for x in snr] for t in targets])
+        m = g.mean(axis=1)
+        ax.errorbar(xs + dx, m, yerr=[m - g.min(axis=1), g.max(axis=1) - m], color=SCHEME[label], linewidth=2.4, marker="o",
+                    markersize=5, capsize=2.5, elinewidth=1.2, zorder=4 if label == "Reverb" else 3)
+    ax.axhline(1, color=CONV, linewidth=1.6, linestyle=(0, (4, 3)), zorder=2)
+    ax.set_xticks(xs)
+    ax.set_xticklabels([f"{100 * float(t):g}" for t in targets])
+    ax.set_ylim(0.9, 2.0)
+    ax.set_yticks([1.0, 1.5, 2.0])
+    ax.set_xlabel("Target (%)")
+    ax.set_ylabel("Throughput (×)", fontsize=13)
+    style(ax, grid="both")
+    save(fig, "eval_net_target")
+
+    ts = json.load(open(os.path.join(RES, "e2e3e6_timing_sweeps.json")))["e6_point"]
+    pts = sorted(ts.values(), key=lambda r: r["first_fail_pct"])
+    fig, ax = plt.subplots(figsize=PANEL4)
+    for label, key in (("Reverb, Full Wait", "wait"), ("Reverb, Latency-Neutral", "select_cb5")):
+        ax.plot([r["first_fail_pct"] for r in pts], [r[key]["cut"] for r in pts], color=WAITS[label], linewidth=2.4, marker="o", markersize=5)
+    ax.set_xlim(9, 20)
+    ax.set_xticks([10, 15, 20])
+    ax.set_ylim(1, 3.2)
+    ax.set_yticks([1, 2, 3])
+    ax.set_xlabel("First Failure (%)")
+    ax.set_ylabel("Reduction (×)", fontsize=13)
+    style(ax, grid="both")
+    save(fig, "eval_net_ebno")
+
+    e4 = json.load(open(os.path.join(RES, "e4_l1_deadline_recount.json")))
+    th = [2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
+    fig, ax = plt.subplots(figsize=PANEL4)
+    for label, key in (("No Recovery", "none"), ("Two Recoveries per GPU", "two"), ("Reverb", "reverb")):
+        y = [max(max(r[f"late_pct_{t:g}"] for r in e4[key].values()), 0.005) for t in th]
+        ax.plot(th, y, color=SCHED[label], linewidth=2.6 if label == "Reverb" else 2.0, marker="o", markersize=5)
+    ax.set_yscale("log")
+    ax.set_ylim(0.005, 100)
+    ax.set_yticks([0.01, 0.1, 1, 10, 100])
+    ax.set_yticklabels(["0.01", "0.1", "1", "10", "100"])
+    ax.set_xticks([2.5, 3.0, 4.0, 5.0])
+    ax.set_xticklabels(["2.5", "3", "4", "5"])
+    ax.set_xlim(2.35, 5.15)
+    ax.set_xlabel("L1 Deadline (ms)")
+    ax.set_ylabel("Late L1 (%)", fontsize=13)
+    style(ax, grid="both")
+    save(fig, "eval_net_l1")
+    base.legend("eval_net_legend", [("Reverb, Full Wait", WAITS["Reverb, Full Wait"]),
+                                    ("Reverb, Latency-Neutral", WAITS["Reverb, Latency-Neutral"]),
+                                    ("AI-for-RAN", SCHEME["AI-for-RAN"])], width=8.6)
+    base.legend("eval_net_legend2", [("Two Recoveries per GPU", SCHED["Two Recoveries per GPU"]), ("Conventional", CONV)], width=6.4)
+
+
 if __name__ == "__main__":
     os.chdir(base.ROOT)      # paper_numbers.py reads results/ and src/sim relative to the repository root
     effect()
@@ -629,3 +714,4 @@ if __name__ == "__main__":
     interference()
     sensitivity()
     receivers()
+    network()

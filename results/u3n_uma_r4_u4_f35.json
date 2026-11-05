@@ -1,0 +1,65 @@
+{
+  "files": [
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/u3n_uma_r4_u4_f35/g0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/u3n_uma_r4_u4_f35/g1.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/u3n_uma_r4_u4_f35/g2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/u3n_uma_r4_u4_f35/g3.npz"
+  ],
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx"
+  ],
+  "slots": 960,
+  "num_rx": 4,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 3.9443800781459992,
+    "baseline_lmmse_kbest": 5.346395386528639,
+    "baseline_perf_csi_kbest": 4.92345051791605,
+    "nrx": 3.929730143626572
+  },
+  "fail_pct": {
+    "baseline_lslin_lmmse": 35.963541666666664,
+    "baseline_lmmse_kbest": 22.161458333333332,
+    "baseline_perf_csi_kbest": 1.328125,
+    "nrx": 18.541666666666668
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lmmse_kbest": 41.41926140477914,
+    "baseline_perf_csi_kbest": 96.30702389572774,
+    "nrx": 48.515568428674875
+  },
+  "by_similarity": {
+    "0.0-0.4": {
+      "share_of_blocks": 0.0,
+      "conventional_fail_pct": 0.0,
+      "share_of_failures": 0.0,
+      "recovers_pct": {
+        "baseline_lmmse_kbest": 0.0,
+        "baseline_perf_csi_kbest": 0.0,
+        "nrx": 0.0
+      }
+    },
+    "0.4-0.6": {
+      "share_of_blocks": 0.5479166666666667,
+      "conventional_fail_pct": 37.11977186311787,
+      "share_of_failures": 0.5655322230267922,
+      "recovers_pct": {
+        "baseline_lmmse_kbest": 38.028169014084504,
+        "baseline_perf_csi_kbest": 97.95134443021767,
+        "nrx": 51.72855313700384
+      }
+    },
+    "0.6-1.0": {
+      "share_of_blocks": 0.45208333333333334,
+      "conventional_fail_pct": 34.56221198156682,
+      "share_of_failures": 0.4344677769732078,
+      "recovers_pct": {
+        "baseline_lmmse_kbest": 45.833333333333336,
+        "baseline_perf_csi_kbest": 94.16666666666667,
+        "nrx": 44.333333333333336
+      }
+    }
+  }
+}

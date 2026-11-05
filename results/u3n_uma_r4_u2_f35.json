@@ -1,0 +1,65 @@
+{
+  "files": [
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/u3n_uma_r4_u2_f35/g0.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/u3n_uma_r4_u2_f35/g1.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/u3n_uma_r4_u2_f35/g2.npz",
+    "/pscratch/sd/s/sgkim/kcj/airan_recovery/results/u3n_uma_r4_u2_f35/g3.npz"
+  ],
+  "systems": [
+    "baseline_lslin_lmmse",
+    "baseline_lmmse_kbest",
+    "baseline_perf_csi_kbest",
+    "nrx"
+  ],
+  "slots": 768,
+  "num_rx": 4,
+  "seconds_per_slot": {
+    "baseline_lslin_lmmse": 1.2201894794271388,
+    "baseline_lmmse_kbest": 1.6951944404580293,
+    "baseline_perf_csi_kbest": 1.4860170003144049,
+    "nrx": 1.2129103643081482
+  },
+  "fail_pct": {
+    "baseline_lslin_lmmse": 13.151041666666666,
+    "baseline_lmmse_kbest": 8.723958333333332,
+    "baseline_perf_csi_kbest": 3.2552083333333335,
+    "nrx": 6.966145833333333
+  },
+  "recovers_pct_of_conventional_failures": {
+    "baseline_lmmse_kbest": 34.65346534653465,
+    "baseline_perf_csi_kbest": 75.24752475247524,
+    "nrx": 47.02970297029703
+  },
+  "by_similarity": {
+    "0.0-0.4": {
+      "share_of_blocks": 0.2513020833333333,
+      "conventional_fail_pct": 12.694300518134716,
+      "share_of_failures": 0.24257425742574257,
+      "recovers_pct": {
+        "baseline_lmmse_kbest": 32.6530612244898,
+        "baseline_perf_csi_kbest": 67.34693877551021,
+        "nrx": 38.775510204081634
+      }
+    },
+    "0.4-0.6": {
+      "share_of_blocks": 0.6184895833333334,
+      "conventional_fail_pct": 13.263157894736842,
+      "share_of_failures": 0.6237623762376238,
+      "recovers_pct": {
+        "baseline_lmmse_kbest": 30.952380952380953,
+        "baseline_perf_csi_kbest": 79.36507936507937,
+        "nrx": 48.41269841269841
+      }
+    },
+    "0.6-1.0": {
+      "share_of_blocks": 0.13020833333333334,
+      "conventional_fail_pct": 13.5,
+      "share_of_failures": 0.13366336633663367,
+      "recovers_pct": {
+        "baseline_lmmse_kbest": 55.55555555555556,
+        "baseline_perf_csi_kbest": 70.37037037037037,
+        "nrx": 55.55555555555556
+      }
+    }
+  }
+}
