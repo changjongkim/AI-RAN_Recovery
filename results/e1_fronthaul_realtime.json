@@ -1,0 +1,177 @@
+{
+ "9": {
+  "km": 200.0,
+  "cells": {
+   "4": {
+    "recovered_on_time_pct": 47.78163580246913,
+    "l1_late_pct": 0.04201680672268908,
+    "seeds": 2
+   },
+   "8": {
+    "recovered_on_time_pct": 38.274447002302075,
+    "l1_late_pct": 0.06039915966386555,
+    "seeds": 2
+   },
+   "12": {
+    "recovered_on_time_pct": 24.84689413823272,
+    "l1_late_pct": 0.052521008403361345,
+    "seeds": 2
+   },
+   "16": {
+    "recovered_on_time_pct": 18.78666332414139,
+    "l1_late_pct": 0.056460084033613446,
+    "seeds": 2
+   },
+   "20": {
+    "recovered_on_time_pct": 14.801429383578332,
+    "l1_late_pct": 0.05567226890756303,
+    "seeds": 2
+   },
+   "24": {
+    "recovered_on_time_pct": 12.920270588631238,
+    "l1_late_pct": 0.06915266106442577,
+    "seeds": 2
+   }
+  }
+ },
+ "10": {
+  "km": 100.0,
+  "cells": {
+   "4": {
+    "recovered_on_time_pct": 49.420401854714065,
+    "l1_late_pct": 0.02100840336134454,
+    "seeds": 2
+   },
+   "8": {
+    "recovered_on_time_pct": 41.015625,
+    "l1_late_pct": 0.04989495798319328,
+    "seeds": 2
+   },
+   "12": {
+    "recovered_on_time_pct": 29.912516823687753,
+    "l1_late_pct": 0.056022408963585436,
+    "seeds": 2
+   },
+   "16": {
+    "recovered_on_time_pct": 22.50426407143574,
+    "l1_late_pct": 0.05383403361344538,
+    "seeds": 2
+   },
+   "20": {
+    "recovered_on_time_pct": 17.976204978275877,
+    "l1_late_pct": 0.037815126050420166,
+    "seeds": 2
+   },
+   "24": {
+    "recovered_on_time_pct": 13.283064597569597,
+    "l1_late_pct": 0.0665266106442577,
+    "seeds": 2
+   }
+  }
+ },
+ "11": {
+  "km": 0.0,
+  "cells": {
+   "4": {
+    "recovered_on_time_pct": 50.79841285202748,
+    "l1_late_pct": 0.031512605042016806,
+    "seeds": 4
+   },
+   "8": {
+    "recovered_on_time_pct": 44.50933991239112,
+    "l1_late_pct": 0.04726890756302521,
+    "seeds": 4
+   },
+   "12": {
+    "recovered_on_time_pct": 30.7319861470697,
+    "l1_late_pct": 0.06039915966386555,
+    "seeds": 4
+   },
+   "16": {
+    "recovered_on_time_pct": 23.520394058958058,
+    "l1_late_pct": 0.05711659663865546,
+    "seeds": 4
+   },
+   "20": {
+    "recovered_on_time_pct": 18.201223850860966,
+    "l1_late_pct": 0.08298319327731092,
+    "seeds": 4
+   },
+   "24": {
+    "recovered_on_time_pct": 14.313831039935403,
+    "l1_late_pct": 0.08009453781512606,
+    "seeds": 4
+   }
+  }
+ },
+ "12": {
+  "km": -100.0,
+  "cells": {
+   "4": {
+    "recovered_on_time_pct": 51.40096618357488,
+    "l1_late_pct": 0.026260504201680673,
+    "seeds": 2
+   },
+   "8": {
+    "recovered_on_time_pct": 44.236541925155095,
+    "l1_late_pct": 0.08403361344537816,
+    "seeds": 2
+   },
+   "12": {
+    "recovered_on_time_pct": 30.736076503468247,
+    "l1_late_pct": 0.09453781512605042,
+    "seeds": 2
+   },
+   "16": {
+    "recovered_on_time_pct": 22.938079719227876,
+    "l1_late_pct": 0.04726890756302521,
+    "seeds": 2
+   },
+   "20": {
+    "recovered_on_time_pct": 18.196954314720813,
+    "l1_late_pct": 0.046218487394957986,
+    "seeds": 2
+   },
+   "24": {
+    "recovered_on_time_pct": 13.845221664927458,
+    "l1_late_pct": 0.06214985994397759,
+    "seeds": 2
+   }
+  }
+ },
+ "13": {
+  "km": -200.0,
+  "cells": {
+   "4": {
+    "recovered_on_time_pct": 51.47711913496814,
+    "l1_late_pct": 0.11029411764705882,
+    "seeds": 2
+   },
+   "8": {
+    "recovered_on_time_pct": 45.208083233293316,
+    "l1_late_pct": 0.06039915966386555,
+    "seeds": 2
+   },
+   "12": {
+    "recovered_on_time_pct": 29.947495961227787,
+    "l1_late_pct": 0.049019607843137254,
+    "seeds": 2
+   },
+   "16": {
+    "recovered_on_time_pct": 22.632898696088265,
+    "l1_late_pct": 0.04332983193277311,
+    "seeds": 2
+   },
+   "20": {
+    "recovered_on_time_pct": 18.351269035532994,
+    "l1_late_pct": 0.06197478991596639,
+    "seeds": 2
+   },
+   "24": {
+    "recovered_on_time_pct": 14.551698596006869,
+    "l1_late_pct": 0.04989495798319328,
+    "seeds": 2
+   }
+  }
+ }
+}
