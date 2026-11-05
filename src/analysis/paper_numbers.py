@@ -732,6 +732,35 @@ def sensitivity():
         r["select_cb5"]["share_min_diff_pp"] >= 0.0 for k, r in ts["e2_pattern"].items() if r["timing"]["lead"] == Timing.lead))
     leads = sorted(r["timing"]["lead"] for r in ts["e3_lead"].values())
     v["SensLeadLow"], v["SensLeadHigh"] = (leads[0], 1), (leads[-1], 0)
+    # Latency-Neutral at short grant leads: the smallest lead without a shortfall, and for the longest lead with one the
+    # window in which the conventional receiver delivers more (rerun of latency_policies at that lead, DDDSU)
+    neutral = {r["timing"]["lead"]: r["select_cb5"]["share_min_diff_pp"] for r in ts["e3_lead"].values()}
+    v["SensNeutralLeadMin"] = (min(L for L, x in neutral.items() if x >= 0.0 and all(neutral[k] >= 0.0 for k in neutral if k >= L)), 0)
+    short = max(L for L, x in neutral.items() if x < 0.0)
+    v["SensNeutralShortLead"], v["SensNeutralShortPp"] = (short, 0), (-min(x for x in neutral.values()), 1)
+    saved = (Timing.lead, Timing.deadline)
+    Timing.lead, Timing.deadline = short, saved[0] + saved[1] - short
+    c_, r_, s_, cs_, k_ = load_traces(MACRO_SETS)
+    f_ = ~c_
+    d0 = simulate(c_, r_, cs_, k_, "harq_only", "DDDSU", Timing, l1_steps=cs_)[0]
+    d1 = simulate(c_, r_, s_, k_, "select_cb5", "DDDSU", Timing, l1_steps=cs_)[0]
+    Timing.lead, Timing.deadline = saved
+    at = np.unique(np.concatenate([[0.0], d0[f_ & np.isfinite(d0)], d1[f_ & np.isfinite(d1)]]))
+    diff = delivered_share(d1, f_, at) - delivered_share(d0, f_, at)
+    windows, i = [], 0                          # (from, to, largest shortfall) of each interval with a shortfall
+    while i < len(at):
+        if diff[i] < 0.0:
+            j = i
+            while j < len(at) and diff[j] < 0.0:
+                j += 1
+            windows.append((at[i], at[j] if j < len(at) else np.inf, -diff[i:j].min()))
+            i = j
+        else:
+            i += 1
+    checks["e3_short_lead_rerun_matches_sweep"] = bool(abs(-max(w[2] for w in windows) - neutral[short]) < 1e-9)
+    checks["e3_short_lead_two_windows"] = bool(len(windows) == 2)
+    for (a, b, pp), lab in zip(windows, ("One", "Two")):
+        v[f"SensNeutralWin{lab}From"], v[f"SensNeutralWin{lab}To"], v[f"SensNeutralWin{lab}Pp"] = (a, 1), (b, 1), (pp, 1)
     v["SensTimingCutWait"], v["SensTimingCutNeutral"] = (cuts[0][0], 1), (cuts[0][1], 1)
     pts = ts["e6_point"]
     fail = {p: r["first_fail_pct"] for p, r in pts.items()}
